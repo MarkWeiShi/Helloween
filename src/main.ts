@@ -409,18 +409,25 @@ async function openStory(id = selected) {
   };
   show();
 }
-function openInvite() {
+function openInvite(accepted = false) {
   if (!invite) return;
   const s = spirit(invite.spiritId);
   const invitation = invite;
-  modal(html`<div class="invitation-film"><div class="invitation-stage"><div class="invitation-consent">${pumpkinGreeting()}<p>${e(invitation.name)} 邀请你观看 ${e(s.name)} 变身。</p><button class="button primary full" data-invite-play ${invitation.expired ? 'disabled' : ''}>${invitation.expired ? t("邀请已过期") : t("接受朋友的万圣节邀请")}</button></div></div></div>`);
-  const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
-  dialog.classList.add('invitation-result', 'invitation-cinema');
-  dialog.querySelector<HTMLButtonElement>('[data-invite-play]')!.onclick = () => {
+  const play = () => {
+    if (invitation.expired) return;
     selected = s.id;
     region = s.regionId;
     revealCharacter(false, invitation.recordingFull ? undefined : {inviteId:invitation.id});
   };
+  // Unlock already explains and accepts invitation playback and recording.
+  if (accepted && !invitation.expired) {
+    play();
+    return;
+  }
+  modal(html`<div class="invitation-film"><div class="invitation-stage"><div class="invitation-consent">${pumpkinGreeting()}<p>${e(invitation.name)} 邀请你观看 ${e(s.name)} 变身。</p><button class="button primary full" data-invite-play ${invitation.expired ? 'disabled' : ''}>${invitation.expired ? t("邀请已过期") : t("接受朋友的万圣节邀请")}</button></div></div></div>`);
+  const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
+  dialog.classList.add('invitation-result', 'invitation-cinema');
+  dialog.querySelector<HTMLButtonElement>('[data-invite-play]')!.onclick = play;
 }
 
 async function respondInvite() {
@@ -549,7 +556,7 @@ function finishGate() {
   mic?.stop();mic=undefined;gateBusy=false;gate=false;
   app.querySelector('.play-lock')?.remove();
   const shell=app.querySelector<HTMLElement>('.app-shell');if(shell)shell.inert=false;
-  if(invite)openInvite();
+  if(invite)openInvite(true);
   if(playbackContext)bgm.start(playbackContext);
 }
 async function enterGate() {
@@ -801,7 +808,10 @@ async function boot() {
         if(pending && spirit(pending))openShare(pending);
       }
       history.replaceState(null,'','/my-links');
-    } else if(location.pathname==='/rankings'){page='boards';render();} else showGate();
+    } else if(location.pathname==='/rankings'){page='boards';render();} else {
+      showGate();
+      if(invite && !invite.expired)openUnlockConsent();
+    }
   } catch (err) {
     app.innerHTML = html`<main class="boot"><span>${icon("moon")}</span><h1>The lanterns need a moment.</h1><p>${e((err as Error).message)}</p>${button(t("Light them again"), "retry", "primary")}</main>`;
   }
