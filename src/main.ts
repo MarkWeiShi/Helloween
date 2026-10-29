@@ -491,7 +491,7 @@ async function sendShare(id: string, channel: string, btn: HTMLButtonElement) {
       node.innerHTML = html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(data.url)}"></label>`;
       await copyLink(data.url);
     } else {
-      await mountSocialHandoff(node, channel, data.url, msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`, asset(spirit(id).art?.share || '/art/world-map.webp'));
+      await mountSocialHandoff(node, channel, data.url, msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`, asset(spirit(id).art?.share || '/art/world-map.webp'), id);
     }
   } catch (err) { toast((err as Error).message); }
   finally { btn.disabled = false; }
