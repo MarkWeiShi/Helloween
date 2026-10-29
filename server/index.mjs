@@ -173,7 +173,7 @@ export function createApp({
           return;
         }
         if (req.method === "GET" && url.pathname === "/api/motions") {
-          send(200, {motions:loadCuteMotions(ROOT,store.spirits)});
+          send(200, {motions:loadCuteMotions(staticRoot,store.spirits)});
           return;
         }
         if (req.method === "GET" && url.pathname === "/api/catalog") {

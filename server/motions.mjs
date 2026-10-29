@@ -1,8 +1,8 @@
 import {existsSync,readdirSync,readFileSync} from 'node:fs';
 import {join,basename} from 'node:path';
 // Read on demand so atomically published motion packs need no server restart.
-export function loadCuteMotions(root, spirits) {
- const directory=join(root,'public/art/motions'), result={};
+export function loadCuteMotions(staticRoot, spirits) {
+ const directory=join(staticRoot,'art/motions'), result={};
  if(!existsSync(directory))return result;
  for(const file of readdirSync(directory).filter(f=>f.endsWith('.json'))) {
   try {
