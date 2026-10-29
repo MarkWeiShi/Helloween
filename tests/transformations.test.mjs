@@ -47,16 +47,18 @@ for (const renderer of ['webgl','2d']) test(`${renderer}: video changes from ent
  globalThis.document = Object.assign(new EventTarget(),{hidden:false,createElement:()=>new Element()});
  globalThis.window = new EventTarget();
  globalThis.fetch = async () => ({ok:true,json:async()=>({version:1,characters:{jiangshi:entry}})});
- let reveals=0, pauses=0, audible=false;
- const stage = new Element(); const motion=runtime.mountTransformation(stage,'jiangshi',{sound:()=>audible,toggleSound:()=>{audible=!audible;},onReveal:()=>reveals++,onPause:()=>pauses++});
+ let reveals=0, captures=0, pauses=0, audible=false;
+ const stage = new Element(); const motion=runtime.mountTransformation(stage,'jiangshi',{sound:()=>audible,toggleSound:()=>{audible=!audible;},onCaptureStart:()=>captures++,onReveal:()=>reveals++,onPause:()=>pauses++});
  const host=stage.children[0], video=host.children[2], loop=host.children[3];
  assert.equal(await motion.play(),true);
  if(renderer==='2d') { assert.equal(composited[3],0); assert.equal(composited[7],255); }
  assert.equal(video.src,entry.entrance); assert.equal(video.muted,true); assert.equal(video.loop,false);
  host.children[4].onclick(); assert.equal(video.muted,false); assert.equal(loop.muted,false); assert.equal(host.children[4].getAttribute('aria-pressed'),'true');
  assert.equal(loop.src,entry.loop); assert.equal(loop.preload,'auto'); assert.equal(loop.loads,1); assert.equal(loop.paused,true);
- video.currentTime=2.4;
- const tick=()=>{const [key,cb]=[...callbacks.entries()].at(-1);callbacks.delete(key);cb();}; tick(); tick(); assert.equal(reveals,1);
+ const tick=()=>{const [key,cb]=[...callbacks.entries()].at(-1);callbacks.delete(key);cb();};
+ video.currentTime=1.99;tick();assert.equal(captures,0);assert.equal(reveals,0);
+ video.currentTime=2.0;tick();tick();assert.equal(captures,1);assert.equal(reveals,0);
+ video.currentTime=2.4;tick();assert.equal(captures,1);assert.equal(reveals,1);
  video.onended(); await Promise.resolve(); await Promise.resolve();
  assert.equal(video.src,entry.entrance); assert.equal(loop.src,entry.loop); assert.equal(loop.loop,true); assert.equal(loop.paused,false); assert.equal(loop.loads,1);
  document.hidden=true; document.dispatchEvent(new Event('visibilitychange')); assert.equal(video.paused,true); assert.ok(pauses);

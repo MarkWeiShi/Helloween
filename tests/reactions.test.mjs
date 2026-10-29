@@ -86,3 +86,19 @@ test('recordings without a name use an existing nickname, private link label, or
   assert.equal(store.invite(labelled.id).friendName,undefined);
  }finally{store.close();}
 });
+
+test('five-second scored reactions persist measurements while validating silent and malformed samples',()=>{
+ const store=new BooStore(':memory:',loadCatalog());
+ try{
+  const sender=store.createGuest().player.id,receiver=store.createGuest().player.id,silent=store.createGuest().player.id;
+  store.onboard(sender,{name:'Sender',country:'CN',spiritId:'jiangshi'});
+  const invite=store.createInvite(sender,{spiritId:'jiangshi',channel:'copy',friendName:'Viewer'});
+  const body={consent:true,mime:'audio/webm',durationMs:5000,audio:Buffer.from([0x1a,0x45,0xdf,0xa3,1,2,3]).toString('base64'),score:46,meanHz:440,peakHz:500,frames:99,language:'en',amplitudeRms:.2};
+  for(const change of [{score:101},{frames:0},{meanHz:null,peakHz:null},{durationMs:4999}])assert.throws(()=>store.recordAudio(receiver,invite.id,{...body,...change}),{status:400});
+  store.recordAudio(receiver,invite.id,body);
+  store.recordAudio(silent,invite.id,{...body,score:null,meanHz:null,peakHz:null,frames:0,amplitudeRms:0});
+  const rows=store.reactionSummary(sender).recent;
+  const row=rows.find(r=>r.receiverId===receiver);assert.equal(row.durationMs,5000);assert.equal(row.score,46);assert.equal(row.meanHz,440);assert.equal(row.peakHz,500);
+  assert.equal(rows.find(r=>r.receiverId===silent).score,null);
+ }finally{store.close();}
+});

@@ -507,9 +507,10 @@ export class BooStore {
     const name = body.durationMs <= 3000 && body.name !== undefined ? body.name :
       receiver.initialized ? receiver.name : label || receiver.name;
     if (typeof name !== 'string' || !name.trim() || name.trim().length > 24 || /[\u0000-\u001f\u007f]/.test(name)) fail(400, 'Enter your name (1–24 characters).');
-    const score = body.durationMs <= 3000 ? body.score ?? null : null;
+    const hasMeasurement = body.durationMs <= 3000 || ['score','meanHz','peakHz','frames'].some(key=>Object.hasOwn(body,key));
+    const score = hasMeasurement ? body.score ?? null : null;
     if (score !== null && (!Number.isInteger(score) || score < 0 || score > 100)) fail(400, 'Invalid local score.');
-    if (body.durationMs <= 3000) {
+    if (hasMeasurement) {
       const {meanHz,peakHz,frames} = body;
       if (!Number.isInteger(frames) || frames < 0 || frames > 100 ||
           (meanHz === null && peakHz === null ? frames !== 0 || score !== null :
@@ -532,7 +533,7 @@ export class BooStore {
       this.db.prepare('INSERT INTO reaction_audio VALUES(?,?,?,?,?)').run(token,id,body.mime,audio,this.now());
       this.db.prepare('INSERT INTO reaction_details VALUES(?,?,?,?,?)').run(token,id,name.trim(),score,body.durationMs);
       if(language!==null)this.db.prepare('INSERT INTO reaction_intensity VALUES(?,?,?,?)').run(token,id,language,rms);
-      if (body.durationMs <= 3000) this.db.prepare(`INSERT INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,?,?,?,?)
+      if (hasMeasurement) this.db.prepare(`INSERT INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,?,?,?,?)
         ON CONFLICT(invite_id,player_id) DO UPDATE SET mean_hz=excluded.mean_hz,peak_hz=excluded.peak_hz,frames=excluded.frames`).run(token,id,body.meanHz,body.peakHz,body.frames,this.now());
       else this.db.prepare('INSERT OR IGNORE INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,NULL,NULL,0,?)').run(token,id,this.now());
       this.db.prepare('UPDATE reactions SET seen_at=NULL,created_at=? WHERE invite_id=? AND player_id=?').run(this.now(),token,id);

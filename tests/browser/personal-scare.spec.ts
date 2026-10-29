@@ -10,7 +10,7 @@ test('first real transformation measures locally, stays dismissible, and persist
   const pin = page.locator('.globe-pin[data-spirit]:visible').first();
   const id = await pin.getAttribute('data-spirit');
   await pin.click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 3 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
   await expect(page.locator('.character-close')).toBeEnabled();
   await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
   await expect(page.locator('.transformation-player video[data-phase=loop]')).toHaveJSProperty('loop',true,{timeout:10000});
@@ -26,7 +26,7 @@ test('first real transformation measures locally, stays dismissible, and persist
   await expect(page.locator('.character-close')).toBeEnabled({timeout:10000});
   await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
   await page.locator('.character-next').click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 3 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
   await expect(page.locator('.character-close')).toBeEnabled();
   await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
   await page.reload();

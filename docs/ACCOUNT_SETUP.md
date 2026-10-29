@@ -20,7 +20,7 @@ Supabase can associate its verified identities with one Supabase user. Explicit 
 
 ## Recording and library behavior
 
-`/my-links` opens without microphone permission. It lists 20 invitation links per page, with a filter across all links, refresh and load-more controls. Each link shows five slots in successful upload order. Old 3/5-second audio stays playable with its actual stored duration. New invitation recordings are two seconds; ordinary local scoring retains its three-second window.
+`/my-links` opens without microphone permission. It lists 20 invitation links per page, with a filter across all links, refresh and load-more controls. Each link shows five slots in successful upload order. Old 3/5-second audio stays playable with its actual stored duration. New invitation recordings and ordinary local scoring both use a five-second window beginning 0.3 seconds before the configured scare (currently video time 2.0–7.0 seconds). New five-second recordings retain local scores and pitch measurements; legacy recordings remain readable.
 
 The single entry confirmation explains microphone use and private upload before the invitation experience opens. No second recording consent dialog appears. A full link shows an entry notice and remains playable without audio upload. Concurrent submissions are capped transactionally; a sixth submission is discarded with a full result. Duplicate submissions return the original success, including after filling the fifth slot. Server playback verifies the link owner. Guests are deduplicated by browser identity, accounts by recorded account membership; neither guarantees unique humans.
 
