@@ -1,0 +1,44 @@
+app = 'boo-around-the-world'
+primary_region = 'nrt'
+kill_signal = 'SIGTERM'
+kill_timeout = '30s'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  NODE_ENV = 'production'
+  HOST = '0.0.0.0'
+  PORT = '8080'
+  DATABASE_PATH = '/data/boo.sqlite'
+  PUBLIC_ORIGIN = 'https://boo-around-the-world.fly.dev'
+  INVITE_REWARDS_ENABLED = 'true'
+
+[[mounts]]
+  source = 'boo_data'
+  destination = '/data'
+  initial_size = '1gb'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'off'
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = 'requests'
+    soft_limit = 100
+    hard_limit = 200
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/healthz'
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 2
+  memory = '1gb'

@@ -1,0 +1,399 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-28T20:11:02.383Z",
+  "spirits": {
+    "jiangshi": {
+      "idle": "/art/characters/jiangshi-idle.de4481e83d.webp",
+      "thumb": "/art/characters/jiangshi-thumb.b0089ddd4b.webp",
+      "scare": "/art/characters/jiangshi-scare.681a5d27fe.webp",
+      "peace": "/art/characters/jiangshi-peace.b1d18152fc.webp",
+      "share": "/art/cards/jiangshi.d0a340c13c.jpg"
+    },
+    "nie-xiaoqian": {
+      "idle": "/art/characters/nie-xiaoqian-idle.d17d2bd948.webp",
+      "thumb": "/art/characters/nie-xiaoqian-thumb.4d4586d9c3.webp",
+      "scare": "/art/characters/nie-xiaoqian-scare.c21af4f472.webp",
+      "peace": "/art/characters/nie-xiaoqian-peace.6f909a27b8.webp",
+      "share": "/art/cards/nie-xiaoqian.c479872951.jpg"
+    },
+    "yingning": {
+      "idle": "/art/characters/yingning-idle.5701fe3587.webp",
+      "thumb": "/art/characters/yingning-thumb.944ba969f2.webp",
+      "scare": "/art/characters/yingning-scare.ddade2a7c1.webp",
+      "peace": "/art/characters/yingning-peace.dfa4ac6d98.webp",
+      "share": "/art/cards/yingning.1cb1351b88.jpg"
+    },
+    "painted-skin-ghost": {
+      "idle": "/art/characters/painted-skin-ghost-idle.4ab8d0ab60.webp",
+      "thumb": "/art/characters/painted-skin-ghost-thumb.49f5ac2f5a.webp",
+      "scare": "/art/characters/painted-skin-ghost-scare.8279a7ead2.webp",
+      "peace": "/art/characters/painted-skin-ghost-peace.67c3b7a11f.webp",
+      "share": "/art/cards/painted-skin-ghost.139e0ad01c.jpg"
+    },
+    "kappa": {
+      "idle": "/art/characters/kappa-idle.fdd6642e80.webp",
+      "thumb": "/art/characters/kappa-thumb.187835bbff.webp",
+      "scare": "/art/characters/kappa-scare.162b172d37.webp",
+      "peace": "/art/characters/kappa-peace.8ef7c02f04.webp",
+      "share": "/art/cards/kappa.6006c3eef3.jpg"
+    },
+    "bake-danuki": {
+      "idle": "/art/characters/bake-danuki-idle.3a6e1e8d7f.webp",
+      "thumb": "/art/characters/bake-danuki-thumb.0b1e3854b4.webp",
+      "scare": "/art/characters/bake-danuki-scare.3a64c64227.webp",
+      "peace": "/art/characters/bake-danuki-peace.5afd936f26.webp",
+      "share": "/art/cards/bake-danuki.3c82073ad5.jpg"
+    },
+    "chochin-obake": {
+      "idle": "/art/characters/chochin-obake-idle.587374aeb6.webp",
+      "thumb": "/art/characters/chochin-obake-thumb.0a9a940937.webp",
+      "scare": "/art/characters/chochin-obake-scare.4188e9ce72.webp",
+      "peace": "/art/characters/chochin-obake-peace.0940577f13.webp",
+      "share": "/art/cards/chochin-obake.b387b80e44.jpg"
+    },
+    "kasa-obake": {
+      "idle": "/art/characters/kasa-obake-idle.454a47b889.webp",
+      "thumb": "/art/characters/kasa-obake-thumb.e909a37ce7.webp",
+      "scare": "/art/characters/kasa-obake-scare.c454f24256.webp",
+      "peace": "/art/characters/kasa-obake-peace.f67d28fb8b.webp",
+      "share": "/art/cards/kasa-obake.c54f425df4.jpg"
+    },
+    "dokkaebi": {
+      "idle": "/art/characters/dokkaebi-idle.6968b8b3fb.webp",
+      "thumb": "/art/characters/dokkaebi-thumb.f40c4a9478.webp",
+      "scare": "/art/characters/dokkaebi-scare.6f448f8d68.webp",
+      "peace": "/art/characters/dokkaebi-peace.661e680bce.webp",
+      "share": "/art/cards/dokkaebi.60ed39b4ca.jpg"
+    },
+    "gumiho": {
+      "idle": "/art/characters/gumiho-idle.a0455fb8db.webp",
+      "thumb": "/art/characters/gumiho-thumb.568f211c2b.webp",
+      "scare": "/art/characters/gumiho-scare.fb2dfbcf4b.webp",
+      "peace": "/art/characters/gumiho-peace.f5a59f0483.webp",
+      "share": "/art/cards/gumiho.2fda43b850.jpg"
+    },
+    "bulgasari": {
+      "idle": "/art/characters/bulgasari-idle.4aa54a3057.webp",
+      "thumb": "/art/characters/bulgasari-thumb.79c06473c5.webp",
+      "scare": "/art/characters/bulgasari-scare.858c4a5368.webp",
+      "peace": "/art/characters/bulgasari-peace.000ccd23d9.webp",
+      "share": "/art/cards/bulgasari.1e46868bce.jpg"
+    },
+    "gaekgwi": {
+      "idle": "/art/characters/gaekgwi-idle.599193046a.webp",
+      "thumb": "/art/characters/gaekgwi-thumb.eea087d485.webp",
+      "scare": "/art/characters/gaekgwi-scare.5d4ae66948.webp",
+      "peace": "/art/characters/gaekgwi-peace.6f8ab69f62.webp",
+      "share": "/art/cards/gaekgwi.ac0d9c3936.jpg"
+    },
+    "zheztyrnak": {
+      "idle": "/art/characters/zheztyrnak-idle.eca7eed897.webp",
+      "thumb": "/art/characters/zheztyrnak-thumb.f138b8873f.webp",
+      "scare": "/art/characters/zheztyrnak-scare.0427ab24d0.webp",
+      "peace": "/art/characters/zheztyrnak-peace.020d227986.webp",
+      "share": "/art/cards/zheztyrnak.26eb559712.jpg"
+    },
+    "albasty": {
+      "idle": "/art/characters/albasty-idle.08a73e100d.webp",
+      "thumb": "/art/characters/albasty-thumb.8deb4e5194.webp",
+      "scare": "/art/characters/albasty-scare.e33b522fb3.webp",
+      "peace": "/art/characters/albasty-peace.733a4c0509.webp",
+      "share": "/art/cards/albasty.960da9a4b8.jpg"
+    },
+    "zhalmauyz-kempir": {
+      "idle": "/art/characters/zhalmauyz-kempir-idle.1b391016b7.webp",
+      "thumb": "/art/characters/zhalmauyz-kempir-thumb.fe9f6b7cee.webp",
+      "scare": "/art/characters/zhalmauyz-kempir-scare.0af473b6c6.webp",
+      "peace": "/art/characters/zhalmauyz-kempir-peace.fdff9fe2e2.webp",
+      "share": "/art/cards/zhalmauyz-kempir.c73619a412.jpg"
+    },
+    "zhalgyz-koz": {
+      "idle": "/art/characters/zhalgyz-koz-idle.113a74e631.webp",
+      "thumb": "/art/characters/zhalgyz-koz-thumb.7fb0864dec.webp",
+      "scare": "/art/characters/zhalgyz-koz-scare.942d11a496.webp",
+      "peace": "/art/characters/zhalgyz-koz-peace.3361a7ca0c.webp",
+      "share": "/art/cards/zhalgyz-koz.6669a2bfa9.jpg"
+    },
+    "krahang": {
+      "idle": "/art/characters/krahang-idle.3c2d7d3416.webp",
+      "thumb": "/art/characters/krahang-thumb.07baabfa77.webp",
+      "scare": "/art/characters/krahang-scare.9906b768db.webp",
+      "peace": "/art/characters/krahang-peace.d183ba139c.webp",
+      "share": "/art/cards/krahang.c4a3885002.jpg"
+    },
+    "phi-kong-koi": {
+      "idle": "/art/characters/phi-kong-koi-idle.c977fafbaa.webp",
+      "thumb": "/art/characters/phi-kong-koi-thumb.6c951af5ba.webp",
+      "scare": "/art/characters/phi-kong-koi-scare.62d95318a4.webp",
+      "peace": "/art/characters/phi-kong-koi-peace.5a464e3b51.webp",
+      "share": "/art/cards/phi-kong-koi.0cc3638c31.jpg"
+    },
+    "nang-tani": {
+      "idle": "/art/characters/nang-tani-idle.6de9d895f5.webp",
+      "thumb": "/art/characters/nang-tani-thumb.5fc9e92d54.webp",
+      "scare": "/art/characters/nang-tani-scare.ad1a4bdedf.webp",
+      "peace": "/art/characters/nang-tani-peace.3ddbdf5518.webp",
+      "share": "/art/cards/nang-tani.c3212ac49e.jpg"
+    },
+    "krasue": {
+      "idle": "/art/characters/krasue-idle.d5bd6b4fac.webp",
+      "thumb": "/art/characters/krasue-thumb.87ddfc26d3.webp",
+      "scare": "/art/characters/krasue-scare.9838b7944c.webp",
+      "peace": "/art/characters/krasue-peace.7875acec2e.webp",
+      "share": "/art/cards/krasue.75d01505fb.jpg"
+    },
+    "tikbalang": {
+      "idle": "/art/characters/tikbalang-idle.4532e44968.webp",
+      "thumb": "/art/characters/tikbalang-thumb.01746fec37.webp",
+      "scare": "/art/characters/tikbalang-scare.28bb7e294b.webp",
+      "peace": "/art/characters/tikbalang-peace.1b2015d38e.webp",
+      "share": "/art/cards/tikbalang.2a25886cbd.jpg"
+    },
+    "kapre": {
+      "idle": "/art/characters/kapre-idle.7dd7949e69.webp",
+      "thumb": "/art/characters/kapre-thumb.3e3156e9ef.webp",
+      "scare": "/art/characters/kapre-scare.6d0410e62f.webp",
+      "peace": "/art/characters/kapre-peace.5bf992291f.webp",
+      "share": "/art/cards/kapre.6c17493ee0.jpg"
+    },
+    "duwende": {
+      "idle": "/art/characters/duwende-idle.67b45fa001.webp",
+      "thumb": "/art/characters/duwende-thumb.5247f3a64a.webp",
+      "scare": "/art/characters/duwende-scare.b578829287.webp",
+      "peace": "/art/characters/duwende-peace.101b943a75.webp",
+      "share": "/art/cards/duwende.b38df6011b.jpg"
+    },
+    "santelmo": {
+      "idle": "/art/characters/santelmo-idle.9f142328e1.webp",
+      "thumb": "/art/characters/santelmo-thumb.2152d6a3ab.webp",
+      "scare": "/art/characters/santelmo-scare.27fb87415f.webp",
+      "peace": "/art/characters/santelmo-peace.08d98633cd.webp",
+      "share": "/art/cards/santelmo.01922fc3f9.jpg"
+    },
+    "ghul": {
+      "idle": "/art/characters/ghul-idle.7346a8f897.webp",
+      "thumb": "/art/characters/ghul-thumb.eff9af3a37.webp",
+      "scare": "/art/characters/ghul-scare.22c02a65d7.webp",
+      "peace": "/art/characters/ghul-peace.8c4325f8e4.webp",
+      "share": "/art/cards/ghul.0df5ebbb85.jpg"
+    },
+    "ifrit": {
+      "idle": "/art/characters/ifrit-idle.a53ef6d5c8.webp",
+      "thumb": "/art/characters/ifrit-thumb.507989aacc.webp",
+      "scare": "/art/characters/ifrit-scare.9f94da27e7.webp",
+      "peace": "/art/characters/ifrit-peace.0028326edb.webp",
+      "share": "/art/cards/ifrit.f0c3614fc9.jpg"
+    },
+    "marid": {
+      "idle": "/art/characters/marid-idle.783dc7084d.webp",
+      "thumb": "/art/characters/marid-thumb.109ae46d78.webp",
+      "scare": "/art/characters/marid-scare.c05c3a8a16.webp",
+      "peace": "/art/characters/marid-peace.1044c3a500.webp",
+      "share": "/art/cards/marid.e1310645e6.jpg"
+    },
+    "nasnas": {
+      "idle": "/art/characters/nasnas-idle.e1de8e8cb3.webp",
+      "thumb": "/art/characters/nasnas-thumb.77a8778bc7.webp",
+      "scare": "/art/characters/nasnas-scare.1c4a7e05f3.webp",
+      "peace": "/art/characters/nasnas-peace.0e5542d5b4.webp",
+      "share": "/art/cards/nasnas.1a2437bf03.jpg"
+    },
+    "div": {
+      "idle": "/art/characters/div-idle.fd035873f1.webp",
+      "thumb": "/art/characters/div-thumb.6350188281.webp",
+      "scare": "/art/characters/div-scare.7f1b84e85e.webp",
+      "peace": "/art/characters/div-peace.8af2471aef.webp",
+      "share": "/art/cards/div.c8d4c9ba63.jpg"
+    },
+    "pari": {
+      "idle": "/art/characters/pari-idle.92dc88dd12.webp",
+      "thumb": "/art/characters/pari-thumb.172d3fe79d.webp",
+      "scare": "/art/characters/pari-scare.ef77a373c0.webp",
+      "peace": "/art/characters/pari-peace.8712816758.webp",
+      "share": "/art/cards/pari.6e1adf7003.jpg"
+    },
+    "shahmaran": {
+      "idle": "/art/characters/shahmaran-idle.3efd838c42.webp",
+      "thumb": "/art/characters/shahmaran-thumb.87d9a1a031.webp",
+      "scare": "/art/characters/shahmaran-scare.3c6255439b.webp",
+      "peace": "/art/characters/shahmaran-peace.8a6807a09d.webp",
+      "share": "/art/cards/shahmaran.9d7364bfaf.jpg"
+    },
+    "karakoncolos": {
+      "idle": "/art/characters/karakoncolos-idle.a61626f9d0.webp",
+      "thumb": "/art/characters/karakoncolos-thumb.bc62a3f470.webp",
+      "scare": "/art/characters/karakoncolos-scare.c250011107.webp",
+      "peace": "/art/characters/karakoncolos-peace.074c77a668.webp",
+      "share": "/art/cards/karakoncolos.b1a0d73194.jpg"
+    },
+    "adze": {
+      "idle": "/art/characters/adze-idle.ffa36f1539.webp",
+      "thumb": "/art/characters/adze-thumb.78e9ea2e58.webp",
+      "scare": "/art/characters/adze-scare.814e7b93a2.webp",
+      "peace": "/art/characters/adze-peace.29f52a116e.webp",
+      "share": "/art/cards/adze.322f481cf3.jpg"
+    },
+    "asanbosam": {
+      "idle": "/art/characters/asanbosam-idle.83c9282ad2.webp",
+      "thumb": "/art/characters/asanbosam-thumb.845ab8d460.webp",
+      "scare": "/art/characters/asanbosam-scare.e556ec90a8.webp",
+      "peace": "/art/characters/asanbosam-peace.2b0fd7b0dc.webp",
+      "share": "/art/cards/asanbosam.4fe39c48ed.jpg"
+    },
+    "tokoloshe": {
+      "idle": "/art/characters/tokoloshe-idle.194f62327a.webp",
+      "thumb": "/art/characters/tokoloshe-thumb.67001fceef.webp",
+      "scare": "/art/characters/tokoloshe-scare.c03b69991f.webp",
+      "peace": "/art/characters/tokoloshe-peace.80da0c7f68.webp",
+      "share": "/art/cards/tokoloshe.0dab271930.jpg"
+    },
+    "kalanoro": {
+      "idle": "/art/characters/kalanoro-idle.5d40a7b051.webp",
+      "thumb": "/art/characters/kalanoro-thumb.326000bbb8.webp",
+      "scare": "/art/characters/kalanoro-scare.a52b20880b.webp",
+      "peace": "/art/characters/kalanoro-peace.66c30a332d.webp",
+      "share": "/art/cards/kalanoro.c239e3aea8.jpg"
+    },
+    "brownie": {
+      "idle": "/art/characters/brownie-idle.4c735460a4.webp",
+      "thumb": "/art/characters/brownie-thumb.eca6b1998c.webp",
+      "scare": "/art/characters/brownie-scare.244c530c20.webp",
+      "peace": "/art/characters/brownie-peace.d87782cc6b.webp",
+      "share": "/art/cards/brownie.09163e2428.jpg"
+    },
+    "kelpie": {
+      "idle": "/art/characters/kelpie-idle.1e2d6b78c0.webp",
+      "thumb": "/art/characters/kelpie-thumb.f2cdad2d34.webp",
+      "scare": "/art/characters/kelpie-scare.dc223698d3.webp",
+      "peace": "/art/characters/kelpie-peace.9c03674b36.webp",
+      "share": "/art/cards/kelpie.f031647462.jpg"
+    },
+    "selkie": {
+      "idle": "/art/characters/selkie-idle.6c7609fdcd.webp",
+      "thumb": "/art/characters/selkie-thumb.271d2955d4.webp",
+      "scare": "/art/characters/selkie-scare.dd062aec5a.webp",
+      "peace": "/art/characters/selkie-peace.a0dff14383.webp",
+      "share": "/art/cards/selkie.6f5efd5cf2.jpg"
+    },
+    "boggart": {
+      "idle": "/art/characters/boggart-idle.3ade2f1d91.webp",
+      "thumb": "/art/characters/boggart-thumb.e34fdd5d6d.webp",
+      "scare": "/art/characters/boggart-scare.58e98bfc43.webp",
+      "peace": "/art/characters/boggart-peace.7e50a4fb8c.webp",
+      "share": "/art/cards/boggart.86ab9ab0b6.jpg"
+    },
+    "puca": {
+      "idle": "/art/characters/puca-idle.a947120fec.webp",
+      "thumb": "/art/characters/puca-thumb.42b1fc7804.webp",
+      "scare": "/art/characters/puca-scare.0130a32072.webp",
+      "peace": "/art/characters/puca-peace.65cb7bc0fe.webp",
+      "share": "/art/cards/puca.289b058a82.jpg"
+    },
+    "banshee": {
+      "idle": "/art/characters/banshee-idle.5498c750ca.webp",
+      "thumb": "/art/characters/banshee-thumb.0dee1586da.webp",
+      "scare": "/art/characters/banshee-scare.86940bb2f3.webp",
+      "peace": "/art/characters/banshee-peace.5caabd65bb.webp",
+      "share": "/art/cards/banshee.7d2273a78e.jpg"
+    },
+    "dullahan": {
+      "idle": "/art/characters/dullahan-idle.153fbcc19b.webp",
+      "thumb": "/art/characters/dullahan-thumb.74ba4b4530.webp",
+      "scare": "/art/characters/dullahan-scare.abf07ea81c.webp",
+      "peace": "/art/characters/dullahan-peace.fdcc6efa4e.webp",
+      "share": "/art/cards/dullahan.a6fa7981dd.jpg"
+    },
+    "merrow": {
+      "idle": "/art/characters/merrow-idle.e6d67a92c3.webp",
+      "thumb": "/art/characters/merrow-thumb.e815f0799a.webp",
+      "scare": "/art/characters/merrow-scare.01f68921fa.webp",
+      "peace": "/art/characters/merrow-peace.eac70fbf7b.webp",
+      "share": "/art/cards/merrow.55bd90570d.jpg"
+    },
+    "headless-horseman": {
+      "idle": "/art/characters/headless-horseman-idle.89a366fc4f.webp",
+      "thumb": "/art/characters/headless-horseman-thumb.f46c92e467.webp",
+      "scare": "/art/characters/headless-horseman-scare.a4c765b4f0.webp",
+      "peace": "/art/characters/headless-horseman-peace.75b6f22e6a.webp",
+      "share": "/art/cards/headless-horseman.d02e2f47fd.jpg"
+    },
+    "jersey-devil": {
+      "idle": "/art/characters/jersey-devil-idle.8189182ad4.webp",
+      "thumb": "/art/characters/jersey-devil-thumb.670763f5dd.webp",
+      "scare": "/art/characters/jersey-devil-scare.f5391f818f.webp",
+      "peace": "/art/characters/jersey-devil-peace.632446322c.webp",
+      "share": "/art/cards/jersey-devil.9437a6e11d.jpg"
+    },
+    "jackalope": {
+      "idle": "/art/characters/jackalope-idle.468af1d721.webp",
+      "thumb": "/art/characters/jackalope-thumb.39e16e51c5.webp",
+      "scare": "/art/characters/jackalope-scare.2f6aaadfbb.webp",
+      "peace": "/art/characters/jackalope-peace.bcf77ade8e.webp",
+      "share": "/art/cards/jackalope.a05388c3b6.jpg"
+    },
+    "hidebehind": {
+      "idle": "/art/characters/hidebehind-idle.a2bc0155cf.webp",
+      "thumb": "/art/characters/hidebehind-thumb.67b77f2ba2.webp",
+      "scare": "/art/characters/hidebehind-scare.10beb76580.webp",
+      "peace": "/art/characters/hidebehind-peace.fbba2adfcf.webp",
+      "share": "/art/cards/hidebehind.e61baaca1d.jpg"
+    },
+    "la-planchada": {
+      "idle": "/art/characters/la-planchada-idle.fea684c7d9.webp",
+      "thumb": "/art/characters/la-planchada-thumb.b66f15ae8c.webp",
+      "scare": "/art/characters/la-planchada-scare.a69c63d41e.webp",
+      "peace": "/art/characters/la-planchada-peace.08dd814e74.webp",
+      "share": "/art/cards/la-planchada.07b94b9583.jpg"
+    },
+    "la-pascualita": {
+      "idle": "/art/characters/la-pascualita-idle.9b26f7cb61.webp",
+      "thumb": "/art/characters/la-pascualita-thumb.13da8831c4.webp",
+      "scare": "/art/characters/la-pascualita-scare.0dd06d12a9.webp",
+      "peace": "/art/characters/la-pascualita-peace.618649c1fe.webp",
+      "share": "/art/cards/la-pascualita.d5491e7167.jpg"
+    },
+    "la-mulata-de-cordoba": {
+      "idle": "/art/characters/la-mulata-de-cordoba-idle.e4dd8ae471.webp",
+      "thumb": "/art/characters/la-mulata-de-cordoba-thumb.560d8a561f.webp",
+      "scare": "/art/characters/la-mulata-de-cordoba-scare.fcdfe78331.webp",
+      "peace": "/art/characters/la-mulata-de-cordoba-peace.8ea9e0ed66.webp",
+      "share": "/art/cards/la-mulata-de-cordoba.c240563528.jpg"
+    },
+    "el-charro-negro": {
+      "idle": "/art/characters/el-charro-negro-idle.ec9678cd61.webp",
+      "thumb": "/art/characters/el-charro-negro-thumb.b51a15e93e.webp",
+      "scare": "/art/characters/el-charro-negro-scare.115ad59f22.webp",
+      "peace": "/art/characters/el-charro-negro-peace.453e08e69f.webp",
+      "share": "/art/cards/el-charro-negro.ebaff44e1c.jpg"
+    },
+    "saci": {
+      "idle": "/art/characters/saci-idle.7be9e27598.webp",
+      "thumb": "/art/characters/saci-thumb.7468e0557a.webp",
+      "scare": "/art/characters/saci-scare.7c44d62aae.webp",
+      "peace": "/art/characters/saci-peace.2295f2a65f.webp",
+      "share": "/art/cards/saci.2262430586.jpg"
+    },
+    "curupira": {
+      "idle": "/art/characters/curupira-idle.bb69f3bd93.webp",
+      "thumb": "/art/characters/curupira-thumb.ec7e288aa7.webp",
+      "scare": "/art/characters/curupira-scare.6d80a810dd.webp",
+      "peace": "/art/characters/curupira-peace.8d35d4e836.webp",
+      "share": "/art/cards/curupira.a203c888ad.jpg"
+    },
+    "boitata": {
+      "idle": "/art/characters/boitata-idle.f34e29c295.webp",
+      "thumb": "/art/characters/boitata-thumb.9746835e63.webp",
+      "scare": "/art/characters/boitata-scare.7f1de8d713.webp",
+      "peace": "/art/characters/boitata-peace.40f1005a1f.webp",
+      "share": "/art/cards/boitata.d6d39e94d8.jpg"
+    },
+    "cuca": {
+      "idle": "/art/characters/cuca-idle.8037d22815.webp",
+      "thumb": "/art/characters/cuca-thumb.fb3ba1d7cf.webp",
+      "scare": "/art/characters/cuca-scare.7a225e1734.webp",
+      "peace": "/art/characters/cuca-peace.d450cc67ef.webp",
+      "share": "/art/cards/cuca.57889d64de.jpg"
+    }
+  },
+  "worldMap": "/art/world-map.f661b9d1b4.webp"
+}

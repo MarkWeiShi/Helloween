@@ -1,0 +1,732 @@
+{
+  "status": "pending-user-review",
+  "date": "2026-10-28",
+  "publishedCharacterCount": 40,
+  "candidateCount": 46,
+  "note": "候选尚未制作或加入游戏；文化归属、地方版本和改编方式仍待逐个核验。名称中的中文音译为工作名。",
+  "regions": [
+    {
+      "id": "CN",
+      "name": "中国",
+      "englishName": "China",
+      "existing": [
+        {
+          "id": "jiangshi",
+          "name": "Jiangshi",
+          "nativeName": "僵尸",
+          "culture": "Chinese folk narratives"
+        },
+        {
+          "id": "nie-xiaoqian",
+          "name": "Nie Xiaoqian",
+          "nativeName": "聂小倩",
+          "culture": "Pu Songling's Liaozhai Zhiyi, China"
+        },
+        {
+          "id": "yingning",
+          "name": "Yingning",
+          "nativeName": "婴宁",
+          "culture": "Pu Songling's Liaozhai Zhiyi, China"
+        },
+        {
+          "id": "painted-skin-ghost",
+          "name": "Painted-Skin Ghost",
+          "nativeName": "画皮鬼",
+          "culture": "Pu Songling's Liaozhai Zhiyi, China"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "JP",
+      "name": "日本",
+      "englishName": "Japan",
+      "existing": [
+        {
+          "id": "kappa",
+          "name": "Kappa",
+          "nativeName": "河童",
+          "culture": "Japanese river folklore"
+        },
+        {
+          "id": "bake-danuki",
+          "name": "Bake-danuki",
+          "nativeName": "化け狸",
+          "culture": "Japanese tanuki folklore"
+        },
+        {
+          "id": "chochin-obake",
+          "name": "Chochin-obake",
+          "nativeName": "提灯お化け",
+          "culture": "Japanese lantern-yokai imagery"
+        },
+        {
+          "id": "kasa-obake",
+          "name": "Kasa-obake",
+          "nativeName": "唐傘お化け",
+          "culture": "Japanese umbrella-yokai imagery"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "KR",
+      "name": "韩国",
+      "englishName": "Korea",
+      "existing": [
+        {
+          "id": "dokkaebi",
+          "name": "Dokkaebi",
+          "nativeName": "도깨비",
+          "culture": "Korean dokkaebi traditions"
+        },
+        {
+          "id": "gumiho",
+          "name": "Gumiho",
+          "nativeName": "구미호",
+          "culture": "Korean fox traditions"
+        },
+        {
+          "id": "bulgasari",
+          "name": "Bulgasari",
+          "nativeName": "불가사리",
+          "culture": "Korean bulgasari legends"
+        },
+        {
+          "id": "gaekgwi",
+          "name": "Gaekgwi",
+          "nativeName": "객귀",
+          "culture": "Korean traditions of spirits away from home"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "ECA",
+      "name": "其他东亚与中亚",
+      "englishName": "Other East & Central Asia",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Almas",
+          "nameZh": "阿尔玛斯",
+          "culture": "蒙古地区",
+          "kind": "山野传说生物",
+          "status": "pending-review"
+        },
+        {
+          "name": "Shulmus",
+          "nameZh": "舒尔穆斯",
+          "culture": "蒙古民间叙事",
+          "kind": "妖灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Zheztyrnak",
+          "nameZh": "铜爪妖",
+          "culture": "哈萨克等中亚传统",
+          "kind": "山野妖怪",
+          "status": "pending-review"
+        },
+        {
+          "name": "Albasty",
+          "nameZh": "阿尔巴斯特",
+          "culture": "中亚突厥语文化传统",
+          "kind": "妖灵",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "SAS",
+      "name": "印度与南亚",
+      "englishName": "India & South Asia",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Vetala",
+          "nameZh": "毗陀罗",
+          "culture": "印度梵语故事传统",
+          "kind": "附尸灵，拟采用谜语故事版本",
+          "status": "pending-review"
+        },
+        {
+          "name": "Churel",
+          "nameZh": "楚蕾尔",
+          "culture": "南亚多地传统",
+          "kind": "女鬼，需确定具体地方版本",
+          "status": "pending-review"
+        },
+        {
+          "name": "Petni",
+          "nameZh": "佩特妮",
+          "culture": "孟加拉文化区域",
+          "kind": "女鬼",
+          "status": "pending-review"
+        },
+        {
+          "name": "Nishi",
+          "nameZh": "夜呼灵",
+          "culture": "孟加拉文化区域",
+          "kind": "夜间呼唤的灵怪",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "SEA",
+      "name": "东南亚",
+      "englishName": "Southeast Asia",
+      "existing": [
+        {
+          "id": "krahang",
+          "name": "Krahang",
+          "nativeName": "กระหัง",
+          "culture": "Thai krahang traditions"
+        },
+        {
+          "id": "phi-kong-koi",
+          "name": "Phi Kong Koi",
+          "nativeName": "ผีกองกอย",
+          "culture": "Thai forest folklore"
+        },
+        {
+          "id": "nang-tani",
+          "name": "Nang Tani",
+          "nativeName": "นางตานี",
+          "culture": "Thai traditions surrounding kluai tani banana plants"
+        },
+        {
+          "id": "krasue",
+          "name": "Krasue",
+          "nativeName": "กระสือ",
+          "culture": "Thai krasue traditions"
+        },
+        {
+          "id": "tikbalang",
+          "name": "Tikbalang",
+          "nativeName": "Tikbalang",
+          "culture": "Philippine tikbalang traditions"
+        },
+        {
+          "id": "kapre",
+          "name": "Kapre",
+          "nativeName": "Kapre",
+          "culture": "Philippine kapre traditions"
+        },
+        {
+          "id": "duwende",
+          "name": "Duwende",
+          "nativeName": "Duwende",
+          "culture": "Philippine household and landscape traditions"
+        },
+        {
+          "id": "santelmo",
+          "name": "Santelmo",
+          "nativeName": "Santelmo",
+          "culture": "Philippine light stories, including Arteche, Eastern Samar"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "RU",
+      "name": "俄罗斯",
+      "englishName": "Russia",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Domovoi",
+          "nameZh": "家宅精灵",
+          "culture": "俄罗斯／东斯拉夫传统",
+          "kind": "家宅守护精灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Leshy",
+          "nameZh": "森林精灵",
+          "culture": "俄罗斯／东斯拉夫传统",
+          "kind": "森林守护者",
+          "status": "pending-review"
+        },
+        {
+          "name": "Rusalka",
+          "nameZh": "鲁萨尔卡",
+          "culture": "东斯拉夫传统",
+          "kind": "水边灵体，各地版本不同",
+          "status": "pending-review"
+        },
+        {
+          "name": "Baba Yaga",
+          "nameZh": "芭芭雅嘎",
+          "culture": "俄罗斯／斯拉夫童话",
+          "kind": "林间巫婆或试炼者",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "ARAB",
+      "name": "阿拉伯世界",
+      "englishName": "Arab World",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Ghul",
+          "nameZh": "古尔",
+          "culture": "阿拉伯民间故事",
+          "kind": "荒野变形怪",
+          "status": "pending-review"
+        },
+        {
+          "name": "Ifrit",
+          "nameZh": "伊夫里特",
+          "culture": "阿拉伯文学与民间故事",
+          "kind": "精灵类别",
+          "status": "pending-review"
+        },
+        {
+          "name": "Marid",
+          "nameZh": "马里德",
+          "culture": "阿拉伯文学与民间故事",
+          "kind": "精灵类别",
+          "status": "pending-review"
+        },
+        {
+          "name": "Nasnas",
+          "nameZh": "纳斯纳斯",
+          "culture": "阿拉伯奇谈",
+          "kind": "奇异半身生物",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "WAS",
+      "name": "其他西亚文化",
+      "englishName": "Other West Asian Cultures",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Div",
+          "nameZh": "迪弗",
+          "culture": "波斯文学与民间故事",
+          "kind": "巨怪",
+          "status": "pending-review"
+        },
+        {
+          "name": "Pari",
+          "nameZh": "帕丽",
+          "culture": "波斯及相邻文化传统",
+          "kind": "精灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Shahmaran",
+          "nameZh": "沙赫玛兰",
+          "culture": "安纳托利亚／库尔德等地方传统",
+          "kind": "蛇身智慧人物",
+          "status": "pending-review"
+        },
+        {
+          "name": "Karakoncolos",
+          "nameZh": "卡拉孔乔洛斯",
+          "culture": "土耳其及巴尔干传统",
+          "kind": "冬夜怪物",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "AFR",
+      "name": "非洲",
+      "englishName": "Africa",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Adze",
+          "nameZh": "阿泽",
+          "culture": "埃维文化，加纳／多哥",
+          "kind": "妖灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Asanbosam",
+          "nameZh": "阿桑博萨姆",
+          "culture": "阿坎文化，加纳等地",
+          "kind": "林间怪物",
+          "status": "pending-review"
+        },
+        {
+          "name": "Tokoloshe",
+          "nameZh": "托科洛什",
+          "culture": "南部非洲恩古尼语文化等",
+          "kind": "小型灵怪",
+          "status": "pending-review"
+        },
+        {
+          "name": "Kalanoro",
+          "nameZh": "卡拉诺罗",
+          "culture": "马达加斯加地方传统",
+          "kind": "山野精灵",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "GB",
+      "name": "英国",
+      "englishName": "United Kingdom",
+      "existing": [
+        {
+          "id": "brownie",
+          "name": "Brownie",
+          "nativeName": "Brownie",
+          "culture": "Scottish household folklore"
+        },
+        {
+          "id": "kelpie",
+          "name": "Kelpie",
+          "nativeName": "Kelpie",
+          "culture": "Scottish freshwater folklore"
+        },
+        {
+          "id": "selkie",
+          "name": "Selkie",
+          "nativeName": "Selkie",
+          "culture": "Scottish island traditions, including Orkney and Shetland"
+        },
+        {
+          "id": "boggart",
+          "name": "Boggart",
+          "nativeName": "Boggart",
+          "culture": "Northern English folklore, including Lancashire and Yorkshire"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "FR",
+      "name": "法国",
+      "englishName": "France",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Ankou",
+          "nameZh": "安库",
+          "culture": "布列塔尼",
+          "kind": "引魂者",
+          "status": "pending-review"
+        },
+        {
+          "name": "Lutin",
+          "nameZh": "吕坦",
+          "culture": "法国地方民间传统",
+          "kind": "小精灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Mélusine",
+          "nameZh": "梅露西娜",
+          "culture": "普瓦图／吕西尼昂等传说",
+          "kind": "蛇身仙女",
+          "status": "pending-review"
+        },
+        {
+          "name": "Dame blanche",
+          "nameZh": "白衣女灵",
+          "culture": "法国多地地方传说",
+          "kind": "白衣幽灵；拟确定具体地点",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "DE",
+      "name": "德国",
+      "englishName": "Germany",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Kobold",
+          "nameZh": "科博尔德",
+          "culture": "德语区民间传统",
+          "kind": "家宅或矿山精灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Alp",
+          "nameZh": "梦魇精灵",
+          "culture": "德语区民间传统",
+          "kind": "梦魇灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Heinzelmännchen",
+          "nameZh": "海因策小精灵",
+          "culture": "科隆",
+          "kind": "夜间帮工精灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Nachzehrer",
+          "nameZh": "纳赫策勒",
+          "culture": "德国等中东欧传统",
+          "kind": "归来亡者",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "EUR",
+      "name": "其他欧洲",
+      "englishName": "Other Europe",
+      "existing": [
+        {
+          "id": "puca",
+          "name": "Púca",
+          "nativeName": "Púca",
+          "culture": "Irish folklore"
+        },
+        {
+          "id": "banshee",
+          "name": "Banshee",
+          "nativeName": "Bean sí",
+          "culture": "Irish banshee traditions"
+        },
+        {
+          "id": "dullahan",
+          "name": "Dullahan",
+          "nativeName": "Dullahan",
+          "culture": "Irish folklore"
+        },
+        {
+          "id": "merrow",
+          "name": "Merrow",
+          "nativeName": "Murúch",
+          "culture": "Irish coastal folklore"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "NAM",
+      "name": "美国与加拿大",
+      "englishName": "United States & Canada",
+      "existing": [
+        {
+          "id": "headless-horseman",
+          "name": "Headless Horseman",
+          "nativeName": "Headless Horseman",
+          "culture": "Washington Irving's Sleepy Hollow, New York"
+        },
+        {
+          "id": "jersey-devil",
+          "name": "Jersey Devil",
+          "nativeName": "Jersey Devil",
+          "culture": "New Jersey Pine Barrens folklore"
+        },
+        {
+          "id": "jackalope",
+          "name": "Jackalope",
+          "nativeName": "Jackalope",
+          "culture": "Western United States tall tales"
+        },
+        {
+          "id": "hidebehind",
+          "name": "Hidebehind",
+          "nativeName": "Hidebehind",
+          "culture": "North American lumber-camp folklore"
+        }
+      ],
+      "candidates": [
+        {
+          "name": "Loup-garou",
+          "nameZh": "魁北克狼人",
+          "culture": "加拿大魁北克法语传统",
+          "kind": "狼人",
+          "status": "pending-review"
+        },
+        {
+          "name": "Chasse-galerie",
+          "nameZh": "飞行独木舟",
+          "culture": "加拿大魁北克故事版本",
+          "kind": "传奇物件化身，并非鬼种",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "MX",
+      "name": "墨西哥",
+      "englishName": "Mexico",
+      "existing": [
+        {
+          "id": "la-planchada",
+          "name": "La Planchada",
+          "nativeName": "La Planchada",
+          "culture": "Mexican hospital folklore"
+        },
+        {
+          "id": "la-pascualita",
+          "name": "La Pascualita",
+          "nativeName": "La Pascualita",
+          "culture": "Chihuahua, Mexico"
+        },
+        {
+          "id": "la-mulata-de-cordoba",
+          "name": "La Mulata de Córdoba",
+          "nativeName": "La Mulata de Córdoba",
+          "culture": "Córdoba, Veracruz, Mexico"
+        },
+        {
+          "id": "el-charro-negro",
+          "name": "El Charro Negro",
+          "nativeName": "El Charro Negro",
+          "culture": "Mexican regional legends"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "CAM",
+      "name": "中美洲与加勒比",
+      "englishName": "Central America & Caribbean",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Duppy",
+          "nameZh": "达皮",
+          "culture": "牙买加等加勒比传统",
+          "kind": "幽灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "Soucouyant",
+          "nameZh": "苏库扬",
+          "culture": "特立尼达和多巴哥等加勒比传统",
+          "kind": "火球变形者",
+          "status": "pending-review"
+        },
+        {
+          "name": "Cadejo",
+          "nameZh": "卡德霍",
+          "culture": "中美洲多地传统",
+          "kind": "神秘犬形生物",
+          "status": "pending-review"
+        },
+        {
+          "name": "Siguanaba",
+          "nameZh": "西瓜纳巴",
+          "culture": "中美洲多地传统",
+          "kind": "变形女怪",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "BR",
+      "name": "巴西",
+      "englishName": "Brazil",
+      "existing": [
+        {
+          "id": "saci",
+          "name": "Saci",
+          "nativeName": "Saci",
+          "culture": "Brazilian Saci traditions"
+        },
+        {
+          "id": "curupira",
+          "name": "Curupira",
+          "nativeName": "Curupira",
+          "culture": "Brazilian folklore with Indigenous roots"
+        },
+        {
+          "id": "boitata",
+          "name": "Boitatá",
+          "nativeName": "Boitatá",
+          "culture": "Brazilian folklore with Indigenous roots"
+        },
+        {
+          "id": "cuca",
+          "name": "Cuca",
+          "nativeName": "Cuca",
+          "culture": "Brazilian Cuca traditions"
+        }
+      ],
+      "candidates": []
+    },
+    {
+      "id": "SAM",
+      "name": "其他南美洲",
+      "englishName": "Other South America",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "El Silbón",
+          "nameZh": "吹哨者",
+          "culture": "委内瑞拉／哥伦比亚平原",
+          "kind": "游荡幽灵",
+          "status": "pending-review"
+        },
+        {
+          "name": "La Patasola",
+          "nameZh": "独脚女怪",
+          "culture": "哥伦比亚",
+          "kind": "林间灵怪",
+          "status": "pending-review"
+        },
+        {
+          "name": "Luz Mala",
+          "nameZh": "荒野幽光",
+          "culture": "阿根廷／乌拉圭",
+          "kind": "幽光传说",
+          "status": "pending-review"
+        },
+        {
+          "name": "El Tunche",
+          "nameZh": "通切",
+          "culture": "秘鲁亚马孙地区",
+          "kind": "林间灵怪",
+          "status": "pending-review"
+        }
+      ]
+    },
+    {
+      "id": "OCE",
+      "name": "大洋洲与太平洋",
+      "englishName": "Oceania & Pacific",
+      "existing": [],
+      "candidates": [
+        {
+          "name": "Bunyip",
+          "nameZh": "班耶普",
+          "culture": "澳大利亚东南部相关原住民传统",
+          "kind": "水域传说生物",
+          "status": "pending-review"
+        },
+        {
+          "name": "Taniwha",
+          "nameZh": "塔尼瓦",
+          "culture": "新西兰毛利文化",
+          "kind": "守护者或危险水域生灵，依部族叙事",
+          "status": "pending-review"
+        },
+        {
+          "name": "Patupaiarehe",
+          "nameZh": "雾山精灵",
+          "culture": "新西兰毛利文化",
+          "kind": "山林超自然族群",
+          "status": "pending-review"
+        },
+        {
+          "name": "Menehune",
+          "nameZh": "梅内胡内",
+          "culture": "夏威夷／波利尼西亚",
+          "kind": "传说中的建造者",
+          "status": "pending-review"
+        }
+      ]
+    }
+  ]
+}

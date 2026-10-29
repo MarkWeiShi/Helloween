@@ -1,0 +1,645 @@
+{
+  "version": 3,
+  "spirits": [
+    {
+      "id": "adze",
+      "regionId": "AFR",
+      "name": "Adze",
+      "nativeName": "Adzé",
+      "originCountry": "GH",
+      "culture": "Ewe traditions, Ghana and Togo",
+      "kind": "Shapeshifting spirit",
+      "shortDescription": "A tiny night-light looking for a gentler glow.",
+      "folklore": "In Ewe traditions, adze is associated with harmful spirit power and witchcraft; some accounts describe a firefly form. These meanings belong to particular communities and tellers, rather than to all West African folklore. Our glowing toy is a friendly festival reinterpretation, not a depiction of a real person accused of witchcraft.",
+      "wish": "Light a path without frightening anyone.",
+      "peaceLabel": "A gentle glow",
+      "prop": "dewdrop",
+      "animation": "float",
+      "color": "#f1c56e",
+      "atlasId": "africa",
+      "atlasRow": 0,
+      "story": [
+        {
+          "title": "Too bright tonight",
+          "text": "The little adze flashed beside a dark garden path. Every time a visitor approached, the light flared so brightly that nobody stopped to say hello."
+        },
+        {
+          "title": "A softer sparkle",
+          "text": "Your candy gift became a tiny dewdrop lantern. The adze tucked the bright glow inside and watched it turn warm and soft."
+        },
+        {
+          "title": "Follow the little light",
+          "text": "Soon a line of friends followed the gentle sparkle home. The adze no longer needed to outshine the stars; one welcoming light was enough."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Eric Montgomery, Ewe spirit traditions, eTropic",
+          "url": "https://journals.jcu.edu.au/index.php/etropic/article/download/3666/3551/7181"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "asanbosam",
+      "regionId": "AFR",
+      "name": "Asanbosam",
+      "nativeName": "Asanbosam",
+      "originCountry": "GH",
+      "culture": "Akan forest traditions",
+      "kind": "Forest creature",
+      "shortDescription": "A treetop visitor with a very careful embrace.",
+      "folklore": "Asanbosam is a forest being in Akan traditions, especially accounts associated with present-day Ghana. Hook-like feet and a threatening presence appear in familiar descriptions, while names and features vary between tellings. This little collectible softens those forms into rounded shapes; its leafy scarf and helpful personality are original additions.",
+      "wish": "Make a resting place that everyone can share.",
+      "peaceLabel": "Room on the branch",
+      "prop": "leaf scarf",
+      "animation": "sway",
+      "color": "#bd8656",
+      "atlasId": "africa",
+      "atlasRow": 1,
+      "story": [
+        {
+          "title": "An empty branch",
+          "text": "Asanbosam had found the best branch in the forest, but the little hooked feet kept catching the picnic blanket. There was nowhere comfortable for a guest."
+        },
+        {
+          "title": "A careful knot",
+          "text": "Your candy gift became a bundle of soft ribbons. Working slowly, the forest visitor tied the blanket into a hammock and tucked each hook safely away."
+        },
+        {
+          "title": "A place beside me",
+          "text": "By moonrise, the hammock held a cushion for every friend. Asanbosam waved from the leafy shade, delighted that the best view could finally be shared."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Sasabonsam: Akan folklore and reference bibliography",
+          "url": "https://en.wikipedia.org/wiki/Sasabonsam"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "tokoloshe",
+      "regionId": "AFR",
+      "name": "Tokoloshe",
+      "nativeName": "Tikoloshe",
+      "originCountry": "ZA",
+      "culture": "Southern African traditions",
+      "kind": "Water-associated spirit",
+      "shortDescription": "A shaggy little visitor listening beside the reeds.",
+      "folklore": "Tokoloshe, also spelled tikoloshe, appears in several Southern African language traditions, including isiZulu and isiXhosa. Descriptions often present a small hairy being associated with water, mischief or harm. Accounts differ across communities. The smooth pebble and peaceful riverside wish belong to this game, not to a traditional protective practice.",
+      "wish": "Hear a friendly answer across the water.",
+      "peaceLabel": "An answering ripple",
+      "prop": "river pebble",
+      "animation": "hop",
+      "color": "#93a275",
+      "atlasId": "africa",
+      "atlasRow": 2,
+      "story": [
+        {
+          "title": "Only an echo",
+          "text": "Beside a pool, the tokoloshe called a small hello. The reeds rustled back, but the little visitor could not tell whether anyone had heard."
+        },
+        {
+          "title": "Circles on the water",
+          "text": "Your candy gift made the blue pebble shimmer. A gentle tap sent bright circles across the pool, carrying the greeting toward the other bank."
+        },
+        {
+          "title": "Hello from the reeds",
+          "text": "Another circle came drifting back. Friends were waiting beside the reeds, and the tokoloshe settled down to trade quiet greetings until the moon rose."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Dictionary of South African English: tokoloshe",
+          "url": "https://www.dsae.co.za/entry/tokoloshe/e07240"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "kalanoro",
+      "regionId": "AFR",
+      "name": "Kalanoro",
+      "nativeName": "Kalanoro",
+      "originCountry": "MG",
+      "culture": "Malagasy regional traditions",
+      "kind": "Nature spirit",
+      "shortDescription": "A small forest visitor with a leaf-filled satchel.",
+      "folklore": "Kalanoro are nature spirits in Malagasy traditions. Ethnographic accounts from northern Madagascar describe small, long-haired beings and their relationships with certain specialists and local places. These are living, varied traditions, not a single island-wide fairy story. Our leaf satchel and garden adventure are an original gentle interpretation.",
+      "wish": "Find a sheltered home for a wandering seed.",
+      "peaceLabel": "A seed at home",
+      "prop": "leaf satchel",
+      "animation": "sway",
+      "color": "#b9a687",
+      "atlasId": "africa",
+      "atlasRow": 3,
+      "story": [
+        {
+          "title": "The last seed",
+          "text": "The kalanoro carried one seed in a leaf satchel. Every clearing seemed too windy, and every hollow too dark for the small green life inside."
+        },
+        {
+          "title": "A pocket of warmth",
+          "text": "Your candy gift became a warm glimmer under a broad leaf. The kalanoro discovered a patch of soft soil where the wind could not reach."
+        },
+        {
+          "title": "Tomorrow in a leaf",
+          "text": "A tiny shoot greeted the morning. The kalanoro curled up beside it, knowing the long search had ended in a place where something new could grow."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Lesley A. Sharp, The Possessed and the Dispossessed, chapter 5",
+          "url": "https://publishing.cdlib.org/ucpressebooks/public/book/the-possessed-and-the-dispossessed-spirits-identity-and-power-in-a-madagascar-migrant-town.html"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "ghul",
+      "regionId": "ARAB",
+      "name": "Ghul",
+      "nativeName": "غول",
+      "originCountry": "SA",
+      "culture": "Arabic desert tales",
+      "kind": "Shapeshifting creature",
+      "shortDescription": "A lantern-bearing wanderer learning the way home.",
+      "folklore": "The ghul belongs to Arabic supernatural storytelling and is often associated with deserted places, danger and changing shape. Later literary and popular versions differ, and the English word ghoul does not capture every earlier meaning. This hooded, lantern-bearing visitor is an original gentle design rather than a traditional fixed appearance.",
+      "wish": "Mark a path that leads travelers safely home.",
+      "peaceLabel": "The path is clear",
+      "prop": "route lantern",
+      "animation": "sway",
+      "color": "#b6a1c5",
+      "atlasId": "arabia",
+      "atlasRow": 0,
+      "story": [
+        {
+          "title": "A turn too many",
+          "text": "The little ghul knew every winding path, yet tonight even the familiar dunes looked different. A lantern swung quietly beside an empty crossroads."
+        },
+        {
+          "title": "Small lights ahead",
+          "text": "Your candy gift lit a row of warm markers. The ghul followed them one by one, pausing to set each crooked marker straight."
+        },
+        {
+          "title": "A welcome at the end",
+          "text": "The last marker pointed to a gathering of friends. Now the ghul had a route worth remembering, and a lantern ready for the next traveler."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Ghoul, Encyclopedia.com",
+          "url": "https://www.encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ghoul"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "ifrit",
+      "regionId": "ARAB",
+      "name": "Ifrit",
+      "nativeName": "عفريت",
+      "originCountry": "IQ",
+      "culture": "Arabic literary traditions",
+      "kind": "Powerful spirit",
+      "shortDescription": "A bright little ember with a warmhearted wish.",
+      "folklore": "Ifrit names a formidable supernatural being in Arabic and Islamic traditions and appears in literary tales such as the Arabian Nights. Its uses and character vary across texts and communities; it is not simply a universal fire monster. The ember body, lantern and friendly festival personality here are original visual choices.",
+      "wish": "Keep one little lantern warm all night.",
+      "peaceLabel": "Warm until morning",
+      "prop": "ember lantern",
+      "animation": "float",
+      "color": "#efa75d",
+      "atlasId": "arabia",
+      "atlasRow": 1,
+      "story": [
+        {
+          "title": "An impatient flame",
+          "text": "The ifrit could make a grand burst of light, but the little lantern needed a steady glow. Each excited flicker made its flame wobble."
+        },
+        {
+          "title": "A patient spark",
+          "text": "Your candy gift became a copper cradle for the ember. The ifrit took a slow breath and watched the light settle into a gentle rhythm."
+        },
+        {
+          "title": "Still shining",
+          "text": "When morning reached the windows, the lantern was still warm. The ifrit smiled: a small kindness kept glowing longer than the biggest flash."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Ifrit, Store norske leksikon",
+          "url": "https://snl.no/ifrit"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "marid",
+      "regionId": "ARAB",
+      "name": "Marid",
+      "nativeName": "مارد",
+      "originCountry": "IQ",
+      "culture": "Arabic wonder tales",
+      "kind": "Powerful spirit",
+      "shortDescription": "A grand swirling visitor with a very small treasure.",
+      "folklore": "Marid is a term for a powerful or rebellious supernatural being in Arabic traditions. In some Arabian Nights translations, marid and ifrit can describe the same being rather than separate species. Our teal swirling form and pearl-like bead distinguish this festival character visually; they do not claim that all marids are water spirits.",
+      "wish": "Carry a tiny treasure without losing it.",
+      "peaceLabel": "Safely held",
+      "prop": "pearl-like bead",
+      "animation": "float",
+      "color": "#79bbc1",
+      "atlasId": "arabia",
+      "atlasRow": 2,
+      "story": [
+        {
+          "title": "Too much breeze",
+          "text": "The marid arrived in a wonderful whirl, and the little bead rolled straight out of reach. Such a small treasure was surprisingly difficult to carry."
+        },
+        {
+          "title": "A quieter current",
+          "text": "Your candy gift made a soft pouch of cloud. The marid slowed the swirling breeze and nestled the bead carefully inside."
+        },
+        {
+          "title": "Something to cherish",
+          "text": "At the party, the marid opened the pouch to show the friends. The treasure had arrived safely, carried by the gentlest swirl in the sky."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Edward William Lane, The Thousand and One Nights, The Fisherman",
+          "url": "https://gutenberg-test.ibiblio.org/cache/epub/34206/pg34206-images.html"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "nasnas",
+      "regionId": "ARAB",
+      "name": "Nasnas",
+      "nativeName": "نسناس",
+      "originCountry": "YE",
+      "culture": "Arabian marvel literature",
+      "kind": "One-sided creature",
+      "shortDescription": "One springy foot and a whole lot of curiosity.",
+      "folklore": "The nasnas appears in Arabic marvel literature and later accounts of Arabian tales. A familiar description gives it one arm and one leg, with a remarkably agile hop. Versions and uses of the name differ. Our rounded, one-eyed felt creature is a non-graphic fantasy interpretation, not a comparison with human bodies or disability.",
+      "wish": "Find a rhythm that friends can follow.",
+      "peaceLabel": "A hop together",
+      "prop": "terracotta scarf",
+      "animation": "hop",
+      "color": "#dab18a",
+      "atlasId": "arabia",
+      "atlasRow": 3,
+      "story": [
+        {
+          "title": "A rhythm of one",
+          "text": "The nasnas hopped toward the music, but every tune seemed to hurry past. The little scarf bobbed while one foot tried to keep the beat."
+        },
+        {
+          "title": "A kinder tempo",
+          "text": "Your candy gift became a bright tinkling note. The nasnas tried a slower rhythm, and the friends began tapping along."
+        },
+        {
+          "title": "Everyone in step",
+          "text": "Soon the whole path rang with different footsteps. The nasnas led the parade at a happy pace, with room in the music for every kind of dancer."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Nasnas: historical descriptions and bibliography",
+          "url": "https://en.wikipedia.org/wiki/Nasnas"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "div",
+      "regionId": "WAS",
+      "name": "Div",
+      "nativeName": "دیو",
+      "originCountry": "IR",
+      "culture": "Persian epic and folktales",
+      "kind": "Ogre-like being",
+      "shortDescription": "A little giant building something thoughtful.",
+      "folklore": "Divs are powerful beings in Persian epic and folktale, including the Shahnameh. They can appear as adversaries, sorcerers or, in some narratives, helpers and builders. Their forms and actions vary widely. This small indigo toy keeps an ogre-like silhouette while giving it a new, friendly building project.",
+      "wish": "Build a doorstep small enough for a friend.",
+      "peaceLabel": "A perfect little step",
+      "prop": "stone block",
+      "animation": "hop",
+      "color": "#919cc6",
+      "atlasId": "west-asia",
+      "atlasRow": 0,
+      "story": [
+        {
+          "title": "A giant-sized problem",
+          "text": "The div built a splendid doorway, then noticed the doorstep was much too tall. The smallest friend could see the welcome light but could not reach it."
+        },
+        {
+          "title": "One stone at a time",
+          "text": "Your candy gift showed where to place the little stones. The div stacked them carefully into a gentle stair, checking each step with a fingertip."
+        },
+        {
+          "title": "Come right in",
+          "text": "Every friend could now reach the door. The div sat beside the tiny staircase, proud that the best building was one that made visitors feel welcome."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Mahmoud Omidsalar, Div, Encyclopaedia Iranica",
+          "url": "https://www.iranicaonline.org/articles/div/"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "pari",
+      "regionId": "WAS",
+      "name": "Pari",
+      "nativeName": "پری",
+      "originCountry": "IR",
+      "culture": "Persian and neighboring tales",
+      "kind": "Fairy-like spirit",
+      "shortDescription": "A petal-winged visitor tending one late blossom.",
+      "folklore": "Pari has a long history in Iranian traditions, with meanings that changed across periods and texts. Later Persian stories often describe beautiful fairy-like beings, while earlier related terms can have darker associations. Our petal wings and flower-carrying design draw on the later fairy-like image without treating every tradition as identical.",
+      "wish": "Help one late flower open before the festival.",
+      "peaceLabel": "A blossom in time",
+      "prop": "peach blossom",
+      "animation": "float",
+      "color": "#a4c7b1",
+      "atlasId": "west-asia",
+      "atlasRow": 1,
+      "story": [
+        {
+          "title": "Still a little bud",
+          "text": "The pari had brought a flower for the festival, but its petals stayed folded. Around it, every lantern was already shining."
+        },
+        {
+          "title": "A patient glow",
+          "text": "Your candy gift warmed the air around the bud. The pari waited quietly, turning it toward the soft light instead of pulling at its petals."
+        },
+        {
+          "title": "Right on time",
+          "text": "The flower opened as the first friend arrived. The pari smiled behind the bright petals; some welcomes simply needed a little more time."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Siamak Adhami, Pairika, Encyclopaedia Iranica",
+          "url": "https://www.iranicaonline.org/articles/pairika/"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "shahmaran",
+      "regionId": "WAS",
+      "name": "Shahmaran",
+      "nativeName": "Şahmaran",
+      "originCountry": "TR",
+      "culture": "Anatolian and Kurdish tales",
+      "kind": "Serpent queen",
+      "shortDescription": "A gentle queen guarding a quiet garden.",
+      "folklore": "Shahmaran is a serpent queen in stories shared across Anatolian, Kurdish and neighboring traditions. Regional versions, including accounts associated with Tarsus, connect her with hidden places, knowledge, trust and betrayal. This crowned figure retains a human upper body and serpentine lower body; the welcoming garden ending is newly written for this festival.",
+      "wish": "Open a garden where every guest feels safe.",
+      "peaceLabel": "The garden welcomes you",
+      "prop": "golden flower",
+      "animation": "sway",
+      "color": "#8bb7a5",
+      "atlasId": "west-asia",
+      "atlasRow": 2,
+      "story": [
+        {
+          "title": "Beyond the gate",
+          "text": "Shahmaran tended a quiet garden whose gate had stayed closed for years. A golden flower leaned toward the sound of footsteps outside."
+        },
+        {
+          "title": "A sign of welcome",
+          "text": "Your candy gift lit a small path through the leaves. Shahmaran placed the flower beside the gate and gently opened it."
+        },
+        {
+          "title": "Trust in bloom",
+          "text": "Friends entered softly and left every blossom growing. Curled beside the path, Shahmaran watched the garden become a place of shared care."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Türkiye Culture Portal: Shahmaran of Tarsus",
+          "url": "https://www.kulturportali.gov.tr/turkiye/mersin/kulturatlasi/sahmeran-tarsus"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "karakoncolos",
+      "regionId": "WAS",
+      "name": "Karakoncolos",
+      "nativeName": "Karakoncolos",
+      "originCountry": "TR",
+      "culture": "Black Sea winter folklore",
+      "kind": "Winter creature",
+      "shortDescription": "A shaggy winter caller with softly ringing bells.",
+      "folklore": "Karakoncolos belongs to winter folklore in Türkiye and neighboring regions, with local names and descriptions. Turkish cultural records describe shaggy figures, bells and sticks among its varied features. Our little visitor keeps that wintry silhouette while replacing frightening encounters with an original story about a gentle bell.",
+      "wish": "Ring a welcome without waking the whole valley.",
+      "peaceLabel": "A softer chime",
+      "prop": "walking stick and bells",
+      "animation": "hop",
+      "color": "#aa9987",
+      "atlasId": "west-asia",
+      "atlasRow": 3,
+      "story": [
+        {
+          "title": "A noisy arrival",
+          "text": "The karakoncolos came down the snowy path with bells ringing everywhere. Even the sleepy lantern keeper jumped at the sound."
+        },
+        {
+          "title": "Wrapped in warmth",
+          "text": "Your candy gift became a soft ribbon around the largest bell. The winter visitor tried again, listening to the quiet chime between footsteps."
+        },
+        {
+          "title": "A bell at the door",
+          "text": "This time the door opened with a smile. The karakoncolos shook the snow from the shaggy coat and settled beside friends in the warm light."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Türkiye Culture Portal: Karakoncolos",
+          "url": "https://www.kulturportali.gov.tr/portal/karakoncolos"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "zheztyrnak",
+      "regionId": "ECA",
+      "name": "Zheztyrnak",
+      "nativeName": "Жезтырнақ",
+      "originCountry": "KZ",
+      "culture": "Kazakh mountain tales",
+      "kind": "Copper-clawed spirit",
+      "shortDescription": "Copper fingers catching the last evening light.",
+      "folklore": "Zheztyrnak, also written Jeztyrnaq, is a dangerous figure with copper or brass claws in Kazakh folklore. Stories often place the encounter in wild country, where a traveler must recognize a threat. Our rounded copper fingers and gentle craft activity are deliberate festival inventions, not a claim that the traditional figure was harmless.",
+      "wish": "Make a lantern without snagging its paper.",
+      "peaceLabel": "Carefully made",
+      "prop": "copper fingers",
+      "animation": "sway",
+      "color": "#b68f70",
+      "atlasId": "central-asia",
+      "atlasRow": 0,
+      "story": [
+        {
+          "title": "Paper and copper",
+          "text": "Zheztyrnak wanted to make a lantern, but every sheet caught on the long copper fingers. The little pile of paper grew while the sky grew dark."
+        },
+        {
+          "title": "A softer touch",
+          "text": "Your candy gift became a pair of smooth wooden guides. With slow, careful movements, the mountain visitor folded one bright sheet around them."
+        },
+        {
+          "title": "Light in the hands",
+          "text": "The finished lantern shone against the copper fingers. Zheztyrnak held it gently, ready to join the other lights along the mountain path."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Zira Nauryzbai, Jeztyrnaq, Qalam",
+          "url": "https://qalam.global/en/microrubrics/myth-en/jeztyrnaq-en"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "albasty",
+      "regionId": "ECA",
+      "name": "Albasty",
+      "nativeName": "Албасты",
+      "originCountry": "KZ",
+      "culture": "Central Asian Turkic traditions",
+      "kind": "Folkloric spirit",
+      "shortDescription": "A long-haired visitor beside a moonlit stream.",
+      "folklore": "Albasty appears in several Central Asian and other Turkic traditions, including Kazakh accounts. Stories often associate the figure with water, danger and fears around childbirth, but descriptions vary. This long-haired, reed-carrying collectible is an original gentle adaptation; its story does not present folklore as a medical explanation.",
+      "wish": "Untangle a reed song caught in the wind.",
+      "peaceLabel": "The reeds sing again",
+      "prop": "reed bundle",
+      "animation": "sway",
+      "color": "#b9b68a",
+      "atlasId": "central-asia",
+      "atlasRow": 1,
+      "story": [
+        {
+          "title": "A tangled tune",
+          "text": "The albasty listened beside the stream, where a knot of reeds had fallen silent. Even the evening breeze could not coax a song from them."
+        },
+        {
+          "title": "One strand at a time",
+          "text": "Your candy gift made each bent stem glimmer. The visitor carefully loosened the bundle and set the reeds apart along the bank."
+        },
+        {
+          "title": "Music on the water",
+          "text": "The next breeze carried a soft tune across the stream. The albasty rested beside the reeds, long hair stirring gently with the music."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Inzhuna Karazhanova, Monstrous femininity in Kazakh folklore",
+          "url": "https://nur.nu.edu.kz/items/b694afd0-64cf-4034-aa14-6eda0e517b11"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "zhalmauyz-kempir",
+      "regionId": "ECA",
+      "name": "Zhalmauyz Kempir",
+      "nativeName": "Жалмауыз кемпір",
+      "originCountry": "KZ",
+      "culture": "Kazakh fairy tales",
+      "kind": "Fairy-tale ogress",
+      "shortDescription": "An old story visitor saving a seat for company.",
+      "folklore": "Zhalmauyz Kempir is an old ogress figure in Kazakh fairy tales, with related figures in neighboring Turkic traditions. Her role is not identical in every tale: scholarship discusses both threatening and more ambiguous appearances. Our single-faced elder, teacup and hospitable ending are original festival choices rather than a summary of every traditional version.",
+      "wish": "Share the last warm cup with a visitor.",
+      "peaceLabel": "A seat for you",
+      "prop": "clay teacup",
+      "animation": "sway",
+      "color": "#b098b8",
+      "atlasId": "central-asia",
+      "atlasRow": 2,
+      "story": [
+        {
+          "title": "An extra cup",
+          "text": "Zhalmauyz Kempir set out a cup beside the fire. The tea was warm, the chair was empty, and every sound outside seemed to hurry past the door."
+        },
+        {
+          "title": "A light in the window",
+          "text": "Your candy gift became a little window lantern. Its glow showed travelers that someone was waiting with a seat and a story."
+        },
+        {
+          "title": "Stay for a tale",
+          "text": "At last a friend knocked. The old visitor poured the tea and began a story so curious that nobody noticed the night turning toward morning."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Inzhuna Karazhanova, Monstrous femininity in Kazakh folklore",
+          "url": "https://nur.nu.edu.kz/items/b694afd0-64cf-4034-aa14-6eda0e517b11"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    },
+    {
+      "id": "zhalgyz-koz",
+      "regionId": "ECA",
+      "name": "Zhalgyz Koz",
+      "nativeName": "Жалғыз көзді дәу",
+      "originCountry": "KZ",
+      "culture": "Kazakh giant tales",
+      "kind": "One-eyed giant",
+      "shortDescription": "One big eye noticing the smallest things.",
+      "folklore": "The one-eyed giant, Zhalgyz kozdi dau, appears in Kazakh fairy-tale scholarship and collections. Such giants belong to narratives of encounters, danger and ingenuity, rather than to a documented animal species. This miniature woolly visitor has one central eye and a small stone prop; its helpful search is an original festival story.",
+      "wish": "Find the little stone that completes a path.",
+      "peaceLabel": "The missing piece",
+      "prop": "small stone",
+      "animation": "hop",
+      "color": "#b29873",
+      "atlasId": "central-asia",
+      "atlasRow": 3,
+      "story": [
+        {
+          "title": "A gap in the path",
+          "text": "The little giant noticed a missing stone where visitors crossed the stream. A large stride could pass it easily, but smaller footsteps needed help."
+        },
+        {
+          "title": "Looking closely",
+          "text": "Your candy gift lit the pebbles along the bank. With one patient eye, the giant searched until a smooth stone of just the right shape appeared."
+        },
+        {
+          "title": "Every step matters",
+          "text": "The stone fitted perfectly. The giant waited beside the crossing, happy to see even the smallest friend reach the other side with dry feet."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Tursunova et al., study of Kazakh fairy tales",
+          "url": "https://serialsjournals.com/abstract/39973_ch_71_-_tursunova_297246.pdf"
+        }
+      ],
+      "artNote": "Original clay-and-felt festival interpretation. Colors, clothing, props and gentle expressions are artistic choices.",
+      "reviewNotes": "Source-informed editorial draft. Three-part wish story is original. Regional labels are discovery aids, not exclusive ownership claims. Native cultural review remains pending."
+    }
+  ]
+}

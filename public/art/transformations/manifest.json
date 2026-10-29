@@ -1,0 +1,405 @@
+{
+  "version": 1,
+  "characters": {
+    "jiangshi": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/jiangshi/entrance.8c2a44c9e1a0.mp4",
+      "loop": "/art/transformations/jiangshi/loop.20dd83a0adc3.mp4",
+      "entranceAlpha": "/art/transformations/jiangshi/entrance.ef1d14f1699e.webm",
+      "loopAlpha": "/art/transformations/jiangshi/loop.8e2fee32f0f0.webm",
+      "poster": "/art/transformations/jiangshi/poster.b71052ed1c44.png"
+    },
+    "nie-xiaoqian": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/nie-xiaoqian/entrance.180c7257c1d7.mp4",
+      "loop": "/art/transformations/nie-xiaoqian/loop.e81ca52a2374.mp4",
+      "entranceAlpha": "/art/transformations/nie-xiaoqian/entrance.d3a6cfdbd3ea.webm",
+      "loopAlpha": "/art/transformations/nie-xiaoqian/loop.9a3799fe1d30.webm",
+      "poster": "/art/transformations/nie-xiaoqian/poster.d6a1ac3cbbcc.png"
+    },
+    "yingning": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/yingning/entrance.77ac08189be1.mp4",
+      "loop": "/art/transformations/yingning/loop.93b541ccd185.mp4",
+      "entranceAlpha": "/art/transformations/yingning/entrance.231cd57a8a25.webm",
+      "loopAlpha": "/art/transformations/yingning/loop.a930faf8eb44.webm",
+      "poster": "/art/transformations/yingning/poster.beb296ac94e6.png"
+    },
+    "painted-skin-ghost": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/painted-skin-ghost/entrance.d2b197e328a2.mp4",
+      "loop": "/art/transformations/painted-skin-ghost/loop.ec0bb6c9f6a9.mp4",
+      "entranceAlpha": "/art/transformations/painted-skin-ghost/entrance.35a5b429624a.webm",
+      "loopAlpha": "/art/transformations/painted-skin-ghost/loop.5173bc2958d0.webm",
+      "poster": "/art/transformations/painted-skin-ghost/poster.ec5faa24e022.png"
+    },
+    "kappa": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/kappa/entrance.409bc1d70311.mp4",
+      "loop": "/art/transformations/kappa/loop.db2d9d5d07e5.mp4",
+      "entranceAlpha": "/art/transformations/kappa/entrance.457879957050.webm",
+      "loopAlpha": "/art/transformations/kappa/loop.df70b7e61f09.webm",
+      "poster": "/art/transformations/kappa/poster.c3ae2c2f9321.png"
+    },
+    "bake-danuki": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/bake-danuki/entrance.6d700c1f8330.mp4",
+      "loop": "/art/transformations/bake-danuki/loop.7dacf9f5da66.mp4",
+      "entranceAlpha": "/art/transformations/bake-danuki/entrance.17bf952374f4.webm",
+      "loopAlpha": "/art/transformations/bake-danuki/loop.87a1ec690cff.webm",
+      "poster": "/art/transformations/bake-danuki/poster.d22acd3ed1c1.png"
+    },
+    "chochin-obake": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/chochin-obake/entrance.0d5f672462f2.mp4",
+      "loop": "/art/transformations/chochin-obake/loop.cbb77ba0203e.mp4",
+      "entranceAlpha": "/art/transformations/chochin-obake/entrance.eb9a959d8f33.webm",
+      "loopAlpha": "/art/transformations/chochin-obake/loop.20192fc94260.webm",
+      "poster": "/art/transformations/chochin-obake/poster.2ee84de7d77e.png"
+    },
+    "kasa-obake": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/kasa-obake/entrance.502e385931ab.mp4",
+      "loop": "/art/transformations/kasa-obake/loop.0e170a7a721e.mp4",
+      "entranceAlpha": "/art/transformations/kasa-obake/entrance.c0e6c98fd716.webm",
+      "loopAlpha": "/art/transformations/kasa-obake/loop.0ee213f6e91c.webm",
+      "poster": "/art/transformations/kasa-obake/poster.8826f8cbf2ff.png"
+    },
+    "dokkaebi": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/dokkaebi/entrance.5805c6815192.mp4",
+      "loop": "/art/transformations/dokkaebi/loop.478132c429e2.mp4",
+      "entranceAlpha": "/art/transformations/dokkaebi/entrance.055fd1f7adc8.webm",
+      "loopAlpha": "/art/transformations/dokkaebi/loop.29508b9fd3a8.webm",
+      "poster": "/art/transformations/dokkaebi/poster.61528b2dd2f4.png"
+    },
+    "gumiho": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/gumiho/entrance.4b9e3e9fb7b6.mp4",
+      "loop": "/art/transformations/gumiho/loop.79a1670a0648.mp4",
+      "entranceAlpha": "/art/transformations/gumiho/entrance.c20dd40c95fe.webm",
+      "loopAlpha": "/art/transformations/gumiho/loop.ae87fc1bb00b.webm",
+      "poster": "/art/transformations/gumiho/poster.9b04fb78e37b.png"
+    },
+    "bulgasari": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/bulgasari/entrance.6f69c44f3d16.mp4",
+      "loop": "/art/transformations/bulgasari/loop.86db2a68037f.mp4",
+      "entranceAlpha": "/art/transformations/bulgasari/entrance.c81df8c70d4b.webm",
+      "loopAlpha": "/art/transformations/bulgasari/loop.b76389ccb28c.webm",
+      "poster": "/art/transformations/bulgasari/poster.d3287a2f31f5.png"
+    },
+    "gaekgwi": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/gaekgwi/entrance.428494d1992e.mp4",
+      "loop": "/art/transformations/gaekgwi/loop.f0278229b69d.mp4",
+      "entranceAlpha": "/art/transformations/gaekgwi/entrance.59fb0bc7a036.webm",
+      "loopAlpha": "/art/transformations/gaekgwi/loop.2cdc4511497b.webm",
+      "poster": "/art/transformations/gaekgwi/poster.c51abff4a19b.png"
+    },
+    "krahang": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/krahang/entrance.a81dc0df6280.mp4",
+      "loop": "/art/transformations/krahang/loop.bb3cdb900e06.mp4",
+      "entranceAlpha": "/art/transformations/krahang/entrance.5efe49205801.webm",
+      "loopAlpha": "/art/transformations/krahang/loop.7673ef91a031.webm",
+      "poster": "/art/transformations/krahang/poster.86df895a46fa.png"
+    },
+    "phi-kong-koi": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/phi-kong-koi/entrance.8c2d787b44f0.mp4",
+      "loop": "/art/transformations/phi-kong-koi/loop.a352d33bfacb.mp4",
+      "entranceAlpha": "/art/transformations/phi-kong-koi/entrance.923d58b8761f.webm",
+      "loopAlpha": "/art/transformations/phi-kong-koi/loop.9b744a3bf40e.webm",
+      "poster": "/art/transformations/phi-kong-koi/poster.775b12b7e92c.png"
+    },
+    "nang-tani": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/nang-tani/entrance.dfc94640c22b.mp4",
+      "loop": "/art/transformations/nang-tani/loop.69795c7489e3.mp4",
+      "entranceAlpha": "/art/transformations/nang-tani/entrance.0ff1d04d03b4.webm",
+      "loopAlpha": "/art/transformations/nang-tani/loop.761734dda27f.webm",
+      "poster": "/art/transformations/nang-tani/poster.f73209a43554.png"
+    },
+    "krasue": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/krasue/entrance.b99c2bd6ba4f.mp4",
+      "loop": "/art/transformations/krasue/loop.40d3ca5a9f2e.mp4",
+      "entranceAlpha": "/art/transformations/krasue/entrance.4ff16b91ff4b.webm",
+      "loopAlpha": "/art/transformations/krasue/loop.e62ded14f9db.webm",
+      "poster": "/art/transformations/krasue/poster.9b0818e75458.png"
+    },
+    "tikbalang": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/tikbalang/entrance.49042a90129c.mp4",
+      "loop": "/art/transformations/tikbalang/loop.1748e50f0655.mp4",
+      "entranceAlpha": "/art/transformations/tikbalang/entrance.01a7bf494294.webm",
+      "loopAlpha": "/art/transformations/tikbalang/loop.224792f012ec.webm",
+      "poster": "/art/transformations/tikbalang/poster.3671f26776cb.png"
+    },
+    "kapre": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/kapre/entrance.681eeb85868f.mp4",
+      "loop": "/art/transformations/kapre/loop.30eee4bc54c0.mp4",
+      "entranceAlpha": "/art/transformations/kapre/entrance.87b17d125302.webm",
+      "loopAlpha": "/art/transformations/kapre/loop.e4f6e90796b5.webm",
+      "poster": "/art/transformations/kapre/poster.3fe488a5530d.png"
+    },
+    "duwende": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/duwende/entrance.68dfd42bccb0.mp4",
+      "loop": "/art/transformations/duwende/loop.36b5ce05c38a.mp4",
+      "entranceAlpha": "/art/transformations/duwende/entrance.5f9d1b8c2ddf.webm",
+      "loopAlpha": "/art/transformations/duwende/loop.fa991622dfc5.webm",
+      "poster": "/art/transformations/duwende/poster.ec719542871d.png"
+    },
+    "santelmo": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/santelmo/entrance.4e7c2ce2a798.mp4",
+      "loop": "/art/transformations/santelmo/loop.692724819906.mp4",
+      "entranceAlpha": "/art/transformations/santelmo/entrance.2163b748fd9d.webm",
+      "loopAlpha": "/art/transformations/santelmo/loop.10d6f7cb6297.webm",
+      "poster": "/art/transformations/santelmo/poster.c4b8446c553a.png"
+    },
+    "puca": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/puca/entrance.730aa19a8186.mp4",
+      "loop": "/art/transformations/puca/loop.e359681bada4.mp4",
+      "entranceAlpha": "/art/transformations/puca/entrance.99ab19685922.webm",
+      "loopAlpha": "/art/transformations/puca/loop.00a5563cda54.webm",
+      "poster": "/art/transformations/puca/poster.2c8e3ac6f2fc.png"
+    },
+    "banshee": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/banshee/entrance.e652f5461000.mp4",
+      "loop": "/art/transformations/banshee/loop.2d0ba1c00d4f.mp4",
+      "entranceAlpha": "/art/transformations/banshee/entrance.22dc15ca532f.webm",
+      "loopAlpha": "/art/transformations/banshee/loop.b7f449ec745a.webm",
+      "poster": "/art/transformations/banshee/poster.6bc9d797f5cd.png"
+    },
+    "dullahan": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/dullahan/entrance.0a0bf8238302.mp4",
+      "loop": "/art/transformations/dullahan/loop.1dcca3f4902c.mp4",
+      "entranceAlpha": "/art/transformations/dullahan/entrance.7d3eedbacc26.webm",
+      "loopAlpha": "/art/transformations/dullahan/loop.dbad9c43daf1.webm",
+      "poster": "/art/transformations/dullahan/poster.7baaa7b90935.png"
+    },
+    "merrow": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/merrow/entrance.072c69e4a8c8.mp4",
+      "loop": "/art/transformations/merrow/loop.245be609afb7.mp4",
+      "entranceAlpha": "/art/transformations/merrow/entrance.82076c638f6e.webm",
+      "loopAlpha": "/art/transformations/merrow/loop.22c31e1d8a67.webm",
+      "poster": "/art/transformations/merrow/poster.2439a7d139da.png"
+    },
+    "brownie": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/brownie/entrance.fa0f77aed7e0.mp4",
+      "loop": "/art/transformations/brownie/loop.7e9a76ff2796.mp4",
+      "entranceAlpha": "/art/transformations/brownie/entrance.22b4cacea407.webm",
+      "loopAlpha": "/art/transformations/brownie/loop.a2cb0b290eec.webm",
+      "poster": "/art/transformations/brownie/poster.dfad89a149ef.png"
+    },
+    "kelpie": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/kelpie/entrance.0ce967e3fd36.mp4",
+      "loop": "/art/transformations/kelpie/loop.f4c86c8345be.mp4",
+      "entranceAlpha": "/art/transformations/kelpie/entrance.4074c2fa937a.webm",
+      "loopAlpha": "/art/transformations/kelpie/loop.806dcc7dd8a5.webm",
+      "poster": "/art/transformations/kelpie/poster.12d68c53bcbc.png"
+    },
+    "selkie": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/selkie/entrance.338a8c1dade5.mp4",
+      "loop": "/art/transformations/selkie/loop.116d8bc76603.mp4",
+      "entranceAlpha": "/art/transformations/selkie/entrance.5505fba51dbe.webm",
+      "loopAlpha": "/art/transformations/selkie/loop.e7c2a93ae7f8.webm",
+      "poster": "/art/transformations/selkie/poster.d62f06ab90d4.png"
+    },
+    "boggart": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/boggart/entrance.11189eab517d.mp4",
+      "loop": "/art/transformations/boggart/loop.bfbc04800cb9.mp4",
+      "entranceAlpha": "/art/transformations/boggart/entrance.a8765462fffd.webm",
+      "loopAlpha": "/art/transformations/boggart/loop.65890524e7dc.webm",
+      "poster": "/art/transformations/boggart/poster.e36c309569e3.png"
+    },
+    "headless-horseman": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/headless-horseman/entrance.ee26b84b022d.mp4",
+      "loop": "/art/transformations/headless-horseman/loop.0b1a6b1b1b9e.mp4",
+      "entranceAlpha": "/art/transformations/headless-horseman/entrance.c2b0c199d8f1.webm",
+      "loopAlpha": "/art/transformations/headless-horseman/loop.681be0b951d0.webm",
+      "poster": "/art/transformations/headless-horseman/poster.a8d5ccbe7026.png"
+    },
+    "jersey-devil": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/jersey-devil/entrance.e3bf9daeb9ed.mp4",
+      "loop": "/art/transformations/jersey-devil/loop.56bcd459a54f.mp4",
+      "entranceAlpha": "/art/transformations/jersey-devil/entrance.ceb52a4f1156.webm",
+      "loopAlpha": "/art/transformations/jersey-devil/loop.a9d237282dec.webm",
+      "poster": "/art/transformations/jersey-devil/poster.8032faf94164.png"
+    },
+    "jackalope": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/jackalope/entrance.e83196bb206c.mp4",
+      "loop": "/art/transformations/jackalope/loop.a22012892580.mp4",
+      "entranceAlpha": "/art/transformations/jackalope/entrance.21fdde295bba.webm",
+      "loopAlpha": "/art/transformations/jackalope/loop.9f8e7e0c3f8c.webm",
+      "poster": "/art/transformations/jackalope/poster.6e0c0512e4e3.png"
+    },
+    "hidebehind": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/hidebehind/entrance.659e41010a75.mp4",
+      "loop": "/art/transformations/hidebehind/loop.171a5a3c1164.mp4",
+      "entranceAlpha": "/art/transformations/hidebehind/entrance.eccdfb4be306.webm",
+      "loopAlpha": "/art/transformations/hidebehind/loop.d84bc09574aa.webm",
+      "poster": "/art/transformations/hidebehind/poster.c4f4a6ea9ac9.png"
+    },
+    "la-planchada": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/la-planchada/entrance.67a39c300e6f.mp4",
+      "loop": "/art/transformations/la-planchada/loop.a6bc2c6627e1.mp4",
+      "entranceAlpha": "/art/transformations/la-planchada/entrance.d06625360112.webm",
+      "loopAlpha": "/art/transformations/la-planchada/loop.3ff433c5b0fe.webm",
+      "poster": "/art/transformations/la-planchada/poster.7a32999d5fd0.png"
+    },
+    "la-pascualita": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/la-pascualita/entrance.39b479a2e070.mp4",
+      "loop": "/art/transformations/la-pascualita/loop.3f939488ba96.mp4",
+      "entranceAlpha": "/art/transformations/la-pascualita/entrance.de32ef30d310.webm",
+      "loopAlpha": "/art/transformations/la-pascualita/loop.d1bc2db1050e.webm",
+      "poster": "/art/transformations/la-pascualita/poster.36c54b39953a.png"
+    },
+    "la-mulata-de-cordoba": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/la-mulata-de-cordoba/entrance.30e8f25836f4.mp4",
+      "loop": "/art/transformations/la-mulata-de-cordoba/loop.37d242c95784.mp4",
+      "entranceAlpha": "/art/transformations/la-mulata-de-cordoba/entrance.2aecbea1044b.webm",
+      "loopAlpha": "/art/transformations/la-mulata-de-cordoba/loop.3a19d0d039ee.webm",
+      "poster": "/art/transformations/la-mulata-de-cordoba/poster.8aa68a104f40.png"
+    },
+    "el-charro-negro": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/el-charro-negro/entrance.d06d5bb0d523.mp4",
+      "loop": "/art/transformations/el-charro-negro/loop.873fffd93332.mp4",
+      "entranceAlpha": "/art/transformations/el-charro-negro/entrance.b5bd4e8719f6.webm",
+      "loopAlpha": "/art/transformations/el-charro-negro/loop.08d7fabfe804.webm",
+      "poster": "/art/transformations/el-charro-negro/poster.8efae61dfd5f.png"
+    },
+    "saci": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/saci/entrance.f1561826c1a8.mp4",
+      "loop": "/art/transformations/saci/loop.67f48b95d185.mp4",
+      "entranceAlpha": "/art/transformations/saci/entrance.1ec8670aa6e0.webm",
+      "loopAlpha": "/art/transformations/saci/loop.c58ae3e01c7d.webm",
+      "poster": "/art/transformations/saci/poster.8ba3031888a9.png"
+    },
+    "curupira": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/curupira/entrance.dd6b8c4b2c19.mp4",
+      "loop": "/art/transformations/curupira/loop.efc6a9526edc.mp4",
+      "entranceAlpha": "/art/transformations/curupira/entrance.0b6ee09e8fd8.webm",
+      "loopAlpha": "/art/transformations/curupira/loop.4d64ac0379cd.webm",
+      "poster": "/art/transformations/curupira/poster.614102e5ce5f.png"
+    },
+    "boitata": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/boitata/entrance.fba4b2e57474.mp4",
+      "loop": "/art/transformations/boitata/loop.e9729a5c28bd.mp4",
+      "entranceAlpha": "/art/transformations/boitata/entrance.6792e9b4dd63.webm",
+      "loopAlpha": "/art/transformations/boitata/loop.c9e83a7c2551.webm",
+      "poster": "/art/transformations/boitata/poster.844d9a793bae.png"
+    },
+    "cuca": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/cuca/entrance.25ffc83cf181.mp4",
+      "loop": "/art/transformations/cuca/loop.d77289920c43.mp4",
+      "entranceAlpha": "/art/transformations/cuca/entrance.ea44c5fe5666.webm",
+      "loopAlpha": "/art/transformations/cuca/loop.48ec29b9b487.webm",
+      "poster": "/art/transformations/cuca/poster.295e524d8ad6.png"
+    }
+  }
+}

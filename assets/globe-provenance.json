@@ -1,0 +1,10 @@
+{
+  "renderer": "Canvas orthographic projection with d3-geo; procedural clay-style coastline relief, ocean shading, trees and mountains",
+  "land": "public/geo/land.json",
+  "source": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson",
+  "license": "Natural Earth public domain",
+  "downloadedAt": "2026-10-28",
+  "boundaries": "Land only. No political borders. Discovery anchors represent navigation, not territorial or cultural ownership.",
+  "characters": "Existing playable character thumbnails plus eleven built-in image_gen original regional visual previews, visibly marked Coming soon. Preview art does not create playable records or rewards.",
+  "previewArt": "assets/globe-preview-art.json"
+}

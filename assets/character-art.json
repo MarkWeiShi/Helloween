@@ -1,0 +1,530 @@
+{
+  "schemaVersion": 1,
+  "artDirection": "Handmade miniature clay-and-felt folklore collectibles, cute Halloween, warm rim lighting, original designs.",
+  "records": [
+    {
+      "country": "jp",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-59ca6a00-8b12-4e45-a920-b63acb565cb5.png",
+      "output": "public/art/source/jp-atlas.png",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Generate ONE TRANSPARENT PNG atlas, portrait aspect ratio 3:4, exactly 3 equal columns and 4 equal rows. Each grid cell has ONE full-body isolated small character, centered, fixed bottom anchor at 88% cell height, comfortable transparent padding on every side. There are 12 sprites total, with NO grid lines, NO labels, NO text, NO scenery or ground shadows. Genuinely transparent alpha everywhere outside the characters.\n\nConsistent art direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, tiny stitched and fabric details, charming expressive eyes, cinematic warm rim lighting, gentle cool fill, sophisticated soft 3D illustration. Cute mischievous Halloween, not horror, not flat vector. Clear silhouettes, warm ivory, pumpkin orange, muted jade, indigo, no gore.\n\nEach ROW is ONE Japanese folklore character in three consistent poses; COLUMN 1 idle curious, COLUMN 2 playful BOO surprise with arms/open expression, COLUMN 3 peaceful relieved smile and soft amber highlight. Keep anatomy/costume/props identical between poses.\nROW 1: Kappa, small moss green turtle-like river creature with beak, shell, head water dish, cucumber prop, large gentle eyes.\nROW 2: Bake-danuki, round fluffy tanuki with dark eye-mask, cinnamon fur, green leaf resting on head, small traveling bundle; family-friendly no anatomical exaggeration.\nROW 3: Chochin-obake, cream ribbed Japanese paper lantern with single eye and playful tongue, dark wooden top/base, floating tassel-like wisps, amber light inside.\nROW 4: Kasa-obake, indigo aged paper umbrella spirit with one large eye, tiny tongue, one wooden-sandal foot, curved bamboo handle arms, clear umbrella silhouette.\nMust exactly preserve 3 columns x 4 rows with each sprite contained inside its equal cell; no feet, tongues, umbrella edges or horns crossing cell boundaries. All 12 subjects the same apparent collectible size. Camera front three-quarter view.",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "kappa",
+          "bake-danuki",
+          "chochin-obake",
+          "kasa-obake"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    },
+    {
+      "country": "cn",
+      "characters": [
+        "jiangshi",
+        "nie-xiaoqian",
+        "yingning",
+        "painted-skin-ghost"
+      ],
+      "details": "ROW 1 Jiangshi: lovable hopping Chinese revenant in midnight indigo Qing-inspired round hat and robe, pale jade face, two tiny teeth, plain cream paper charm on hat without writing, arms extended; short feet fully visible.\nROW 2 Nie Xiaoqian: gentle Chinese literary ghost woman, long dark hair with simple ivory hairpin, flowing ivory hanfu, pale translucent fabric edges, small warm lantern.\nROW 3 Yingning: laughing literary fox-maiden with cinnamon fox ears and a single bushy fox tail, sage green traditional flowing dress, peach blossom held in hand, playful kind expression.\nROW 4 Painted-Skin Ghost: small theatrical Chinese spirit lady in warm rust and charcoal robe, dark hair bun, holding a beautifully simple ivory face mask beside her face, no skin removal, real face friendly and visible. Same robe and mask through poses.",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nROW 1 Jiangshi: lovable hopping Chinese revenant in midnight indigo Qing-inspired round hat and robe, pale jade face, two tiny teeth, plain cream paper charm on hat without writing, arms extended; short feet fully visible.\nROW 2 Nie Xiaoqian: gentle Chinese literary ghost woman, long dark hair with simple ivory hairpin, flowing ivory hanfu, pale translucent fabric edges, small warm lantern.\nROW 3 Yingning: laughing literary fox-maiden with cinnamon fox ears and a single bushy fox tail, sage green traditional flowing dress, peach blossom held in hand, playful kind expression.\nROW 4 Painted-Skin Ghost: small theatrical Chinese spirit lady in warm rust and charcoal robe, dark hair bun, holding a beautifully simple ivory face mask beside her face, no skin removal, real face friendly and visible. Same robe and mask through poses.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-8024c2dc-16c8-4ab3-992d-fe1ddcd1e706.png",
+      "output": "public/art/source/cn-atlas.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "jiangshi",
+          "nie-xiaoqian",
+          "yingning",
+          "painted-skin-ghost"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    },
+    {
+      "country": "kr",
+      "characters": [
+        "dokkaebi",
+        "gumiho",
+        "bulgasari",
+        "gaekgwi"
+      ],
+      "details": "ROW 1 Dokkaebi: round teal Korean mischievous goblin, one small horn, curly dark hair, ochre vest and dark baggy trousers, chunky wooden magic club with small plain brass studs, welcoming clever grin.\nROW 2 Gumiho: cream-and-rust Korean fox spirit, small humanoid toy with fox ears, nine small fox tails fanned neatly behind body, simple red-and-ivory hanbok-inspired clothing, charming alert eyes.\nROW 3 Bulgasari: small lovable iron-eating folkloric beast with bear-like round body, short elephant-like nose, tiny ox horns, articulated bronze and iron scales, nibbling a metal horseshoe. Original creature, not any film monster.\nROW 4 Gaekgwi: gentle Korean wandering traveler ghost with midnight-blue traditional robe, small simple travel hat, gray-blue soft translucent skin, cloth bundle on a stick, tiny amber lantern. Peace pose warmly holding bundle close.",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nROW 1 Dokkaebi: round teal Korean mischievous goblin, one small horn, curly dark hair, ochre vest and dark baggy trousers, chunky wooden magic club with small plain brass studs, welcoming clever grin.\nROW 2 Gumiho: cream-and-rust Korean fox spirit, small humanoid toy with fox ears, nine small fox tails fanned neatly behind body, simple red-and-ivory hanbok-inspired clothing, charming alert eyes.\nROW 3 Bulgasari: small lovable iron-eating folkloric beast with bear-like round body, short elephant-like nose, tiny ox horns, articulated bronze and iron scales, nibbling a metal horseshoe. Original creature, not any film monster.\nROW 4 Gaekgwi: gentle Korean wandering traveler ghost with midnight-blue traditional robe, small simple travel hat, gray-blue soft translucent skin, cloth bundle on a stick, tiny amber lantern. Peace pose warmly holding bundle close.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-2e73b150-60fd-4cb1-90ba-883ed72696d2.png",
+      "output": "public/art/source/kr-atlas.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "dokkaebi",
+          "gumiho",
+          "bulgasari",
+          "gaekgwi"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    },
+    {
+      "country": "th",
+      "characters": [
+        "krahang",
+        "phi-kong-koi",
+        "nang-tani",
+        "krasue"
+      ],
+      "details": "ROW 1 Krahang: charming Thai night-flying folk spirit, adult masculine toy with dark hair topknot, indigo wrap trousers and sleeveless cream shirt, two circular woven rice-sieve wings on arms; slight mid-air hover.\nROW 2 Phi Kong Koi: small forest spirit toy with shaggy rust-brown fur, ONE sturdy leg and foot, large luminous curious eyes, tiny leafy satchel, hopping pose. Do not ridicule single leg, no gore or fangs emphasis.\nROW 3 Nang Tani: elegant gentle banana-grove female tree spirit in soft green traditional Thai-inspired wrap dress, long dark hair, a broad banana leaf held like an umbrella and small leaf ornaments; she remains a dignified guardian in all poses.\nROW 4 Krasue: floating friendly expressive feminine face with long dark hair, trailing body concealed entirely by jade mist and soft amber ribbon of light, a tiny jasmine hair flower. NO organs, NO severed neck, NO blood, NO anatomy beneath head. Render a complete contained mist-wisp silhouette rather than cut-off head.",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nROW 1 Krahang: charming Thai night-flying folk spirit, adult masculine toy with dark hair topknot, indigo wrap trousers and sleeveless cream shirt, two circular woven rice-sieve wings on arms; slight mid-air hover.\nROW 2 Phi Kong Koi: small forest spirit toy with shaggy rust-brown fur, ONE sturdy leg and foot, large luminous curious eyes, tiny leafy satchel, hopping pose. Do not ridicule single leg, no gore or fangs emphasis.\nROW 3 Nang Tani: elegant gentle banana-grove female tree spirit in soft green traditional Thai-inspired wrap dress, long dark hair, a broad banana leaf held like an umbrella and small leaf ornaments; she remains a dignified guardian in all poses.\nROW 4 Krasue: floating friendly expressive feminine face with long dark hair, trailing body concealed entirely by jade mist and soft amber ribbon of light, a tiny jasmine hair flower. NO organs, NO severed neck, NO blood, NO anatomy beneath head. Render a complete contained mist-wisp silhouette rather than cut-off head.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-782f6745-2d6f-4d32-85dd-10583c8aa763.png",
+      "output": "public/art/source/th-atlas.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "krahang",
+          "phi-kong-koi",
+          "nang-tani",
+          "krasue"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    },
+    {
+      "country": "ph",
+      "characters": [
+        "tikbalang",
+        "kapre",
+        "duwende",
+        "santelmo"
+      ],
+      "details": "ROW 1 Tikbalang: gentle horse-headed Filipino woodland creature, friendly chestnut horse head with long ears and tousled dark mane, small humanoid body in simple woven brown travel vest and shorts, tiny hoof hands/feet, leaf charm.\nROW 2 Kapre: stocky giant forest guardian reduced to collectible scale, warm deep-brown skin, curly leafy hair, mossy bark-textured vest, small seedling pot in hands, kindly massive eyebrows. No cigar, no tobacco, skin color is not a scary feature.\nROW 3 Duwende: tiny Philippine household/garden spirit, round face with peach skin, broad pointy ochre cap, cream shirt, sage tunic and tiny boots, holding a seed pouch, lively small pointed ears. Not any film dwarf.\nROW 4 Santelmo: little floating blue-and-gold ball of enchanted flame with expressive face, soft teardrop wisp body and two small flame hands, tiny amber sparks close to body, never humanoid corpse. Clear individual contained silhouette.",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nEXTRA PRODUCTION REQUIREMENT: Make the subjects visibly SMALLER inside cells, filling only 70% of cell width and 72% of cell height. A continuous TRANSPARENT CORRIDOR must separate every pair of neighboring rows and columns. At least 10% cell width of blank alpha on each side and 10% height at top and bottom. No large glow extends outside that safe box. Do not fill the entire canvas with tightly packed bodies. Exact regular cell grid placement is essential.\nROW 1 Tikbalang: gentle horse-headed Filipino woodland creature, friendly chestnut horse head with long ears and tousled dark mane, small humanoid body in simple woven brown travel vest and shorts, tiny hoof hands/feet, leaf charm.\nROW 2 Kapre: stocky giant forest guardian reduced to collectible scale, warm deep-brown skin, curly leafy hair, mossy bark-textured vest, small seedling pot in hands, kindly massive eyebrows. No cigar, no tobacco, skin color is not a scary feature.\nROW 3 Duwende: tiny Philippine household/garden spirit, round face with peach skin, broad pointy ochre cap, cream shirt, sage tunic and tiny boots, holding a seed pouch, lively small pointed ears. Not any film dwarf.\nROW 4 Santelmo: little floating blue-and-gold ball of enchanted flame with expressive face, soft teardrop wisp body and two small flame hands, tiny amber sparks close to body, never humanoid corpse. Clear individual contained silhouette.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-13f0b051-cfaa-4f68-8674-af2c72452df7.png",
+      "output": "public/art/source/ph-atlas.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "tikbalang",
+          "kapre",
+          "duwende",
+          "santelmo"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    },
+    {
+      "country": "ie",
+      "characters": [
+        "puca",
+        "banshee",
+        "dullahan",
+        "merrow"
+      ],
+      "details": "ROW 1 Puca: small playful dark charcoal horse-like shapeshifting fairy with luminous amber eyes, tiny curved ears, shaggy mane, clover-green scarf and curled tail; standing on hind legs like a collectible imp, kind trickster not evil.\nROW 2 Banshee: gentle Irish spirit woman with long silver hair, ivory dress and faded sage shawl, small silver comb, expressive face; scare pose singing a note with open mouth, peace pose eyes closed and holding heart, not a killer.\nROW 3 Dullahan: tiny headless Irish horse-rider spirit dressed in charcoal riding cloak, carrying his friendly round head under one arm, a neat EMPTY DARK collar with NO anatomy or blood, small horseshoe prop. No horse needed; whole body visible.\nROW 4 Merrow: small Irish sea fairy with round human face, curled sea-green hair, red enchanted cap, pearl-colored tunic and curled teal fish tail, little scallop shell; all poses seated on own curled tail, no rock or background.",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nEXTRA PRODUCTION REQUIREMENT: Make the subjects visibly SMALLER inside cells, filling only 70% of cell width and 72% of cell height. A continuous TRANSPARENT CORRIDOR must separate every pair of neighboring rows and columns. At least 10% cell width of blank alpha on each side and 10% height at top and bottom. No large glow extends outside that safe box. Do not fill the entire canvas with tightly packed bodies. Exact regular cell grid placement is essential.\nROW 1 Puca: small playful dark charcoal horse-like shapeshifting fairy with luminous amber eyes, tiny curved ears, shaggy mane, clover-green scarf and curled tail; standing on hind legs like a collectible imp, kind trickster not evil.\nROW 2 Banshee: gentle Irish spirit woman with long silver hair, ivory dress and faded sage shawl, small silver comb, expressive face; scare pose singing a note with open mouth, peace pose eyes closed and holding heart, not a killer.\nROW 3 Dullahan: tiny headless Irish horse-rider spirit dressed in charcoal riding cloak, carrying his friendly round head under one arm, a neat EMPTY DARK collar with NO anatomy or blood, small horseshoe prop. No horse needed; whole body visible.\nROW 4 Merrow: small Irish sea fairy with round human face, curled sea-green hair, red enchanted cap, pearl-colored tunic and curled teal fish tail, little scallop shell; all poses seated on own curled tail, no rock or background.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-d22ad337-3926-4cbc-a4bf-cdd3112c88d9.png",
+      "output": "public/art/source/ie-atlas.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "puca",
+          "banshee",
+          "dullahan",
+          "merrow"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    },
+    {
+      "country": "gb",
+      "characters": [
+        "brownie",
+        "kelpie",
+        "selkie",
+        "boggart"
+      ],
+      "details": "ROW 1 Brownie: small Scottish household helper with fluffy brown hair, warm tawny skin, patched chestnut vest over cream shirt, rolled sleeves, tiny whisk broom and folded cloth, grateful kind grin.\nROW 2 Kelpie: tiny Scottish water-horse spirit, teal-black horse head with seaweed mane, compact pony body with four legs, silky dark coat reflecting emerald water, tiny water droplets hugging silhouette; playful but unmistakably horse, no humanoid clothing.\nROW 3 Selkie: small Scottish island seal shapeshifter with a friendly human face peeking from gray seal-skin hood, gray plush seal cloak wrapped around body, a visible rounded seal tail and tiny flippers, pearl shell held close, no stolen skin narrative.\nROW 4 Boggart: small northern-English household mischievous goblin with long pointy ears and warm brown fur, oversized knitted midnight-blue cap and patched rust waistcoat, tangled yarn ball prop, original folklore toy not Harry Potter design.",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nEXTRA PRODUCTION REQUIREMENT: Make the subjects visibly SMALLER inside cells, filling only 70% of cell width and 72% of cell height. A continuous TRANSPARENT CORRIDOR must separate every pair of neighboring rows and columns. At least 10% cell width of blank alpha on each side and 10% height at top and bottom. No large glow extends outside that safe box. Do not fill the entire canvas with tightly packed bodies. Exact regular cell grid placement is essential.\nROW 1 Brownie: small Scottish household helper with fluffy brown hair, warm tawny skin, patched chestnut vest over cream shirt, rolled sleeves, tiny whisk broom and folded cloth, grateful kind grin.\nROW 2 Kelpie: tiny Scottish water-horse spirit, teal-black horse head with seaweed mane, compact pony body with four legs, silky dark coat reflecting emerald water, tiny water droplets hugging silhouette; playful but unmistakably horse, no humanoid clothing.\nROW 3 Selkie: small Scottish island seal shapeshifter with a friendly human face peeking from gray seal-skin hood, gray plush seal cloak wrapped around body, a visible rounded seal tail and tiny flippers, pearl shell held close, no stolen skin narrative.\nROW 4 Boggart: small northern-English household mischievous goblin with long pointy ears and warm brown fur, oversized knitted midnight-blue cap and patched rust waistcoat, tangled yarn ball prop, original folklore toy not Harry Potter design.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-37fe6103-607e-4214-8e35-afa7f66ef404.png",
+      "output": "public/art/source/gb-atlas.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "brownie",
+          "kelpie",
+          "selkie",
+          "boggart"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    },
+    {
+      "country": "us",
+      "characters": [
+        "headless-horseman",
+        "jersey-devil",
+        "jackalope",
+        "hidebehind"
+      ],
+      "details": "ROW 1 Headless Horseman: tiny autumn literary rider toy wearing an original charcoal colonial riding coat, knee boots, warm russet cape, holding a glowing jack-o-lantern pumpkin as his head with arms in front of EMPTY DARK collar. No anatomy, no blood, no recognizable film design, no horse needed.\nROW 2 Jersey Devil: lovable small woodland cryptid with soft chestnut fur, horse/goat-like head, tiny curved horns, bat-like rust wings folded within cell, two hoof feet and curled tail; curious friendly eyes, clearly NOT a demon with religious symbols.\nROW 3 Jackalope: small fluffy tawny jackrabbit with long ears and neat branching deer antlers, cream belly, tiny amber neck ribbon; idle sitting, scare up on hind legs with paws raised, peace curled paws and smile.\nROW 4 Hidebehind: shy original dark woodland cryptid with tall oval body, shaggy charcoal-black fur, long soft arms, oversized amber eyes, slightly pointed ears, holding a narrow birch stick against its cheek to peek around. Single creature, no tree scenery, playful shy expression not menacing.",
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nEXTRA PRODUCTION REQUIREMENT: Make the subjects visibly SMALLER inside cells, filling only 70% of cell width and 72% of cell height. A continuous TRANSPARENT CORRIDOR must separate every pair of neighboring rows and columns. At least 10% cell width of blank alpha on each side and 10% height at top and bottom. No large glow extends outside that safe box. Do not fill the entire canvas with tightly packed bodies. Exact regular cell grid placement is essential.\nROW 1 Headless Horseman: tiny autumn literary rider toy wearing an original charcoal colonial riding coat, knee boots, warm russet cape, holding a glowing jack-o-lantern pumpkin as his head with arms in front of EMPTY DARK collar. No anatomy, no blood, no recognizable film design, no horse needed.\nROW 2 Jersey Devil: lovable small woodland cryptid with soft chestnut fur, horse/goat-like head, tiny curved horns, bat-like rust wings folded within cell, two hoof feet and curled tail; curious friendly eyes, clearly NOT a demon with religious symbols.\nROW 3 Jackalope: small fluffy tawny jackrabbit with long ears and neat branching deer antlers, cream belly, tiny amber neck ribbon; idle sitting, scare up on hind legs with paws raised, peace curled paws and smile.\nROW 4 Hidebehind: shy original dark woodland cryptid with tall oval body, shaggy charcoal-black fur, long soft arms, oversized amber eyes, slightly pointed ears, holding a narrow birch stick against its cheek to peek around. Single creature, no tree scenery, playful shy expression not menacing.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-bc4e83f1-ca93-42b9-a56d-a7619e2a0a07.png",
+      "output": "public/art/source/us-atlas.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 4,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "headless-horseman",
+          "jersey-devil",
+          "jackalope",
+          "hidebehind"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "notes": "12 poses visually inspected. Alpha row and column gutters are not perfectly equal; crop with measured alpha bounds and retain padding."
+    }
+  ],
+  "pending": [],
+  "strips": [
+    {
+      "id": "boitata",
+      "country": "br",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-cd74ee4a-93fc-453c-a1b7-ca920e197f98.png",
+      "output": "public/art/source/boitata-strip.png",
+      "prompt": "Use case: stylized-concept. Create an original production game sprite strip of Boitata, the fire-serpent from Brazilian folklore, for a friendly global Halloween cultural game.\nOne wide landscape transparent PNG, exactly THREE evenly spaced columns in ONE row. Each column contains the SAME small, fully coiled magical snake in a different expression: curious awake, playfully surprised with open mouth, peacefully resting with closed eyes. A complete coiled snake, no humanoid body.\nArt direction: exquisite miniature clay-and-felt collectible toy, softly modeled teal and amber scales, large kind golden eyes, a tiny warm flame crest along its back, fine tactile texture, soft studio light. Entire head and curled tail visible in each pose. Same colors, size and anatomy throughout. Each sprite occupies at most 70% of its column with wide blank transparent margins. Real alpha transparency, no background, text, borders, labels or scenery. Original interpretation of the traditional creature, no existing franchise design.",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "boitata"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "composition": "complete coiled non-humanoid serpent"
+    },
+    {
+      "id": "cuca",
+      "country": "br",
+      "description": "Cuca, a Brazilian folklore bogeywoman, reimagined as a warm original storybook forest enchantress. Clearly elderly adult woman with silver curls, rounded midnight plum hat, modest ochre shawl over a dark green high-neck dress, gently sculpted sage-toned face, kind expressive eyebrows, holding a small woven basket containing amber firefly lights. This is an independent folk interpretation, not the television crocodile character. Upper body only, all clothing fully covers chest and arms.",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: Cuca, a Brazilian folklore bogeywoman, reimagined as a warm original storybook forest enchantress. Clearly elderly adult woman with silver curls, rounded midnight plum hat, modest ochre shawl over a dark green high-neck dress, gently sculpted sage-toned face, kind expressive eyebrows, holding a small woven basket containing amber firefly lights. This is an independent folk interpretation, not the television crocodile character. Upper body only, all clothing fully covers chest and arms.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-edb7b8aa-0542-4b52-aec0-8051243ab313.png",
+      "output": "public/art/source/cuca-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "cuca"
+        ]
+      },
+      "status": "generated-awaiting-visual-review",
+      "composition": "fully clothed adult upper-body portrait"
+    },
+    {
+      "id": "la-planchada",
+      "country": "mx",
+      "description": "La Planchada, the Mexican nurse spirit of local legend, in an original gentle cultural illustration. Clearly adult woman with dark neatly braided hair, warm tan complexion, pressed ivory vintage nurse uniform with high buttoned collar and long sleeves, plain nurse cap, holding carefully folded linen and a tiny amber lamp. No logo on cap. Upper-body portrait from waist up. Calm expression, kind greeting, and peaceful smile in three poses.",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: La Planchada, the Mexican nurse spirit of local legend, in an original gentle cultural illustration. Clearly adult woman with dark neatly braided hair, warm tan complexion, pressed ivory vintage nurse uniform with high buttoned collar and long sleeves, plain nurse cap, holding carefully folded linen and a tiny amber lamp. No logo on cap. Upper-body portrait from waist up. Calm expression, kind greeting, and peaceful smile in three poses.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-3440f4cc-02d7-4275-a499-4b2bca0ca26b.png",
+      "output": "public/art/source/la-planchada-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "la-planchada"
+        ]
+      },
+      "status": "generated-awaiting-visual-review",
+      "composition": "fully clothed adult upper-body portrait"
+    },
+    {
+      "id": "la-pascualita",
+      "country": "mx",
+      "description": "La Pascualita, the enchanted bridal-shop mannequin from the Chihuahua local legend, as an original miniature adult display mannequin. Adult woman's elegant porcelain doll face with dark wavy hair, subtle wooden joint seams at wrists, fully covering vintage ivory lace wedding gown with high neckline and long sleeves, lace veil and a small flower bouquet. Original sculptural figure, not a likeness of the real shop mannequin. Upper body from waist up. Three gentle expressions and slight bouquet positions.",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: La Pascualita, the enchanted bridal-shop mannequin from the Chihuahua local legend, as an original miniature adult display mannequin. Adult woman's elegant porcelain doll face with dark wavy hair, subtle wooden joint seams at wrists, fully covering vintage ivory lace wedding gown with high neckline and long sleeves, lace veil and a small flower bouquet. Original sculptural figure, not a likeness of the real shop mannequin. Upper body from waist up. Three gentle expressions and slight bouquet positions.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-15fb8790-e938-495c-bd6d-d3a3c28778b4.png",
+      "output": "public/art/source/la-pascualita-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "la-pascualita"
+        ]
+      },
+      "status": "generated-awaiting-visual-review",
+      "composition": "fully clothed adult upper-body portrait"
+    },
+    {
+      "id": "curupira",
+      "country": "br",
+      "description": "Curupira, the Brazilian folklore forest protector, in an original fully clothed ADULT collectible interpretation. Adult forest guardian with warm brown complexion, vivid flame-orange tousled hair, emerald leaf cape over a fully covering cream long-sleeved tunic, holding a tiny thriving sapling in a woven pot. Upper-body portrait ending at waist; feet outside composition. Curious protective gaze, playful greeting with sapling lifted, peaceful smile. No costume copied from any real community; keep simple botanical styling.",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: Curupira, the Brazilian folklore forest protector, in an original fully clothed ADULT collectible interpretation. Adult forest guardian with warm brown complexion, vivid flame-orange tousled hair, emerald leaf cape over a fully covering cream long-sleeved tunic, holding a tiny thriving sapling in a woven pot. Upper-body portrait ending at waist; feet outside composition. Curious protective gaze, playful greeting with sapling lifted, peaceful smile. No costume copied from any real community; keep simple botanical styling.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-0b9764a5-5f10-49cb-8419-38854b3ff2eb.png",
+      "output": "public/art/source/curupira-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "curupira"
+        ]
+      },
+      "status": "generated-awaiting-visual-review",
+      "composition": "fully clothed adult upper-body portrait"
+    },
+    {
+      "id": "la-mulata-de-cordoba",
+      "country": "mx",
+      "prompt": "Use case: stylized-concept. Asset type: three-pose game sprite strip. Create ONE wide landscape TRANSPARENT PNG with exactly 3 evenly spaced columns in ONE row. Each column contains one isolated version of the same OBJECT-ONLY folklore avatar, as described below. This is an actual object avatar design; there are no humans or humanoid figures.\nStyle: exquisite handmade miniature clay-and-felt collectible toy, detailed fabric and softly sculpted surfaces, gentle warm studio rim lighting and cool fill, original cozy global Halloween cultural game art. Match a premium tiny toy-world aesthetic. Real transparent alpha everywhere outside the objects, no background, no scenery, no text or labels, no grid or border. All objects fully inside their equal cell, centered with at least 12% clear margin on every side. Exactly three separate poses; no overlap across cells. Consistent size, colors and materials across poses.\nAn object-only story avatar representing La Mulata de Cordoba, the Mexican legend of a woman finding freedom through a drawn boat. The artwork contains ONLY a beautiful folded ivory paper sailing boat with fine charcoal-drawn plank marks, a turquoise cloth sail, and a small charcoal drawing pencil resting beside the boat. No people, no humanoid body, no faces. LEFT POSE: quietly waiting with a faint amber light inside the paper hull, sail relaxed. MIDDLE POSE: playful surprise, sail puffed high and boat tilted slightly as a few tiny paper curls rise, pencil makes a little arc. RIGHT POSE: peaceful sailing with a gently filled sail, warm amber light and three tiny close golden stars. Keep the same boat and pencil recognizable in all three poses.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-b9e26b65-276d-45cf-ba9a-6aa83bc491ba.png",
+      "output": "public/art/source/la-mulata-de-cordoba-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "la-mulata-de-cordoba"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "composition": "user-approved object-only folklore avatar",
+      "designNote": "User-approved object avatar: the drawing-created paper boat represents the legendary journey to freedom; no character portrait.",
+      "validation": {
+        "width": 2172,
+        "height": 724,
+        "hasAlpha": true,
+        "isOpaque": false,
+        "allThreePosesVisible": true,
+        "noHumanoidFigure": true
+      }
+    },
+    {
+      "id": "el-charro-negro",
+      "country": "mx",
+      "prompt": "Use case: stylized-concept. Asset type: three-pose game sprite strip. Create ONE wide landscape TRANSPARENT PNG with exactly 3 evenly spaced columns in ONE row. Each column contains one isolated version of the same OBJECT-ONLY folklore avatar, as described below. This is an actual object avatar design; there are no humans or humanoid figures.\nStyle: exquisite handmade miniature clay-and-felt collectible toy, detailed fabric and softly sculpted surfaces, gentle warm studio rim lighting and cool fill, original cozy global Halloween cultural game art. Match a premium tiny toy-world aesthetic. Real transparent alpha everywhere outside the objects, no background, no scenery, no text or labels, no grid or border. All objects fully inside their equal cell, centered with at least 12% clear margin on every side. Exactly three separate poses; no overlap across cells. Consistent size, colors and materials across poses.\nAn object-only story avatar representing El Charro Negro, the mysterious rider in Mexican folklore. The artwork contains ONLY an original black felt Mexican rider hat with a broad curved brim, fine restrained silver embroidery, a small rust-red ribbon, and a silver horseshoe hanging below the hat on a tiny cord. The hat floats by itself. No wearer, no body, no faces, no horse. LEFT POSE: hat resting in a calm suspended position, horseshoe centered. MIDDLE POSE: playful surprise, hat brim tips upward with an expressive bounce and horseshoe swings outward. RIGHT POSE: hat gently bowed, horseshoe hanging still, a soft amber edge light and tiny close sparkles. Same hat, trim and horseshoe in every pose.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-a295b513-2232-4c13-a6c5-c6b25fc17743.png",
+      "output": "public/art/source/el-charro-negro-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "el-charro-negro"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "composition": "user-approved object-only folklore avatar",
+      "designNote": "User-approved object avatar: floating rider hat and horseshoe preserve the story identifiers without depicting a person.",
+      "validation": {
+        "width": 1942,
+        "height": 809,
+        "hasAlpha": true,
+        "isOpaque": false,
+        "allThreePosesVisible": true,
+        "noHumanoidFigure": true
+      }
+    },
+    {
+      "id": "saci",
+      "country": "br",
+      "prompt": "Use case: stylized-concept. Asset type: three-pose game sprite strip. Create ONE wide landscape TRANSPARENT PNG with exactly 3 evenly spaced columns in ONE row. Each column contains one isolated version of the same OBJECT-ONLY folklore avatar, as described below. This is an actual object avatar design; there are no humans or humanoid figures.\nStyle: exquisite handmade miniature clay-and-felt collectible toy, detailed fabric and softly sculpted surfaces, gentle warm studio rim lighting and cool fill, original cozy global Halloween cultural game art. Match a premium tiny toy-world aesthetic. Real transparent alpha everywhere outside the objects, no background, no scenery, no text or labels, no grid or border. All objects fully inside their equal cell, centered with at least 12% clear margin on every side. Exactly three separate poses; no overlap across cells. Consistent size, colors and materials across poses.\nAn object-only story avatar representing Saci, the red-capped whirlwind trickster from Brazilian folklore. The artwork contains ONLY an iconic bright red felt pointed cap floating above a small amber-colored magical whirlwind, with two tiny curled autumn leaves caught in the wind. No person, no body, no face, no eyes. LEFT POSE: red cap quietly suspended above a compact soft spiral. MIDDLE POSE: playful surprise, red cap tilts to one side and the amber spiral opens into a lively wider curl while keeping inside the cell. RIGHT POSE: red cap upright above a relaxed closed spiral, soft warm golden glow and leaves gently settled. Preserve the identical red felt cap and amber spiral material in all three poses.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-438316f9-f9c0-4266-abce-694ead67be34.png",
+      "output": "public/art/source/saci-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "saci"
+        ]
+      },
+      "status": "generated-visual-reviewed",
+      "composition": "user-approved object-only folklore avatar",
+      "designNote": "User-approved object avatar: red cap and amber whirlwind represent Saci without depicting a person.",
+      "validation": {
+        "width": 1881,
+        "height": 836,
+        "hasAlpha": true,
+        "isOpaque": false,
+        "allThreePosesVisible": true,
+        "noHumanoidFigure": true
+      }
+    }
+  ],
+  "stripFailures": [
+    {
+      "id": "la-mulata-de-cordoba",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: La Mulata de Cordoba, the legendary Mexican woman associated with a drawn boat and finding freedom. A dignified clearly adult woman with a rich warm brown complexion, curly dark hair, full-sleeved modest ivory blouse with high gathered neckline, turquoise woven shawl around shoulders and rust-red sash at waist. Hold a tiny folded paper boat and a charcoal drawing pencil. Kind intelligent eyes and hopeful smile. Original cultural collectible portrait, upper body from waist up. The boat is the magical storytelling prop.",
+      "status": "blocked-single-attempt",
+      "error": "image generation failed: http 400 Bad Request: Some(\"{\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID d1f48de1-9556-4c36-ae16-1086aef531c7.\\\",\\n    \\\"type\\\": \\\"image_generation_user_error\\\",\\n    \\\"param\\\": null,\\n    \\\"code\\\": \\\"moderation_blocked\\\",\\n    \\\"moderation_details\\\": {\\n      \\\"moderation_stage\\\": \\\"output\\\",\\n      \\\"categories\\\": [\\n        \\\"other\\\"\\n      ]\\n    }\\n  }\\n}\")"
+    },
+    {
+      "id": "el-charro-negro",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: El Charro Negro, the mysterious black-clad rider from Mexican folklore, as a courteous original adult traveler collectible. Adult man with warm brown complexion, a small neatly groomed mustache, broad black sombrero with restrained silver trim, fully covering black embroidered charro jacket, ivory shirt and dark red neck bow, holding a small silver horseshoe charm. Upper body only, portrait ending at waist. Neutral glance, cheerful hat-tip greeting, peaceful smile. Independent design.",
+      "status": "blocked-single-attempt",
+      "error": "image generation failed: http 400 Bad Request: Some(\"{\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID 4bb213bc-cd20-4d29-ba55-75d359984f6e.\\\",\\n    \\\"type\\\": \\\"image_generation_user_error\\\",\\n    \\\"param\\\": null,\\n    \\\"code\\\": \\\"moderation_blocked\\\",\\n    \\\"moderation_details\\\": {\\n      \\\"moderation_stage\\\": \\\"output\\\",\\n      \\\"categories\\\": [\\n        \\\"other\\\"\\n      ]\\n    }\\n  }\\n}\")"
+    },
+    {
+      "id": "saci",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: Saci, the Brazilian folklore trickster, in an original fully clothed ADULT collectible interpretation. Adult man with deep brown complexion, curly dark hair under a bright red pointed cap, full-sleeved cream shirt and red woven vest, friendly expressive face, a small amber whirlwind curling beside his raised hand. Upper-body portrait ending at waist; legs are outside the composition. Curious glance, playful greeting, peaceful content smile. The cap and contained whirlwind are the cultural visual identifiers.",
+      "status": "blocked-single-attempt",
+      "error": "image generation failed: http 400 Bad Request: Some(\"{\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID 71a7c17c-5baa-49f7-9627-bab1c01266f6.\\\",\\n    \\\"type\\\": \\\"image_generation_user_error\\\",\\n    \\\"param\\\": null,\\n    \\\"code\\\": \\\"moderation_blocked\\\",\\n    \\\"moderation_details\\\": {\\n      \\\"moderation_stage\\\": \\\"output\\\",\\n      \\\"categories\\\": [\\n        \\\"other\\\"\\n      ]\\n    }\\n  }\\n}\")"
+    }
+  ],
+  "countryAtlasHistory": [
+    {
+      "country": "mx",
+      "status": "blocked-by-image-generation-output-review",
+      "attempts": 2,
+      "requestIds": [
+        "82e0bad1-2383-4087-9c57-419efc680317",
+        "5da66ed5-0b3a-4a31-b1fb-f5bdf1a46409"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nEXTRA PRODUCTION REQUIREMENT: Make the subjects visibly SMALLER inside cells, filling only 70% of cell width and 72% of cell height. A continuous TRANSPARENT CORRIDOR must separate every pair of neighboring rows and columns. At least 10% cell width of blank alpha on each side and 10% height at top and bottom. No large glow extends outside that safe box. Do not fill the entire canvas with tightly packed bodies. Exact regular cell grid placement is essential.\nFOUR ADULT folklore-inspired collectible figures from Mexico, one distinct character per row, no depiction of children:\nROW 1 La Planchada: a kind adult female nurse in a vintage pressed ivory nurse uniform and plain nurse cap, dark neatly braided hair, soft warm tan complexion, carrying folded linen and a little amber lamp.\nROW 2 La Pascualita: a magical adult bridal-shop mannequin with visible wooden ball-joint wrists, classic ivory lace dress, floral headpiece and little flower bouquet; serene elegant adult face and dark wavy hair, an original sculptural design.\nROW 3 La Mulata de Cordoba: a confident adult Mexican woman with warm deep brown complexion, curly dark hair, modest ivory blouse, long rust-red skirt and turquoise woven shawl, holding a small paper boat and a drawing pencil; kind intelligent face.\nROW 4 El Charro Negro: a courteous adult Mexican traveler with a black broad-brimmed sombrero and silver trim, beautifully embroidered black charro suit, warm brown complexion and a little mustache, holding a small horseshoe charm. Original independent design.\nThree poses per adult character: quietly holding object; cheerfully greeting with raised hand; peaceful smile. Preserve adult face and same clothing/props in each pose. Keep heads proportional, adult doll figures, full bodies visible.",
+      "characters": [
+        "la-planchada",
+        "la-pascualita",
+        "la-mulata-de-cordoba",
+        "el-charro-negro"
+      ],
+      "resolution": "Superseded by separate three-pose strips. Missing portraits were replaced with user-approved story-object avatars; all 40 characters now have assets.",
+      "resolvedStatus": "resolvedByUserApprovedObjectAvatar"
+    },
+    {
+      "country": "br",
+      "status": "blocked-by-image-generation-output-review",
+      "attempts": 1,
+      "requestIds": [
+        "00ade8f8-394f-40ff-b4dc-d52e30b85b1d"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: production sprite atlas for a cute global Halloween mobile game. Make ONE portrait TRANSPARENT PNG atlas, 3:4 aspect ratio, 3 equal columns x 4 equal rows, 12 isolated full-body character sprites. Equal cells, exact grid spacing, each subject centered inside its cell with at least 8% transparent margins, fixed bottom at 88% cell height. No part crosses any cell boundary. NO grid lines, NO text, NO labels, NO scenery or ground. Real transparent alpha outside characters.\nArt direction: exquisite handmade miniature clay-and-felt collectible toys, softly sculpted forms, fine fabric and stitched details, big charming expressive eyes, rich subtle tactile materials, warm amber rim light and cool soft fill. Cute mischievous Halloween, highly polished soft 3D illustration with readable silhouettes. Not horror, not flat vector. Original independent designs, no resemblance to film/game characters.\nEach row depicts ONE character consistently in 3 different poses. Column 1 idle/curious; column 2 a playful surprising BOO, arms/props lifted and mouth open; column 3 peaceful relief with smile/eyes closed and subtle amber glow. Preserve anatomy, costume, colors, objects between all 3 poses. Camera front three-quarter view. Include full body and every prop with comfortable padding; all 12 characters should be the same apparent toy scale. No gore, no blood, no nudity, no sacred text. Regional characters below, row order is mandatory.\nEXTRA PRODUCTION REQUIREMENT: Make the subjects visibly SMALLER inside cells, filling only 70% of cell width and 72% of cell height. A continuous TRANSPARENT CORRIDOR must separate every pair of neighboring rows and columns. At least 10% cell width of blank alpha on each side and 10% height at top and bottom. No large glow extends outside that safe box. Do not fill the entire canvas with tightly packed bodies. Exact regular cell grid placement is essential.\nROW 1 Saci: playful young Brazilian folklore spirit toy with deep brown skin, curly dark hair, iconic bright red pointed cap, simple cream shirt and red shorts, ONE sturdy leg, short warm amber whirlwind at foot, raised friendly hands. No pipe or smoking, do not ridicule single leg.\nROW 2 Curupira: little Brazilian forest protector toy with vivid flame-orange tousled hair, warm brown skin, green leaf cape and woven natural shorts, two feet visibly turned BACKWARDS (toes pointing opposite face), seedling carried in hands; no caricature of real Indigenous people, no sacred headdress.\nROW 3 Boitata: little Brazilian magical fire-serpent, curled soft amber-and-teal snake body with fine clay scale texture, friendly bright eyes, small warm flame crest running down body, complete coiled tail inside cell; idle coil, scare raised head, peace resting head on tail, no legs or arms.\nROW 4 Cuca: original Brazilian folklore bogeywoman toy portrayed as a small forest enchantress with muted sage face, fluffy silver curls, rounded midnight plum hat, ochre shawl, tiny woven basket of fireflies. Playful older face, never cruel stereotype. NOT a crocodile and not any television character; original storybook hag design.",
+      "characters": [
+        "saci",
+        "curupira",
+        "boitata",
+        "cuca"
+      ],
+      "resolution": "Superseded by separate three-pose strips. Missing portraits were replaced with user-approved story-object avatars; all 40 characters now have assets.",
+      "resolvedStatus": "resolvedByUserApprovedObjectAvatar"
+    }
+  ]
+}

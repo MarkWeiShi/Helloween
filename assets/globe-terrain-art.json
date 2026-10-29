@@ -1,0 +1,8 @@
+{
+  "tool": "built-in image_gen",
+  "source": "public/art/source/globe-terrain-atlas.png",
+  "sprites": "public/art/terrain/{0..5}.webp",
+  "prompt": "Create a transparent PNG sprite atlas, exactly 3 columns x 2 rows of six independent terrain miniatures. Each equal cell contains one isolated miniature diorama without base platform, with generous transparent margins, no text, no labels. Soft carved clay, premium hand-painted toy-world style, warm amber Halloween evening light, mossy sage and muted teal, gently tilted overhead view. Row1: snowy jagged mountain range; dense pine forest with rounded foliage and one tiny pumpkin lantern; tropical jungle with palms and small waterfall. Row2: golden desert dunes with rocky outcrop and two palms; green rolling hills with tiny woodland and pumpkin lantern; volcanic rocky peaks with warm amber glow. Detailed organic terrain, not geometric icons. No borders, flags, characters or ocean backgrounds. All six have true transparent backgrounds.",
+  "purpose": "Original toy-world terrain miniatures projected onto the rotatable globe",
+  "humanApproved": false
+}

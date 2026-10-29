@@ -1,0 +1,11 @@
+{
+  "tool": "built-in image_gen",
+  "asset": "public/art/source/world-map.png",
+  "purpose": "Illustrative global discovery map with six continental entry points and twenty cultural regions; not a political or measured geographic map",
+  "prompt": "Edit the reference miniature Halloween world map into a clearer global exploration map for a mobile game. Preserve its premium sculpted toy-world materials, layered teal coastlines, midnight navy ocean, warm pumpkin lanterns, friendly cream ghosts, and wide 3:2 1536x1024 composition. Simplify tiny decorative clutter by half. Keep all recognizable continents with Americas left, Europe upper center, Africa center, Asia upper right, Australia and New Zealand lower right. Africa must be large and diverse with savanna, rainforest, mountains and northern desert, not just pyramids. Make India/South Asia peninsula, Arabian peninsula, Central Asia and broad northern Russia clearly legible terrain. Add a few small Pacific island clusters around Oceania without adding phantom large continents. Preserve relative continental layout and broad geography. No political boundaries, no national flags, no text, no labels, no UI. Leave six calm open areas around continental centers for overlaid navigation labels. Gentle charming Halloween atmosphere, no gore. This is a non-political illustrative discovery map.",
+  "provenance": "Generated in this task with the built-in tool and copied into the workspace.",
+  "humanApproved": false,
+  "previousAsset": "public/art/source/world-map-v1.png",
+  "revision": 2,
+  "generatedFile": "exec-9625d23b-d628-4706-aba8-4eb440ddf765.png"
+}

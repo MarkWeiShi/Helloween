@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "scope": "Mexico character strip review only",
+  "referenceManifest": "assets/character-art.json",
+  "generatedWith": "builtin-imagegen",
+  "newGenerationRequestsByThisAgent": 0,
+  "records": [
+    {
+      "id": "la-planchada",
+      "country": "mx",
+      "description": "La Planchada, the Mexican nurse spirit of local legend, in an original gentle cultural illustration. Clearly adult woman with dark neatly braided hair, warm tan complexion, pressed ivory vintage nurse uniform with high buttoned collar and long sleeves, plain nurse cap, holding carefully folded linen and a tiny amber lamp. No logo on cap. Upper-body portrait from waist up. Calm expression, kind greeting, and peaceful smile in three poses.",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: La Planchada, the Mexican nurse spirit of local legend, in an original gentle cultural illustration. Clearly adult woman with dark neatly braided hair, warm tan complexion, pressed ivory vintage nurse uniform with high buttoned collar and long sleeves, plain nurse cap, holding carefully folded linen and a tiny amber lamp. No logo on cap. Upper-body portrait from waist up. Calm expression, kind greeting, and peaceful smile in three poses.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-3440f4cc-02d7-4275-a499-4b2bca0ca26b.png",
+      "output": "public/art/source/la-planchada-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "la-planchada"
+        ]
+      },
+      "status": "generated-visual-reviewed-with-caveats",
+      "composition": "fully clothed adult upper-body portrait",
+      "visualReview": {
+        "reviewer": "character_content agent",
+        "composition": "Three aligned upper-body portraits; no scene, labels, or extra characters. Same costume and identity retained across expressions.",
+        "poses": [
+          "curious idle",
+          "playful greeting / surprise",
+          "relaxed closed-eye smile"
+        ],
+        "humanApproval": false,
+        "fullBody": false,
+        "notes": [
+          "Existing generated image reused without modification; no duplicate generation request.",
+          "Transparency confirmed by PNG alpha inspection.",
+          "Generated outer margins are tighter than the requested 10%; crop by alpha bounds and normalize onto padded sprite canvases before runtime use.",
+          "Inspect edge antialiasing on the final midnight-blue background; source preview shows sparse colored edge pixels."
+        ]
+      },
+      "image": {
+        "width": 1942,
+        "height": 809,
+        "channels": 4,
+        "hasAlpha": true,
+        "transparentPixels": 699574,
+        "partialAlphaPixels": 870720
+      }
+    },
+    {
+      "id": "la-pascualita",
+      "country": "mx",
+      "description": "La Pascualita, the enchanted bridal-shop mannequin from the Chihuahua local legend, as an original miniature adult display mannequin. Adult woman's elegant porcelain doll face with dark wavy hair, subtle wooden joint seams at wrists, fully covering vintage ivory lace wedding gown with high neckline and long sleeves, lace veil and a small flower bouquet. Original sculptural figure, not a likeness of the real shop mannequin. Upper body from waist up. Three gentle expressions and slight bouquet positions.",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: La Pascualita, the enchanted bridal-shop mannequin from the Chihuahua local legend, as an original miniature adult display mannequin. Adult woman's elegant porcelain doll face with dark wavy hair, subtle wooden joint seams at wrists, fully covering vintage ivory lace wedding gown with high neckline and long sleeves, lace veil and a small flower bouquet. Original sculptural figure, not a likeness of the real shop mannequin. Upper body from waist up. Three gentle expressions and slight bouquet positions.",
+      "source": "/Users/mark/.codex/generated_images/01a18106-2dc3-7a53-b0ad-254aa47c0874/exec-15fb8790-e938-495c-bd6d-d3a3c28778b4.png",
+      "output": "public/art/source/la-pascualita-strip.png",
+      "generatedWith": "builtin-imagegen",
+      "transparentRequested": true,
+      "layout": {
+        "columns": 3,
+        "rows": 1,
+        "poses": [
+          "idle",
+          "scare",
+          "peace"
+        ],
+        "characters": [
+          "la-pascualita"
+        ]
+      },
+      "status": "generated-visual-reviewed-with-caveats",
+      "composition": "fully clothed adult upper-body portrait",
+      "visualReview": {
+        "reviewer": "character_content agent",
+        "composition": "Three aligned upper-body portraits; no scene, labels, or extra characters. Same costume and identity retained across expressions.",
+        "poses": [
+          "curious idle",
+          "playful greeting / surprise",
+          "relaxed closed-eye smile"
+        ],
+        "humanApproval": false,
+        "fullBody": false,
+        "notes": [
+          "Existing generated image reused without modification; no duplicate generation request.",
+          "Transparency confirmed by PNG alpha inspection.",
+          "Generated outer margins are tighter than the requested 10%; crop by alpha bounds and normalize onto padded sprite canvases before runtime use.",
+          "Inspect edge antialiasing on the final midnight-blue background; source preview shows sparse colored edge pixels."
+        ]
+      },
+      "image": {
+        "width": 1860,
+        "height": 846,
+        "channels": 4,
+        "hasAlpha": true,
+        "transparentPixels": 552718,
+        "partialAlphaPixels": 1020559
+      }
+    }
+  ],
+  "pending": [
+    {
+      "id": "la-mulata-de-cordoba",
+      "country": "mx",
+      "status": "blocked-single-attempt",
+      "generatedWith": "builtin-imagegen",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: La Mulata de Cordoba, the legendary Mexican woman associated with a drawn boat and finding freedom. A dignified clearly adult woman with a rich warm brown complexion, curly dark hair, full-sleeved modest ivory blouse with high gathered neckline, turquoise woven shawl around shoulders and rust-red sash at waist. Hold a tiny folded paper boat and a charcoal drawing pencil. Kind intelligent eyes and hopeful smile. Original cultural collectible portrait, upper body from waist up. The boat is the magical storytelling prop.",
+      "error": "image generation failed: http 400 Bad Request: Some(\"{\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID d1f48de1-9556-4c36-ae16-1086aef531c7.\\\",\\n    \\\"type\\\": \\\"image_generation_user_error\\\",\\n    \\\"param\\\": null,\\n    \\\"code\\\": \\\"moderation_blocked\\\",\\n    \\\"moderation_details\\\": {\\n      \\\"moderation_stage\\\": \\\"output\\\",\\n      \\\"categories\\\": [\\n        \\\"other\\\"\\n      ]\\n    }\\n  }\\n}\")",
+      "notes": "Existing single-character upper-body attempt was rejected by output safety review (category other). No additional attempt made by this agent."
+    },
+    {
+      "id": "el-charro-negro",
+      "country": "mx",
+      "status": "blocked-single-attempt",
+      "generatedWith": "builtin-imagegen",
+      "prompt": "Use case: stylized-concept. Create an original game character sprite strip for a friendly global Halloween cultural game. One WIDE landscape PNG, exactly THREE evenly spaced columns in ONE row, genuine transparent alpha background. Each column contains the SAME character in a different expression: curious neutral; playful surprise greeting with open mouth/raised hand; peacefully content with closed eyes and soft smile. Each image centered in its equal column, generous transparent margin, no part crosses its column. This is a BUST / UPPER-BODY portrait ending at waist with a softly rounded collectible base edge, not a full-body figure. Show the entire head, hair, hat, shoulders, both arms and held prop. ALL HUMAN-LIKE FIGURES ARE CLEARLY ADULT AND COMPLETELY CLOTHED.\nArt direction: refined handmade miniature clay-and-felt collectible, original cultural illustration, elegant stylized adult face, fine woven fabric, expressive warm eyes, soft sculpting, warm studio light and gentle cool fill. Beautiful tactile detail, not a film/game franchise character. Identical costume, face, colors and prop across the three poses. No letters, text, borders, frames or scenery. No extra character. Character: El Charro Negro, the mysterious black-clad rider from Mexican folklore, as a courteous original adult traveler collectible. Adult man with warm brown complexion, a small neatly groomed mustache, broad black sombrero with restrained silver trim, fully covering black embroidered charro jacket, ivory shirt and dark red neck bow, holding a small silver horseshoe charm. Upper body only, portrait ending at waist. Neutral glance, cheerful hat-tip greeting, peaceful smile. Independent design.",
+      "error": "image generation failed: http 400 Bad Request: Some(\"{\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID 4bb213bc-cd20-4d29-ba55-75d359984f6e.\\\",\\n    \\\"type\\\": \\\"image_generation_user_error\\\",\\n    \\\"param\\\": null,\\n    \\\"code\\\": \\\"moderation_blocked\\\",\\n    \\\"moderation_details\\\": {\\n      \\\"moderation_stage\\\": \\\"output\\\",\\n      \\\"categories\\\": [\\n        \\\"other\\\"\\n      ]\\n    }\\n  }\\n}\")",
+      "notes": "Existing single-character upper-body attempt was rejected by output safety review (category other). No additional attempt made by this agent."
+    }
+  ],
+  "complete": false
+}

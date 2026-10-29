@@ -1,0 +1,39 @@
+{
+  "name": "boo-around-the-world",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "node --watch server/index.mjs",
+    "dev:client": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "start": "node server/index.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "assets": "node scripts/prepare-assets.mjs",
+    "assets:transformations": "node scripts/prepare-transformations.mjs",
+    "check:content": "node scripts/check-content.mjs",
+    "loadtest": "node scripts/loadtest.mjs",
+    "backup": "node scripts/backup.mjs",
+    "publish:assets": "node scripts/publish-assets.mjs",
+    "assets:previews": "node scripts/prepare-globe-previews.mjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1158.0",
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/fredoka": "^5.3.0",
+    "@phosphor-icons/core": "^2.1.1",
+    "d3-geo": "^3.1.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/d3-geo": "^3.1.1",
+    "@types/node": "^26.6.5",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

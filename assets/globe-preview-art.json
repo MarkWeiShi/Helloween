@@ -1,0 +1,21 @@
+{
+  "tool": "built-in image_gen",
+  "source": "public/art/source/globe-previews-atlas.png",
+  "status": "Original visual previews; not approved folklore descriptions or playable content",
+  "humanApproved": false,
+  "prompt": "Create a production sprite atlas on a truly transparent background, 3 columns by 4 rows, equal-size cells, portrait canvas 1024x1536. Each cell has one completely separate full-body adorable folklore-inspired miniature toy character, centered with generous transparent margins, no touching cells, no text, no labels, no panels, no scenery, no shadows outside the character. Premium softly sculpted clay / painted toy illustration, warm cream highlights, midnight navy details, muted sage and teal, pumpkin amber accents. Consistent camera at slight overhead front three-quarter view, same size. These are original gentle Halloween game interpretations, not religious icons, no gore or horror injuries. Exact row-major cell order: row1 col1 Almas inspired fluffy small mountain creature in a woolly brown coat with a little mountain flower; row1 col2 Vetala literary riddle-story inspired friendly small pale blue ghost holding a closed riddle book, fully clothed in a simple warm saffron tunic, no corpse; row1 col3 Domovoi inspired tiny white-bearded household helper with a russet knitted cap and wooden spoon. Row2 col1 Ifrit literary fairy-tale inspired smiling amber fire-wisp genie with a curling smoke tail, no lamp or religious symbols; row2 col2 Pari inspired graceful tiny fairy with translucent turquoise wings and a midnight-blue flowing robe; row2 col3 Kalanoro inspired tiny shaggy forest being with softly silver hair and a moss-green leaf wrap holding a fern, do not caricature any human ethnicity. Row3 col1 French Lutin inspired mischievous small forest helper with pointed copper cap, oversized boots and an acorn; row3 col2 German Kobold inspired friendly tiny mine helper with blue coat, round ears and an amber lantern; row3 col3 Caribbean Duppy inspired gentle floating cream translucent ghost with subtle misty curling lower body and a small purple night flower, no ethnic caricature. Row4 col1 El Tunche inspired small teal forest wisp with a curving leaf-like silhouette and a little glowing seed, not a realistic human; row4 col2 Bunyip inspired adorable rounded amphibious water creature with dark teal fur, small round ears, webbed feet and a water-lily leaf on its head; row4 col3 leave completely empty transparent. All eleven sprites must be present, exactly ordered, each self-contained on alpha, retain plenty of empty margin so cutout extraction can be deterministic.",
+  "extraction": "scripts/prepare-globe-previews.mjs",
+  "regions": [
+    "ECA",
+    "SAS",
+    "RU",
+    "ARAB",
+    "WAS",
+    "AFR",
+    "FR",
+    "DE",
+    "CAM",
+    "SAM",
+    "OCE"
+  ]
+}

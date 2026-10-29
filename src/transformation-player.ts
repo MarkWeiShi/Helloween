@@ -1,0 +1,134 @@
+export type Transformation = { entrance: string; loop: string; entranceAlpha?: string; loopAlpha?: string; poster: string; duration: number; loopDuration: number; revealAt: number };
+export function validTransformation(value: unknown): value is Transformation {
+  const v = value as Transformation;
+  return !!v && [v.entrance, v.loop, v.poster].every(p => typeof p === 'string' && /^\/art\/transformations\/[a-z0-9-]+\/[a-z0-9.-]+$/.test(p)) && [v.duration, v.loopDuration, v.revealAt].every(Number.isFinite) && v.duration > 0 && v.loopDuration > 0 && v.revealAt >= 0 && v.revealAt < v.duration;
+}
+let manifest: Promise<Record<string, Transformation>> | undefined;
+export async function loadTransformation(id: string) {
+  if (!manifest) manifest = fetch('/art/transformations/manifest.json', {cache:'no-cache', signal:AbortSignal.timeout(10000)}).then(async response => {
+    if (!response.ok) throw Error('Transformation manifest unavailable');
+    const data = await response.json();
+    if (data.version !== 1 || !data.characters) throw Error('Invalid transformation manifest');
+    return data.characters as Record<string, Transformation>;
+  }).catch(error => { manifest = undefined; throw error; });
+  const entry = (await manifest)[id];
+  if (!validTransformation(entry)) { manifest = undefined; throw Error('Transformation not ready'); }
+  return entry;
+}
+const seen = new Set<string>();
+const seenKey = (player: string, id: string) => `boo:transformation:v1:${player}:${id}`;
+export function hasPlayedTransformation(player: string, id: string) {
+  const key = seenKey(player, id);
+  try { return localStorage.getItem(key) === '1' || seen.has(key); } catch { return seen.has(key); }
+}
+export function markTransformationPlayed(player: string, id: string) {
+  const key = seenKey(player, id); seen.add(key);
+  try { localStorage.setItem(key, '1'); } catch {}
+}
+export function mountTransformation(stage: HTMLElement, id: string, options: {
+  sound: () => boolean; toggleSound?: () => void; onReveal?: () => void; onIntroEnd?: () => void; onStart?: () => void; onError?: () => void; onPause?: () => void;
+}) {
+  const host = document.createElement('div'); host.className = 'transformation-player';
+  const poster = document.createElement('img'); poster.alt = ''; poster.hidden = true;
+  const canvas = document.createElement('canvas'); canvas.width = 720; canvas.height = 1280;
+  const videos = [document.createElement('video'), document.createElement('video')];
+  const [intro, loop] = videos;
+  for (const media of videos) { media.playsInline = true; media.preload = 'auto'; media.crossOrigin = 'anonymous'; media.hidden = true; }
+  intro.dataset.phase = 'intro'; loop.dataset.phase = 'loop'; loop.loop = true;
+  let video = intro;
+  const soundButton = document.createElement('button'); soundButton.type = 'button'; soundButton.className = 'transformation-sound button secondary';
+  soundButton.onclick = () => { options.toggleSound?.(); audio(); };
+  soundButton.hidden = !options.toggleSound;
+  host.append(poster, canvas, ...videos, soundButton); stage.append(host);
+  poster.onerror = () => { poster.hidden = true; if (canvas.hidden) host.classList.remove('has-media'); };
+  const gl = canvas.getContext('webgl', {alpha:true, premultipliedAlpha:false});
+  let dead = false, ticket = 0, frame = 0, revealed = false, entry: Transformation | undefined, phase: 'idle'|'intro'|'loop' = 'idle';
+  let program: WebGLProgram | null = null, buffer: WebGLBuffer | null = null, texture: WebGLTexture | null = null;
+  const shaders: WebGLShader[] = [];
+  let stallTimer: ReturnType<typeof setTimeout> | undefined;
+  let ready = false;
+  if (gl) try {
+    program = gl.createProgram();
+    for (const [type, source] of [
+      [gl.VERTEX_SHADER, 'attribute vec2 p;varying vec2 uv;void main(){uv=vec2((p.x+1.0)*0.5,(1.0-p.y)*0.5);gl_Position=vec4(p,0.,1.);}'],
+      [gl.FRAGMENT_SHADER, 'precision mediump float;varying vec2 uv;uniform sampler2D image;void main(){vec4 c=texture2D(image,uv);float d=c.g-max(c.r,c.b);float a=1.-smoothstep(.10,.34,d);c.g=min(c.g,max(c.r,c.b)+.035);gl_FragColor=vec4(c.rgb,a);}'],
+    ] as const) {
+      const shader = gl.createShader(type)!; shaders.push(shader); gl.shaderSource(shader, source); gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw Error('Shader failed');
+      gl.attachShader(program!, shader);
+    }
+    gl.linkProgram(program!); if (!gl.getProgramParameter(program!, gl.LINK_STATUS)) throw Error('Program failed'); gl.useProgram(program);
+    buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+    const location = gl.getAttribLocation(program!, 'p'); gl.enableVertexAttribArray(location); gl.vertexAttribPointer(location, 2, gl.FLOAT, false, 0, 0);
+    texture = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, texture);
+    for (const p of [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T]) gl.texParameteri(gl.TEXTURE_2D,p,gl.CLAMP_TO_EDGE);
+    for (const p of [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D,p,gl.LINEAR);
+    gl.viewport(0,0,canvas.width,canvas.height); ready = true;
+  } catch { ready = false; }
+  function pause() { clearTimeout(stallTimer); phase = 'idle'; ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); options.onPause?.(); }
+  function fail() { pause(); phase = 'idle'; canvas.hidden = true; poster.hidden = !entry; host.classList.toggle('has-media', !!entry); options.onError?.(); }
+  function draw() {
+    if (dead || video.paused || video.ended) return;
+    if (phase === 'intro' && !revealed && entry && video.currentTime >= entry.revealAt) { revealed = true; options.onReveal?.(); }
+    if (ready && gl && video.readyState >= 2) try {
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,video); gl.drawArrays(gl.TRIANGLES,0,6);
+      host.classList.add('has-media'); poster.hidden = true;
+    } catch { fail(); return; }
+    frame = requestAnimationFrame(draw);
+  }
+  const attempts = new WeakMap<HTMLVideoElement, number>();
+  async function source(media: HTMLVideoElement, generation: number) {
+    attempts.set(media, generation); media.muted = !options.sound(); media.volume = .65;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try { await Promise.race([media.play(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(Error('Playback timeout')), 10000); })]); }
+    finally { clearTimeout(timer); }
+    if (dead || generation !== ticket || document.hidden) {
+      // A stale play must not pause a newer play using the same element.
+      if (attempts.get(media) === generation) media.pause();
+      return false;
+    }
+    clearTimeout(stallTimer); video = media; cancelAnimationFrame(frame); draw(); return true;
+  }
+  async function play() {
+    clearTimeout(stallTimer); ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); const generation = ticket; phase = 'intro'; revealed = false;
+    try {
+      entry = await loadTransformation(id);
+      if (dead || generation !== ticket || document.hidden) return false;
+      poster.src = entry.poster;
+      if (!ready) { fail(); return false; }
+      canvas.hidden = false;
+      // Fetch both sources at the beginning, keeping the final intro frame while the loop becomes ready.
+      if (intro.getAttribute('src') !== entry.entrance || intro.error) { intro.src = entry.entrance; intro.load(); }
+      if (loop.getAttribute('src') !== entry.loop || loop.error) { loop.src = entry.loop; loop.load(); }
+      intro.currentTime = 0; loop.currentTime = 0; video = intro;
+      if (!await source(intro, generation)) return false;
+      options.onStart?.(); return true;
+    } catch { if (!dead && generation === ticket) fail(); return false; }
+  }
+  intro.onended = () => {
+    if (phase !== 'intro' || !entry || dead || document.hidden || video !== intro) return;
+    options.onIntroEnd?.();
+    phase = 'loop'; const generation = ticket;
+    void source(loop, generation).catch(() => { if (!dead && generation === ticket) fail(); });
+  };
+  for (const media of videos) {
+    media.onerror = () => { if (!dead && media === video) fail(); };
+    media.onwaiting = () => { if (media !== video) return; clearTimeout(stallTimer); stallTimer = setTimeout(() => { if (!dead) fail(); }, 10000); };
+    media.onplaying = () => { if (media === video) clearTimeout(stallTimer); };
+  }
+  const hidden = () => { if (document.hidden) pause(); };
+  function audio() {
+    for (const media of videos) { media.muted = !options.sound(); media.volume = .65; }
+    soundButton.textContent = options.sound() ? '声音：开' : '声音：关';
+    soundButton.setAttribute('aria-label', options.sound() ? '关闭变身声音' : '开启变身声音');
+    soundButton.setAttribute('aria-pressed', String(options.sound()));
+  }
+  audio();
+  document.addEventListener('visibilitychange', hidden); window.addEventListener('pagehide', pause); window.addEventListener('boo:sound', audio);
+  return {play, pause, dispose() {
+    if (dead) return; dead = true; pause(); for (const media of videos) { media.onended = null; media.onerror = null; media.onwaiting = null; media.onplaying = null; media.removeAttribute('src'); media.load(); }
+    document.removeEventListener('visibilitychange', hidden); window.removeEventListener('pagehide', pause); window.removeEventListener('boo:sound', audio);
+    if (gl) { gl.deleteTexture(texture); gl.deleteBuffer(buffer); gl.deleteProgram(program); shaders.forEach(s => gl.deleteShader(s)); gl.getExtension('WEBGL_lose_context')?.loseContext(); }
+    host.remove();
+  }};
+}

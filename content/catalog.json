@@ -1,0 +1,1773 @@
+{
+  "version": 2,
+  "language": "en",
+  "title": "Boo Around the World",
+  "storyLabel": "Our Halloween tale",
+  "storyDisclosure": "The wishes and endings are original festival stories inspired by the documented traditions.",
+  "contentStatus": "Source-informed editorial draft; native cultural review and final art review pending.",
+  "regions": [
+    {
+      "id": "CN",
+      "name": "China",
+      "nameZh": "中国",
+      "areaIds": [
+        "asia"
+      ],
+      "subtitle": "Moonlit stories and fox magic"
+    },
+    {
+      "id": "JP",
+      "name": "Japan",
+      "nameZh": "日本",
+      "areaIds": [
+        "asia"
+      ],
+      "subtitle": "A little mischief in everyday things"
+    },
+    {
+      "id": "KR",
+      "name": "Korea",
+      "nameZh": "韩国",
+      "areaIds": [
+        "asia"
+      ],
+      "subtitle": "Night visitors and impossible creatures"
+    },
+    {
+      "id": "ECA",
+      "name": "Other East & Central Asia",
+      "nameZh": "其他东亚与中亚",
+      "areaIds": [
+        "asia"
+      ],
+      "subtitle": "Mongolia, Central Asia and neighboring traditions"
+    },
+    {
+      "id": "SAS",
+      "name": "India & South Asia",
+      "nameZh": "印度与南亚",
+      "areaIds": [
+        "asia"
+      ],
+      "subtitle": "Stories across the subcontinent"
+    },
+    {
+      "id": "SEA",
+      "name": "Southeast Asia",
+      "nameZh": "东南亚",
+      "areaIds": [
+        "asia"
+      ],
+      "subtitle": "Thailand, the Philippines and beyond"
+    },
+    {
+      "id": "RU",
+      "name": "Russia",
+      "nameZh": "俄罗斯",
+      "areaIds": [
+        "asia",
+        "europe"
+      ],
+      "subtitle": "Forest paths and northern folklore"
+    },
+    {
+      "id": "ARAB",
+      "name": "Arab World",
+      "nameZh": "阿拉伯世界",
+      "areaIds": [
+        "asia",
+        "africa"
+      ],
+      "subtitle": "Arab traditions across West Asia and North Africa"
+    },
+    {
+      "id": "WAS",
+      "name": "Other West Asian Cultures",
+      "nameZh": "其他西亚文化",
+      "areaIds": [
+        "asia"
+      ],
+      "subtitle": "Persian, Turkish, Caucasian and neighboring traditions"
+    },
+    {
+      "id": "AFR",
+      "name": "Africa",
+      "nameZh": "非洲",
+      "areaIds": [
+        "africa"
+      ],
+      "subtitle": "North, West, Central, East and Southern African traditions"
+    },
+    {
+      "id": "GB",
+      "name": "United Kingdom",
+      "nameZh": "英国",
+      "areaIds": [
+        "europe"
+      ],
+      "subtitle": "Stories from England, Scotland, Wales and Northern Ireland"
+    },
+    {
+      "id": "FR",
+      "name": "France",
+      "nameZh": "法国",
+      "areaIds": [
+        "europe"
+      ],
+      "subtitle": "Regional legends, fairy tales and night visitors"
+    },
+    {
+      "id": "DE",
+      "name": "Germany",
+      "nameZh": "德国",
+      "areaIds": [
+        "europe"
+      ],
+      "subtitle": "Household helpers and enchanted forests"
+    },
+    {
+      "id": "EUR",
+      "name": "Other Europe",
+      "nameZh": "其他欧洲",
+      "areaIds": [
+        "europe"
+      ],
+      "subtitle": "Ireland, the Nordics, Southern, Central and Eastern Europe"
+    },
+    {
+      "id": "NAM",
+      "name": "United States & Canada",
+      "nameZh": "美国与加拿大",
+      "areaIds": [
+        "north-america"
+      ],
+      "subtitle": "Tall tales and woodland mysteries"
+    },
+    {
+      "id": "MX",
+      "name": "Mexico",
+      "nameZh": "墨西哥",
+      "areaIds": [
+        "north-america"
+      ],
+      "subtitle": "Legends carried through towns and cities"
+    },
+    {
+      "id": "CAM",
+      "name": "Central America & Caribbean",
+      "nameZh": "中美洲与加勒比",
+      "areaIds": [
+        "north-america"
+      ],
+      "subtitle": "Island nights and stories along the isthmus"
+    },
+    {
+      "id": "BR",
+      "name": "Brazil",
+      "nameZh": "巴西",
+      "areaIds": [
+        "south-america"
+      ],
+      "subtitle": "Forest guardians and playful tricksters"
+    },
+    {
+      "id": "SAM",
+      "name": "Other South America",
+      "nameZh": "其他南美洲",
+      "areaIds": [
+        "south-america"
+      ],
+      "subtitle": "The Andes, Southern Cone, Guianas and beyond"
+    },
+    {
+      "id": "OCE",
+      "name": "Oceania & Pacific",
+      "nameZh": "大洋洲与太平洋",
+      "areaIds": [
+        "oceania"
+      ],
+      "subtitle": "Australia, Aotearoa New Zealand and Pacific island traditions"
+    }
+  ],
+  "spirits": [
+    {
+      "id": "jiangshi",
+      "regionId": "CN",
+      "name": "Jiangshi",
+      "nativeName": "僵尸",
+      "kind": "Revenant",
+      "culture": "Chinese folk narratives",
+      "shortDescription": "A hopping night visitor with somewhere to be.",
+      "folklore": "Jiangshi are reanimated bodies in Chinese supernatural storytelling, rather than ordinary invisible ghosts. Stiff movement is a familiar feature of their later popular image. Their stories have changed across literature, local beliefs and film; this festival visitor uses a gentle hopping silhouette, without borrowing a modern movie character.",
+      "wish": "Find the way back to a remembered courtyard.",
+      "story": [
+        {
+          "title": "One familiar step",
+          "text": "Every night, the little jiangshi counted the paving stones outside an unfamiliar gate. One courtyard somewhere had the same stones, and a low doorstep where a lantern used to wait."
+        },
+        {
+          "title": "Lanterns along the road",
+          "text": "Your candy gift lit a trail of small pumpkin lanterns. At each bend, the jiangshi remembered another detail: the tiled roof, the rain barrel, the sweet smell of autumn pears."
+        },
+        {
+          "title": "A light left on",
+          "text": "The last lantern stood on that remembered doorstep. The jiangshi settled beside it, arms resting at last. Beyond the gate, a quiet courtyard offered the welcome that the long journey needed."
+        }
+      ],
+      "peaceLabel": "Home at last",
+      "prop": "courtyard lantern",
+      "animation": "hop",
+      "color": "#eeb969",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Douglas Gildow, Flesh Bodies, Stiff Corpses, and Gathered Gold",
+          "url": "https://www.ocf.berkeley.edu/~dmgildow/documents/GildowDouglas05.FleshBodies.pdf"
+        }
+      ],
+      "reviewNotes": "The homecoming and individual personality are original. Do not equate jiangshi with all Chinese ancestors or copy cinema costumes and talismans.",
+      "originCountry": "CN",
+      "atlasId": "cn"
+    },
+    {
+      "id": "nie-xiaoqian",
+      "regionId": "CN",
+      "name": "Nie Xiaoqian",
+      "nativeName": "聂小倩",
+      "kind": "Literary ghost",
+      "culture": "Pu Songling's Liaozhai Zhiyi, China",
+      "shortDescription": "A literary ghost who dreams of choosing her own path.",
+      "folklore": "Nie Xiaoqian is a ghost in Pu Songling's collection Liaozhai Zhiyi. Her story follows coercion, an encounter with Ning Caichen, and escape from the power controlling her. Later films tell different versions. Our character takes its starting point from the literary tale, with an original wish about freedom.",
+      "wish": "Choose a destination of her own.",
+      "story": [
+        {
+          "title": "An unfinished letter",
+          "text": "Xiaoqian held a letter with no address. For so long, every journey had been chosen for her that she could name many roads, but none she wished to follow herself."
+        },
+        {
+          "title": "Room for a wish",
+          "text": "You placed candy beside the blank paper, asking for nothing in return. She dipped her brush and wrote a small wish: a room with a window, flowers, and an unlocked door."
+        },
+        {
+          "title": "Her own horizon",
+          "text": "Morning found the letter folded into a little paper boat. Xiaoqian set it on a bright stream and followed at her own pace. The path ahead finally belonged to her."
+        }
+      ],
+      "peaceLabel": "A free beginning",
+      "prop": "paper letter",
+      "animation": "float",
+      "color": "#a8d8dc",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "Pu Songling, Strange Stories from a Chinese Studio; historical translation by Herbert A. Giles",
+          "url": "https://www.gutenberg.org/files/43629/43629-h/43629-h.htm"
+        }
+      ],
+      "reviewNotes": "Original alternate festival story, not a summary of the canonical ending. Avoid film likenesses and modern character relationships.",
+      "originCountry": "CN",
+      "atlasId": "cn"
+    },
+    {
+      "id": "yingning",
+      "regionId": "CN",
+      "name": "Yingning",
+      "nativeName": "婴宁",
+      "kind": "Literary fox spirit",
+      "culture": "Pu Songling's Liaozhai Zhiyi, China",
+      "shortDescription": "A flower-loving fox girl with an unforgettable laugh.",
+      "folklore": "Yingning, the laughing girl of Liaozhai Zhiyi, has fox ancestry and a deep love of flowers. Pu Songling's tale places her unguarded laughter beside human expectations and complicated family ties. She is a literary figure, not simply a dead person; our garden celebration imagines a new episode for her.",
+      "wish": "Grow a garden where her laughter feels welcome.",
+      "story": [
+        {
+          "title": "The quiet garden",
+          "text": "Yingning had planted a whole garden but stopped laughing when visitors arrived. She worried that her delight was too loud, so even the wind seemed to walk carefully between the flowers."
+        },
+        {
+          "title": "Blossoms for everyone",
+          "text": "Your candy gift brought visitors carrying seed packets and crooked little pots. Nobody asked the flowers to match. Yingning planted each one, laughing when a bee landed on her empty watering can."
+        },
+        {
+          "title": "Laughter in bloom",
+          "text": "By sunset, the garden held roses, wildflowers and a bench for anyone passing through. Yingning laughed freely beside it. There was room for gentle voices, loud joy, and everything growing between."
+        }
+      ],
+      "peaceLabel": "Joy in bloom",
+      "prop": "flower sprig",
+      "animation": "sway",
+      "color": "#f2b2ae",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Pu Songling, Strange Stories from a Chinese Studio; historical translation by Herbert A. Giles",
+          "url": "https://www.gutenberg.org/files/43629/43629-h/43629-h.htm"
+        }
+      ],
+      "reviewNotes": "Keep her family and literary identity distinct from a generic Japanese fox. Do not frame her original tale as uncomplicated comedy.",
+      "originCountry": "CN",
+      "atlasId": "cn"
+    },
+    {
+      "id": "painted-skin-ghost",
+      "regionId": "CN",
+      "name": "Painted-Skin Ghost",
+      "nativeName": "画皮鬼",
+      "kind": "Literary shapeshifter",
+      "culture": "Pu Songling's Liaozhai Zhiyi, China",
+      "shortDescription": "A theatrical shapeshifter trying a more honest kind of disguise.",
+      "folklore": "The Painted Skin is a dark tale in Liaozhai Zhiyi about a dangerous being hiding behind a painted human appearance. Its theme concerns deception, not merely shyness about looks. Our non-graphic festival character keeps the painting motif while giving this separate, original story a chance to practice honesty.",
+      "wish": "Make something beautiful without pretending to be someone else.",
+      "story": [
+        {
+          "title": "A borrowed smile",
+          "text": "At the parade, the shapeshifter kept painting a different smile on a paper mask. Each one looked impressive, but accepting applause for another invented face had begun to feel strangely lonely."
+        },
+        {
+          "title": "A truthful picture",
+          "text": "You offered candy and a plain sheet of paper. This time, the brush painted the festival itself: a crooked lantern, a nervous newcomer, and a friend offering a place beside them."
+        },
+        {
+          "title": "Signed in their own hand",
+          "text": "The picture went up at the gate with the painter's own name beneath it. Nobody needed another disguise. The shapeshifter put down the mask and stayed to paint portraits for the other guests."
+        }
+      ],
+      "peaceLabel": "An honest beginning",
+      "prop": "paintbrush and paper mask",
+      "animation": "sway",
+      "color": "#d5a8cc",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "Pu Songling, Strange Stories from a Chinese Studio; historical translation by Herbert A. Giles",
+          "url": "https://www.gutenberg.org/files/43629/43629-h/43629-h.htm"
+        }
+      ],
+      "reviewNotes": "The redemption is explicitly fictional and does not erase the predatory original. No skin removal, gore or modern film character Xiaowei.",
+      "originCountry": "CN",
+      "atlasId": "cn"
+    },
+    {
+      "id": "kappa",
+      "regionId": "JP",
+      "name": "Kappa",
+      "nativeName": "河童",
+      "kind": "Water creature",
+      "culture": "Japanese river folklore",
+      "shortDescription": "A river dweller with a water dish and a fondness for cucumbers.",
+      "folklore": "Kappa are river beings in Japanese folklore, often shown with a shell and a water-filled hollow on the head. Tales may describe mischief, wrestling or dangerous encounters near water. They are not automatically human ghosts. Our version keeps the river setting while giving one kappa an original, friendly task.",
+      "wish": "Make the riverbank a welcoming place again.",
+      "story": [
+        {
+          "title": "The empty picnic spot",
+          "text": "The kappa waited beside an empty picnic spot with a cucumber cut into careful little stars. Since the old footbridge closed, nobody had stopped there long enough to share a snack."
+        },
+        {
+          "title": "A bridge of small efforts",
+          "text": "Your candy gift brought neighbors to the riverbank. They repaired the railing and cleared the path while the kappa held a basket of tools, keeping its precious head dish perfectly level."
+        },
+        {
+          "title": "Lunch by the water",
+          "text": "At noon, people returned to the safe picnic spot. The kappa passed around cucumber stars and listened to the chatter. It had not needed a bigger river, only someone to sit beside it."
+        }
+      ],
+      "peaceLabel": "Friends by the river",
+      "prop": "cucumber stars",
+      "animation": "hop",
+      "color": "#9fcba6",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "International Research Center for Japanese Studies, Folktales of Strange Phenomena and Yokai",
+          "url": "https://www.nichibun.ac.jp/YoukaiDB3/search.html"
+        }
+      ],
+      "reviewNotes": "Do not imply that unfamiliar rivers are safe or that every kappa story is friendly. The picnic and repair are original.",
+      "originCountry": "JP",
+      "atlasId": "jp"
+    },
+    {
+      "id": "bake-danuki",
+      "regionId": "JP",
+      "name": "Bake-danuki",
+      "nativeName": "化け狸",
+      "kind": "Shapeshifting animal",
+      "culture": "Japanese tanuki folklore",
+      "shortDescription": "A cheerful shape-shifter who keeps losing track of the joke.",
+      "folklore": "Tanuki, Japanese raccoon dogs, appear in many stories as magical shape-shifters. A bake-danuki may trick people or take an unexpected form, with details varying across regions and artistic traditions. It is neither a raccoon nor necessarily a dead spirit. Our festival story gives one performer a different kind of applause.",
+      "wish": "Be invited to the party without a disguise.",
+      "story": [
+        {
+          "title": "The last disguise",
+          "text": "The bake-danuki arrived as a teapot, a lantern and finally an unusually round pumpkin. Everyone admired the costumes, but nobody knew who to invite when the parade stopped for supper."
+        },
+        {
+          "title": "A seat with a name",
+          "text": "You left candy beside a place card bearing its own name. The pumpkin blinked. A leaf fluttered down, and the delighted tanuki stepped out, carrying the teapot it had borrowed for research."
+        },
+        {
+          "title": "Welcome as you are",
+          "text": "That evening, the bake-danuki still performed a trick or two. Between the laughter, it sat at its own place and ate with friends, quite happy to remain a tanuki for dessert."
+        }
+      ],
+      "peaceLabel": "Welcome without a disguise",
+      "prop": "leaf and teapot",
+      "animation": "hop",
+      "color": "#d8b995",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "International Research Center for Japanese Studies, Folktales of Strange Phenomena and Yokai",
+          "url": "https://www.nichibun.ac.jp/YoukaiDB3/search.html"
+        }
+      ],
+      "reviewNotes": "Avoid confusing tanuki with raccoons or foxes; use a family-friendly design independent of commercial characters.",
+      "originCountry": "JP",
+      "atlasId": "jp"
+    },
+    {
+      "id": "chochin-obake",
+      "regionId": "JP",
+      "name": "Chochin-obake",
+      "nativeName": "提灯お化け",
+      "kind": "Object yokai",
+      "culture": "Japanese lantern-yokai imagery",
+      "shortDescription": "An old paper lantern with one bright eye and plenty of personality.",
+      "folklore": "Chochin-obake is a familiar lantern-shaped yokai, commonly pictured with an eye, a mouth and a long tongue. It belongs to a broad tradition of giving uncanny life to familiar objects. Not every image carries the same origin story; this festival lantern is an original individual rather than a human soul.",
+      "wish": "Light a path that someone still needs.",
+      "story": [
+        {
+          "title": "A lantern in storage",
+          "text": "The old lantern had spent years in a storeroom, listening to new electric lights click on outside. Its paper creaked whenever the parade passed, hoping someone might remember the warm light it carried."
+        },
+        {
+          "title": "A careful repair",
+          "text": "You brought candy and helped patch a tiny tear with translucent paper. The lantern opened its bright eye. Together, you found a small garden path too narrow for the parade's grand new lights."
+        },
+        {
+          "title": "The little path home",
+          "text": "All evening, the lantern guided tired guests along that quiet path. Its repaired paper glowed softly at every turn. Being useful again felt warmer than being the brightest light in the sky."
+        }
+      ],
+      "peaceLabel": "A light with a purpose",
+      "prop": "paper lantern patch",
+      "animation": "float",
+      "color": "#f4b76a",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Museum of International Folk Art, Chochin-obake lantern ghost",
+          "url": "https://collection.internationalfolkart.org/objects/88360/cochin-obake-lantern-ghost"
+        }
+      ],
+      "reviewNotes": "Do not claim that every old lantern becomes this yokai after an exact number of years. Eye and tongue are playful, not gruesome.",
+      "originCountry": "JP",
+      "atlasId": "jp"
+    },
+    {
+      "id": "kasa-obake",
+      "regionId": "JP",
+      "name": "Kasa-obake",
+      "nativeName": "唐傘お化け",
+      "kind": "Object yokai",
+      "culture": "Japanese umbrella-yokai imagery",
+      "shortDescription": "A one-eyed umbrella hopping toward the next rainy adventure.",
+      "folklore": "Kasa-obake, also called karakasa-obake, is an umbrella-shaped yokai often drawn with one eye, a long tongue and a single leg. Such images turn an everyday object into something delightfully strange. There is no single biography shared by every version. Our umbrella has its own invented rainy-night wish.",
+      "wish": "Keep someone dry one more time.",
+      "story": [
+        {
+          "title": "No rain in the forecast",
+          "text": "The umbrella practiced a magnificent hop beside the festival gate. But everyone had checked the clear forecast, and nobody needed shelter. It wondered whether a useful life could end simply because the weather changed."
+        },
+        {
+          "title": "The unexpected shower",
+          "text": "When a small cloud drifted over the parade, you offered candy and pointed toward a visitor protecting a paper map. The umbrella sprang open before the first drop could blur the ink."
+        },
+        {
+          "title": "Room underneath",
+          "text": "Soon two friends and a very small lantern stood beneath its wide canopy. The umbrella listened to rain tapping overhead and felt wonderfully ordinary again: something that could help someone get home dry."
+        }
+      ],
+      "peaceLabel": "Shelter shared",
+      "prop": "rain umbrella",
+      "animation": "hop",
+      "color": "#c4b4e0",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "Government of Japan, Highlighting Japan: Japanese umbrellas and umbrella yokai",
+          "url": "https://www.gov-online.go.jp/eng/publicity/book/hlj/html/202306/202306_08_en.html"
+        }
+      ],
+      "reviewNotes": "The single leg belongs to the traditional object design; never make disability the joke. Do not invent a universal origin tale.",
+      "originCountry": "JP",
+      "atlasId": "jp"
+    },
+    {
+      "id": "dokkaebi",
+      "regionId": "KR",
+      "name": "Dokkaebi",
+      "nativeName": "도깨비",
+      "kind": "Folklore spirit",
+      "culture": "Korean dokkaebi traditions",
+      "shortDescription": "A mischievous night visitor who loves a challenge.",
+      "folklore": "Dokkaebi are powerful, unpredictable beings in Korean folklore. Some traditions connect them with old objects, and stories feature wrestling, tricks, songs or unexpected generosity. They differ from ghosts of deceased humans. Our festival performer draws on that playful range without treating one appearance or personality as the only authentic version.",
+      "wish": "Find someone who enjoys the game as much as the prize.",
+      "story": [
+        {
+          "title": "Another empty contest",
+          "text": "The dokkaebi had arranged ribbons for a wrestling contest, then scared away every possible opponent with an overenthusiastic entrance. Alone beneath the banners, it practiced a victory bow that nobody could see."
+        },
+        {
+          "title": "A different invitation",
+          "text": "Your candy gift came with a challenge: make the other guests laugh before the lantern flickered. The dokkaebi tried a tiny dance, missed the beat, and discovered everyone was smiling rather than leaving."
+        },
+        {
+          "title": "A game for everyone",
+          "text": "The ribbons became decorations for a circle of dancers. The dokkaebi no longer needed to win every round. It had found a gathering where the best prize was another invitation to play."
+        }
+      ],
+      "peaceLabel": "A friend in the circle",
+      "prop": "festival ribbon",
+      "animation": "hop",
+      "color": "#ddbd91",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "National Folk Museum of Korea, Encyclopedia of Korean Folk Culture: Goblin",
+          "url": "https://folkency.nfm.go.kr/en/topic/detail/1968"
+        }
+      ],
+      "reviewNotes": "Do not equate dokkaebi with Japanese oni or dead humans. Use a distinct Korean-informed silhouette, not a television character.",
+      "originCountry": "KR",
+      "atlasId": "kr"
+    },
+    {
+      "id": "gumiho",
+      "regionId": "KR",
+      "name": "Gumiho",
+      "nativeName": "구미호",
+      "kind": "Nine-tailed fox",
+      "culture": "Korean fox traditions",
+      "shortDescription": "A nine-tailed fox curious about the warmth beyond the lanterns.",
+      "folklore": "The gumiho is the nine-tailed fox of Korean stories, often able to appear human. Different tellings range from frightening encounters to questions about transformation and belonging. It has its own Korean narrative traditions, despite related fox figures elsewhere in East Asia. Our welcoming festival episode is an original adaptation.",
+      "wish": "Be welcomed without hiding every tail.",
+      "story": [
+        {
+          "title": "Behind the lanterns",
+          "text": "The gumiho stood beyond the festival lights, carefully folding nine tails behind a stone wall. The laughter inside sounded inviting, but she wondered how long a welcome would last if anyone noticed them."
+        },
+        {
+          "title": "Nine little bows",
+          "text": "You brought candy tied with nine different ribbons. Instead of asking her to hide, you helped fasten a bow to each tail. Together, they made a small, gently waving procession of their own."
+        },
+        {
+          "title": "A place in the photograph",
+          "text": "When the group gathered for a portrait, everyone moved over to make enough room. The gumiho let her tails unfold and smiled. For this evening, she could belong without leaving herself outside."
+        }
+      ],
+      "peaceLabel": "Room to belong",
+      "prop": "nine festival ribbons",
+      "animation": "sway",
+      "color": "#ece1d5",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "Ministry of Culture, Sports and Tourism, Korea: Gumiho",
+          "url": "https://www.mcst.go.kr/english/policy/kocis/newsView.jsp?pSeq=102"
+        }
+      ],
+      "reviewNotes": "Original gentle individual, not a claim that all traditional gumiho are benevolent. Keep Korean identity distinct from kitsune and Chinese fox figures.",
+      "originCountry": "KR",
+      "atlasId": "kr"
+    },
+    {
+      "id": "bulgasari",
+      "regionId": "KR",
+      "name": "Bulgasari",
+      "nativeName": "불가사리",
+      "kind": "Iron-eating creature",
+      "culture": "Korean bulgasari legends",
+      "shortDescription": "An impossible creature with an appetite for iron.",
+      "folklore": "Bulgasari is an iron-eating creature in Korean legends, with descriptions and origins that vary between tellings. Its growing strength and the difficulty of destroying it are recurring features. The tradition predates modern screen monsters. Our small festival visitor is independently designed and given an original problem involving what to eat.",
+      "wish": "Find a useful home for a very unusual appetite.",
+      "story": [
+        {
+          "title": "The missing bell",
+          "text": "Bulgasari stared guiltily at the empty hook where a little iron bell had hung. It had only wanted a snack. Now nobody knew when the festival's quiet storytelling hour was about to begin."
+        },
+        {
+          "title": "A better supper",
+          "text": "Your candy gift helped start a workshop collection of broken metal scraps. The creature chose from that pile instead of the decorations, while a maker fashioned a wooden chime for the empty hook."
+        },
+        {
+          "title": "Useful at last",
+          "text": "The wooden chime sounded across a tidy workshop. Bulgasari curled up beside its scrap basket, pleased that its strange appetite could help. Tomorrow, it would ask before taking another bite of anything important."
+        }
+      ],
+      "peaceLabel": "A useful kind of strength",
+      "prop": "scrap basket and wooden chime",
+      "animation": "hop",
+      "color": "#b8c4cc",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Academy of Korean Studies, Encyclopedia of Korean Culture: Bulgasari",
+          "url": "https://encykorea.aks.ac.kr/Article/E0024904"
+        }
+      ],
+      "reviewNotes": "Use folklore, not the 1985 film design. The recycling personality and wooden-chime repair are original; never encourage children to eat metal.",
+      "originCountry": "KR",
+      "atlasId": "kr"
+    },
+    {
+      "id": "gaekgwi",
+      "regionId": "KR",
+      "name": "Gaekgwi",
+      "nativeName": "객귀",
+      "kind": "Wandering ghost",
+      "culture": "Korean traditions of spirits away from home",
+      "shortDescription": "A traveler still searching for a familiar doorstep.",
+      "folklore": "Gaekgwi refers to a ghost of someone who died away from home. Korean accounts place these spirits within complex traditions of remembrance, hospitality and care for unsettled dead. They do not all share one story. Our traveler is a fictional individual, and the homecoming scene is an original festival tale.",
+      "wish": "Hear a familiar welcome at the end of the journey.",
+      "story": [
+        {
+          "title": "The blurred address",
+          "text": "The traveler unfolded a paper address so often that its ink had nearly vanished. Every crossroads offered another road, but none sounded like the voice that once called from the doorway at home."
+        },
+        {
+          "title": "A path remembered",
+          "text": "Your candy gift lit a small lantern. In its glow, the traveler remembered details no map contained: a leaning gate, a bowl by the step, and the scent of dinner after rain."
+        },
+        {
+          "title": "You made it home",
+          "text": "Those memories became a quiet path beneath the stars. At its end, a warm doorway opened. The traveler folded the paper for the last time and stepped toward the welcome that had never been forgotten."
+        }
+      ],
+      "peaceLabel": "Rest after the journey",
+      "prop": "folded address and lantern",
+      "animation": "float",
+      "color": "#bbd7df",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "National Folk Museum of Korea, Encyclopedia of Korean Folk Culture: Jerye, p. 217",
+          "url": "https://folkency.nfm.go.kr/api/file/download/dictionary/123"
+        }
+      ],
+      "reviewNotes": "The spirit category is sourced; this individual and reunion are fictional. Do not present the candy animation as a real memorial rite.",
+      "originCountry": "KR",
+      "atlasId": "kr"
+    },
+    {
+      "id": "krahang",
+      "regionId": "SEA",
+      "name": "Krahang",
+      "nativeName": "กระหัง",
+      "kind": "Flying folklore being",
+      "culture": "Thai krahang traditions",
+      "shortDescription": "A night flyer with rice-sieve wings and a very determined wobble.",
+      "folklore": "Krahang appears in Thai folklore as a flying supernatural being associated with household rice-processing tools, especially sieves used as wings. Historical accounts include transformation and possession themes; it is not simply a dead person with wings. Our friendly flyer uses that distinctive equipment in a clearly original festival story.",
+      "wish": "Find a companion for the long flight home.",
+      "story": [
+        {
+          "title": "A solo flight",
+          "text": "Krahang checked the ties on his rice-sieve wings while other guests left in cheerful groups. He knew every gust above the village, but the journey always sounded very quiet once the music faded."
+        },
+        {
+          "title": "A shared breeze",
+          "text": "You offered candy and noticed another traveler waiting for the wind to settle. Krahang slowed his flight to match their walking pace, carrying a little lantern where both of them could see it."
+        },
+        {
+          "title": "The shorter way home",
+          "text": "They followed the same road, one in the air and one below, trading stories at each bend. Nothing about the distance had changed. Yet the flight home felt much shorter with a companion."
+        }
+      ],
+      "peaceLabel": "A companion on the way",
+      "prop": "rice-sieve wings",
+      "animation": "float",
+      "color": "#c9ba87",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Phya Anuman Rajathon, The Phi, Journal of the Siam Society 41.2 (1954)",
+          "url": "https://thesiamsociety.org/wp-content/uploads/1954/03/JSS_041_2c_PhyaAnumanRajathon_ThePhi.pdf"
+        }
+      ],
+      "reviewNotes": "Original sympathetic personality. Rice-sieve imagery is retained; no graphic possession scene or claims about real people.",
+      "originCountry": "TH",
+      "atlasId": "th"
+    },
+    {
+      "id": "phi-kong-koi",
+      "regionId": "SEA",
+      "name": "Phi Kong Koi",
+      "nativeName": "ผีกองกอย",
+      "kind": "Forest being",
+      "culture": "Thai forest folklore",
+      "shortDescription": "A hopping forest caller hoping someone will answer.",
+      "folklore": "Phi Kong Koi is described in Thai forest tales as a small, unusual being associated with a repeated call and hopping movement. Older accounts can be frightening and include harmful encounters. Our festival character retains the forest sound and distinctive movement while telling a new story about a call answered kindly.",
+      "wish": "Hear a friendly answer across the trees.",
+      "story": [
+        {
+          "title": "A call in the trees",
+          "text": "Kong Koi called across the trees at the edge of the lantern parade. The echo always answered in exactly the same voice. After a while, even a very confident forest caller wanted a different reply."
+        },
+        {
+          "title": "Learning the rhythm",
+          "text": "Your candy gift came with a small wooden clapper. You listened carefully, then tapped back the rhythm of the call. Kong Koi paused, surprised to hear an answer that belonged to someone else."
+        },
+        {
+          "title": "An evening chorus",
+          "text": "Soon guests answered with claps, whistles and gentle taps on lantern poles. Kong Koi stayed among the trees, happily leading the rhythm. The forest could remain home without feeling like an empty place."
+        }
+      ],
+      "peaceLabel": "A call answered",
+      "prop": "wooden clapper",
+      "animation": "hop",
+      "color": "#b9c6a2",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "Phya Anuman Rajathon, The Phi, Journal of the Siam Society 41.2 (1954)",
+          "url": "https://thesiamsociety.org/wp-content/uploads/1954/03/JSS_041_2c_PhyaAnumanRajathon_ThePhi.pdf"
+        }
+      ],
+      "reviewNotes": "No blood-drinking imagery; single-leg movement is not a joke. Exclude historical ethnic comparisons and stigmatizing descriptions from source material.",
+      "originCountry": "TH",
+      "atlasId": "th"
+    },
+    {
+      "id": "nang-tani",
+      "regionId": "SEA",
+      "name": "Nang Tani",
+      "nativeName": "นางตานี",
+      "kind": "Tree spirit",
+      "culture": "Thai traditions surrounding kluai tani banana plants",
+      "shortDescription": "A quiet presence among the banana leaves.",
+      "folklore": "Nang Tani is a female spirit associated with a particular kind of banana plant in Thai tradition. Accounts connect her presence to the grove and to local beliefs about living surroundings. She is not a generic wandering corpse. Our story lets her remain with her trees and find peace through care.",
+      "wish": "See her grove treated with care.",
+      "story": [
+        {
+          "title": "A neglected corner",
+          "text": "Nang Tani watched festival visitors hurry past the banana grove. A broken pot and forgotten wrappers lay beneath the leaves. She did not wish to leave, only for someone to notice this place was alive."
+        },
+        {
+          "title": "Care beneath the leaves",
+          "text": "You brought candy as a friendly gift, then helped gather the litter and mend the small garden fence. Nang Tani moved softly between the leaves while neighbors watered the plants around her."
+        },
+        {
+          "title": "Peace in the grove",
+          "text": "As the parade lights dimmed, new shoots stood beside the old stems. Nang Tani remained beneath the broad leaves, exactly where she belonged. The grove was quiet again, and this time it was cared for."
+        }
+      ],
+      "peaceLabel": "Peace in her grove",
+      "prop": "banana leaf",
+      "animation": "sway",
+      "color": "#9ecc9d",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Phya Anuman Rajadhon, Some Siamese Superstitions About Trees and Plants (1961), pp. 62-63",
+          "url": "https://thesiamsociety.org/wp-content/uploads/1961/03/JSS_049_1e_PhyaAnumanRajadhon_SiameseSuperstitionsAboutTreesAndPlants.pdf"
+        }
+      ],
+      "reviewNotes": "Living tree-spirit belief: never depict exorcism, eviction, disappearance or cutting the tree as success. The cleanup episode is original.",
+      "originCountry": "TH",
+      "atlasId": "th"
+    },
+    {
+      "id": "krasue",
+      "regionId": "SEA",
+      "name": "Krasue",
+      "nativeName": "กระสือ",
+      "kind": "Night spirit",
+      "culture": "Thai krasue traditions",
+      "shortDescription": "A floating night visitor softened here into mist and moonlight.",
+      "folklore": "Krasue is a well-known figure in Thai ghost traditions, described with a floating head and frightening bodily features. Those features are softened into light and mist in our artwork. This is an adaptation, not a claim about the original appearance. The gentle festival personality and story are newly imagined.",
+      "wish": "Share one evening without being turned away.",
+      "story": [
+        {
+          "title": "Beyond the bright windows",
+          "text": "Krasue hovered where the lantern light thinned into mist. Through the windows, she could see visitors sharing sweets. Whenever a curtain moved, she drifted farther away before anyone had the chance to speak."
+        },
+        {
+          "title": "A place beside the lantern",
+          "text": "You carried a candy bowl out to the garden and set it beside a low lantern. Then you sat a little distance away. Krasue approached slowly, finding an invitation with no sudden demands."
+        },
+        {
+          "title": "A quiet conversation",
+          "text": "They talked until the lantern burned low, pausing whenever the night breeze moved through the leaves. Krasue still belonged to the mysterious hours, but she now remembered one window where a welcome waited."
+        }
+      ],
+      "peaceLabel": "A welcome in the night",
+      "prop": "mist-lit candy bowl",
+      "animation": "float",
+      "color": "#dfbbc4",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "Phya Anuman Rajathon, The Phi, Journal of the Siam Society 41.2 (1954)",
+          "url": "https://thesiamsociety.org/wp-content/uploads/1954/03/JSS_041_2c_PhyaAnumanRajathon_ThePhi.pdf"
+        }
+      ],
+      "reviewNotes": "Artwork intentionally obscures viscera. Do not call the traditional krasue a harmless lantern spirit or connect the figure to accusations about actual people.",
+      "originCountry": "TH",
+      "atlasId": "th"
+    },
+    {
+      "id": "tikbalang",
+      "regionId": "SEA",
+      "name": "Tikbalang",
+      "nativeName": "Tikbalang",
+      "kind": "Forest creature",
+      "culture": "Philippine tikbalang traditions",
+      "shortDescription": "A tall, horse-headed wanderer who knows every turn in the trail.",
+      "folklore": "Tikbalang are horse-headed beings in Philippine folklore, often associated with wooded places and travelers losing their way. Stories and appearances differ across communities. They are not usually described as the souls of dead humans. Our festival guide starts from the misleading-path motif and imagines choosing to help instead.",
+      "wish": "Guide someone safely to the right path.",
+      "story": [
+        {
+          "title": "One turn too many",
+          "text": "The tikbalang had rearranged the parade signs as a prank. When a small visitor began to cry beside the same tree for the third time, the joke no longer felt especially clever."
+        },
+        {
+          "title": "Putting the signs right",
+          "text": "Your candy gift came with a paintbrush for repairing the arrows. Together, you put each sign back. The tikbalang bent its tall head to hear where the lost visitor had hoped to go."
+        },
+        {
+          "title": "A guide worth following",
+          "text": "At the festival gate, friends rushed forward to greet the returning visitor. The tikbalang waited until everyone was together, then marked the trail with clear arrows. Being trusted felt better than winning a prank."
+        }
+      ],
+      "peaceLabel": "A trusted guide",
+      "prop": "wooden trail sign",
+      "animation": "sway",
+      "color": "#b69b81",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Cultural Center of the Philippines, Sinag 2023: Mythical Folk Creatures",
+          "url": "https://culturalcenter.gov.ph/press-release/sinag-2023-son-et-lumiere-mythical-folk-creatures-cap-ccp-anniversary-highlights/"
+        }
+      ],
+      "reviewNotes": "Retain horse-headed form. The change of behavior is an original story, not a claim about every community's tikbalang tradition.",
+      "originCountry": "PH",
+      "atlasId": "ph"
+    },
+    {
+      "id": "kapre",
+      "regionId": "SEA",
+      "name": "Kapre",
+      "nativeName": "Kapre",
+      "kind": "Tree-dwelling giant",
+      "culture": "Philippine kapre traditions",
+      "shortDescription": "A towering tree dweller looking for a place in the conversation.",
+      "folklore": "Kapre are giant figures associated with large trees in Philippine folklore. Many accounts include smoke or tobacco, features omitted from this family-friendly design. Their imposing scale is part of the storytelling; skin color is not treated as a source of fear. Our festival visitor receives an original wish about company.",
+      "wish": "Join the gathering without leaving the old tree behind.",
+      "story": [
+        {
+          "title": "Too high for the conversation",
+          "text": "From the branches of an old tree, the kapre could hear the festival music but never the quiet jokes beneath it. Every chair was much too small, and nobody thought to look upward."
+        },
+        {
+          "title": "Looking up",
+          "text": "You brought a candy basket and called a greeting into the leaves. The kapre lowered a branch to help string lanterns. Soon the people below realized there was room for everyone around the trunk."
+        },
+        {
+          "title": "Under one tree",
+          "text": "Guests spread blankets while the kapre settled comfortably among the branches. Stories traveled up and down with the candy basket. For once, being the tallest person there did not mean being the farthest away."
+        }
+      ],
+      "peaceLabel": "Company beneath the branches",
+      "prop": "hanging candy basket",
+      "animation": "sway",
+      "color": "#bfa28b",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "Cultural Center of the Philippines, Sinag 2023: Mythical Folk Creatures",
+          "url": "https://culturalcenter.gov.ph/press-release/sinag-2023-son-et-lumiere-mythical-folk-creatures-cap-ccp-anniversary-highlights/"
+        }
+      ],
+      "reviewNotes": "No tobacco promotion, racialized fear or imitation of modern commercial depictions. Tree gathering is original.",
+      "originCountry": "PH",
+      "atlasId": "ph"
+    },
+    {
+      "id": "duwende",
+      "regionId": "SEA",
+      "name": "Duwende",
+      "nativeName": "Duwende",
+      "kind": "Small folklore being",
+      "culture": "Philippine household and landscape traditions",
+      "shortDescription": "A small neighbor asking people to watch where they step.",
+      "folklore": "Duwende are small supernatural beings in Philippine stories and everyday folk beliefs, sometimes associated with homes, earth or particular places. Accounts differ between families and regions, including how people show respect around them. Our character is a fictional festival neighbor; its story does not prescribe a ritual or explain illness.",
+      "wish": "Have a small home noticed and respected.",
+      "story": [
+        {
+          "title": "The smallest doorway",
+          "text": "A parade sign had been planted directly in front of the duwende's tiny doorway. People hurried by without seeing it, while the little resident tried to squeeze a basket through the gap."
+        },
+        {
+          "title": "Making a little space",
+          "text": "You left candy nearby and moved the sign to an open patch of ground. The duwende emerged with a miniature broom, revealing a neat path everyone had mistaken for an empty corner."
+        },
+        {
+          "title": "Neighbors of every size",
+          "text": "By evening, a small painted marker helped visitors give the doorway room. The duwende swept its path and waved to passing guests. A little attention had made the whole neighborhood feel more generous."
+        }
+      ],
+      "peaceLabel": "A home respected",
+      "prop": "tiny broom and doorway",
+      "animation": "hop",
+      "color": "#dec7a1",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "University of Southern California, Digital Folklore Archives: Duwende field accounts",
+          "url": "https://folklore.usc.edu/tag/duwende/"
+        }
+      ],
+      "reviewNotes": "Field accounts represent particular informants, not all Filipinos. Avoid disease causation claims, extermination framing and mockery of living beliefs.",
+      "originCountry": "PH",
+      "atlasId": "ph"
+    },
+    {
+      "id": "santelmo",
+      "regionId": "SEA",
+      "name": "Santelmo",
+      "nativeName": "Santelmo",
+      "kind": "Wandering-light folklore",
+      "culture": "Philippine light stories, including Arteche, Eastern Samar",
+      "shortDescription": "A wandering glow with a story at every bend.",
+      "folklore": "Santelmo appears in Philippine accounts of mysterious lights, with local storytelling giving the glow different meanings. The same name also refers to an electrical light phenomenon in a Filipino dictionary. Our animated visitor follows the folklore motif; it does not claim that natural lights are ghosts or have one universal explanation.",
+      "wish": "Let its light help someone find the way.",
+      "story": [
+        {
+          "title": "A light misunderstood",
+          "text": "Santelmo bobbed beside a dark fork in the footpath. Visitors saw the moving glow and turned away, leaving it alone with the broken sign it had been trying to illuminate all evening."
+        },
+        {
+          "title": "Light on the sign",
+          "text": "Your candy gift drew a few curious visitors closer. Together, you straightened the sign and hung a reflector beneath it. Santelmo hovered nearby until everyone could read the route back to the parade."
+        },
+        {
+          "title": "A friendly landmark",
+          "text": "Soon people pointed toward that corner with relief rather than alarm. Santelmo continued its small wandering dance above the path, pleased that a mysterious light could become a familiar, welcome sight for someone."
+        }
+      ],
+      "peaceLabel": "A light that helps",
+      "prop": "reflective trail marker",
+      "animation": "float",
+      "color": "#98d9d0",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "Orsal, Duran and Ocenar, Wandering Flame: A Narrative Study of Santelmo in Arteche Eastern Samar (2026)",
+          "url": "https://rsisinternational.org/journals/ijriss/view/wandering-flame-a-narrative-study-of-santelmo-in-arteche-eastern-samar/"
+        },
+        {
+          "title": "Diksiyonaryo.ph: Santelmo",
+          "url": "https://diksiyonaryo.ph/search/santelmo"
+        }
+      ],
+      "reviewNotes": "Keep natural phenomenon and belief distinct. Local study supports an Eastern Samar example, not a universal Philippine interpretation.",
+      "originCountry": "PH",
+      "atlasId": "ph"
+    },
+    {
+      "id": "puca",
+      "regionId": "EUR",
+      "name": "Púca",
+      "nativeName": "Púca",
+      "kind": "Shapeshifting spirit",
+      "culture": "Irish folklore",
+      "shortDescription": "A shape-shifter with one last autumn prank to play.",
+      "folklore": "The puca is a shape-shifting being in Irish folklore, sometimes appearing as a horse or another animal. Tales connect it with unpredictable encounters, mischief and the autumn season. It is not simply the ghost of a dead person. Our festival puca has an original wish about finding a welcome after the tricks.",
+      "wish": "Stay for the celebration after the tricks are over.",
+      "story": [
+        {
+          "title": "After the last trick",
+          "text": "The puca turned a fence shadow into a dancing horse, then waited for the laughter to fade. Everyone enjoyed the surprise. Yet nobody thought to ask whether the trickster wanted to stay afterward."
+        },
+        {
+          "title": "An invitation that remains",
+          "text": "You set candy beside a chair, leaving it there through three more transformations. Horse, hare or shaggy visitor, the place was still waiting. At last, the puca stopped testing the invitation."
+        },
+        {
+          "title": "An evening to remember",
+          "text": "It settled by the fire in the shape it liked best that night. Stories replaced tricks, and a cup warmed between its paws. Being unpredictable did not have to mean being alone."
+        }
+      ],
+      "peaceLabel": "Welcome by the fire",
+      "prop": "autumn leaf",
+      "animation": "sway",
+      "color": "#b5b29a",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Fingal County Council: Puca",
+          "url": "https://www.fingal.ie/puca"
+        },
+        {
+          "title": "Government of Ireland, Spirits of Samhain",
+          "url": "https://api.ireland.ie/en/halloween/spirits-of-samhain/"
+        }
+      ],
+      "reviewNotes": "Pronunciation and specific forms vary. The chosen festival individual is original; do not treat Samhain and modern Halloween as identical events.",
+      "originCountry": "IE",
+      "atlasId": "ie"
+    },
+    {
+      "id": "banshee",
+      "regionId": "EUR",
+      "name": "Banshee",
+      "nativeName": "Bean sí",
+      "kind": "Otherworldly messenger",
+      "culture": "Irish banshee traditions",
+      "shortDescription": "A voice of sorrow hoping to be heard with kindness.",
+      "folklore": "The banshee, or bean si, is an otherworldly female figure whose lament can foretell a death in Irish tradition. She is not normally the killer in these stories. Accounts vary in appearance and association with families. Our original festival tale focuses on listening to grief, rather than treating it as something shameful.",
+      "wish": "Have someone listen without running away.",
+      "story": [
+        {
+          "title": "A song nobody stayed for",
+          "text": "The banshee began a low song beyond the lanterns. Guests heard the sorrow in it and hurried away. She was left holding the final note, with nobody to hear what followed."
+        },
+        {
+          "title": "Listening to the whole song",
+          "text": "You placed a candy bowl nearby and sat quietly. This time, she sang the whole melody: the sad beginning, the remembered laughter, and a last verse about keeping someone dear in memory."
+        },
+        {
+          "title": "A softer echo",
+          "text": "Other listeners gathered without asking her to stop feeling sad. The banshee let the final note settle among them. Her voice remained her own, but its echo no longer had to travel alone."
+        }
+      ],
+      "peaceLabel": "Sorrow heard with kindness",
+      "prop": "silver comb",
+      "animation": "float",
+      "color": "#d8d9e1",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "Government of Ireland, Spirits of Samhain",
+          "url": "https://api.ireland.ie/en/halloween/spirits-of-samhain/"
+        },
+        {
+          "title": "Tourism Ireland, The Irish Creatures and Legends that Inhabit Halloween",
+          "url": "https://www.tourismireland.com/international/en-us/news-releases/article/the-irish-creatures-and-legends-that-inhabit-halloween2"
+        }
+      ],
+      "reviewNotes": "Do not turn a death messenger into a murderer, or promise grief is cured by candy. The listening scene is an original story.",
+      "originCountry": "IE",
+      "atlasId": "ie"
+    },
+    {
+      "id": "dullahan",
+      "regionId": "EUR",
+      "name": "Dullahan",
+      "nativeName": "Dullahan",
+      "kind": "Headless rider",
+      "culture": "Irish folklore",
+      "shortDescription": "A shadowy rider bringing a very dramatic entrance.",
+      "folklore": "The dullahan is a headless rider in Irish folklore, traditionally associated with death and frightening nighttime journeys. It is a distinct figure, not another name for the American Sleepy Hollow horseman. Our festival silhouette removes graphic details, while its gentler journey is openly presented as an original imaginative departure.",
+      "wish": "Reach a destination where the ride can finally pause.",
+      "story": [
+        {
+          "title": "The endless road",
+          "text": "The dullahan rode through every lantern arch without stopping. The horse knew the rhythm of the road so well that even a quiet patch of grass felt like an unfamiliar kind of place."
+        },
+        {
+          "title": "A lantern at the gate",
+          "text": "You hung a candy basket beside a stable gate and opened it wide. There was no challenge waiting inside, only fresh water for the horse and a place out of the wind."
+        },
+        {
+          "title": "The road can wait",
+          "text": "Hoofbeats slowed, then stopped. The dullahan rested beneath the stable roof while the horse breathed softly beside the lantern. For this one gentle festival night, the long road did not need an answer."
+        }
+      ],
+      "peaceLabel": "A pause after the journey",
+      "prop": "bridle lantern",
+      "animation": "sway",
+      "color": "#a6b7bb",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Tourism Ireland, The Irish Creatures and Legends that Inhabit Halloween",
+          "url": "https://www.tourismireland.com/international/en-us/news-releases/article/the-irish-creatures-and-legends-that-inhabit-halloween2"
+        }
+      ],
+      "reviewNotes": "Keep non-graphic headless silhouette; omit violent traditional implements. Original peaceful episode does not redefine the traditional death association.",
+      "originCountry": "IE",
+      "atlasId": "ie"
+    },
+    {
+      "id": "merrow",
+      "regionId": "EUR",
+      "name": "Merrow",
+      "nativeName": "Murúch",
+      "kind": "Sea being",
+      "culture": "Irish coastal folklore",
+      "shortDescription": "A sea visitor listening for the sound of home.",
+      "folklore": "Merrows are sea beings in Irish folklore, related to mermaid and merman traditions. Some accounts give them a special cap or garment that allows return beneath the waves. Such objects and relationships differ between versions. Our story centers the merrow's choice to return home, without romanticizing confinement or stolen belongings.",
+      "wish": "Return to the sea when the celebration is done.",
+      "story": [
+        {
+          "title": "The missing sea-cap",
+          "text": "The merrow loved the music on shore, but her sea-cap had slipped beneath a festival bench. As the tide changed, the sound of home seemed to move farther away with every wave."
+        },
+        {
+          "title": "Returned without a bargain",
+          "text": "You brought candy for the search party. Together, you found the cap beneath a fallen ribbon and handed it back without asking for a promise. The merrow held it close, visibly relieved."
+        },
+        {
+          "title": "A farewell freely chosen",
+          "text": "At the water's edge, she turned to wave before slipping beneath the moonlit surface. Tomorrow she might visit again, or remain with her own people. Either way, the choice was safely hers."
+        }
+      ],
+      "peaceLabel": "Home beneath the waves",
+      "prop": "sea-cap",
+      "animation": "float",
+      "color": "#a8d0c8",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "National Parks and Wildlife Service Ireland, Myths and Folklore, Merrow, p. 4",
+          "url": "https://www.nationalparks.ie/app/uploads/2022/08/NPW01_House-Book_FINAL-TO-PRINT_090306.pdf"
+        }
+      ],
+      "reviewNotes": "Use the cap tradition cited in the source; no forced marriage, stolen clothing romance, or assumption that sea beings are drowned humans.",
+      "originCountry": "IE",
+      "atlasId": "ie"
+    },
+    {
+      "id": "brownie",
+      "regionId": "GB",
+      "name": "Brownie",
+      "nativeName": "Brownie",
+      "kind": "Household spirit",
+      "culture": "Scottish household folklore",
+      "shortDescription": "A quiet household helper who works long after everyone sleeps.",
+      "folklore": "Brownies are household beings in Scottish folklore, associated with work performed while people sleep. Stories describe complex expectations around appreciation and gifts, and a household can lose its helper through offense. Our festival story is a new, gentle episode about noticing unseen labor, not instructions for performing a traditional offering.",
+      "wish": "Have its quiet work noticed.",
+      "story": [
+        {
+          "title": "Before anyone arrived",
+          "text": "The brownie had swept the hall, straightened the chairs and polished every lantern before the first guest arrived. Everyone admired the welcoming room. Nobody wondered who had made it that way."
+        },
+        {
+          "title": "A note on the table",
+          "text": "You left candy beside a handwritten note thanking the quiet helper. The brownie read it twice, then found that someone else had already carried the heavy broom back to its usual corner."
+        },
+        {
+          "title": "The work can wait",
+          "text": "For the first time that evening, the brownie sat down while the room was still full of light. Guests made space at the table. A clean hall was lovely; being noticed was lovelier."
+        }
+      ],
+      "peaceLabel": "A quiet thank-you",
+      "prop": "small broom",
+      "animation": "hop",
+      "color": "#c5b194",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Historic Environment Scotland, Supernatural Creatures in Scottish Folklore",
+          "url": "https://blog.historicenvironment.scot/2018/10/supernatural-creatures-scottish-folklore/"
+        }
+      ],
+      "reviewNotes": "Traditional gift taboos vary. The candy gift is a game mechanic, not a culturally authoritative brownie ritual.",
+      "originCountry": "GB",
+      "atlasId": "gb"
+    },
+    {
+      "id": "kelpie",
+      "regionId": "GB",
+      "name": "Kelpie",
+      "nativeName": "Kelpie",
+      "kind": "Water spirit",
+      "culture": "Scottish freshwater folklore",
+      "shortDescription": "A water horse with moonlight caught in its mane.",
+      "folklore": "Kelpies are shape-shifting water beings in Scottish folklore, commonly taking a horse-like form. Traditional stories warn of dangerous encounters around rivers and lochs. They are not ordinary horses or automatically human ghosts. Our friendly festival episode is an original alternative that retains the water setting while emphasizing a safe crossing.",
+      "wish": "Help a traveler cross without fear.",
+      "story": [
+        {
+          "title": "Beside the old crossing",
+          "text": "The kelpie stood beside an old crossing and watched travelers choose a much longer road. Moonlight shone on its mane, but no one trusted the path that ran close to the dark water."
+        },
+        {
+          "title": "Keeping to the bank",
+          "text": "You brought candy to the bridge repair crew. The kelpie stayed on the bank, carrying dry planks where they were needed and waiting while the railing was made sturdy enough for everyone."
+        },
+        {
+          "title": "A safer way across",
+          "text": "When the repaired bridge opened, travelers crossed together above the current. The kelpie watched from a respectful distance. In this small story, the water horse had found a way to help without asking anyone to follow it in."
+        }
+      ],
+      "peaceLabel": "A crossing made safe",
+      "prop": "river reed",
+      "animation": "sway",
+      "color": "#9fbdc8",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "VisitScotland, Scottish Myths and Legends",
+          "url": "https://www.visitscotland.com/things-to-do/culture-history/myths-legends"
+        }
+      ],
+      "reviewNotes": "Traditional warning remains explicit. Never depict entering unfamiliar water, riding the creature or ignoring water safety as a rewarded action.",
+      "originCountry": "GB",
+      "atlasId": "gb"
+    },
+    {
+      "id": "selkie",
+      "regionId": "GB",
+      "name": "Selkie",
+      "nativeName": "Selkie",
+      "kind": "Seal shapeshifter",
+      "culture": "Scottish island traditions, including Orkney and Shetland",
+      "shortDescription": "A seal shape-shifter whose home lies beyond the shore.",
+      "folklore": "Selkie stories from Scottish islands and other North Atlantic communities tell of seals able to take human form. Their seal skins often determine whether they can return to the sea. Many tales involve loss or coercion. Our festival story values returning belongings and respecting the selkie's freedom to leave.",
+      "wish": "Choose the sea without losing a friend on shore.",
+      "story": [
+        {
+          "title": "A coat beside the window",
+          "text": "The selkie had left her seal skin beside a festival window, then returned to find it hidden under borrowed coats. The music continued, but she could not relax without knowing where it was."
+        },
+        {
+          "title": "Keeping a promise",
+          "text": "You offered candy while helping search each careful pile. When the skin appeared, you handed it straight back. The selkie folded it over her arm, grateful that friendship had not become another condition."
+        },
+        {
+          "title": "Friends across the tide",
+          "text": "She returned to the sea beneath a sky full of small stars. From the shore, you waved without asking her to stay. Later, a seal raised its head beyond the breakers and answered."
+        }
+      ],
+      "peaceLabel": "Freedom to return",
+      "prop": "seal skin",
+      "animation": "sway",
+      "color": "#b5c6cb",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "VisitScotland, Scottish Myths and Legends",
+          "url": "https://www.visitscotland.com/things-to-do/culture-history/myths-legends"
+        }
+      ],
+      "reviewNotes": "Do not romanticize stealing skins or forced marriage. Keep island specificity; selkies are not simply drowned human ghosts.",
+      "originCountry": "GB",
+      "atlasId": "gb"
+    },
+    {
+      "id": "boggart",
+      "regionId": "GB",
+      "name": "Boggart",
+      "nativeName": "Boggart",
+      "kind": "Household and landscape being",
+      "culture": "Northern English folklore, including Lancashire and Yorkshire",
+      "shortDescription": "An elusive troublemaker hiding in the places people overlook.",
+      "folklore": "Boggart is a name used for varied uncanny beings in northern English folklore. Stories attach them to houses, lanes or particular landscape features, with appearances and behavior changing by locality. There is no single universal form. Our troublesome little festival resident draws on regional folklore rather than a modern fantasy franchise.",
+      "wish": "Have a corner that nobody tries to take away.",
+      "story": [
+        {
+          "title": "The noisy cupboard",
+          "text": "The boggart rattled the cupboard whenever someone reached for a cup. Guests called it another prank, but inside the cramped space sat a carefully folded blanket that kept getting covered in festival supplies."
+        },
+        {
+          "title": "A corner of its own",
+          "text": "You brought candy and moved the spare cups to an empty shelf. Then you left a small sign beside the blanket. The boggart inspected the new arrangement with enormous suspicion and one hopeful eye."
+        },
+        {
+          "title": "Quiet after the party",
+          "text": "That night, the cupboard stayed quiet. The boggart had not become perfectly polite, but it no longer needed to rattle every cup to be noticed. A small, respected corner was enough for now."
+        }
+      ],
+      "peaceLabel": "A corner to call home",
+      "prop": "cupboard key",
+      "animation": "hop",
+      "color": "#b9a4bd",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "Visit Manchester, Greater Manchester Boggart Traditions",
+          "url": "https://www.visitmanchester.com/ideas-and-inspiration/blog/post/magical-stories-mysterious-landscapes-and-greater-manchester-s-boggart-problem-dr-oliver-bishop-tells-all/"
+        }
+      ],
+      "reviewNotes": "No Harry Potter fear-transformation rule or visual references. The cupboard individual is original, not a universal boggart definition.",
+      "originCountry": "GB",
+      "atlasId": "gb"
+    },
+    {
+      "id": "headless-horseman",
+      "regionId": "NAM",
+      "name": "Headless Horseman",
+      "nativeName": "Headless Horseman",
+      "kind": "Literary ghost",
+      "culture": "Washington Irving's Sleepy Hollow, New York",
+      "shortDescription": "A famous nighttime rider, here carrying a friendly pumpkin glow.",
+      "folklore": "The Headless Horseman in Washington Irving's The Legend of Sleepy Hollow belongs to a literary tale shaped by local storytelling. Later art and films add their own details. Our independently designed pumpkin-lit rider evokes the Halloween image without copying a screen version, and its peaceful ending is an original festival invention.",
+      "wish": "Reach the bridge without another chase.",
+      "story": [
+        {
+          "title": "A familiar bridge",
+          "text": "Every time the horseman neared the bridge, the festival guests scattered before the first greeting. The horse slowed at the empty crossing, where a perfectly good evening always seemed to turn into another chase."
+        },
+        {
+          "title": "A different welcome",
+          "text": "You placed a candy basket on the bridge rail and raised a lantern in greeting. The rider stopped. For once, there was no pursuit to continue, only someone willing to share the quiet view."
+        },
+        {
+          "title": "The gentle ride back",
+          "text": "After a long pause, the horse turned toward the lantern-lit road home. Its hoofbeats sounded almost like part of the music. The bridge remained peaceful, with enough room for another kind of story."
+        }
+      ],
+      "peaceLabel": "A peaceful crossing",
+      "prop": "glowing pumpkin",
+      "animation": "sway",
+      "color": "#e8aa70",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Smithsonian National Museum of American History, Illustrating Ichabod",
+          "url": "https://www.americanhistory.si.edu/explore/stories/illustrating-ichabod"
+        }
+      ],
+      "reviewNotes": "No gore, neck wounds or Disney likeness. Do not claim this invented resolution is Irving's ending or an established local belief.",
+      "originCountry": "US",
+      "atlasId": "us"
+    },
+    {
+      "id": "jersey-devil",
+      "regionId": "NAM",
+      "name": "Jersey Devil",
+      "nativeName": "Jersey Devil",
+      "kind": "Regional folklore creature",
+      "culture": "New Jersey Pine Barrens folklore",
+      "shortDescription": "A winged Pine Barrens mystery with a shy streak.",
+      "folklore": "The Jersey Devil is a creature of New Jersey's Pine Barrens folklore, described through changing accounts and reported encounters. Wings, hooves and an unusual head appear in familiar depictions. Its stories are legend rather than verified natural history. Our festival visitor is a new, gentle character inspired by that regional tradition.",
+      "wish": "Be more than the rumor that arrives first.",
+      "story": [
+        {
+          "title": "A rumor with wings",
+          "text": "By the time the Jersey Devil reached the parade, three different rumors had arrived ahead of it. None mentioned that it had spent the afternoon rescuing a lantern tangled high in a pine tree."
+        },
+        {
+          "title": "A small introduction",
+          "text": "You offered candy and asked about the lantern in its claws. The creature demonstrated one careful flap, then set the light safely beside the path. Nearby guests finally had something real to talk about."
+        },
+        {
+          "title": "Known by a kindness",
+          "text": "That night, people remembered a winged visitor who helped with the lights. The Pine Barrens still held plenty of mysteries, but one rumor had made room for a simple, welcome act of kindness."
+        }
+      ],
+      "peaceLabel": "Known beyond the rumor",
+      "prop": "rescued pine lantern",
+      "animation": "float",
+      "color": "#b5a0bd",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "New Jersey Pinelands Commission, Jersey Devil",
+          "url": "https://www.nj.gov/pinelands/infor/educational/facts/jerseydevil.shtml"
+        }
+      ],
+      "reviewNotes": "Do not present legends about a real family or childbirth as fact, or use disability as a monstrous trait.",
+      "originCountry": "US",
+      "atlasId": "us"
+    },
+    {
+      "id": "jackalope",
+      "regionId": "NAM",
+      "name": "Jackalope",
+      "nativeName": "Jackalope",
+      "kind": "Tall-tale animal",
+      "culture": "Western United States tall tales",
+      "shortDescription": "An antlered rabbit with a talent for a wonderfully unlikely story.",
+      "folklore": "The jackalope is an antlered rabbit of American tall tales and novelty traditions, strongly associated with the western United States. It is a humorous invented animal, not a confirmed species or a human ghost. Our festival story celebrates that playful storytelling while keeping imagination separate from claims about real wildlife.",
+      "wish": "Tell a small story that is enough on its own.",
+      "story": [
+        {
+          "title": "The biggest adventure",
+          "text": "The jackalope had told so many enormous stories that it could barely remember which mountain it claimed to have jumped. Now the other guests wanted another adventure, and it felt unexpectedly tired."
+        },
+        {
+          "title": "A smaller true moment",
+          "text": "You shared candy and asked about something good that had happened today. The jackalope admitted it had found a shady spot for a thirsty bird. No impossible leap, no mountain, just a little help."
+        },
+        {
+          "title": "Enough for an evening",
+          "text": "The listeners smiled at that small story. The jackalope relaxed its splendid antlers against a cushion, relieved. There would always be room for tall tales, but it did not need to be extraordinary every minute."
+        }
+      ],
+      "peaceLabel": "A small story is enough",
+      "prop": "desert flower",
+      "animation": "hop",
+      "color": "#d4be9b",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Zoo Atlanta, Are Jackalopes Real?",
+          "url": "https://zooatlanta.org/are-jackalopes-real/"
+        }
+      ],
+      "reviewNotes": "Clearly identify tall-tale animal. Do not label it an ancient Indigenous belief or a real biological species.",
+      "originCountry": "US",
+      "atlasId": "us"
+    },
+    {
+      "id": "hidebehind",
+      "regionId": "NAM",
+      "name": "Hidebehind",
+      "nativeName": "Hidebehind",
+      "kind": "Tall-tale creature",
+      "culture": "North American lumber-camp folklore",
+      "shortDescription": "A forest mystery always one tree away from being seen.",
+      "folklore": "The hidebehind belongs to the exaggerated creatures of North American lumber-camp storytelling. Its defining trick is slipping behind trees or other cover before anyone can get a clear look. The tales can be frightening, but they are folklore, not wildlife reports. Our shy festival version receives an original, friendly invitation.",
+      "wish": "Be included without being forced into the spotlight.",
+      "story": [
+        {
+          "title": "One tree farther away",
+          "text": "Whenever the group moved toward the hidebehind, it slipped behind another tree. Soon it stood at the far edge of the festival, close enough to hear the music but too far to feel included."
+        },
+        {
+          "title": "An invitation without a crowd",
+          "text": "You left candy at a quiet picnic table and sat facing the lanterns instead of the trees. Nobody called for a performance. After a while, a long, careful shadow appeared beside the spare chair."
+        },
+        {
+          "title": "Company at its own pace",
+          "text": "The hidebehind stayed half hidden, listening while the others traded stories. That was enough for tonight. Friendship had arrived without demanding a grand entrance or a clear view of every mysterious detail."
+        }
+      ],
+      "peaceLabel": "Included at its own pace",
+      "prop": "pine branch",
+      "animation": "sway",
+      "color": "#a9b4a0",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "PBS Monstrum, Why Lumberjacks Never Look Behind Them",
+          "url": "https://www.pbs.org/video/why-lumberjacks-never-look-behind-them-nstnmj/"
+        }
+      ],
+      "reviewNotes": "Use lumber-camp provenance, not generic Native American mythology. No predation imagery; social shyness is not portrayed as something requiring a cure.",
+      "originCountry": "US",
+      "atlasId": "us"
+    },
+    {
+      "id": "la-planchada",
+      "regionId": "MX",
+      "name": "La Planchada",
+      "nativeName": "La Planchada",
+      "kind": "Local ghost legend",
+      "culture": "Mexican hospital folklore",
+      "shortDescription": "A ghostly nurse remembered for a carefully pressed uniform.",
+      "folklore": "La Planchada is a nurse figure in Mexican hospital legends, often recognized by a neatly pressed uniform. Different accounts give her different histories and encounters. These are stories, not evidence of supernatural medical care. Our fictional festival episode imagines a thank-you for a caregiver without identifying an actual nurse or patient.",
+      "wish": "Receive a thank-you that never found its way to her.",
+      "story": [
+        {
+          "title": "The unsent cards",
+          "text": "La Planchada straightened a folded cloth at the quiet end of the festival. Nearby lay a box of thank-you cards that had never reached their recipients, each one carefully written and then forgotten."
+        },
+        {
+          "title": "A message finds its place",
+          "text": "Your candy gift helped bring people together to read and deliver the cards. One simply thanked whoever had once stayed through a frightening night. La Planchada paused with the envelope in her hands."
+        },
+        {
+          "title": "A moment to rest",
+          "text": "She placed the card beside a vase of paper flowers and sat down. The uniform remained perfectly neat, but her hands finally rested in her lap. Someone had remembered the kindness behind the work."
+        }
+      ],
+      "peaceLabel": "Care remembered",
+      "prop": "pressed cloth and thank-you card",
+      "animation": "float",
+      "color": "#c1d9d7",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Universidad Nacional Autonoma de Mexico, La Planchada folklore research",
+          "url": "https://datosabiertos.unam.mx/FFyL%3ARU-UNAM%3A57372"
+        }
+      ],
+      "reviewNotes": "No medical advice, miracle-cure claims or identifying a real deceased nurse as the legend. The recipient and cards are original.",
+      "originCountry": "MX",
+      "atlasId": "mx"
+    },
+    {
+      "id": "la-pascualita",
+      "regionId": "MX",
+      "name": "La Pascualita",
+      "nativeName": "La Pascualita",
+      "kind": "Local mannequin legend",
+      "culture": "Chihuahua, Mexico",
+      "shortDescription": "A bridal-shop mannequin that seems to notice the world outside.",
+      "folklore": "La Pascualita is the subject of a modern local legend in Chihuahua about an unusually lifelike bridal-shop mannequin. Stories say it changes expression or moves; sensational claims about its material are unverified. Our independent design treats it as a legendary animated mannequin, with a new festival story rather than a factual biography.",
+      "wish": "See the celebration from beyond the window.",
+      "story": [
+        {
+          "title": "Behind the glass",
+          "text": "La Pascualita watched guests pass the shop window on their way to the parade. The reflections made the street look almost close enough to touch, while her display remained perfectly still and carefully arranged."
+        },
+        {
+          "title": "An open invitation",
+          "text": "You left candy and an invitation beside the window. In this imagined evening, the shop door swung open and a ribbon fluttered toward the music. The mannequin took one small, astonished step."
+        },
+        {
+          "title": "A dance of her own",
+          "text": "Under the lanterns, her skirt turned through a gentle dance. When she returned to the window, the street looked different. It now held a memory she had chosen, rather than a view she could only watch."
+        }
+      ],
+      "peaceLabel": "Beyond the window",
+      "prop": "bridal ribbon",
+      "animation": "sway",
+      "color": "#e8dfce",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "Secretaria de Educacion Publica, Leyendas aqui y alla",
+          "url": "https://nuevaescuelamexicana.sep.gob.mx/contenido/coleccion/leyendas-aqui-y-alla/"
+        }
+      ],
+      "reviewNotes": "Do not assert preserved remains or copy the actual shop mannequin likeness. Legendary movement is attributed as a story, not fact.",
+      "originCountry": "MX",
+      "atlasId": "mx"
+    },
+    {
+      "id": "la-mulata-de-cordoba",
+      "regionId": "MX",
+      "name": "La Mulata de Córdoba",
+      "nativeName": "La Mulata de Córdoba",
+      "kind": "Legendary person",
+      "culture": "Córdoba, Veracruz, Mexico",
+      "shortDescription": "A woman of legend who finds freedom in a painted boat.",
+      "folklore": "La Mulata de Cordoba is a legendary woman associated with accusations, confinement and escape on a boat she draws. The name belongs to the historical story, whose versions reflect racial and social prejudice. She is not necessarily a ghost. Our original continuation follows freedom and self-determination without repeating the accusations as truth.",
+      "wish": "Arrive somewhere she can live without a borrowed accusation.",
+      "story": [
+        {
+          "title": "A boat on the wall",
+          "text": "The traveler studied the little boat she had drawn, wondering what kind of shore lay beyond it. Leaving an unfair story behind was one thing; imagining a life beyond that story felt much larger."
+        },
+        {
+          "title": "A destination she chooses",
+          "text": "You offered candy and a clean page for a map. She drew a harbor with an open workshop, a garden, and space for a name written in her own hand beside the door."
+        },
+        {
+          "title": "A shore of her own",
+          "text": "The painted boat carried her toward that imagined harbor. On arrival, she opened the workshop window and let the sea air in. The next chapter would begin with her choices, rather than someone else's fear."
+        }
+      ],
+      "peaceLabel": "A life of her own",
+      "prop": "painted boat",
+      "animation": "float",
+      "color": "#d5ad8b",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Secretaria de Educacion Publica, Multiples Lenguajes, second grade, accessible edition",
+          "url": "https://conocetuslibros.sep.gob.mx/storage/recursos/formato_accesible/mLvCWQrQ44-primaria_2g_fa_multipleslenguajes.pdf"
+        }
+      ],
+      "reviewNotes": "Historical racial label is retained only as the established character title. No exoticization or suggestion that ancestry causes supernatural evil; avoid factual biographical claims.",
+      "artNote": "Our game shows this legendary woman through an enchanted drawn boat: a story-object avatar, not a traditional portrait.",
+      "originCountry": "MX",
+      "atlasId": "mx"
+    },
+    {
+      "id": "el-charro-negro",
+      "regionId": "MX",
+      "name": "El Charro Negro",
+      "nativeName": "El Charro Negro",
+      "kind": "Supernatural rider",
+      "culture": "Mexican regional legends",
+      "shortDescription": "A darkly dressed rider at the crossroads of a cautionary tale.",
+      "folklore": "El Charro Negro appears in Mexican legends as a darkly dressed horseman, often linked with temptation, dangerous bargains or the devil. Local versions differ. He is not simply a kindly deceased rider. Our festival episode is a deliberately gentler original scene, with no bargains for souls or promises of easy wealth.",
+      "wish": "Finish one journey without making a bargain.",
+      "story": [
+        {
+          "title": "The waiting crossroads",
+          "text": "The rider waited at the crossroads with a gleaming coin in one hand. Guests passed carefully around him. The old routine offered plenty of attention, but never the simple company of another traveler."
+        },
+        {
+          "title": "Nothing asked in return",
+          "text": "You set down a candy bowl and asked whether the horse needed water. There was no wager, secret price or promised fortune. The rider put away the coin before accepting the small kindness."
+        },
+        {
+          "title": "One peaceful departure",
+          "text": "When the lanterns dimmed, he led the horse down the open road without offering anyone a deal. This was only one imagined night, but for once the crossroads held a farewell instead of a warning."
+        }
+      ],
+      "peaceLabel": "A journey without a bargain",
+      "prop": "black hat and riding lantern",
+      "animation": "sway",
+      "color": "#b2b2c6",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "Secretaria de Educacion Publica, Leyendas aqui y alla",
+          "url": "https://nuevaescuelamexicana.sep.gob.mx/contenido/coleccion/leyendas-aqui-y-alla/"
+        },
+        {
+          "title": "Instituto Municipal de Planeacion de Guanajuato, Intangible Heritage Inventory",
+          "url": "https://www.implanguanajuato.gob.mx/wp-content/uploads/2021/10/V.-Fichas-patrimonio-intangible-001-058.pdf"
+        }
+      ],
+      "reviewNotes": "Preserve the cautionary background. Original compassionate episode does not assert redemption of a religious entity or invite occult bargains.",
+      "artNote": "Our game shows the mysterious rider through his black hat and a horseshoe: a story-object avatar, not a traditional portrait.",
+      "originCountry": "MX",
+      "atlasId": "mx"
+    },
+    {
+      "id": "saci",
+      "regionId": "BR",
+      "name": "Saci",
+      "nativeName": "Saci",
+      "kind": "Folklore trickster",
+      "culture": "Brazilian Saci traditions",
+      "shortDescription": "A red-capped trickster arriving on a little whirlwind.",
+      "folklore": "Saci is a well-known Brazilian folklore figure associated with a red cap, one leg and whirlwind mischief. The tradition has developed through several cultural influences and many retellings. Our design omits smoking and treats the single leg as an ordinary part of the character, with an original story about sharing a joke.",
+      "wish": "Make a joke that everyone can enjoy.",
+      "story": [
+        {
+          "title": "The runaway ribbons",
+          "text": "Saci sent the parade ribbons spinning into a magnificent whirlwind. The effect was spectacular until a careful lantern-maker watched her whole afternoon's work fly beyond the roof and disappear into the dark."
+        },
+        {
+          "title": "Putting the fun back",
+          "text": "Your candy gift helped gather a repair party. Saci brought the ribbons back one at a time, then asked the maker which ones she wanted in the next trick instead of deciding for her."
+        },
+        {
+          "title": "A joke shared together",
+          "text": "With everyone ready, a smaller whirlwind lifted the chosen ribbons into a bright spiral. This time, the lantern-maker laughed too. Saci discovered that permission could make a prank more wonderful, rather than less."
+        }
+      ],
+      "peaceLabel": "Mischief shared kindly",
+      "prop": "red cap and ribbon",
+      "animation": "hop",
+      "color": "#d8a28d",
+      "atlasRow": 0,
+      "sources": [
+        {
+          "title": "Camara dos Deputados, Plenarinho: Personagens do Folclore Brasileiro",
+          "url": "https://plenarinho.leg.br/index.php/2018/08/personagens-folclore-brasileiro/"
+        }
+      ],
+      "reviewNotes": "No tobacco or disability joke. Avoid flattening Brazil's diverse Indigenous, African and European influences into one fixed origin claim.",
+      "artNote": "Our game shows Saci through a red cap and a little whirlwind: a story-object avatar, not a traditional portrait.",
+      "originCountry": "BR",
+      "atlasId": "br"
+    },
+    {
+      "id": "curupira",
+      "regionId": "BR",
+      "name": "Curupira",
+      "nativeName": "Curupira",
+      "kind": "Forest guardian",
+      "culture": "Brazilian folklore with Indigenous roots",
+      "shortDescription": "A forest guardian whose footprints point the unexpected way.",
+      "folklore": "Curupira is a forest-protecting figure in Brazilian folklore with Indigenous roots. Backward-facing feet are a familiar feature, connected in many tellings with confusing those who harm the forest. Traditions differ between communities. Our festival story keeps the guardian in the forest; finding peace means restoring care, not removing its presence.",
+      "wish": "See new life grow along a damaged trail.",
+      "story": [
+        {
+          "title": "Footprints in the clearing",
+          "text": "Curupira inspected a patch of bare ground beside the festival trail. Backward footprints looped around it, but confusing careless visitors had not brought back the shade that the small clearing once held."
+        },
+        {
+          "title": "A promise in the soil",
+          "text": "You brought candy for a planting group and asked where the path should go. Curupira guided everyone around the tender ground while neighbors placed young plants where they would have room to grow."
+        },
+        {
+          "title": "A forest worth guarding",
+          "text": "By evening, the trail curved gently around the new planting. Curupira remained among the trees, watching over the quiet work. The forest still needed its guardian, but the guardian no longer worked entirely alone."
+        }
+      ],
+      "peaceLabel": "The forest cared for",
+      "prop": "young forest plant",
+      "animation": "sway",
+      "color": "#b4c58d",
+      "atlasRow": 1,
+      "sources": [
+        {
+          "title": "Secretaria Municipal de Educacao de Goiania, Folclore",
+          "url": "https://sme.goiania.go.gov.br/conexaoescola/ensino_fundamental/folclore/"
+        }
+      ],
+      "reviewNotes": "Indigenous roots must remain visible without claiming all communities share one account. No exorcism, disappearance, sacred costume copying or foot-based ridicule.",
+      "originCountry": "BR",
+      "atlasId": "br"
+    },
+    {
+      "id": "boitata",
+      "regionId": "BR",
+      "name": "Boitatá",
+      "nativeName": "Boitatá",
+      "kind": "Fiery forest being",
+      "culture": "Brazilian folklore with Indigenous roots",
+      "shortDescription": "A flowing ribbon of fire from stories of the land.",
+      "folklore": "Boitata is a fiery being in Brazilian folklore, often imagined as a luminous serpent and associated in many retellings with protecting fields or forests. Its name and stories have Indigenous roots, with regional variations. Our glowing festival character is not a dead person; its original ending concerns a landscape cared for.",
+      "wish": "Watch over a landscape without standing guard alone.",
+      "story": [
+        {
+          "title": "The tired glow",
+          "text": "Boitatá traced a bright loop around a dry patch of land. It had spent the evening watching every drifting spark, while the nearby festival glowed with so many lights that nobody noticed its careful work."
+        },
+        {
+          "title": "Others take care",
+          "text": "Your candy gift brought the organizers over to listen. They moved open flames away from dry plants and checked the lanterns together. Boitatá watched as the work became something the whole gathering shared."
+        },
+        {
+          "title": "A gentler light",
+          "text": "When everything was safe, the luminous serpent rested in a soft curve beside the trees. Its glow remained, but no longer burned with urgency. Care for the land had become everyone's responsibility for the night."
+        }
+      ],
+      "peaceLabel": "A landscape watched together",
+      "prop": "gentle firelight",
+      "animation": "float",
+      "color": "#edba72",
+      "atlasRow": 2,
+      "sources": [
+        {
+          "title": "Secretaria Municipal de Educacao de Goiania, Folclore",
+          "url": "https://sme.goiania.go.gov.br/conexaoescola/ensino_fundamental/folclore/"
+        }
+      ],
+      "reviewNotes": "The safety-oriented episode is original. No invitation to approach wildfires or claim that supernatural protection replaces fire precautions.",
+      "originCountry": "BR",
+      "atlasId": "br"
+    },
+    {
+      "id": "cuca",
+      "regionId": "BR",
+      "name": "Cuca",
+      "nativeName": "Cuca",
+      "kind": "Folklore bogey figure",
+      "culture": "Brazilian Cuca traditions",
+      "shortDescription": "A famous nighttime fright trying out a gentler bedtime story.",
+      "folklore": "Cuca appears in Brazilian folklore and lullaby traditions as a frightening figure used in warnings to children. Its appearance has changed across storytelling, literature and television. Our independently designed festival character does not copy a modern screen costume. The original ending imagines choosing to tell a reassuring story instead of frightening someone.",
+      "wish": "Be remembered for a comforting story.",
+      "story": [
+        {
+          "title": "The empty story circle",
+          "text": "Cuca had prepared an impressive scary tale, complete with a thunderous voice. But the youngest listeners drifted away before the ending. An empty circle of cushions was not the audience she had hoped for."
+        },
+        {
+          "title": "A different first line",
+          "text": "You shared candy and asked for a story about a small creature finding its way home. Cuca tried a quieter voice. This time, curious listeners returned, carrying their cushions closer to hear what happened next."
+        },
+        {
+          "title": "Stay for one more page",
+          "text": "The tale ended with a warm doorway and someone waiting inside. Cuca looked around at the peaceful faces and began another story. Being invited back felt better than being the reason somebody hurried away."
+        }
+      ],
+      "peaceLabel": "A gentler story to tell",
+      "prop": "storybook",
+      "animation": "sway",
+      "color": "#b1bc96",
+      "atlasRow": 3,
+      "sources": [
+        {
+          "title": "Camara dos Deputados, Plenarinho: Personagens do Folclore Brasileiro",
+          "url": "https://plenarinho.leg.br/index.php/2018/08/personagens-folclore-brasileiro/"
+        }
+      ],
+      "reviewNotes": "Independent design; no copied modern television alligator styling. Avoid endorsing fear-based parenting or treating the new ending as traditional folklore.",
+      "originCountry": "BR",
+      "atlasId": "br"
+    }
+  ]
+}
