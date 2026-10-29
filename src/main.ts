@@ -36,7 +36,7 @@ let globeCleanup: (() => void) | undefined;
 let region = "JP",
   selected = "kappa",
   page = "map",
-  sound = false,
+  sound = true,
   gate = false;
 let boardScope = "trick",
   boardTimer: ReturnType<typeof setInterval> | undefined;
@@ -84,12 +84,22 @@ function toast(text: string) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove("visible"), 4200);
 }
-const bgm = createBgm(() => sound && !gate);
+const bgm = createBgm(() => sound && page === 'map' && !gateBusy);
 let playbackContext: AudioContext | undefined;
 function enablePlayback() {
   playbackContext ??= new AudioContext();
+  bgm.start(playbackContext);
   return playbackContext.resume();
 }
+function tryBackgroundMusic() {
+  if (!sound) return;
+  try { void enablePlayback().then(() => bgm.sync()).catch(() => {}); } catch {}
+}
+// Browser autoplay permission varies; retry inside a real user gesture.
+document.addEventListener('click', tryBackgroundMusic, {capture:true});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Enter' || event.key === ' ') tryBackgroundMusic();
+}, {capture:true});
 function playUnlock() {
   const context=playbackContext;if(!context||context.state!=='running')return;
   const time=context.currentTime;
@@ -194,6 +204,7 @@ function render() {
   }
   app.innerHTML = html`<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : page === "links" ? linksPage(player) : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer></div><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav>${page === "map" ? html`<button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?"><img class="corner-ui-icon" src="/art/ui/help-question.webp" width="30" height="30" alt="" aria-hidden="true"></button>` : ""}`;
   app.insertAdjacentHTML("beforeend", languageSelector());
+  if(page === 'map') app.insertAdjacentHTML('beforeend',html`<button class="home-sound-toggle icon-button" data-action="sound" aria-label="${sound ? t('Mute sound') : t('Enable sound')}" aria-pressed="${sound}">${icon(sound ? 'sound' : 'mute')}</button>`);
   if (page === "map") {
     const host=$(".globe-explorer")!;
     const stopGlobe=mountGlobe(host, region), stopMotions=mountCuteMotions(host);
@@ -207,6 +218,7 @@ function render() {
       if (!document.hidden) void loadBoard();
     }, 60000);
   }
+  bgm.sync();
 }
 function bindCharacterSwipe() {
   const stage = $(".globe-character .character-stage");
@@ -563,6 +575,7 @@ function finishGate() {
 async function enterGate() {
   if(!gate||gateBusy)return;
   gateBusy=true;
+  bgm.sync();
   const btn=$<HTMLButtonElement>('.play-unlock')!,status=$('.mic-status');
   btn.disabled=true;
   // Start audio resumption directly in the click gesture, before the permission await.
@@ -583,6 +596,7 @@ async function enterGate() {
   }catch(error){
     console.warn("Unlock unavailable:", error instanceof Error ? error.message : "audio access failed");
     mic?.stop();mic=undefined;gateBusy=false;btn.disabled=false;
+    bgm.sync();
     if(status)status.textContent=t("Allow microphone access in your browser, then tap to try again. The game is still locked.");
   }
 }
@@ -593,7 +607,8 @@ document.addEventListener("click", async (ev) => {
   if (!target) return;
   if (characterLocked) return;
   if(gate && !gateBusy && ['links','boards'].includes(target.dataset.page || ''))gate=false;
-  if (gate && !["enter", "stats-help", "close"].includes(target.dataset.action || "")) return;
+  if (gate && !["enter", "stats-help", "close", "sound"].includes(target.dataset.action || "")) return;
+  if (gateBusy && target.dataset.action === 'sound') return;
   if (target.dataset.ht) {
     event("hellotalk_clicked", target.dataset.ht);
     return;
@@ -822,6 +837,7 @@ async function boot() {
       showGate();
       if(invite && !invite.expired)openUnlockConsent();
     }
+    tryBackgroundMusic();
   } catch (err) {
     app.innerHTML = html`<main class="boot"><span>${icon("moon")}</span><h1>The lanterns need a moment.</h1><p>${e((err as Error).message)}</p>${button(t("Light them again"), "retry", "primary")}</main>`;
   }
