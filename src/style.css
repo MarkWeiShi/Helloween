@@ -3220,11 +3220,11 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .language-trigger span{font-size:21px;line-height:28px}
 .language-trigger:hover,.language-trigger[aria-expanded="true"]{background:#ffffff12}
 .language-trigger:focus-visible,.language-menu button:focus-visible{outline:2px solid #a2dcf0;outline-offset:2px}
-.language-menu{position:fixed;inset:auto;top:max(62px,calc(env(safe-area-inset-top) + 50px));right:max(12px,env(safe-area-inset-right));margin:0;width:min(194px,calc(100vw - 24px));max-height:calc(100dvh - 76px);overflow-y:auto;overscroll-behavior:contain;padding:6px;border:1px solid #aab5ca55;border-radius:16px;background:rgb(27 40 64 / 40%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;box-shadow:0 16px 42px #0005}
-.language-menu button{display:flex;align-items:center;gap:8px;width:100%;height:clamp(26px,calc((100dvh - 92px) / 16),40px);min-height:0;padding:2px 8px;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;font-size:12px;text-align:start;cursor:pointer}
+.language-menu{position:fixed;inset:auto;top:max(62px,calc(env(safe-area-inset-top) + 50px));right:max(12px,env(safe-area-inset-right));margin:0;width:max-content;max-width:calc(100vw - 24px);max-height:calc(100dvh - 76px);overflow-y:auto;overscroll-behavior:contain;padding:6px;border:1px solid #aab5ca55;border-radius:16px;background:rgb(27 40 64 / 40%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;box-shadow:0 16px 42px #0005}
+.language-menu button{display:flex;align-items:center;gap:8px;width:100%;height:clamp(26px,calc((100dvh - 92px) / 16),40px);min-height:0;padding:2px 8px;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;font-size:12px;text-align:start;white-space:nowrap;cursor:pointer}
 .language-menu button:hover,.language-menu button[aria-checked="true"]{background:#ffffff12}
 .language-flag{font-size:20px;line-height:22px;flex:none}
-.language-check{margin-inline-start:auto;color:#b7eadc}
+.language-check{margin-inline-start:auto;width:10px;flex:none;color:#b7eadc}
 html[lang="ar"] body,html[lang="hi"] body,html[lang="th"] body{font-family:system-ui,sans-serif;line-height:1.65}
 html[dir="rtl"] .site-header,html[dir="rtl"] .board-row,html[dir="rtl"] .modal-heading{text-align:start}
 html[dir="rtl"] .brand,html[dir="rtl"] .globe-controls,html[dir="rtl"] .character-stage,html[dir="rtl"] .globe-zoom{direction:ltr}
@@ -3251,7 +3251,7 @@ html[dir="rtl"] input[type="url"],html[dir="rtl"] .share-link-label input{direct
 .language-space{min-height:0;padding:0}
 .explore-screen .globe-title{padding-top:max(16px,env(safe-area-inset-top));padding-bottom:64px}
 .explore-screen .globe-title h1{padding:0 58px;font-size:clamp(25px,calc(3.4vw + 2px),42px)}
-@media(max-height:600px) and (min-width:500px){.language-menu:popover-open{display:grid;grid-template-columns:1fr 1fr;width:360px;gap:0 4px}.language-menu button{height:30px}}
+@media(max-height:600px) and (min-width:500px){.language-menu:popover-open{display:grid;grid-template-columns:repeat(2,max-content);width:max-content;gap:0 4px}.language-menu button{height:30px}}
 
 /* The voice library shares the map's pumpkin, ghost and candy vocabulary. */
 .screams-header{gap:24px;padding-inline:4px;min-height:88px}
