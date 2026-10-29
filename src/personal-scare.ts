@@ -36,7 +36,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     try {
       const result = await api<{alreadySent?: boolean; full?: boolean}>(`/invites/${shared.inviteId}/audio`, pending);
       pending = undefined; sent = true;
-      if (!dead) status.textContent = `${label()} · ${result.full ? t("This link already has five recordings. Your recording was not saved.") : result.alreadySent ? t("此链接已收到你之前发送的声音，无需重复发送。") : t("已将 2 秒声音发送给邀请人。")}`;
+      if (!dead) status.textContent = `${label()} · ${result.full ? t("This link already has five recordings. Your recording was not saved.") : result.alreadySent ? t("此链接已收到你之前发送的声音，无需重复发送。") : t("已将 5 秒声音发送给邀请人。")}`;
     } catch {
       if (!dead) { status.textContent = msg`${label()} · 发送失败，录音暂留本页，可重试或取消。`; retry.hidden = false; cancel.hidden = false; }
     } finally { sending = false; if (!dead) button.disabled = false; }
@@ -48,10 +48,10 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   const motion = mountTransformation(root.querySelector<HTMLElement>('.character-stage')!, spirit, {
     sound: () => true, fillCharacter: false,
     onIntroEnd: () => { button.hidden = false; if(first && !capture && !readScare(player,spirit)) status.textContent=t("No Voice Detected"); },
-    onStart: () => { markTransformationPlayed(player, spirit); status.textContent = first ? (capture ? t("正在变身，出现时采样 3 秒…") : t("麦克风不可用，本次仅播放动画，不录音或上传。")) : `${label()}${sent ? t(" · 录音已发送。") : ''}`; },
+    onStart: () => { markTransformationPlayed(player, spirit); status.textContent = first ? (capture ? t("正在变身，即将采样 5 秒…") : t("麦克风不可用，本次仅播放动画，不录音或上传。")) : `${label()}${sent ? t(" · 录音已发送。") : ''}`; },
     onPause: () => { release(); button.hidden = false; if (!dead && document.hidden && !sending) { status.textContent = pending ? msg`${label()} · 录音尚未发送，可重试或取消。` : t("播放已暂停；点击播放变身可重新观看。"); if (pending) { retry.hidden = false; cancel.hidden = false; } } },
     onError: () => { button.hidden = false; status.textContent = t("变身素材暂不可用，请点击播放重试。"); },
-    onReveal: () => {
+    onCaptureStart: () => {
       if (!first || !capture) return;
       const ticket = generation;
       const shouldSend = !!shared && !sent && !pending;
@@ -60,10 +60,11 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         try { recording = recordReaction(capture.stream); audio = recording.result; }
         catch { /* Local scoring still works without MediaRecorder. */ }
       }
-      status.textContent = shouldSend && recording ? t("● 正在录音 2 秒，本机评分后发送给邀请人…") : t("● 正在录音 3 秒，仅在本机计算评分…");
+      status.textContent = shouldSend && recording ? t("● 正在录音 5 秒，本机评分后发送给邀请人…") : t("● 正在录音 5 秒，仅在本机计算评分…");
       cancel.hidden = !recording;
-      void Promise.all([capture.measure(shouldSend ? 2100 : 3000), audio]).then(async ([m, blob]) => {
+      void Promise.all([capture.measure(5000, false), audio]).then(async ([m, blob]) => {
         if (dead || ticket !== generation) return;
+        capture?.stop();
         const result = {score: personalScareScore(m.meanHz, m.meanRms), meanHz:m.meanHz, meanRms:m.meanRms};
         memory.set(key(player, spirit), result);
         try { localStorage.setItem(key(player, spirit), JSON.stringify(result)); } catch {}
@@ -73,7 +74,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         const bytes = new Uint8Array(await blob.arrayBuffer());
         if (dead || ticket !== generation || !shared) return;
         let binary = ''; for (const byte of bytes) binary += String.fromCharCode(byte);
-        pending = {audio:btoa(binary),mime:blob.type.split(';')[0],durationMs:2000,consent:true,language:locale,amplitudeRms:m.amplitudeRms,score:result.score,meanHz:m.meanHz,peakHz:m.peakHz,frames:m.frames};
+        pending = {audio:btoa(binary),mime:blob.type.split(';')[0],durationMs:5000,consent:true,language:locale,amplitudeRms:m.amplitudeRms,score:result.score,meanHz:m.meanHz,peakHz:m.peakHz,frames:m.frames};
         await upload();
       });
     },

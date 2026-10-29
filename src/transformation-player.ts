@@ -27,7 +27,7 @@ export function markTransformationPlayed(player: string, id: string) {
   try { localStorage.setItem(key, '1'); } catch {}
 }
 export function mountTransformation(stage: HTMLElement, id: string, options: {
-  sound: () => boolean; fillCharacter?: boolean; toggleSound?: () => void; onReveal?: () => void; onIntroEnd?: () => void; onStart?: () => void; onError?: () => void; onPause?: () => void;
+  sound: () => boolean; fillCharacter?: boolean; toggleSound?: () => void; onReveal?: () => void; onCaptureStart?: () => void; onIntroEnd?: () => void; onStart?: () => void; onError?: () => void; onPause?: () => void;
 }) {
   const host = document.createElement('div'); host.className = 'transformation-player'; if(options.fillCharacter)host.classList.add('fill-character');
   const poster = document.createElement('img'); poster.alt = ''; poster.hidden = true;
@@ -60,7 +60,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   }
   poster.onerror = () => { poster.hidden = true; if (canvas.hidden) host.classList.remove('has-media'); };
   const gl = canvas.getContext('webgl', {alpha:true, premultipliedAlpha:false});
-  let dead = false, ticket = 0, frame = 0, revealed = false, entry: Transformation | undefined, phase: 'idle'|'intro'|'loop' = 'idle';
+  let dead = false, ticket = 0, frame = 0, revealed = false, captureStarted = false, entry: Transformation | undefined, phase: 'idle'|'intro'|'loop' = 'idle';
   let program: WebGLProgram | null = null, buffer: WebGLBuffer | null = null, texture: WebGLTexture | null = null;
   const shaders: WebGLShader[] = [];
   let stallTimer: ReturnType<typeof setTimeout> | undefined;
@@ -113,6 +113,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   }
   function draw() {
     if (dead || video.paused || video.ended) return;
+    if (phase === 'intro' && !captureStarted && entry && video.currentTime >= Math.max(0, entry.revealAt - 0.3)) { captureStarted = true; options.onCaptureStart?.(); }
     if (phase === 'intro' && !revealed && entry && video.currentTime >= entry.revealAt) { revealed = true; options.onReveal?.(); }
     if (ready && video.readyState >= 2) try {
       const crop = framing();
@@ -149,7 +150,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
     clearTimeout(stallTimer); video = media; cancelAnimationFrame(frame); draw(); return true;
   }
   async function play() {
-    clearTimeout(stallTimer); ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); const generation = ticket; phase = 'intro'; revealed = false;
+    clearTimeout(stallTimer); ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); const generation = ticket; phase = 'intro'; revealed = false; captureStarted = false;
     try {
       entry = await loadTransformation(id);
       if (dead || generation !== ticket || document.hidden) return false;
