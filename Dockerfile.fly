@@ -1,0 +1,24 @@
+# Fly adapter: static NGINX and an isolated loopback API share the existing volume.
+FROM node:24-bookworm-slim AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+ARG PUBLIC_ORIGIN=https://helloween.fly.dev
+RUN PUBLIC_ORIGIN=$PUBLIC_ORIGIN npm run build:all
+
+FROM node:24-bookworm-slim
+RUN apt-get update && apt-get install -y --no-install-recommends nginx && rm -rf /var/lib/apt/lists/*
+ARG BUILD_ID=local
+ENV APP_BUILD_ID=$BUILD_ID NODE_ENV=production
+WORKDIR /app
+COPY --from=build /app/dist-api/ ./
+RUN npm ci --omit=dev && npm cache clean --force
+COPY --from=build /app/dist/ /opt/ghost-web/
+COPY scripts/install-web.mjs /app/scripts/install-web.mjs
+COPY deploy/nginx/cache.conf /etc/nginx/conf.d/ghost-cache.conf
+COPY deploy/nginx/security.conf /etc/nginx/ghost-security.conf
+COPY deploy/fly/nginx.conf /etc/nginx/sites-enabled/default
+COPY deploy/fly/start.sh /app/start.sh
+EXPOSE 8080
+CMD ["bash", "/app/start.sh"]
