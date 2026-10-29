@@ -2,11 +2,12 @@ import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { previewTransformations } from '../shared/preview-transformations.mjs';
 import { loadCatalog } from '../server/content.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const output = join(root, 'public/art/transformations');
-const roots = ['ghost-horror-40-v1', 'ghost-horror-regional-v1'].map(name => join(root, 'artifacts', name));
+const roots = ['ghost-horror-40-v1', 'ghost-horror-regional-v1', 'ghost-horror-preview-v1'].map(name => join(root, 'artifacts', name));
 const files = {
   entrance: ['entrance-playback.mp4', 'entrance', 'mp4'],
   loop: ['horror-loop-playback.mp4', 'loop', 'mp4'],
@@ -28,7 +29,7 @@ export function prepareTransformations({ requireAll = false } = {}) {
   const pilots = existsSync(pilotPath) ? read(pilotPath) : {};
   const characters = {}, pending = [], provenance = [];
   mkdirSync(output, { recursive: true });
-  for (const spirit of catalog.spirits) {
+  for (const spirit of [...catalog.spirits, ...Object.values(previewTransformations).map(id => ({id}))]) {
     const folder = roots.map(base => join(base, spirit.id)).find(path => existsSync(join(path, 'manifest.json')));
     if (!folder) { pending.push(spirit.id); continue; }
     const manifest = read(join(folder, 'manifest.json'));
@@ -69,12 +70,12 @@ export function prepareTransformations({ requireAll = false } = {}) {
   const manifest = { version: 1, characters };
   atomicJSON(join(output, 'manifest.json'), manifest);
   const report = {
-    catalogTotal: catalog.spirits.length, published: Object.keys(characters).length,
+    catalogTotal: catalog.spirits.length, previewTotal: Object.keys(previewTransformations).length, published: Object.keys(characters).length,
     pending, generatedAt: new Date().toISOString(),
     scope: 'Local production assets; no deployment performed', provenance,
   };
   atomicJSON(join(root, 'artifacts', 'transformation-publication.json'), report);
-  return { catalogTotal: report.catalogTotal, published: report.published, pending };
+  return { catalogTotal: report.catalogTotal, previewTotal: report.previewTotal, published: report.published, pending };
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url))

@@ -15,5 +15,15 @@
   ],
   "temporarySlotsDeleted": 55,
   "existingJiangshiVoice": "retained",
-  "deployment": "local only"
+  "deployment": "local only",
+  "mainPageAdoption": {
+    "origin": "http://127.0.0.1:8787/",
+    "characters": 56,
+    "allPlaybackUrls": "HTTP range checked",
+    "unitTests": 50,
+    "browserCases": 9,
+    "result": "passed; one transient media 404 passed on isolated retry",
+    "behavior": "existing 6-second transformation, 2.8-second assigned name tail, original loop; replay and close verified",
+    "userRequestedAdoption": true
+  }
 }

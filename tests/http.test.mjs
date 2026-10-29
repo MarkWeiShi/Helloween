@@ -17,10 +17,11 @@ test("HTTP session, CSRF, visitor privacy and atomic gift retries", async () => 
     });
   try {
     const res = await send("/api/session", {});
-    const cookie = res.headers.get("set-cookie").split(";")[0];
+    let cookie = res.headers.get("set-cookie").split(";")[0];
     assert.match(res.headers.get("set-cookie"), /HttpOnly/);
     const session = await res.json();
     assert.equal(session.player.wallet, 0);
+    cookie = `boo_session=${app.store.accountLogin(session.player.id,"http-test").token}`;
     assert.equal((await send("/api/me")).status, 401);
     assert.equal(
       (

@@ -4,12 +4,42 @@ export const languages = [
  ['de','Deutsch'],['it','Italiano'],['ru','Русский'],['ar','العربية'],['hi','हिन्दी'],
  ['ja','日本語'],['ko','한국어'],['id','Bahasa Indonesia'],['th','ไทย'],['vi','Tiếng Việt'],
 ];
+export function normalizeLanguage(value) {
+ if (typeof value !== 'string') return null;
+ const tag=value.trim().toLowerCase().replaceAll('_','-');
+ if (!/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/.test(tag)) return null;
+ const base=tag.split('-')[0];
+ return languages.some(([code])=>code===base)?base:null;
+}
 export function resolveLanguage(preferences = []) {
  for (const preference of preferences) {
-  const base = String(preference).toLowerCase().replaceAll('_','-').split('-')[0];
-  if (languages.some(([code])=>code===base)) return base;
+  const locale=normalizeLanguage(preference);
+  if (locale) return locale;
  }
  return 'en';
+}
+// Explicit links can override a saved choice; a host App hint cannot. URL hints
+// remain scoped to the visit and are only saved by the language selector.
+export function resolveLanguagePreference(params, saved = 'auto') {
+ const explicit=params.get('lang');
+ if (typeof explicit==='string' && explicit.trim().toLowerCase()==='auto') return 'auto';
+ return normalizeLanguage(explicit) || normalizeLanguage(saved) || normalizeLanguage(params.get('appLang')) || 'auto';
+}
+// Older or restricted WebViews may omit these properties, return unusable
+// values, or throw when reading them. Read each signal independently so one
+// unavailable API does not prevent the remaining fallbacks from working.
+export function resolveBrowserLanguage(browser, serverLanguage = '') {
+ const preferences = [];
+ try {
+  const values = browser?.languages;
+  if (Array.isArray(values)) preferences.push(...values.filter(value => typeof value === 'string'));
+ } catch {}
+ try {
+  const value = browser?.language;
+  if (typeof value === 'string') preferences.push(value);
+ } catch {}
+ if (typeof serverLanguage === 'string') preferences.push(serverLanguage);
+ return resolveLanguage(preferences);
 }
 export const decode = text => text.replace(/&(amp|lt|gt|quot|#39|nbsp);/g,(_,key)=>({amp:'&',lt:'<',gt:'>',quot:'"','#39':"'",nbsp:'\u00a0'})[key]);
 export const escapeHTML = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);

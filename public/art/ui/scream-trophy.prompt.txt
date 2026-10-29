@@ -1,0 +1,4 @@
+Tool: built-in image_gen
+Transparent background: true
+Prompt:
+Create one small UI trophy icon for a Halloween app bottom navigation, stylistically compatible with the colorful rounded 3D pumpkin 🎃 and ghost 👻 emoji. A polished golden yellow trophy cup with two chunky curved handles, warm orange shading and bright creamy highlights, short stem, vivid purple pedestal with a subtle lilac highlight. Simple bold silhouette, friendly playful emoji-style 3D illustration, front view with slight top perspective, readable at 28 pixels. Single centered trophy occupying 88% of a square canvas. Truly transparent background, no text, no border, no enclosing tile, no extra objects, no cast shadow outside the icon.

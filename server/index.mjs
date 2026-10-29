@@ -1,3 +1,4 @@
+import {createAuth} from "./auth.mjs";
 import {requestLanguage,serverTranslator} from './localization.mjs';
 import { socialConfig, createWechatSigner } from './social.mjs';
 import { loadCuteMotions } from "./motions.mjs";
@@ -47,6 +48,7 @@ export function createApp({
   databasePath = process.env.DATABASE_PATH || join(ROOT, ".data/boo.sqlite"),
   catalog = loadCatalog(),
   now,
+  authOptions,
   rateLimits = true,
   staticRoot = join(ROOT, "dist"),
 } = {}) {
@@ -54,6 +56,7 @@ export function createApp({
     now,
     inviteRewards: process.env.INVITE_REWARDS_ENABLED !== "false",
   });
+  const auth = createAuth(authOptions);
   const signWechat = createWechatSigner();
   const windows = new Map();
   const limit = (key, max) => {
@@ -113,6 +116,16 @@ export function createApp({
         .find((s) => s.startsWith("boo_session="))
         ?.slice(12);
       let playerId = store.authenticate(token);
+      const setSession = value => res.setHeader('Set-Cookie',`boo_session=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`);
+      if(req.method==='GET' && url.pathname==='/api/auth/callback') {
+        try {
+          if(!playerId) throw new Error('Missing session');
+          const subject=await auth.finish(token,url.searchParams.get('state'),url.searchParams.get('code'));
+          const login=store.accountLogin(playerId,subject);setSession(login.token);
+          res.writeHead(303,{Location:'/my-links?signin=success','Cache-Control':'no-store','Referrer-Policy':'no-referrer'});res.end();
+        } catch {res.writeHead(303,{Location:'/my-links?signin=failed','Cache-Control':'no-store','Referrer-Policy':'no-referrer'});res.end();}
+        return;
+      }
       if (url.pathname.startsWith("/api/")) {
         const ip =
           req.headers["fly-client-ip"] || req.socket.remoteAddress || "unknown";
@@ -225,8 +238,27 @@ export function createApp({
           send(200, invite);
           return;
         }
+        if(req.method==='GET' && url.pathname==='/api/auth/config') {send(200,auth.config());return;}
         if (!playerId)
           throw new ApiError(401, "Please reload to start your visit.");
+        if(req.method==='POST' && url.pathname==='/api/auth/start') {
+          limit(`auth:${ip}`,10);
+          send(200,await auth.start(token,body,process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`));return;
+        }
+        if(req.method==='POST' && url.pathname==='/api/auth/verify') {
+          limit(`verify:${ip}`,20);
+          const subject=await auth.finish(token,body.state,body.code);
+          const login=store.accountLogin(playerId,subject);setSession(login.token);send(200,{player:login.player});return;
+        }
+        if(req.method==='POST' && url.pathname==='/api/auth/logout') {
+          store.logout(token);const guest=store.createGuest();setSession(guest.token);send(200,{player:guest.player});return;
+        }
+        if(req.method==='GET' && url.pathname==='/api/my-links') {
+          const offset=Number(url.searchParams.get('offset') || 0);
+          if(!Number.isSafeInteger(offset) || offset<0)throw new ApiError(400,'Invalid page.');
+          send(200,store.ghostLinks(playerId,offset,url.searchParams.get("spirit") || ""));return;
+        }
+
         const audioGet = url.pathname.match(/^\/api\/invites\/([\w-]+)\/audio\/([\w-]+)$/);
         if (req.method === 'GET' && audioGet) {
           const recording = store.reactionAudio(playerId,audioGet[1],audioGet[2]);
@@ -252,6 +284,7 @@ export function createApp({
         else if (req.method === "POST" && url.pathname === "/api/select")
           result = { player: store.select(playerId, body.spiritId) };
         else if (req.method === "POST" && url.pathname === "/api/invites") {
+          if(!store.state(playerId).account) throw new ApiError(401,"Sign in to save your ghost links and friends’ recordings.");
           result = store.createInvite(playerId, body);
           result.url = `${process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`}/i/${result.id}`;
         } else if (
@@ -277,6 +310,8 @@ export function createApp({
             body.amount,
             body.requestId,
           );
+        else if (req.method === "GET" && url.pathname === "/api/scream-rankings")
+          result = store.screamRankings(playerId,url.searchParams.get('scope') || 'trick');
         else if (req.method === "GET" && url.pathname === "/api/leaderboards")
           result = store.leaderboard(
             playerId,

@@ -58,7 +58,7 @@ test('unlock asks for confirmation before microphone access; dismiss and denial 
  await unlock.click();
  await expect(page.getByRole('dialog',{name:"Before you start"})).toBeVisible();
  await expect(page.locator('.unlock-points li')).toHaveCount(4);
- await expect(page.locator('.unlock-points')).toContainText("Ordinary exploration does not upload audio");
+ await expect(page.locator('.unlock-points')).toContainText("Exploring uploads no audio");
  expect(await page.evaluate(()=>(window as any).__micRequests)).toBe(0);
  await page.keyboard.press('Escape');
  await expect(page.locator('dialog')).toHaveCount(0);

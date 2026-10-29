@@ -14,7 +14,7 @@ export function recordReaction(stream: MediaStream) {
   recorder.onstop = () => { clearTimeout(timer); settle(cancelled || !complete ? null : new Blob(chunks, {type:recorder.mimeType})); };
   recorder.start();
   // Stop before the analyser releases its stream at the end of the same window.
-  timer = setTimeout(() => { if (recorder.state !== 'inactive') { complete = true; recorder.stop(); } }, 3000);
+  timer = setTimeout(() => { if (recorder.state !== 'inactive') { complete = true; recorder.stop(); } }, 2000);
   return {
     result,
     cancel() {

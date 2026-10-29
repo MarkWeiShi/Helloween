@@ -302,11 +302,12 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   for(const [button,delta] of [[zoomIn,1],[zoomOut,-1]] as const)
     button.addEventListener('click',()=>{zoomLevel=Math.max(0,Math.min(2,zoomLevel+delta));restUntil=performance.now()+4000;updateZoom();},{signal:signal.signal});
   updateZoom();
-  const caption=host.querySelector<HTMLElement>('.globe-caption');
+  const caption=host.parentElement?.querySelector<HTMLElement>('.globe-caption');
   const showCaption=(pin:HTMLButtonElement)=>{
     if(!caption)return;
     caption.querySelector('strong')!.textContent=pin.dataset.previewName || '';
     caption.querySelector('p')!.textContent=pin.dataset.previewDescription || '';
+    caption.querySelector('p')!.title=pin.dataset.previewDescription || '';
     caption.classList.add('visible');
   };
   for(const pin of pins){
@@ -341,7 +342,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   const observer=new ResizeObserver(schedule);observer.observe(viewport);
   document.addEventListener('visibilitychange',schedule,{signal:signal.signal});
   landPromise ??= fetch('/geo/land.json').then(r=>{if(!r.ok)throw new Error('Land unavailable');return r.json();}).catch(err=>{landPromise=undefined;throw err;});
-  landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead){const caption=host.querySelector('.globe-caption');if(caption){caption.querySelector('p')!.textContent=t("Globe details unavailable. You can still choose a region.");caption.classList.add('visible');}}});
+  landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead){const caption=host.parentElement?.querySelector('.globe-caption');if(caption){caption.querySelector('p')!.textContent=t("Globe details unavailable. You can still choose a region.");caption.classList.add('visible');}}});
   viewport.addEventListener('pointerenter',ev=>{if(ev.pointerType==='mouse')hovering=true;},{signal:signal.signal});
   viewport.addEventListener('pointerleave',()=>{hovering=false;},{signal:signal.signal});
   let lastTick=performance.now();

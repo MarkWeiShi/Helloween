@@ -1,18 +1,18 @@
-import { languages, resolveLanguage, localizeCatalog, setDictionary, t } from '../shared/i18n.mjs';
+import { languages, resolveBrowserLanguage, resolveLanguagePreference, localizeCatalog, setDictionary, t } from '../shared/i18n.mjs';
 export {languages};
 export {t,msg,html} from "../shared/i18n.mjs";
 const storageKey = 'boo:language';
 let preference = 'auto';
 try { preference = localStorage.getItem(storageKey) || 'auto'; } catch {}
-if(preference!=='auto'&&!languages.some(([code])=>code===preference))preference='auto';
-const urlPreference=new URL(location.href).searchParams.get('lang');
-if(urlPreference==='auto'||languages.some(([code])=>code===urlPreference))preference=urlPreference!;
-export let locale = resolveLanguage(preference==='auto' ? [...navigator.languages] : [preference]);
+preference=resolveLanguagePreference(new URL(location.href).searchParams,preference);
+// A manual preference wins over automatic detection. The server's HTML lang
+// already reflects Accept-Language and remains available when browser APIs fail.
+export let locale = preference==='auto' ? resolveBrowserLanguage(navigator, document.documentElement.lang) : preference;
 let dictionary: Record<string,string> = {};
 const bundles = import.meta.glob<Record<string,string>>('./locales/*.json', {import:'default'});
 export async function initLanguage() {
  try { dictionary = await bundles[`./locales/${locale}.json`]!(); }
- catch { locale='en'; preference='en'; dictionary=await bundles['./locales/en.json']!(); }
+ catch { locale='en'; dictionary=await bundles['./locales/en.json']!(); }
  setDictionary(dictionary);
  document.documentElement.lang=locale;
  document.documentElement.dir=locale==='ar'?'rtl':'ltr';
@@ -28,7 +28,7 @@ export function content<T>(value:T):T {const result=localizeCatalog(value,dictio
 const languageFlags: Record<string,string> = {en:'🇬🇧',zh:'🇨🇳',es:'🇪🇸',pt:'🇧🇷',fr:'🇫🇷',de:'🇩🇪',it:'🇮🇹',ru:'🇷🇺',ar:'🇸🇦',hi:'🇮🇳',ja:'🇯🇵',ko:'🇰🇷',id:'🇮🇩',th:'🇹🇭',vi:'🇻🇳'};
 export function languageSelector() {
  const option=(code:string,name:string,flag:string)=>`<button type="button" role="menuitemradio" aria-checked="${preference===code}" data-language="${code}"><span class="language-flag" aria-hidden="true">${flag}</span><span lang="${code==='auto'?locale:code}" dir="auto">${name}</span><span class="language-check" aria-hidden="true">${preference===code?'✓':''}</span></button>`;
- return `<div class="language-picker"><button type="button" class="language-trigger" popovertarget="language-menu" aria-label="${t('Language')}" title="${t('Language')}" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu"><span aria-hidden="true">🌐</span></button><div id="language-menu" class="language-menu" popover="auto" role="menu" aria-label="${t('Language')}">${option('auto',t('Default'),'🌐')}${languages.map(([code,name])=>option(code,name,languageFlags[code])).join('')}</div></div>`;
+ return `<div class="language-picker"><button type="button" class="language-trigger" popovertarget="language-menu" aria-label="${t('Language')}" title="${t('Language')}" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu"><img class="corner-ui-icon" src="/art/ui/language-globe.webp" width="30" height="30" alt="" aria-hidden="true"></button><div id="language-menu" class="language-menu" popover="auto" role="menu" aria-label="${t('Language')}">${option('auto',t('Default'),'🌐')}${languages.map(([code,name])=>option(code,name,languageFlags[code])).join('')}</div></div>`;
 }
 document.addEventListener('toggle',event=>{
  const menu=event.target;

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "spiritId": "domovoi",
+  "state": "ready",
+  "kind": "cute",
+  "sheet": "/art/motions/domovoi-cute.966220eaba3d.webp",
+  "frames": 14,
+  "fps": 12,
+  "cell": 160,
+  "source": "/Users/mark/Projects/WD_Ghost/artifacts/ghost-horror-preview-v1/domovoi/entrance-playback.mp4",
+  "start": 0.1,
+  "end": 0.8,
+  "loop": "ping-pong",
+  "audio": false
+}

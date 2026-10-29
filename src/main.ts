@@ -1,7 +1,10 @@
+import {previewTransformations} from '../shared/preview-transformations.mjs';
+import {showAccount} from "./account";
+import {linksPage,mountLinks} from "./ghost-links";
 import {t, msg, html, initLanguage, languageSelector, content as localizedContent, locale} from "./i18n";
 import { mountSocialHandoff } from "./social-share";
 import { createBgm } from "./bgm";
-import { mountPersonalScare, type SharedReaction } from "./personal-scare";
+import { mountPersonalScare, readScare, scareLabel, type SharedReaction } from "./personal-scare";
 import { pumpkinGreeting } from "./pumpkin-greeting";
 import "@fontsource-variable/fredoka/wght.css";
 import "@fontsource-variable/dm-sans/wght.css";
@@ -34,13 +37,13 @@ let region = "JP",
   page = "map",
   sound = false,
   gate = false;
-let boardScope = "players",
-  boardMetric = "candies",
+let boardScope = "trick",
   boardTimer: ReturnType<typeof setInterval> | undefined;
 let modalCleanup: (() => void) | undefined,
   toastTimer: ReturnType<typeof setTimeout>;
 let mic: Awaited<ReturnType<typeof prepareMicrophone>> | undefined;
 let gateBusy = false;
+let microphoneUnlocked = false;
 const notified = new Set<string>();
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 const $ = <T extends Element = HTMLElement>(q: string) =>
@@ -163,17 +166,19 @@ function hellotalk(where = "map") {
   return html`<a class="hellotalk" href="https://www.hellotalk.com/en/download" target="_blank" rel="noopener noreferrer" data-ht="${where}"><span class="ht-mark">Hi</span><span>Meet the world on <strong>HelloTalk</strong></span>${icon("arrow")}</a>`;
 }
 function header() {
+  if(page === 'links' || page === 'boards') return html`<header class="site-header screams-header"><h1>${e(page === "boards" ? t("Scream rankings") : t("Friends’ screams"))}</h1><nav class="desktop-nav" aria-label="Main navigation">${navItems()}</nav></header>`;
+
   return html`<header class="site-header"><a class="brand" href="/" aria-label="Boo Around the World home">${icon("ghost")}<span>boo<span class="brand-dot">.</span><small>around the world</small></span></a><nav class="desktop-nav" aria-label="Main navigation">${navItems()}</nav><div class="header-tools">${""}<button class="home-country" data-action="profile" aria-label="Your parade profile">${player.country ? flag(player.country) : icon("globe")}<span>${player.country ? e(player.name) : t("Your parade")}</span></button><button class="icon-button sound-toggle" data-action="sound" aria-label="${sound ? t("Mute sound") : t("Enable sound")}">${icon(sound ? "sound" : "mute")}</button></div></header>`;
 }
 function navItems() {
   return [
-    ["map", "globe", t("Explore")],
-    ["codex", "book", t("My collection")],
-    ["boards", "trophy", t("Leaderboards")],
+    ["map", "pumpkin", t("Explore ghosts")],
+    ["links", "ghost", t("Friends’ screams")],
+    ["boards", "trophy", t("Scream rankings")],
   ]
     .map(
-      ([p, i, label]) =>
-        html`<button data-page="${p}" class="nav-item ${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${icon(i)}<span>${label}</span></button>`,
+      ([p, , label]) =>
+        html`<button data-page="${p}" class="nav-item ${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${p === "map" || p === "links" ? `<span class="screams-nav-symbol" aria-hidden="true">${p === "map" ? "🎃" : "👻"}</span>` : '<img class="screams-nav-trophy" src="/art/ui/scream-trophy.webp" width="26" height="26" alt="" aria-hidden="true">'}<span>${label}</span></button>`,
     )
     .join("");
 }
@@ -186,7 +191,7 @@ function render() {
     clearInterval(boardTimer);
     boardTimer = undefined;
   }
-  app.innerHTML = html`<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav></div>${page === "map" ? html`<button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?">?</button>` : ""}`;
+  app.innerHTML = html`<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : page === "links" ? linksPage(player) : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer></div><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav>${page === "map" ? html`<button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?"><img class="corner-ui-icon" src="/art/ui/help-question.webp" width="30" height="30" alt="" aria-hidden="true"></button>` : ""}`;
   app.insertAdjacentHTML("beforeend", languageSelector());
   if (page === "map") {
     const host=$(".globe-explorer")!;
@@ -194,6 +199,7 @@ function render() {
     globeCleanup=()=>{stopMotions();stopGlobe();};
 
   }
+  if (page === "links") globeCleanup=mountLinks(app,catalog);
   if (page === "boards") {
     void loadBoard();
     boardTimer = setInterval(() => {
@@ -237,9 +243,11 @@ function revealCharacter(animate = true, shared?: SharedReaction) {
   dialog.querySelector(".modal-close")?.remove();
   bindCharacterSwipe();
   const current = spirit();
-  if (current?.art && current.regionId === region) {
+  const previewId = previewTransformations[region as keyof typeof previewTransformations];
+  const hasCharacter = current?.art && current.regionId === region;
+  if (hasCharacter || previewId) {
     const previousCleanup = modalCleanup;
-    const cleanup = mountPersonalScare(dialog, player.id, current.id, asset(current.art.scare), locked => { characterLocked = locked; }, () => true, undefined, shared);
+    const cleanup = mountPersonalScare(dialog, player.id, hasCharacter ? current.id : previewId!, hasCharacter ? asset(current.art!.scare) : "", locked => { characterLocked = locked; }, () => true, undefined, shared);
     modalCleanup = () => { cleanup(); previousCleanup?.(); };
   }
   if (animate && !characterLocked && !reduced.matches) dialog.querySelector(".hero-spirit")?.animate(
@@ -251,15 +259,21 @@ function revealCharacter(animate = true, shared?: SharedReaction) {
 function counterFraction(current: number, total: number) {
   return html`<span class="counter-current">${current}</span><span class="counter-slash">/</span><span class="counter-total">${total}</span>`;
 }
+function folklorePreview(s: Spirit) {
+  // Use the already localized, source-informed folklore rather than the playful tagline.
+  const sentence = [...new Intl.Segmenter(locale, {granularity:'sentence'}).segment(s.folklore)][0]?.segment.trim() || s.shortDescription;
+  const origin = new Intl.DisplayNames([locale], {type:'region'}).of(s.originCountry) || s.culture;
+  return sentence.toLocaleLowerCase(locale).includes(origin.toLocaleLowerCase(locale)) ? sentence : `${origin} · ${sentence}`;
+}
 function mapPage() {
   return '<div class="language-space" aria-hidden="true"></div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend opens / shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterFraction(player.shareVisits || 0, player.shareCount || 0)}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits / total spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${counterFraction(player.peaceCount, catalog.spirits.length)}</span></button></div></div>
   ${invite ? html`<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
-  <div class="explore-layout globe-layout"><section class="globe-explorer" aria-label="Explore cultures on the globe">
-    <div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div>
+  <div class="explore-layout globe-layout"><div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div><section class="globe-explorer" aria-label="Explore cultures on the globe">
     <div class="globe-viewport" tabindex="0" role="group" aria-label="Interactive globe. Drag to rotate, or use left and right arrow keys."><span class="globe-spark spark-one">✦</span><span class="globe-spark spark-two">✧</span><span class="globe-spark spark-three">✦</span><canvas aria-hidden="true"></canvas>
     <div class="globe-pins">${catalog.regions.map(r => {
       const friends=catalog.spirits.filter(x=>x.regionId===r.id),preview=regionPreviews[r.id];
-      return friends.length ? friends.map(s=>html`<button class="globe-pin ${s.id===selected?'selected':''}" data-region="${r.id}" data-globe-spirit="${s.id}" data-preview-name="${e(s.name)}" data-preview-description="${e(s.shortDescription)}" data-spirit="${s.id}" aria-label="Explore ${e(s.name)} from ${e(r.name)}" hidden>${thumb(s)}</button>`).join('') : html`<button class="globe-pin soon" data-preview-name="${e(preview.name)}" data-preview-description="${e(msg`A folklore friend inspired by ${preview.culture}.`)}" data-region="${r.id}" aria-label="Explore ${e(r.name)}, stories coming soon" hidden><img src="${e(preview.thumb)}" alt="${e(preview.name)} preview" width="144" height="144" loading="lazy" draggable="false"></button>`;
+      const previewId=previewTransformations[r.id as keyof typeof previewTransformations];
+      return friends.length ? friends.map(s=>html`<button class="globe-pin ${s.id===selected?'selected':''}" data-region="${r.id}" data-globe-spirit="${s.id}" data-preview-name="${e(s.name)}" data-preview-description="${e(folklorePreview(s))}" data-spirit="${s.id}" aria-label="Explore ${e(s.name)} from ${e(r.name)}" hidden>${thumb(s)}</button>`).join('') : previewId ? html`<button class="globe-pin" data-preview-transform="${previewId}" data-preview-name="${e(preview.name)}" data-preview-description="${e(msg`A folklore friend inspired by ${preview.culture}.`)}" data-region="${r.id}" aria-label="Explore ${e(preview.name)} from ${e(r.name)}" hidden><img data-cute-id="${previewId}" src="${e(preview.thumb)}" alt="${e(preview.name)} preview" width="144" height="144" loading="lazy" draggable="false"></button>` : '';
     }).join('')}</div>
     </div>
     <div class="globe-zoom" role="group" aria-label="Globe zoom"><button data-zoom="in" aria-label="Zoom in">➕</button><span class="zoom-level" aria-live="polite">1 / 3</span><button data-zoom="out" aria-label="Zoom out">➖</button></div>
@@ -267,8 +281,8 @@ function mapPage() {
 }
 function reactionMeter(id: string) {
   const stat=player.reactions?.stats.find(x=>x.spiritId===id);
-  const hz=stat?.meanHz ?? null;
-  return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${pitchScore(hz)}" aria-label="Scariness game score"></progress><strong>Scariness ${pitchScore(hz)} / 100</strong></div>`;
+  const score=pitchScore(stat?.meanHz ?? null);
+  return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${score}" aria-label="Scariness game score"></progress><div class="scariness-row"><strong data-world-scariness>${e(msg`World Scariness ${score} / 100`)}</strong><p data-personal-scare role="status" aria-live="polite" class="personal-scare">${e(scareLabel(readScare(player.id,id)))}</p></div></div>`;
 }
 function actionPair(id:string, preview=false) {
   return html`<div class="reaction-actions"><div>${preview ? html`<button class="spirit-action" disabled><span class="action-orb">🎃</span><span class="action-caption">Trick or Treat!</span></button>` : characterAction('🎃',t("Trick or Treat!"),'share','scare-action',t("Trick or Treat!"),id)}${reactionMeter(id)}</div></div>`;
@@ -277,16 +291,21 @@ function characterPanel() {
   const s = spirit(), r = catalog.regions.find(r => r.id === region)!;
   const p = progress(), friends = catalog.spirits.filter(x => x.regionId === region);
   const preview = regionPreviews[region];
+  const previewId = previewTransformations[region as keyof typeof previewTransformations];
+  const hasTransformation = !!(friends.length ? s.art : previewId);
   const index = friends.findIndex(x => x.id === selected);
   const previous = friends[(index - 1 + friends.length) % friends.length];
   const next = friends[(index + 1) % friends.length];
   const arrows = friends.length ? html`<button class="icon-button character-previous" data-spirit="${previous.id}" aria-label="Previous character in ${e(r.name)}">‹</button><button class="icon-button character-next" data-spirit="${next.id}" aria-label="Next character in ${e(r.name)}">›</button>` : html`<button class="icon-button character-previous" data-action="preview-page" data-direction="-1" aria-label="Previous region character">‹</button><button class="icon-button character-next" data-action="preview-page" data-direction="1" aria-label="Next region character">›</button>`;
-  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Character gallery. Swipe left or right to change character.">${arrows}<span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${friends.length && s.art ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${friends.length && s.art ? html`<p data-personal-scare role="status" aria-live="polite" class="personal-scare"></p>` : ""}${actionPair(friends.length?s.id:region,!friends.length)}</div></section>`;
+  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Character gallery. Swipe left or right to change character.">${arrows}<span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
 }
 async function openReactions() {
-  const data=await api('/me'); player=data.player;
-  modal(html`<div class="modal-heading"><h2>Your friends said Boo!</h2><p>朋友观看变身时的 3 秒声音和本机评分会显示在这里，仅你可播放。名字使用已有昵称，没有昵称时使用你的链接备注或访客编号。</p></div>${player.reactions.recent.length?player.reactions.recent.map(r=>html`<article class="reaction-report"><strong>${e(r.name)} · ${e(spirit(r.spiritId)?.name)}</strong><p>${r.hasAudio?msg`${r.durationMs / 1000} 秒声音 · ${r.score == null ? t("未测得有效评分") : msg`本机评分 ${r.score} / 100`}`:r.meanHz===null?t("No clear voice detected"):msg`Average ${r.meanHz} Hz · Peak ${r.peakHz} Hz · ${e(t(r.level))}`}</p><p>${r.friendName ? msg`链接备注：${e(r.friendName)} · ` : ''}<a href="/i/${e(r.inviteId)}" target="_blank" rel="noopener">对应分享链接 · ${e(r.inviteId.slice(-6))}</a></p><small>${e(new Date(r.createdAt).toLocaleString(locale))}</small>${r.hasAudio?html`<audio controls preload="none" aria-label="${e(r.name)}的惊吓录音" src="/api/invites/${e(r.inviteId)}/audio/${e(r.receiverId)}"></audio>`:""}</article>`).join(''):html`<p>No shared reactions yet. Send a pumpkin surprise to a friend.</p>`}<h3>分享链接</h3>${player.reactions.links.map(link=>html`<article class="reaction-report"><strong>${e(link.friendName || t("未备注朋友"))} · ${e(spirit(link.spiritId)?.name)}</strong><p>${link.visits} 位朋友打开 · ${link.recordings} 条声音</p><a href="/i/${e(link.inviteId)}" target="_blank" rel="noopener">分享链接 · ${e(link.inviteId.slice(-6))}</a></article>`).join('')}`);
-  player=(await api('/reactions/read',{})).player;
+  player=(await api('/me')).player;
+  closeModal();gate=false;page='links';history.replaceState(null,'','/my-links');render();
+  await api('/reactions/read',{});
+}
+async function signIn() {
+  await showAccount(modal,()=>{location.assign('/my-links?signin=success');});
 }
 function codexPage() {
   return html`<div class="page-title"><div><h1>Your little<br><span>world of wonders.</span></h1><p>${player.peaceCount} wishes fulfilled. Every story is worth a little kindness.</p></div>${button(msg`${icon("globe")} Explore the map`, "map", "secondary")}</div><div class="codex-grid">${catalog.spirits
@@ -297,25 +316,19 @@ function codexPage() {
     .join("")}</div>`;
 }
 function boardsPage() {
-  return html`<div class="page-title"><div><h1>A world full<br><span>of good spirits.</span></h1><p>A little friendly competition. A lot of kindness.</p></div></div><div class="board-controls"><div class="segmented">${["players", "countries"].map((x) => html`<button data-scope="${x}" class="${boardScope === x ? "active" : ""}">${x === "players" ? t("People") : t("Countries & regions")}</button>`).join("")}</div><div class="segmented">${["candies", "peace"].map((x) => html`<button data-metric="${x}" class="${boardMetric === x ? "active" : ""}">${icon(x === "candies" ? "candy" : "heart")}${x === "candies" ? t("Candies collected") : t("Wishes fulfilled")}</button>`).join("")}</div></div><p class="board-note">All-time totals. Giving candy never lowers your candy rank. Tied scores share a rank.</p><div id="board-content" aria-live="polite"><div class="skeleton-row"></div><div class="skeleton-row"></div><div class="skeleton-row"></div></div>`;
+  return html`<section class="scream-rankings"><div class="board-controls"><div class="segmented">${['trick','intensity'].map(scope=>html`<button data-scope="${scope}" class="${boardScope===scope?'active':''}" aria-pressed="${boardScope===scope}">${scope==='trick'?t('Trick rankings'):t('Scream rankings')}</button>`).join('')}</div></div><p class="board-note">${boardScope==='trick'?t('Ranked by recordings received through your shared ghost links.'):t('Average scream intensity by interface language. Each participant has equal weight.')} ${t('Ties share a rank.')}</p>${boardScope==='intensity'?html`<p class="board-note">Relative microphone volume, 0–100. Devices and microphone distance affect the result.</p>`:''}<div id="board-content" aria-live="polite"><div class="skeleton-row"></div></div></section>`;
 }
 async function loadBoard() {
+  const scope=boardScope;
   try {
-    const data = await api(
-      `/leaderboards?scope=${boardScope}&metric=${boardMetric}`,
-    );
-    const node = $("#board-content");
-    if (!node || data.scope !== boardScope || data.metric !== boardMetric)
-      return;
-    const row = (r: any, self = false) =>
-      html`<div class="board-row ${self ? "is-you" : ""}"><span class="rank">${r.rank <= 3 ? ["", "①", "②", "③"][r.rank] : r.rank}</span><span class="board-avatar">${boardScope === "countries" ? flag(r.country) : icon("ghost")}</span><span class="board-name"><strong>${boardScope === "countries" ? e(country(r.country)) : e(r.name)}${self ? html` <small>You</small>` : ""}</strong><span>${boardScope === "countries" ? msg`${r.participants} participants in the parade` : e(country(r.country))}</span></span><strong class="board-score">${Number(r.score).toLocaleString(locale)} ${icon(boardMetric === "candies" ? "candy" : "heart")}</strong></div>`;
-    node.innerHTML = data.rows.length
-      ? html`${data.self ? html`<div class="your-rank">${row(data.self, true)}</div>` : ""}<div class="board-list">${data.rows.map((r: any) => row(r)).join("")}</div><p class="board-note">Updates every minute. Your home is ${e(country(player.country))}.</p>`
-      : html`<div class="empty-state">${icon("trophy")}<h2>The parade is just beginning.</h2><p>Choose a folklore friend to collect your first candies.</p>${button(t("Join the parade"), "map", "primary")}</div>`;
-  } catch (err) {
-    const n = $("#board-content");
-    if (n)
-      n.innerHTML = html`<div class="empty-state"><p>${e((err as Error).message)}</p>${button(t("Try again"), "reload-board", "secondary")}</div>`;
+    const data=await api(`/scream-rankings?scope=${scope}`);
+    const node=$('#board-content');
+    if(!node || scope!==boardScope)return;
+    const names=new Intl.DisplayNames([locale],{type:'language'});
+    const row=(r:any,self=false)=>html`<div class="board-row ${self?'is-you':''}"><span class="rank">${r.rank}</span><span class="board-avatar" aria-hidden="true">${scope==='trick'?'🎃':'👻'}</span><span class="board-name"><strong>${e(scope==='trick'?r.name:names.of(r.id)||r.id)}${self?html` <small>You</small>`:''}</strong><span>${r.recordings} ${t('recordings')}${scope==='intensity'?` · ${r.participants} ${t('participants')}`:''}</span></span><strong class="board-score">${Number(r.score).toLocaleString(locale,{maximumFractionDigits:2})}${scope==='intensity'?' / 100':''}</strong></div>`;
+    node.innerHTML=data.rows.length?`${data.self?`<div class="your-rank">${row(data.self,true)}</div>`:''}<div class="board-list">${data.rows.map((r:any)=>row(r)).join('')}</div>`:html`<p class="rank-empty">${scope==='trick'?t('No recordings received yet.'):t('No scream intensity measurements yet.')}</p>`;
+  } catch(err) {
+    const node=$('#board-content');if(node && scope===boardScope)node.innerHTML=html`<p>${e((err as Error).message)}</p>${button(t('Try again'),'reload-board','secondary')}`;
   }
 }
 function openLore(id = selected) {
@@ -406,7 +419,7 @@ function openInvite() {
   dialog.querySelector<HTMLButtonElement>('[data-invite-play]')!.onclick = () => {
     selected = s.id;
     region = s.regionId;
-    revealCharacter(false, {inviteId:invitation.id});
+    revealCharacter(false, invitation.recordingFull ? undefined : {inviteId:invitation.id});
   };
 }
 
@@ -430,9 +443,12 @@ async function respondInvite() {
     }
   });
 }
+function shareChannelIcon(channel: string) {
+  const logos: Record<string,string> = {x:'x',line:'line',facebook:'messenger',kakao:'kakaotalk',wechat:'wechat'};
+  return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="/icons/social/${logos[channel]}.svg" alt="" aria-hidden="true" width="24" height="24">`;
+}
 function openShare(id = selected) {
   const s = spirit(id);
-  requirePlayer(() => {
     modal(
       html`<button class="icon-button modal-close share-shortcut" aria-label="Choose a sharing app">${icon("shareCurve")}</button><div class="share-preview"><div>${portrait(s, "scare")}<span>Boo from ${e(s.culture)}!</span></div><h2>A little fright.<br>A world of friendship.</h2></div><div class="modal-heading"><h2>Who needs a little Boo?</h2><p>Send ${e(s.name)} on a friendly Halloween visit.</p></div><label>Friend’s name / 朋友备注（可选）<input id="share-friend-name" maxlength="24" placeholder="例如：小明"></label><p class="fine-print">每次分享生成独立链接。备注仅你可见，可用来识别朋友的声音；朋友无需填写名字。</p><div class="share-options">${[
         ["x", t("Scare X Friends")],
@@ -444,7 +460,7 @@ function openShare(id = selected) {
       ]
         .map(([channel, label]) =>
           button(
-            `${channel === "copy" ? icon("copy") : icon("share")} ${label}`,
+            `${shareChannelIcon(channel)}<span class="share-option-label">${e(label)}</span>`,
             "send-share",
             "secondary",
             `data-channel="${channel}" data-id="${id}"`,
@@ -458,10 +474,11 @@ function openShare(id = selected) {
       overlay.querySelector<HTMLButtonElement>('[data-action="send-share"]')?.focus();
       overlay.querySelector('.share-options')?.scrollIntoView({block:'nearest',behavior:'smooth'});
     };
-  });
 }
 let shareRequest = 0;
 async function sendShare(id: string, channel: string, btn: HTMLButtonElement) {
+  if(!player.account){sessionStorage.setItem("boo:pending-share",id);await signIn();return;}
+  if(!player.initialized){openProfile(()=>openShare(id));return;}
   const request = ++shareRequest;
   btn.disabled = true;
   const node = $("#share-link");
@@ -505,19 +522,19 @@ async function downloadCard(id: string) {
 }
 function openAbout() {
   modal(
-    html`<div class="modal-heading">${icon("globe")}<h2>Many cultures.<br>A little shared kindness.</h2></div><p>This parade brings together ghosts, spirits, creatures and figures from folklore and literature. They do not all represent the souls of people who have died.</p><p>Each character's cultural background has its own source links. The warm three-part endings are new Halloween stories written for this game, not claims about the original traditions.</p><p>Countries on the leaderboard are chosen by players. Folklore can belong to several communities, and a map marker never means exclusive ownership.</p><h3>Your visit</h3><p>We store a guest identifier in this browser, your chosen nickname and country, game progress, reward records and aggregate activity counts. There is no SNS login, contact-list import or cross-device account.</p><p>If you enable the microphone, your first character transformation samples your voice on your device for 3 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records three seconds and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.</p><p class="fine-print">No cash prizes or purchases. Clearing browser cookies loses access to this guest's progress.</p>${hellotalk()}<div class="store-links"><a href="https://apps.apple.com/us/app/hellotalk-language-learning/id557130558" target="_blank" rel="noopener noreferrer" data-ht="store">App Store</a><a href="https://play.google.com/store/apps/details?id=com.hellotalk" target="_blank" rel="noopener noreferrer" data-ht="store">Google Play</a></div>`,
+    html`<div class="modal-heading">${icon("globe")}<h2>Many cultures.<br>A little shared kindness.</h2></div><p>This parade brings together ghosts, spirits, creatures and figures from folklore and literature. They do not all represent the souls of people who have died.</p><p>Each character's cultural background has its own source links. The warm three-part endings are new Halloween stories written for this game, not claims about the original traditions.</p><p>Countries on the leaderboard are chosen by players. Folklore can belong to several communities, and a map marker never means exclusive ownership.</p><h3>Your visit</h3><p>We store a guest identifier in this browser, your chosen nickname and country, game progress, reward records and aggregate activity counts. Signing in saves your invitation links to your account for access across devices. We do not import contact lists.</p><p>If you enable the microphone, your first character transformation samples your voice on your device for 3 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records two seconds and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.</p><p class="fine-print">No cash prizes or purchases. Sign in before sharing to keep access to your links after changing devices.</p>${hellotalk()}<div class="store-links"><a href="https://apps.apple.com/us/app/hellotalk-language-learning/id557130558" target="_blank" rel="noopener noreferrer" data-ht="store">App Store</a><a href="https://play.google.com/store/apps/details?id=com.hellotalk" target="_blank" rel="noopener noreferrer" data-ht="store">Google Play</a></div>`,
   );
 }
 function showGate() {
   // Render the actual live world once, then lock its interaction with an inert shell.
   gate=false;page='map';render();gate=true;
   app.querySelector<HTMLElement>('.app-shell')!.inert=true;
-  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
+  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><a class="text-button" href="/my-links">${e(t("Friends’ screams"))}</a><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
   app.querySelector<HTMLButtonElement>('.play-unlock')!.focus({preventScroll:true});
 }
 function openUnlockConsent() {
   if (!gate || gateBusy) return;
-  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>开启麦克风，采集 3 秒声音，在本机计算游戏评分。</li><li>${invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li><li>录音中可随时取消或关闭。</li></ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
+  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${invite ? t("The invited transformation records 2 seconds of sound and a local game score.") : t("开启麦克风，采集 3 秒声音，在本机计算游戏评分。")}</li><li>${invite?.recordingFull ? t("This link already has five recordings. You can still play; no recording will be uploaded.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li><li>录音中可随时取消或关闭。</li></ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
   const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
   dialog.classList.add('unlock-consent');
   dialog.setAttribute('aria-labelledby', 'unlock-title');
@@ -528,6 +545,7 @@ function openUnlockConsent() {
   };
 }
 function finishGate() {
+  microphoneUnlocked=true;
   mic?.stop();mic=undefined;gateBusy=false;gate=false;
   app.querySelector('.play-lock')?.remove();
   const shell=app.querySelector<HTMLElement>('.app-shell');if(shell)shell.inert=false;
@@ -566,6 +584,7 @@ document.addEventListener("click", async (ev) => {
   );
   if (!target) return;
   if (characterLocked) return;
+  if(gate && !gateBusy && ['links','boards'].includes(target.dataset.page || ''))gate=false;
   if (gate && !["enter", "stats-help", "close"].includes(target.dataset.action || "")) return;
   if (target.dataset.ht) {
     event("hellotalk_clicked", target.dataset.ht);
@@ -573,7 +592,12 @@ document.addEventListener("click", async (ev) => {
   }
   if (target.hasAttribute("disabled")) return;
   try {
+    if(target.dataset.action==='signin'){await signIn();return;}
+    if(target.dataset.action==='signout'){await api("/auth/logout",{});location.assign("/my-links");return;}
     if (target.dataset.page) {
+      if(target.dataset.page==='links'){await openReactions();return;}
+      history.replaceState(null,'',target.dataset.page==='boards'?'/rankings':'/');
+      if(target.dataset.page==='map' && !microphoneUnlocked){showGate();return;}
       page = target.dataset.page;
       render();
       window.scrollTo({ top: 0 });
@@ -606,11 +630,6 @@ document.addEventListener("click", async (ev) => {
     }
     if (target.dataset.scope) {
       boardScope = target.dataset.scope;
-      render();
-      return;
-    }
-    if (target.dataset.metric) {
-      boardMetric = target.dataset.metric;
       render();
       return;
     }
@@ -701,6 +720,7 @@ document.addEventListener("click", async (ev) => {
         break;
       case "map":
         closeModal();
+        if(!microphoneUnlocked){showGate();break;}
         page = "map";
         render();
         break;
@@ -740,7 +760,11 @@ setInterval(() => {
       const count=$('#reaction-count'); if(count)count.innerHTML=counterFraction(player.shareVisits || 0, player.shareCount || 0);
       const peace=$('#peace-count');if(peace)peace.innerHTML=counterFraction(player.peaceCount, catalog.spirits.length);
       const meter=overlay.querySelector<HTMLElement>('[data-reaction-spirit]');
-      if(meter)meter.outerHTML=reactionMeter(meter.dataset.reactionSpirit!);
+      if(meter){
+        const score=pitchScore(player.reactions?.stats.find(x=>x.spiritId===meter.dataset.reactionSpirit)?.meanHz ?? null);
+        meter.querySelector('progress')!.value=score;
+        meter.querySelector('[data-world-scariness]')!.textContent=msg`World Scariness ${score} / 100`;
+      }
     }).catch(()=>{});
 }, 15000);
 async function boot() {
@@ -768,7 +792,16 @@ async function boot() {
       }
     }
     event("entered");
-    showGate();
+    if(location.pathname==='/my-links') {
+      page='links';render();
+      const signInResult=new URL(location.href).searchParams.get('signin');
+      if(signInResult==='failed')toast(t('Sign-in failed. Please try again.'));
+      if(player.account && signInResult==='success') {
+        const pending=sessionStorage.getItem('boo:pending-share');sessionStorage.removeItem('boo:pending-share');
+        if(pending && spirit(pending))openShare(pending);
+      }
+      history.replaceState(null,'','/my-links');
+    } else if(location.pathname==='/rankings'){page='boards';render();} else showGate();
   } catch (err) {
     app.innerHTML = html`<main class="boot"><span>${icon("moon")}</span><h1>The lanterns need a moment.</h1><p>${e((err as Error).message)}</p>${button(t("Light them again"), "retry", "primary")}</main>`;
   }

@@ -1,0 +1,8 @@
+Tool: built-in image_gen
+Transparent background: true
+
+help-question.webp:
+Create a single help question mark UI icon matching colorful glossy 3D emoji such as pumpkin and ghost and golden trophy. One chunky upright purple question mark with a separate round golden yellow dot beneath, bright lilac highlights and subtle violet shading. Bold simple friendly rounded silhouette legible at 28 pixels. Centered front view, occupies 88 percent of square canvas. Transparent background, no enclosing disc or button, no extra objects, no shadow outside icon.
+
+language-globe.webp:
+Create a single language-selector globe UI icon matching colorful glossy rounded 3D emoji such as pumpkin, ghost, and a golden trophy. One spherical vivid cyan-blue globe with simple raised mint-green stylized continents, soft turquoise shading, creamy specular highlights. Friendly playful emoji illustration, bold uncluttered silhouette readable at 28 pixels, no thin grid lines. Centered front view, globe occupies 88 percent of square canvas. Transparent background. No stand, no text, no flags, no enclosing button or tile, no extra objects, no shadow outside the globe.

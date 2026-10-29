@@ -1,3 +1,4 @@
+import {languages} from '../shared/i18n.mjs';
 import { pitchLevel } from "../shared/reactions.mjs";
 import { DatabaseSync } from "node:sqlite";
 import { randomBytes, randomUUID, createHash } from "node:crypto";
@@ -36,6 +37,8 @@ export class BooStore {
     this.db
       .exec(`PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;
       CREATE TABLE IF NOT EXISTS players(id TEXT PRIMARY KEY,name TEXT NOT NULL,country TEXT,selected TEXT,wallet INTEGER NOT NULL DEFAULT 0 CHECK(wallet>=0),candies INTEGER NOT NULL DEFAULT 0 CHECK(candies>=0),peace_count INTEGER NOT NULL DEFAULT 0,initialized INTEGER NOT NULL DEFAULT 0,created_at INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS accounts(subject TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),created_at INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS account_members(player_id TEXT PRIMARY KEY REFERENCES players(id),subject TEXT NOT NULL REFERENCES accounts(subject));
       CREATE TABLE IF NOT EXISTS sessions(hash TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),created_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS progress(player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,donated INTEGER NOT NULL DEFAULT 0 CHECK(donated>=0 AND donated<=100),peace_at INTEGER,PRIMARY KEY(player_id,spirit_id));
       CREATE TABLE IF NOT EXISTS ledger(id TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),reason TEXT NOT NULL,delta INTEGER NOT NULL,created_at INTEGER NOT NULL);
@@ -50,6 +53,7 @@ export class BooStore {
       CREATE TABLE IF NOT EXISTS story_reads(player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,read_at INTEGER NOT NULL,PRIMARY KEY(player_id,spirit_id));
       CREATE TABLE IF NOT EXISTS reactions(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mean_hz INTEGER,peak_hz INTEGER,frames INTEGER NOT NULL,created_at INTEGER NOT NULL,seen_at INTEGER,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS reaction_audio(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mime TEXT NOT NULL,audio BLOB NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
+      CREATE TABLE IF NOT EXISTS reaction_intensity(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,language TEXT NOT NULL,rms REAL CHECK(rms IS NULL OR (rms>=0 AND rms<=1)),PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS invite_labels(invite_id TEXT PRIMARY KEY REFERENCES invites(id),friend_name TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS reaction_details(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,name TEXT NOT NULL,score INTEGER,duration_ms INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
       CREATE INDEX IF NOT EXISTS matches_player ON matches(player_id,started_at);
@@ -100,6 +104,7 @@ export class BooStore {
       .get(id, this.day());
     return {
       id: p.id,
+      account: !!this.db.prepare("SELECT 1 FROM accounts WHERE player_id=?").get(id),
       name: p.name,
       country: p.country,
       selected: p.selected,
@@ -145,9 +150,54 @@ export class BooStore {
     if (!token || token.length > 100) return null;
     return (
       this.db
-        .prepare("SELECT player_id FROM sessions WHERE hash=?")
-        .get(digest(token))?.player_id || null
+        .prepare("SELECT s.player_id FROM sessions s WHERE s.hash=? AND s.created_at > ? - CASE WHEN EXISTS(SELECT 1 FROM accounts a WHERE a.player_id=s.player_id) THEN 2592000000 ELSE 31536000000 END")
+        .get(digest(token),this.now())?.player_id || null
     );
+  }
+  accountLogin(guestId, subject) {
+    if (typeof subject !== 'string' || !subject || subject.length > 200) fail(401, 'Invalid account.');
+    return this.transaction(() => {
+      const membership = this.db.prepare('SELECT subject FROM account_members WHERE player_id=?').get(guestId);
+      if (membership && membership.subject !== subject) fail(409, 'Sign out before using another account.');
+      const existing = this.db.prepare('SELECT player_id FROM accounts WHERE subject=?').get(subject);
+      const id = existing?.player_id || guestId;
+      if (!existing) this.db.prepare('INSERT INTO accounts VALUES(?,?,?)').run(subject,id,this.now());
+      this.db.prepare('INSERT OR IGNORE INTO account_members VALUES(?,?)').run(guestId,subject);
+      if (id !== guestId) {
+        const guest = this.rawPlayer(guestId), owner = this.rawPlayer(id);
+        this.db.prepare('UPDATE invites SET sender_id=? WHERE sender_id=?').run(id,guestId);
+        // Keep the more advanced progress, without stacking repeat welcome bonuses.
+        this.db.prepare(`INSERT INTO progress SELECT ?,spirit_id,donated,peace_at FROM progress WHERE player_id=?
+          ON CONFLICT(player_id,spirit_id) DO UPDATE SET donated=MAX(progress.donated,excluded.donated),peace_at=COALESCE(progress.peace_at,excluded.peace_at)`).run(id,guestId);
+        const walletDelta = Math.max(0,guest.wallet-owner.wallet);
+        const earnedDelta = Math.max(walletDelta,guest.candies-owner.candies);
+        if(earnedDelta) this.award(id,`account-import:${guestId}`,'account_import',earnedDelta);
+        const spentDelta=earnedDelta-walletDelta;
+        if(spentDelta) {
+          this.db.prepare('INSERT INTO ledger VALUES(?,?,?,?,?)').run(`account-import-spent:${guestId}`,id,'account_import_spent',-spentDelta,this.now());
+          this.db.prepare('UPDATE players SET wallet=wallet-? WHERE id=?').run(spentDelta,id);
+        }
+        this.db.prepare(`UPDATE players SET peace_count=(SELECT COUNT(*) FROM progress WHERE player_id=? AND peace_at IS NOT NULL) WHERE id=?`).run(id,id);
+        if (!owner.initialized && guest.initialized) this.db.prepare('UPDATE players SET name=?,country=?,selected=?,initialized=1 WHERE id=?').run(guest.name,guest.country,guest.selected,id);
+      }
+      // A guest cookie must never become a reusable credential for a permanent account.
+      this.db.prepare('DELETE FROM sessions WHERE player_id=?').run(guestId);
+      const token = randomBytes(32).toString('base64url');
+      this.db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(digest(token),id,this.now());
+      return {token,player:this.state(id)};
+    });
+  }
+  logout(token) {
+    if (token) this.db.prepare('DELETE FROM sessions WHERE hash=?').run(digest(token));
+  }
+  ghostLinks(id, offset = 0, spiritId = "") {
+    const links = this.db.prepare(`SELECT i.id AS inviteId,i.spirit_id AS spiritId,i.created_at AS createdAt,l.friend_name AS friendName,
+      (SELECT COUNT(*) FROM invite_visits v WHERE v.invite_id=i.id) AS visits
+      FROM invites i LEFT JOIN invite_labels l ON l.invite_id=i.id WHERE i.sender_id=? AND (?='' OR i.spirit_id=?) ORDER BY i.created_at DESC,i.id DESC LIMIT 21 OFFSET ?`).all(id,spiritId,spiritId,offset);
+    const hasMore=links.length>20;
+    return {hasMore,spirits:this.db.prepare('SELECT DISTINCT spirit_id FROM invites WHERE sender_id=? ORDER BY spirit_id').all(id).map(r=>r.spirit_id),links:links.slice(0,20).map(link=>({...link,recordings:this.db.prepare(`SELECT a.player_id AS receiverId,COALESCE(d.name,p.name) AS name,COALESCE(d.duration_ms,5000) AS durationMs,a.created_at AS createdAt
+      FROM reaction_audio a JOIN players p ON p.id=a.player_id LEFT JOIN reaction_details d ON d.invite_id=a.invite_id AND d.player_id=a.player_id
+      WHERE a.invite_id=? ORDER BY a.created_at ASC,a.rowid ASC LIMIT 5`).all(link.inviteId)}))};
   }
   award(id, key, reason, amount) {
     const inserted = this.db
@@ -409,6 +459,7 @@ export class BooStore {
       channel: row.channel,
       eligible: !!row.eligible && this.inviteRewards,
       expired: this.now() - row.created_at > RULES.inviteLifetimeMs,
+      recordingFull: this.db.prepare("SELECT COUNT(*) AS n FROM reaction_audio WHERE invite_id=?").get(token).n >= 5,
     };
   }
   recordInviteVisit(id, token) {
@@ -448,33 +499,40 @@ export class BooStore {
     if (invite.expired) fail(410, 'This invitation has expired.');
     if (body.consent !== true) fail(400, 'Recording and sending requires consent.');
     if (!['audio/webm', 'audio/ogg', 'audio/mp4'].includes(body.mime)) fail(415, 'Unsupported audio format.');
-    if (![3000,5000].includes(body.durationMs) || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
+    if (![2000,3000,5000].includes(body.durationMs) || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
     const receiver = this.rawPlayer(id);
     const label = this.db.prepare('SELECT friend_name FROM invite_labels WHERE invite_id=?').get(token)?.friend_name;
     // New clients use the unlock notice and do not ask visitors for a name.
     // Preserve supplied names from older clients and existing recordings.
-    const name = body.durationMs === 3000 && body.name !== undefined ? body.name :
+    const name = body.durationMs <= 3000 && body.name !== undefined ? body.name :
       receiver.initialized ? receiver.name : label || receiver.name;
     if (typeof name !== 'string' || !name.trim() || name.trim().length > 24 || /[\u0000-\u001f\u007f]/.test(name)) fail(400, 'Enter your name (1–24 characters).');
-    const score = body.durationMs === 3000 ? body.score ?? null : null;
+    const score = body.durationMs <= 3000 ? body.score ?? null : null;
     if (score !== null && (!Number.isInteger(score) || score < 0 || score > 100)) fail(400, 'Invalid local score.');
-    if (body.durationMs === 3000) {
+    if (body.durationMs <= 3000) {
       const {meanHz,peakHz,frames} = body;
       if (!Number.isInteger(frames) || frames < 0 || frames > 100 ||
           (meanHz === null && peakHz === null ? frames !== 0 || score !== null :
           !Number.isInteger(meanHz) || !Number.isInteger(peakHz) || meanHz < 70 || peakHz > 1200 || peakHz < meanHz || frames < 5)) fail(400, 'Invalid pitch measurement.');
     }
+    const language=body.language ?? null, rms=body.amplitudeRms ?? null;
+    if(language!==null && !languages.some(([code])=>code===language))fail(400,'Invalid recording language.');
+    if(rms!==null && (typeof rms!=='number' || !Number.isFinite(rms) || rms<0 || rms>1 || language===null))fail(400,'Invalid recording intensity.');
     const audio = Buffer.from(body.audio, 'base64');
     if (!audio.length || audio.length > 512000) fail(413, 'Recording too large.');
     const valid = body.mime === 'audio/webm' ? audio.subarray(0,4).equals(Buffer.from([0x1a,0x45,0xdf,0xa3])) : body.mime === 'audio/ogg' ? audio.toString('ascii',0,4) === 'OggS' : audio.toString('ascii',4,8) === 'ftyp';
     if (!valid) fail(400, 'Invalid audio container.');
     return this.transaction(() => {
       if (this.db.prepare('SELECT 1 FROM reaction_audio WHERE invite_id=? AND player_id=?').get(token,id)) return {ok:true, alreadySent:true};
+      const member = this.db.prepare('SELECT subject FROM account_members WHERE player_id=?').get(id);
+      if(member && this.db.prepare(`SELECT 1 FROM reaction_audio a JOIN account_members m ON m.player_id=a.player_id WHERE a.invite_id=? AND m.subject=?`).get(token,member.subject)) return {ok:true,alreadySent:true};
+      if(this.db.prepare('SELECT COUNT(*) AS n FROM reaction_audio WHERE invite_id=?').get(token).n >= 5) return {ok:true,full:true};
       const count = this.db.prepare('SELECT COUNT(*) AS n FROM reaction_audio WHERE player_id=? AND created_at>?').get(id,this.now()-86400000).n;
       if (count >= 20) fail(429, 'Daily recording limit reached.');
       this.db.prepare('INSERT INTO reaction_audio VALUES(?,?,?,?,?)').run(token,id,body.mime,audio,this.now());
       this.db.prepare('INSERT INTO reaction_details VALUES(?,?,?,?,?)').run(token,id,name.trim(),score,body.durationMs);
-      if (body.durationMs === 3000) this.db.prepare(`INSERT INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,?,?,?,?)
+      if(language!==null)this.db.prepare('INSERT INTO reaction_intensity VALUES(?,?,?,?)').run(token,id,language,rms);
+      if (body.durationMs <= 3000) this.db.prepare(`INSERT INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,?,?,?,?)
         ON CONFLICT(invite_id,player_id) DO UPDATE SET mean_hz=excluded.mean_hz,peak_hz=excluded.peak_hz,frames=excluded.frames`).run(token,id,body.meanHz,body.peakHz,body.frames,this.now());
       else this.db.prepare('INSERT OR IGNORE INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,NULL,NULL,0,?)').run(token,id,this.now());
       this.db.prepare('UPDATE reactions SET seen_at=NULL,created_at=? WHERE invite_id=? AND player_id=?').run(this.now(),token,id);
@@ -546,6 +604,23 @@ export class BooStore {
       this.event("invite_responded", invite.channel);
       return { ...result, player: this.state(id) };
     });
+  }
+  screamRankings(id, scope='trick') {
+    if(!['trick','intensity'].includes(scope))fail(400,'Choose a valid leaderboard.');
+    // Only saved audio contributes. Retries and full-link submissions add no rows.
+    // Each participant has equal weight within a language, across all their recordings.
+    const scores=scope==='trick' ? `SELECT p.id,p.name,COUNT(*) AS score,COUNT(*) AS recordings
+      FROM reaction_audio a JOIN invites i ON i.id=a.invite_id JOIN players p ON p.id=i.sender_id
+      WHERE a.player_id<>i.sender_id GROUP BY p.id` :
+      `WITH participant_scores AS (
+        SELECT r.language,COALESCE(m.subject,r.player_id) AS participant,AVG(r.rms) AS intensity,COUNT(*) AS recordings
+        FROM reaction_intensity r LEFT JOIN account_members m ON m.player_id=r.player_id
+        WHERE r.rms IS NOT NULL GROUP BY r.language,participant)
+      SELECT language AS id,language AS name,ROUND(AVG(intensity)*100,2) AS score,COUNT(*) AS participants,SUM(recordings) AS recordings
+      FROM participant_scores GROUP BY language`;
+    const ranked=`WITH scores AS (${scores}),ranked AS (SELECT *,RANK() OVER(ORDER BY score DESC) AS rank FROM scores)`;
+    return {scope,rows:this.db.prepare(`${ranked} SELECT * FROM ranked ORDER BY score DESC,id LIMIT 100`).all(),
+      self:scope==='trick'?this.db.prepare(`${ranked} SELECT * FROM ranked WHERE id=?`).get(id)||null:null,updatedAt:this.now()};
   }
   leaderboard(id, scope, metric) {
     if (

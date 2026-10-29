@@ -1,10 +1,14 @@
 import {test,expect,chromium} from '@playwright/test';
-const origin=process.env.WD_ACCEPTANCE_ORIGIN || 'http://127.0.0.1:8787';
+import {createApp} from '../../server/index.mjs';
+let origin:string,app:ReturnType<typeof createApp>;
+test.beforeAll(async()=>{app=createApp({databasePath:':memory:',rateLimits:false});await new Promise<void>(r=>app.server.listen(0,'127.0.0.1',r));origin=`http://127.0.0.1:${(app.server.address() as any).port}`;});
+test.afterAll(async()=>{await new Promise<void>(r=>app.server.close(()=>r()));app.close();});
 async function setup() {
  const browser=await chromium.launch({channel:'chrome',args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});
  const sender=await browser.newContext({baseURL:origin,permissions:['microphone']});
  const receiver=await browser.newContext({baseURL:origin,permissions:['microphone'],viewport:{width:390,height:844}});
- await sender.request.post('/api/session',{data:{}});
+ const guest=app.store.createGuest();const login=app.store.accountLogin(guest.player.id,'recording-'+guest.player.id);
+ await sender.addCookies([{name:'boo_session',value:login.token,url:origin}]);
  await sender.request.post('/api/onboard',{data:{name:'Sender',country:'CN',spiritId:'jiangshi'}});
  const invitation=await(await sender.request.post('/api/invites',{data:{spiritId:'jiangshi',channel:'copy',friendName:'小明同学'}})).json();
  const page=await receiver.newPage();
@@ -18,7 +22,7 @@ async function setup() {
  await page.goto('/i/'+invitation.id);
  await expect(page.locator('#mic-notice')).toHaveCount(0);
  await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
- await expect(page.locator('.unlock-points')).toContainText("Only your inviter, Sender, can play the recording.");
+ await expect(page.locator('.unlock-points')).toContainText("Only your inviter, Sender, can listen.");
  await expect(page.locator('[data-confirm-unlock]')).toBeInViewport({ratio:1});
  expect(await page.evaluate(()=>(window as any).__recordingEvidence.start)).toBe(0);
  await page.screenshot({path:'artifacts/reaction-unlock-dialog-mobile.png'});
@@ -28,26 +32,28 @@ async function setup() {
  return {browser,sender,receiver,page,invitation};
 }
 async function acceptInvitation(page:any) {
- await page.getByRole('button',{name:"Accept your friend's Halloween invitation",exact:true}).click();
+ await page.getByRole('button',{name:"Accept invitation",exact:true}).click();
 }
-test('three-second local scoring uploads named private audio and replay does not send twice',async()=>{
+test('two-second local scoring uploads named private audio and replay does not send twice',async()=>{
  const {browser,sender,receiver,page,invitation}=await setup();
  try {
   let uploads=0; page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await expect(page.locator('[data-invite-play]')).toBeInViewport({ratio:1});
   await page.screenshot({path:'artifacts/reaction-consent-mobile.png'});
   await acceptInvitation(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 3 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 2 seconds");
   await expect(page.locator('[data-personal-scare]')).toBeInViewport();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Your 3-second recording was sent",{timeout:15000});
+  await expect(page.locator('[data-personal-scare]')).toContainText("Your 2-second recording was sent",{timeout:15000});
   const timing=await page.evaluate(()=>(window as any).__recordingEvidence);
   expect(timing.videoTime).toBeGreaterThanOrEqual(2); expect(timing.videoTime).toBeLessThan(2.7);
-  expect(timing.stop-timing.start).toBeGreaterThanOrEqual(2900); expect(timing.stop-timing.start).toBeLessThan(3600);
+  expect(timing.stop-timing.start).toBeGreaterThanOrEqual(1900); expect(timing.stop-timing.start).toBeLessThan(2600);
   const {player}=await(await sender.request.get('/api/me')).json();
   const reaction=player.reactions.recent.find((r:any)=>r.inviteId===invitation.id);
-  expect(reaction).toMatchObject({name:'小明同学',friendName:'小明同学',hasAudio:1,durationMs:3000});
+  expect(reaction).toMatchObject({name:'小明同学',friendName:'小明同学',hasAudio:1,durationMs:2000});
   const local=await page.evaluate(()=>Object.entries(localStorage).filter(([key])=>key.startsWith('boo:personal-scare:')).map(([,value])=>JSON.parse(value)));
   expect(reaction.score).toBe(local[0].score);
+  const intensity=app.store.db.prepare('SELECT language,rms FROM reaction_intensity WHERE invite_id=? AND player_id=?').get(invitation.id,reaction.receiverId);
+  expect(intensity.language).toBe('en');expect(Number.isFinite(intensity.rms)).toBe(true);expect(intensity.rms).toBeGreaterThanOrEqual(0);expect(intensity.rms).toBeLessThanOrEqual(1);
   const audioPath=`/api/invites/${invitation.id}/audio/${reaction.receiverId}`;
   expect((await receiver.request.get(audioPath)).status()).toBe(404);
   const audio=await sender.request.get(audioPath); expect(audio.status()).toBe(200); expect((await audio.body()).length).toBeGreaterThan(1000);
@@ -55,15 +61,13 @@ test('three-second local scoring uploads named private audio and replay does not
   await page.locator('[data-play-transform]').click();
   await expect(page.locator('[data-play-transform]')).toBeVisible({timeout:15000});
   expect(uploads).toBe(1);
-  const senderPage=await sender.newPage(); await senderPage.emulateMedia({reducedMotion:'reduce'}); await senderPage.goto('/');
-  await senderPage.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await senderPage.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
-  await senderPage.locator('[data-action="reactions"]').click();
-  await expect(senderPage.locator('.reaction-report').first()).toContainText('小明同学');
-  await expect(senderPage.locator('.reaction-report').first().getByRole('link')).toHaveAttribute('href','/i/'+invitation.id);
-  await senderPage.getByLabel("小明同学's voice reaction").evaluate((a:HTMLAudioElement)=>a.play());
-  await expect.poll(()=>senderPage.getByLabel("小明同学's voice reaction").evaluate((a:HTMLAudioElement)=>a.currentTime)).toBeGreaterThan(0);
+  const senderPage=await sender.newPage(); await senderPage.emulateMedia({reducedMotion:'reduce'}); await senderPage.goto('/my-links');
+  await expect(senderPage.locator('.ghost-link-card').first()).toContainText('小明同学');
+  await expect(senderPage.locator('.ghost-link-card').first().getByRole('link',{name:'Open invitation'})).toHaveAttribute('href','/i/'+invitation.id);
+  await senderPage.getByLabel('小明同学 · Voice reaction').evaluate((a:HTMLAudioElement)=>a.play());
+  await expect.poll(()=>senderPage.getByLabel('小明同学 · Voice reaction').evaluate((a:HTMLAudioElement)=>a.currentTime)).toBeGreaterThan(0);
   await senderPage.screenshot({path:'artifacts/reaction-inbox.png'});
-  await senderPage.getByRole('button',{name:'Close',exact:true}).click();
+  await senderPage.goto('/');await senderPage.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await senderPage.getByRole('button',{name:'Confirm and enable microphone',exact:true}).click();
   await senderPage.locator('.globe-pin[data-spirit="jiangshi"]').click();
   await senderPage.getByRole('button',{name:'Share this character',exact:true}).click();
   await senderPage.locator('#share-friend-name').fill('小红');
@@ -81,11 +85,11 @@ test('ordinary exploration stays local and cancelling invitation capture never u
   await page.goto('/');
   await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
   await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("My scariness score",{timeout:15000});
+  await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
   expect(uploads).toBe(0);
   await page.goto('/i/'+invitation.id);await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
   await acceptInvitation(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 3 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 2 seconds");
   await page.getByRole('button',{name:"Cancel recording and sending",exact:true}).click();
   await expect(page.locator('[data-personal-scare]')).toContainText("cancelled");
   await expect(page.locator('[data-play-transform]')).toBeVisible({timeout:15000});
@@ -103,9 +107,9 @@ test('upload failure preserves score and allows retry with the same recording',a
   });
   await acceptInvitation(page);
   await expect(page.locator('[data-personal-scare]')).toContainText("Sending failed",{timeout:15000});
-  await expect(page.locator('[data-personal-scare]')).toContainText("My scariness score");
+  await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/);
   await page.getByRole('button',{name:"Retry sending recording",exact:true}).click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Your 3-second recording was sent");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Your 2-second recording was sent");
   expect(bodies[1]).toEqual(bodies[0]);
   expect((await(await sender.request.get('/api/me')).json()).player.reactions.recent).toHaveLength(1);
  }finally{await browser.close();}
@@ -121,7 +125,7 @@ test('closing during capture releases the microphone and never uploads',async()=
   });
   let uploads=0;page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await acceptInvitation(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 3 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 2 seconds");
   await page.getByRole('button',{name:'Close character details',exact:true}).click();
   await expect(page.locator('dialog')).toHaveCount(0);
   expect(await page.evaluate(()=>(window as any).__streams.every((s:MediaStream)=>s.getTracks().every(t=>t.readyState==='ended')))).toBe(true);

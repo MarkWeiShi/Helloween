@@ -32,3 +32,13 @@ test('production motion API reads packs from the same static root that serves sp
   assert.equal(await (await fetch(base+motions.jiangshi.sheet)).text(),'sprite fixture');
  }finally{await new Promise(resolve=>app.server.close(resolve));app.store.close();rmSync(root,{recursive:true,force:true});}
 });
+
+test('known regional preview characters can publish cute motion without granting catalog membership',()=>{
+ const root=mkdtempSync(join(tmpdir(),'boo-preview-motion-')),dir=join(root,'art/motions'),spirits=new Map();
+ try {
+  mkdirSync(dir,{recursive:true});writeFileSync(join(dir,'test.webp'),'fixture');
+  for(const spiritId of ['vetala','unknown-preview'])writeFileSync(join(dir,`${spiritId}.json`),JSON.stringify({state:'ready',kind:'cute',spiritId,sheet:'/art/motions/test.webp',frames:24,fps:12}));
+  const motions=loadCuteMotions(root,spirits);
+  assert.equal(motions.vetala.frames,24);assert.equal(motions['unknown-preview'],undefined);assert.equal(spirits.size,0);
+ } finally {rmSync(root,{recursive:true,force:true});}
+});

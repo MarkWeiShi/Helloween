@@ -952,6 +952,76 @@
         "audio": "/art/name-reveals/zhalgyz-koz/name-v1.wav",
         "nativeReview": "pending"
       }
+    },
+    "vetala": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/vetala/entrance.af44a0b4b2b9.mp4",
+      "loop": "/art/transformations/vetala/loop.774c1b64aebf.mp4",
+      "entranceAlpha": "/art/transformations/vetala/entrance.7d5d2ee5a44e.webm",
+      "loopAlpha": "/art/transformations/vetala/loop.0fe04439b943.webm",
+      "poster": "/art/transformations/vetala/poster.06c071d873af.png"
+    },
+    "domovoi": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/domovoi/entrance.c9c3321d47bb.mp4",
+      "loop": "/art/transformations/domovoi/loop.c4c7dc72868f.mp4",
+      "entranceAlpha": "/art/transformations/domovoi/entrance.412e9e36ac9e.webm",
+      "loopAlpha": "/art/transformations/domovoi/loop.e9e0ed1c155c.webm",
+      "poster": "/art/transformations/domovoi/poster.98b2609c8cf9.png"
+    },
+    "lutin": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/lutin/entrance.48b3c4c69930.mp4",
+      "loop": "/art/transformations/lutin/loop.f63625809a20.mp4",
+      "entranceAlpha": "/art/transformations/lutin/entrance.fb931a5e6c77.webm",
+      "loopAlpha": "/art/transformations/lutin/loop.0947b65676d9.webm",
+      "poster": "/art/transformations/lutin/poster.64a699589885.png"
+    },
+    "kobold": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/kobold/entrance.6087af1830fa.mp4",
+      "loop": "/art/transformations/kobold/loop.590e689146c3.mp4",
+      "entranceAlpha": "/art/transformations/kobold/entrance.d9ab2b85322f.webm",
+      "loopAlpha": "/art/transformations/kobold/loop.e6afa0129a3a.webm",
+      "poster": "/art/transformations/kobold/poster.5213a2318ef0.png"
+    },
+    "duppy": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/duppy/entrance.7a653186a1ea.mp4",
+      "loop": "/art/transformations/duppy/loop.cd3369995eb6.mp4",
+      "entranceAlpha": "/art/transformations/duppy/entrance.360ee283b3dd.webm",
+      "loopAlpha": "/art/transformations/duppy/loop.9f54f5697cfd.webm",
+      "poster": "/art/transformations/duppy/poster.bb085fd53afc.png"
+    },
+    "el-tunche": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/el-tunche/entrance.eb60aed25db5.mp4",
+      "loop": "/art/transformations/el-tunche/loop.ce98529df241.mp4",
+      "entranceAlpha": "/art/transformations/el-tunche/entrance.d3dd1bc4026c.webm",
+      "loopAlpha": "/art/transformations/el-tunche/loop.35529a780fd1.webm",
+      "poster": "/art/transformations/el-tunche/poster.560defbdc57a.png"
+    },
+    "bunyip": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/bunyip/entrance.8a1aaabd7ad6.mp4",
+      "loop": "/art/transformations/bunyip/loop.8db4e1d27632.mp4",
+      "entranceAlpha": "/art/transformations/bunyip/entrance.474adbbf6e70.webm",
+      "loopAlpha": "/art/transformations/bunyip/loop.3442ae48e942.webm",
+      "poster": "/art/transformations/bunyip/poster.43f10491a49c.png"
     }
   }
 }

@@ -9,7 +9,7 @@ test('accepting an invitation opens the shared immersive character view',async()
  const receiver=await browser.newContext({baseURL:(process.env.WD_ACCEPTANCE_ORIGIN || 'http://127.0.0.1:8787'),permissions:['microphone'],viewport:{width:390,height:844}});
  const page=await receiver.newPage();await page.goto('/i/'+invite.id);
  await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
- await page.getByRole('button',{name:"Accept your friend's Halloween invitation",exact:true}).click();
+ await page.getByRole('button',{name:"Accept invitation",exact:true}).click();
  const dialog=page.locator('dialog.character-immersive');await expect(dialog).toBeVisible();
  await expect(dialog.locator('#character-focus')).toHaveAttribute('aria-label','Jiangshi');
  await expect(dialog.locator(':scope > .immersive-video-layer')).toHaveCount(1);

@@ -39,6 +39,7 @@ export interface ReactionSummary {
  recent: {score:number|null;durationMs:number;friendName:string|null;hasAudio?:number;inviteId:string;receiverId:string;name:string;spiritId:string;meanHz:number|null;peakHz:number|null;createdAt:number;seenAt:number|null;level:string}[];
 }
 export interface Player {
+  account: boolean;
   shareVisits: number;
   shareCount: number;
   reactions: ReactionSummary;
@@ -66,6 +67,7 @@ export interface Catalog {
   inviteRewards: boolean;
 }
 export interface Invite {
+  recordingFull: boolean;
   id: string;
   name: string;
   country: string;
