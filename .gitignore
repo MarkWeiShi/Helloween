@@ -13,3 +13,7 @@ artifacts/private/
 
 # Local generation jobs, review exports and simulated/private recordings
 artifacts/
+
+.build/
+dist-api/
+dist-sdk/

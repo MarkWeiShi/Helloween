@@ -1,0 +1,27 @@
+# Optional same-origin edge for local tests / CDNs without path-based origins.
+# nginx entrypoint substitutes only these deployment environment variables.
+server {
+    listen 8080;
+    server_name _;
+    client_max_body_size 700000;
+    location = /api { return 404; }
+    location ^~ /api/ {
+        proxy_pass http://${API_UPSTREAM};
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Cookie $http_cookie;
+        proxy_cache off;
+        proxy_no_cache 1;
+        proxy_cache_bypass 1;
+        proxy_next_upstream off;
+        proxy_read_timeout 30s;
+        proxy_hide_header Cache-Control;
+        add_header Cache-Control "no-store" always;
+    }
+    location / {
+        proxy_pass http://${WEB_UPSTREAM};
+        proxy_set_header Host $http_host;
+        proxy_set_header Cookie "";
+    }
+}

@@ -1,6 +1,9 @@
 .git
 node_modules
 dist
+dist-api
+dist-sdk
+.build
 .data
 .env*
 artifacts

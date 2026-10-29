@@ -2,7 +2,7 @@ import {t} from "../shared/i18n.mjs";
 export type Transformation = { entrance: string; loop: string; entranceAlpha?: string; loopAlpha?: string; poster: string; duration: number; loopDuration: number; revealAt: number };
 export function validTransformation(value: unknown): value is Transformation {
   const v = value as Transformation;
-  return !!v && [v.entrance, v.loop, v.poster].every(p => typeof p === 'string' && /^\/art\/transformations\/[a-z0-9-]+\/[a-z0-9.-]+$/.test(p)) && [v.duration, v.loopDuration, v.revealAt].every(Number.isFinite) && v.duration > 0 && v.loopDuration > 0 && v.revealAt >= 0 && v.revealAt < v.duration;
+  return !!v && [v.entrance, v.loop, v.poster].every(p => typeof p === 'string' && /^\/(?:releases\/[a-f0-9]{20}\/)?art\/transformations\/[a-z0-9-]+\/[a-z0-9.-]+$/.test(p)) && [v.duration, v.loopDuration, v.revealAt].every(Number.isFinite) && v.duration > 0 && v.loopDuration > 0 && v.revealAt >= 0 && v.revealAt < v.duration;
 }
 let manifest: Promise<Record<string, Transformation>> | undefined;
 export async function loadTransformation(id: string) {

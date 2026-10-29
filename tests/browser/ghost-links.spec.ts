@@ -1,15 +1,15 @@
 import {test,expect} from '@playwright/test';
-import {createApp} from '../../server/index.mjs';
-let app:ReturnType<typeof createApp>,origin:string,ownerToken:string,inviteId:string;
+import {startBrowserApp} from '../helpers/nginx.mjs';
+let app:Awaited<ReturnType<typeof startBrowserApp>>,origin:string,ownerToken:string,inviteId:string;
 test.beforeAll(async()=>{
- app=createApp({databasePath:':memory:',rateLimits:false,authOptions:{url:'https://identity.example',key:'test-key',fetcher:async(url:string)=>Response.json(url.endsWith('/otp')?{}:{access_token:'test-only',user:{id:'library-owner',is_anonymous:false}})}});
- await new Promise<void>(resolve=>app.server.listen(0,'127.0.0.1',resolve));origin=`http://127.0.0.1:${(app.server.address() as any).port}`;
+ app=await startBrowserApp({databasePath:':memory:',rateLimits:false,authOptions:{url:'https://identity.example',key:'test-key',fetcher:async(url:string)=>Response.json(url.endsWith('/otp')?{}:{access_token:'test-only',user:{id:'library-owner',is_anonymous:false}})}});
+ origin=app.origin;
  const guest=app.store.createGuest();app.store.onboard(guest.player.id,{name:'Owner',country:'CN',spiritId:'jiangshi'});ownerToken=app.store.accountLogin(guest.player.id,'library-owner').token;
  const link=app.store.createInvite(guest.player.id,{spiritId:'jiangshi',channel:'copy',friendName:'周末朋友们'});inviteId=link.id;
  for(let i=0;i<5;i++)app.store.recordAudio(app.store.createGuest().player.id,link.id,{consent:true,mime:'audio/webm',audio:Buffer.from([0x1a,0x45,0xdf,0xa3,1,2,3]).toString('base64'),durationMs:2000,language:'zh',amplitudeRms:.4,score:null,meanHz:null,peakHz:null,frames:0});
  app.store.createInvite(guest.player.id,{spiritId:'kappa',channel:'copy'});
 });
-test.afterAll(async()=>{await new Promise<void>(resolve=>app.server.close(()=>resolve()));app.close();});
+test.afterAll(async()=>{await app.stop();});
 test('library opens without microphone, groups five slots, filters and signs out',async({page,context},testInfo)=>{
  await context.addCookies([{name:'boo_session',value:ownerToken,url:origin}]);
  await page.addInitScript(()=>{navigator.mediaDevices.getUserMedia=async()=>{throw Error('Library must not request microphone');};});

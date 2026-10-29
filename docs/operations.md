@@ -1,3 +1,7 @@
+# CDNSolution deployment note
+
+On the `CDNSolution` branch, follow [the split-deployment runbook](CDN_SOLUTION.md). The Dockerfile now builds an API-only image. Do not deploy it over the existing combined website until static hosting and `/api/*` routing are configured. The historical commands below apply to the previous combined deployment or to API maintenance after the split.
+
 # Operating the acceptance candidate
 
 App: `boo-around-the-world`, region `nrt`, one shared 2 CPU / 1 GB machine and one encrypted 1 GB `boo_data` volume. Do not add independent write replicas. Public art is in `boo-world-art-20261028`; database snapshots are in the separate private `boo-world-backups-20261028` bucket.

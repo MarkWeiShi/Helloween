@@ -1,48 +1,21 @@
+import {createTelemetry} from './telemetry.mjs';
 import {createAuth} from "./auth.mjs";
-import {requestLanguage,serverTranslator} from './localization.mjs';
+import {loadPublicContent,publicCatalog} from './public-content.mjs';
 import { socialConfig, createWechatSigner } from './social.mjs';
-import { loadCuteMotions } from "./motions.mjs";
 import { createServer } from "node:http";
 import {
   readFileSync,
   existsSync,
-  createReadStream,
-  statSync,
   mkdirSync,
   unlinkSync,
 } from "node:fs";
-import { resolve, extname, join, dirname } from "node:path";
+import { resolve, join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { backup } from "node:sqlite";
-import { createGzip, gzipSync } from "node:zlib";
 import { BooStore, ApiError } from "./store.mjs";
 import { loadCatalog } from "./content.mjs";
-import { RULES } from "../shared/rules.mjs";
-import { countries } from "../shared/countries.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const escape = (s) =>
-  String(s).replace(
-    /[&<>"']/g,
-    (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        c
-      ],
-  );
-const MIME = {
-  ".html": "text/html; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
-  ".webp": "image/webp",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".svg": "image/svg+xml",
-  ".woff2": "font/woff2",
-  ".ico": "image/x-icon",
-  ".mp4": "video/mp4",
-  ".webm": "video/webm",
-};
 const clientEvents = new Set(["entered", "story_read", "hellotalk_clicked"]);
 export function createApp({
   databasePath = process.env.DATABASE_PATH || join(ROOT, ".data/boo.sqlite"),
@@ -50,7 +23,8 @@ export function createApp({
   now,
   authOptions,
   rateLimits = true,
-  staticRoot = join(ROOT, "dist"),
+  publicContent = loadPublicContent(ROOT),
+  trustedProxy = process.env.TRUST_PROXY === "true",
 } = {}) {
   const store = new BooStore(databasePath, catalog, {
     now,
@@ -78,7 +52,12 @@ export function createApp({
       if (Date.now() - v.time > 60000) windows.delete(key);
   }, 60000);
   clean.unref();
+  const telemetry=createTelemetry();
+  const metricsInterval=Number(process.env.METRICS_INTERVAL_MS || 0);
+  const metricsTimer=metricsInterval>=1000?setInterval(()=>console.log(JSON.stringify(telemetry.snapshot())),metricsInterval):null;
+  metricsTimer?.unref();
   const server = createServer(async (req, res) => {
+    telemetry.track(req,res);
     const url = new URL(req.url, "http://localhost");
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -86,12 +65,6 @@ export function createApp({
     res.setHeader(
       "Permissions-Policy",
       "camera=(), microphone=(self), geolocation=()",
-    );
-    const assetOrigin = (process.env.ASSET_ORIGIN || "").replace(/\/$/, "");
-    const imageOrigins = assetOrigin ? new URL(assetOrigin).origin : "";
-    res.setHeader(
-      "Content-Security-Policy",
-      `default-src 'self'; script-src 'self' https://t1.kakaocdn.net https://res.wx.qq.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ${imageOrigins}; font-src 'self'; connect-src 'self' https://*.kakao.com ${imageOrigins}; frame-src 'self' https://*.kakao.com; media-src 'self' blob:; base-uri 'self'; frame-ancestors 'none'; form-action 'self'`,
     );
     const send = (status, data) => {
       res.writeHead(status, {
@@ -105,6 +78,7 @@ export function createApp({
         send(200, {
           ok: true,
           contentVersion: catalog.version,
+          release: publicContent?.release || null,
           characters: catalog.spirits.length,
           buildId: process.env.APP_BUILD_ID || "local",
         });
@@ -127,8 +101,9 @@ export function createApp({
         return;
       }
       if (url.pathname.startsWith("/api/")) {
-        const ip =
-          req.headers["fly-client-ip"] || req.socket.remoteAddress || "unknown";
+        // The ingress must overwrite this header and the API must not be publicly reachable.
+        const forwarded = trustedProxy && req.headers['x-real-ip'];
+        const ip = typeof forwarded === 'string' && forwarded.length < 64 ? forwarded : req.socket.remoteAddress || 'unknown';
         if (req.method !== "GET") {
           // Same-origin JSON POSTs prevent third-party sites from spending a guest's candy.
           const expectedOrigin =
@@ -195,41 +170,15 @@ export function createApp({
           send(200, { player: store.state(playerId) });
           return;
         }
+        if (req.method === "GET" && url.pathname === "/api/config") {
+          send(200,{inviteRewards:store.inviteRewards,contentVersion:catalog.version,release:publicContent?.release || null});return;
+        }
         if (req.method === "GET" && url.pathname === "/api/motions") {
-          send(200, {motions:loadCuteMotions(staticRoot,store.spirits)});
-          return;
+          send(200, publicContent?.motions || {motions:{}});return;
         }
         if (req.method === "GET" && url.pathname === "/api/catalog") {
-          const arts = existsSync(join(ROOT, "public/art/manifest.json"))
-            ? JSON.parse(
-                readFileSync(join(ROOT, "public/art/manifest.json"), "utf8"),
-              )
-            : {};
-          // Sources and original stories are deliberately distinct in this public catalog.
-          const payload = {
-            ...catalog,
-            spirits: catalog.spirits.map(({ story, reviewNotes, ...s }) => ({
-              ...s,
-              art: arts.spirits?.[s.id] || null,
-            })),
-            countries,
-            rules: RULES,
-            assetOrigin,
-            worldMap: arts.worldMap || "/art/world-map.webp",
-            inviteRewards: store.inviteRewards,
-          };
-          const compressed = /\bgzip\b/.test(
-            req.headers["accept-encoding"] || "",
-          );
-          res.writeHead(200, {
-            "Content-Type": "application/json; charset=utf-8",
-            "Cache-Control": "public,max-age=60",
-            Vary: "Accept-Encoding",
-            ...(compressed ? { "Content-Encoding": "gzip" } : {}),
-          });
-          const json = JSON.stringify(payload);
-          res.end(compressed ? gzipSync(json) : json);
-          return;
+          const arts = {spirits:Object.fromEntries((publicContent?.catalog.spirits || []).map(s=>[s.id,s.art])),worldMap:publicContent?.catalog.worldMap};
+          send(200,{...publicCatalog(catalog,arts),inviteRewards:store.inviteRewards});return;
         }
         const inviteGet = url.pathname.match(/^\/api\/invites\/([\w-]+)$/);
         if (req.method === "GET" && inviteGet) {
@@ -338,107 +287,7 @@ export function createApp({
         send(200, result);
         return;
       }
-      if (req.method !== "GET" && req.method !== "HEAD") {
-        send(405, { error: "Use GET for this page." });
-        return;
-      }
-      const path = decodeURIComponent(url.pathname);
-      let file = resolve(staticRoot, `.${path}`);
-      if (!file.startsWith(resolve(staticRoot) + "/"))
-        file = join(staticRoot, "index.html");
-      const isInvite = /^\/i\/[\w-]+$/.test(path);
-      if (!existsSync(file) || !statSync(file).isFile()) {
-        if (extname(path)) {
-          send(404, { error: "This asset could not be found." });
-          return;
-        }
-        file = join(staticRoot, "index.html");
-      }
-      if (!existsSync(file)) {
-        res.writeHead(503, { "Content-Type": "text/plain" });
-        res.end("Run npm run build, then open this page again.");
-        return;
-      }
-      if (isInvite || file === join(staticRoot, "index.html")) {
-        const locale=requestLanguage(url,req.headers["accept-language"]);
-        const t=serverTranslator(locale);
-        let html = readFileSync(file, "utf8");
-        let invite;
-        try {
-          if(isInvite)invite = store.invite(path.split("/")[2]);
-        } catch {}
-        const spirit = invite && store.spirits.get(invite.spiritId);
-        const title = invite
-          ? t("{{0}} sent {{1}} to say Boo!",invite.name,t(spirit.name))
-          : "Boo Around the World";
-        const description =
-          t("A little fright. A world of friendship. Meet a folklore friend and help their Halloween wish come true.");
-        const origin =
-          process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
-        const art = existsSync(join(ROOT, "public/art/manifest.json"))
-          ? JSON.parse(
-              readFileSync(join(ROOT, "public/art/manifest.json"), "utf8"),
-            )
-          : {};
-        const image = `${assetOrigin || origin}${art.spirits?.[spirit?.id]?.share || art.share || "/art/world-map.webp"}`;
-        html = html
-          .replace(/<html lang="[^"]*">/, `<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}">`)
-          .replace("Lighting the lanterns…",escape(t("Lighting the lanterns…")))
-          .replace(/(<meta name="description" content=")[^"]*/,`$1${escape(description)}`)
-          .replace(/<title>.*?<\/title>/, `<title>${escape(title)}</title>`)
-          .replace(
-            "</head>",
-            `<meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(description)}"><meta property="og:type" content="website"><meta property="og:url" content="${escape(origin + path)}"><meta property="og:image" content="${escape(image)}"><meta name="twitter:card" content="summary_large_image"></head>`,
-          );
-        res.writeHead(200, {
-          "Content-Type": MIME[".html"],
-          "Cache-Control": "no-cache",
-          "Vary": "Accept-Language",
-          "Content-Language": locale,
-        });
-        res.end(req.method === "HEAD" ? "" : html);
-        return;
-      }
-      const ext = extname(file);
-      if ([".mp4", ".webm"].includes(ext)) {
-        const size = statSync(file).size;
-        const headers = {"Content-Type":MIME[ext], "Accept-Ranges":"bytes", "Cache-Control":/\.[a-f0-9]{10,64}\./.test(file) ? "public,max-age=31536000,immutable" : "public,max-age=3600"};
-        let start = 0, end = size - 1, partial = false;
-        // A single byte range covers browser seeking; unsupported multipart ranges are ignored.
-        const range = req.method === "GET" && !req.headers["if-range"] && req.headers.range;
-        if (range && /^bytes=/.test(range) && !range.includes(',')) {
-          const match = /^bytes=(\d*)-(\d*)$/.exec(range);
-          if (match && (match[1] || match[2])) {
-            start = match[1] ? Number(match[1]) : Math.max(0, size - Number(match[2]));
-            end = match[1] && match[2] ? Math.min(Number(match[2]), size - 1) : size - 1;
-            if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start > end || start >= size) {
-              res.writeHead(416, {...headers, "Content-Range":`bytes */${size}`, "Content-Length":0}); res.end(); return;
-            }
-            partial = true;
-          }
-        }
-        res.writeHead(partial ? 206 : 200, {...headers, "Content-Length":size ? end-start+1 : 0, ...(partial ? {"Content-Range":`bytes ${start}-${end}/${size}`} : {})});
-        if (req.method === "HEAD" || !size) res.end();
-        else { const stream = createReadStream(file, {start,end}); stream.on('error', () => res.destroy()); res.on('close', () => stream.destroy()); stream.pipe(res); }
-        return;
-      }
-      const compressed =
-        [".js", ".css", ".svg", ".json", ".html"].includes(ext) &&
-        /\bgzip\b/.test(req.headers["accept-encoding"] || "");
-      res.writeHead(200, {
-        "Content-Type": MIME[ext] || "application/octet-stream",
-        Vary: "Accept-Encoding",
-        ...(compressed ? { "Content-Encoding": "gzip" } : {}),
-        "Cache-Control":
-          ext === ".html" || path === "/art/transformations/manifest.json"
-            ? "no-cache"
-            : /\.[a-f0-9]{10,64}\./.test(file) || file.includes("/assets/")
-              ? "public,max-age=31536000,immutable"
-              : "public,max-age=3600",
-      });
-      if (req.method === "HEAD") res.end();
-      else if (compressed) createReadStream(file).pipe(createGzip()).pipe(res);
-      else createReadStream(file).pipe(res);
+      send(404, {error:"That route is not available."});
     } catch (error) {
       if (error instanceof ApiError) {
         if (error.status === 429) res.setHeader("Retry-After", "60");
@@ -452,8 +301,11 @@ export function createApp({
   return {
     server,
     store,
+    telemetry,
     close: () => {
       clearInterval(clean);
+      if(metricsTimer)clearInterval(metricsTimer);
+      telemetry.close();
       server.close();
       store.close();
     },

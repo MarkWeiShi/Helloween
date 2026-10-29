@@ -1,3 +1,4 @@
+import {loadCatalog} from './static-content';
 import {previewTransformations} from '../shared/preview-transformations.mjs';
 import {showAccount} from "./account";
 import {linksPage,mountLinks} from "./ghost-links";
@@ -9,7 +10,7 @@ import { pumpkinGreeting } from "./pumpkin-greeting";
 import "@fontsource-variable/fredoka/wght.css";
 import "@fontsource-variable/dm-sans/wght.css";
 import "./style.css";
-import { api, escape as e, event } from "./api";
+import { api, GhostApiError, escape as e, event } from "./api";
 import { icon } from "./icons";
 import { burst } from "./effects";
 import { mountGlobe } from "./globe";
@@ -736,21 +737,19 @@ document.addEventListener("click", async (ev) => {
   }
 });
 window.addEventListener("pagehide", () => { mic?.stop(); void playbackContext?.close(); playbackContext=undefined; });
-document.addEventListener("visibilitychange", () => {
-  document.body.classList.toggle("page-hidden", document.hidden);
-  if (!document.hidden && player?.initialized) {
-    void api("/me")
-      .then((d) => {
-        player = d.player;
-        if (!overlay.querySelector("dialog") && !gate) render();
-      })
-      .catch(() => {});
-  }
-});
-setInterval(() => {
-  if (!document.hidden && player?.initialized && !gate)
-    void api('/me').then(d=>{
-      player=d.player;
+let refreshTimer:ReturnType<typeof setTimeout>|undefined;
+let refreshing=false, refreshFailures=0, refreshAfter=0;
+function scheduleRefresh(delay=15000) {
+  clearTimeout(refreshTimer);
+  if(!document.hidden)refreshTimer=setTimeout(()=>void refreshPlayer(),Math.max(delay,refreshAfter-Date.now())+Math.random()*3000);
+}
+async function refreshPlayer() {
+  if(refreshing)return;
+  if(document.hidden || !player?.initialized || gate){scheduleRefresh();return;}
+  refreshing=true;
+  let delay=15000;
+  try {
+    const d=await api<{player:Player}>('/me');player=d.player;refreshFailures=0;refreshAfter=0;
       const unread=player.reactions.recent.filter(r=>!r.seenAt);
       for(const r of unread) {
         const key=r.inviteId+r.receiverId;
@@ -765,17 +764,28 @@ setInterval(() => {
         meter.querySelector('progress')!.value=score;
         meter.querySelector('[data-world-scariness]')!.textContent=msg`World Scariness ${score} / 100`;
       }
-    }).catch(()=>{});
-}, 15000);
+
+  }catch(error){
+    refreshFailures++;
+    delay=Math.max(Math.min(120000,15000*2**Math.min(refreshFailures,3)),error instanceof GhostApiError?error.retryAfterMs:0);
+    refreshAfter=Date.now()+delay;
+  }finally{refreshing=false;scheduleRefresh(delay);}
+}
+document.addEventListener('visibilitychange',()=>{
+  document.body.classList.toggle('page-hidden',document.hidden);
+  if(document.hidden)clearTimeout(refreshTimer);else scheduleRefresh(1000);
+});
+scheduleRefresh();
 async function boot() {
   try {
     await initLanguage();
     Object.assign(regionPreviews, localizedContent(regionPreviews));
-    const [content, session] = await Promise.all([
-      api<Catalog>("/catalog"),
+    const [content, session, config] = await Promise.all([
+      loadCatalog(),
       api("/session", {}),
+      api<{inviteRewards:boolean}>("/config"),
     ]);
-    catalog = content;
+    catalog = localizedContent({...content,inviteRewards:config.inviteRewards});
     player = session.player;
     selected = player.selected || "kappa";
     region = spirit().regionId;

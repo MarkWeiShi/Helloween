@@ -9,7 +9,7 @@ export default defineConfig({
     ["list"],
     ["json", { outputFile: "artifacts/browser-results.json" }],
   ],
-  use: { baseURL: "http://127.0.0.1:8787", trace: "retain-on-failure" },
+  use: { baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || "http://127.0.0.1:8787", trace: "retain-on-failure" },
   projects: [
     {
       name: "chromium-desktop",

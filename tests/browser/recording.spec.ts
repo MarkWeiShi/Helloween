@@ -1,8 +1,8 @@
 import {test,expect,chromium} from '@playwright/test';
-import {createApp} from '../../server/index.mjs';
-let origin:string,app:ReturnType<typeof createApp>;
-test.beforeAll(async()=>{app=createApp({databasePath:':memory:',rateLimits:false});await new Promise<void>(r=>app.server.listen(0,'127.0.0.1',r));origin=`http://127.0.0.1:${(app.server.address() as any).port}`;});
-test.afterAll(async()=>{await new Promise<void>(r=>app.server.close(()=>r()));app.close();});
+import {startBrowserApp} from '../helpers/nginx.mjs';
+let origin:string,app:Awaited<ReturnType<typeof startBrowserApp>>;
+test.beforeAll(async()=>{app=await startBrowserApp({databasePath:':memory:',rateLimits:false});origin=app.origin;});
+test.afterAll(async()=>{await app.stop();});
 async function setup() {
  const browser=await chromium.launch({channel:'chrome',args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});
  const sender=await browser.newContext({baseURL:origin,permissions:['microphone']});

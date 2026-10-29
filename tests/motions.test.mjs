@@ -17,19 +17,19 @@ test('only complete cute packs hot-publish, never horror or partial assets',()=>
  }finally{rmSync(root,{recursive:true,force:true});}
 });
 
-test('production motion API reads packs from the same static root that serves sprites',async()=>{
+test('compatibility motion API uses packaged metadata without serving sprite files',async()=>{
  const {createApp}=await import('../server/index.mjs');
  const root=mkdtempSync(join(tmpdir(),'boo-production-motion-')),dir=join(root,'dist/art/motions');
  mkdirSync(dir,{recursive:true});
  writeFileSync(join(dir,'jiangshi.json'),JSON.stringify({state:'ready',kind:'cute',spiritId:'jiangshi',sheet:'/art/motions/test.webp',frames:36,fps:12}));
  writeFileSync(join(dir,'test.webp'),'sprite fixture');
- const app=createApp({databasePath:':memory:',staticRoot:join(root,'dist'),rateLimits:false});
+ const app=createApp({databasePath:':memory:',publicContent:{motions:{motions:loadCuteMotions(join(root,'dist'),new Map([['jiangshi',{}]]))}},rateLimits:false});
  await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));
  try {
   const base=`http://127.0.0.1:${app.server.address().port}`;
   const {motions}=await (await fetch(base+'/api/motions')).json();
   assert.equal(motions.jiangshi.frames,36);
-  assert.equal(await (await fetch(base+motions.jiangshi.sheet)).text(),'sprite fixture');
+  assert.equal((await fetch(base+motions.jiangshi.sheet)).status,404);
  }finally{await new Promise(resolve=>app.server.close(resolve));app.store.close();rmSync(root,{recursive:true,force:true});}
 });
 

@@ -1,0 +1,39 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile.web
+      args:
+        PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?Set the external website origin}
+    restart: unless-stopped
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    env_file:
+      - path: ../.env
+        required: false
+    environment:
+      NODE_ENV: production
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN}
+      HOST: 0.0.0.0
+      PORT: 8080
+      DATABASE_PATH: /data/boo.sqlite
+      TRUST_PROXY: "true"
+    volumes:
+      - data:/data
+    restart: unless-stopped
+  gateway:
+    image: nginx:stable-alpine
+    environment:
+      API_UPSTREAM: api:8080
+      WEB_UPSTREAM: web:80
+      NGINX_ENVSUBST_FILTER: API_UPSTREAM|WEB_UPSTREAM
+    volumes:
+      - ./nginx/gateway.conf.template:/etc/nginx/templates/default.conf.template:ro
+    ports:
+      - "8080:8080"
+    depends_on: [web, api]
+    restart: unless-stopped
+volumes:
+  data:

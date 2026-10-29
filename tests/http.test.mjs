@@ -122,30 +122,3 @@ test("HTTP session, CSRF, visitor privacy and atomic gift retries", async () => 
     app.close();
   }
 });
-
-test('video HTTP supports MIME, seeking, suffix ranges, HEAD and unsatisfiable ranges', async () => {
-  const {mkdtemp,writeFile,rm} = await import('node:fs/promises');
-  const {tmpdir} = await import('node:os');
-  const {join} = await import('node:path');
-  const {pathToFileURL} = await import('node:url');
-  const root = pathToFileURL((await mkdtemp(join(tmpdir(),'boo-static-')))+ '/');
-  await writeFile(new URL('index.html',root),'<main>isolated static root</main>');
-  await writeFile(new URL('test.mp4',root),Buffer.from('0123456789'));
-  await writeFile(new URL('test.webm',root),Buffer.from('0123456789'));
-  const app = createApp({databasePath:':memory:',rateLimits:false,staticRoot:root.pathname});
-  await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));
-  const base=`http://127.0.0.1:${app.server.address().port}/`;
-  try {
-    assert.match(await (await fetch(base)).text(),/isolated static root/);
-    assert.match(await (await fetch(base+'a-client-route')).text(),/isolated static root/);
-    assert.equal((await fetch(base+'missing.mp4')).status,404);
-    for (const [extension,mime] of [['mp4','video/mp4'],['webm','video/webm']]) {
-      const whole=await fetch(`${base}test.${extension}`); assert.equal(whole.headers.get('content-type'),mime); assert.equal(await whole.text(),'0123456789');
-      const head=await fetch(`${base}test.${extension}`,{method:'HEAD'}); assert.equal(head.headers.get('content-length'),'10'); assert.equal(await head.text(),'');
-      for (const [range,body,contentRange] of [['bytes=2-5','2345','bytes 2-5/10'],['bytes=-3','789','bytes 7-9/10'],['bytes=8-','89','bytes 8-9/10']]) {
-        const part=await fetch(`${base}test.${extension}`,{headers:{Range:range}}); assert.equal(part.status,206); assert.equal(part.headers.get('content-range'),contentRange); assert.equal(await part.text(),body);
-      }
-      const invalid=await fetch(`${base}test.${extension}`,{headers:{Range:'bytes=99-100'}}); assert.equal(invalid.status,416); assert.equal(invalid.headers.get('content-range'),'bytes */10');
-    }
-  } finally { await new Promise(resolve=>app.server.close(resolve)); app.close(); await rm(root,{recursive:true,force:true}); }
-});

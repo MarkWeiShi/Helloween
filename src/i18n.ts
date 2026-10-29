@@ -5,8 +5,7 @@ const storageKey = 'boo:language';
 let preference = 'auto';
 try { preference = localStorage.getItem(storageKey) || 'auto'; } catch {}
 preference=resolveLanguagePreference(new URL(location.href).searchParams,preference);
-// A manual preference wins over automatic detection. The server's HTML lang
-// already reflects Accept-Language and remains available when browser APIs fail.
+// Static HTML is language-neutral; browser preferences and URL hints resolve here.
 export let locale = preference==='auto' ? resolveBrowserLanguage(navigator, document.documentElement.lang) : preference;
 let dictionary: Record<string,string> = {};
 const bundles = import.meta.glob<Record<string,string>>('./locales/*.json', {import:'default'});

@@ -1,7 +1,7 @@
-type Motion = {sheet:string;frames:number;fps:number};
+import {loadMotions} from './static-content';
 // Sprite images preserve alpha across Safari/Chrome without hidden video decoders.
 export function mountCuteMotions(host:HTMLElement) {
- const reduced=matchMedia('(prefers-reduced-motion: reduce)'), abort=new AbortController();
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const entries=[...host.querySelectorAll<HTMLImageElement>('img[data-cute-id]')].map(img=>({img,original:img.src,sheet:'',animation:null as Animation|null}));
  let dead=false,loading=false;
  const sync=()=>{
@@ -15,9 +15,8 @@ export function mountCuteMotions(host:HTMLElement) {
  async function refresh(){
   if(dead||loading||document.hidden)return;loading=true;
   try {
-   const response=await fetch('/api/motions',{signal:abort.signal});
-   if(!response.ok)return;
-   const {motions}=await response.json() as {motions:Record<string,Motion>};
+   const {motions}=await loadMotions();
+   if(dead)return;
    for(const entry of entries){
     const m=motions[entry.img.dataset.cuteId!];
     if(!m){entry.animation?.cancel();entry.animation=null;entry.sheet='';entry.img.src=entry.original;entry.img.classList.remove('cute-sprite');continue;}
@@ -37,6 +36,6 @@ export function mountCuteMotions(host:HTMLElement) {
  const dialogs=new MutationObserver(sync);dialogs.observe(document.querySelector('#overlay-root')!,{childList:true,subtree:true,attributes:true,attributeFilter:['open']});
  const visibility=()=>{sync();if(!document.hidden)void refresh();};
  document.addEventListener('visibilitychange',visibility);reduced.addEventListener('change',sync);
- const timer=setInterval(()=>void refresh(),30000);void refresh();
- return ()=>{dead=true;abort.abort();clearInterval(timer);observer.disconnect();dialogs.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',sync);entries.forEach(e=>e.animation?.cancel());};
+ void refresh();
+ return ()=>{dead=true;observer.disconnect();dialogs.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',sync);entries.forEach(e=>e.animation?.cancel());};
 }

@@ -1,13 +1,12 @@
 import {test,expect,type Page} from '@playwright/test';
-import {createApp} from '../../server/index.mjs';
+import {startBrowserApp} from '../helpers/nginx.mjs';
 import {readFileSync} from 'node:fs';
-let app:ReturnType<typeof createApp>,origin:string;
+let app:Awaited<ReturnType<typeof startBrowserApp>>,origin:string;
 test.beforeAll(async()=>{
- app=createApp({databasePath:':memory:',rateLimits:false});
- await new Promise<void>(resolve=>app.server.listen(0,'127.0.0.1',resolve));
- origin=`http://127.0.0.1:${(app.server.address() as any).port}`;
+ app=await startBrowserApp({databasePath:':memory:',rateLimits:false});
+ origin=app.origin;
 });
-test.afterAll(async()=>{await new Promise<void>(resolve=>app.server.close(()=>resolve()));app.close();});
+test.afterAll(async()=>{await app.stop();});
 async function expectLanguage(page:Page,locale:string){
  const dictionary=JSON.parse(readFileSync(`src/locales/${locale}.json`,'utf8'));
  // Waiting for translated UI also proves client boot succeeded, rather than
@@ -19,13 +18,13 @@ async function choose(page:Page,locale:string){
  await page.locator('.language-trigger').click();
  await page.locator(`[data-language="${locale}"]`).click();
 }
-test('App URL hints and regional tags agree across server and client without saving a visit hint',async({browser})=>{
+test('App URL hints and regional tags resolve in the static client without saving a visit hint',async({browser})=>{
  const context=await browser.newContext({locale:'ko-KR'});
  try{
   const page=await context.newPage();
   for(const [query,locale] of [['appLang=ar-SA','ar'],['lang=pt_BR&appLang=ja','pt'],['lang=auto&appLang=ar','ko'],['lang=invalid&appLang=ZH_cn','zh'],['appLang=invalid','ko']]){
    const response=await page.goto(origin+'/?'+query);
-   expect(response?.headers()['content-language']).toBe(locale);
+   expect(response?.headers()['content-language']).toBeUndefined();
    await expectLanguage(page,locale);
    expect(await page.evaluate(()=>localStorage.getItem('boo:language'))).toBeNull();
   }
@@ -46,7 +45,7 @@ test('saved manual choice wins over App hints; explicit lang and Default still o
 });
 for(const [mode,expected] of [
  ['missing-list','ko'],['empty-list','ko'],['malformed-list','ko'],['throwing-list','ko'],
- ['missing-both','fr'],['throwing-both','fr'],['unsupported','en'],['ordered-list','ja'],
+ ['missing-both','en'],['throwing-both','en'],['unsupported','en'],['ordered-list','ja'],
 ] as const){
  test(`${mode}: automatic detection loads ${expected} without a boot error`,async({browser})=>{
   const context=await browser.newContext({locale:mode==='unsupported'?'nl-NL':'fr-FR'});

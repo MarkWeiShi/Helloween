@@ -1,6 +1,6 @@
 # Accounts and My ghost links
 
-Implemented locally; production identity-provider configuration and real SNS acceptance are still required. The existing Node/SQLite app remains the owner of links and recordings. There is no hosting migration.
+Implemented locally; production identity-provider configuration and real SNS acceptance are still required. The existing Node/SQLite app remains the owner of links and recordings. The CDNSolution deployment serves the static frontend through NGINX/CDN and routes `/api/*` to the independent Node service; keep the external origin and callback path unchanged.
 
 ## Configure authentication
 
