@@ -56,11 +56,20 @@ for (const s of catalog.spirits)
     );
 assert.ok(existsSync("public" + art.worldMap));
 const scripts = globSync("dist/assets/*.js");
-const jsGzip = scripts.reduce(
-  (sum, path) => sum + gzipSync(readFileSync(path)).length,
-  0,
-);
-if (scripts.length) assert.ok(jsGzip < 250 * 1024, `JS gzip budget ${jsGzip}`);
+const manifest = scripts.length ? JSON.parse(readFileSync("dist/.vite/manifest.json", "utf8")) : {};
+// Locale dictionaries are mutually exclusive on-demand imports. Count all other
+// JS conservatively, plus the largest single locale and its static dependencies.
+const localeChunks = Object.values(manifest).filter(entry => /^src\/locales\/[^/]+\.json$/.test(entry.src || ""));
+const localeFiles = new Set(localeChunks.map(entry => `dist/${entry.file}`));
+const sizes = new Map(scripts.map(path => [path, gzipSync(readFileSync(path)).length]));
+const commonJsGzip = scripts.filter(path => !localeFiles.has(path)).reduce((sum, path) => sum + sizes.get(path), 0);
+const largestLocaleGzip = Math.max(0, ...[...localeFiles].map(path => {
+  assert.ok(sizes.has(path), `Missing locale chunk ${path}`);
+  return sizes.get(path);
+}));
+const allJsGzip = [...sizes.values()].reduce((sum, size) => sum + size, 0);
+const jsGzip = commonJsGzip + largestLocaleGzip;
+if (scripts.length) assert.ok(jsGzip < 250 * 1024, `Per-language JS gzip budget ${jsGzip}`);
 console.log(
   JSON.stringify(
     {
@@ -70,6 +79,9 @@ console.log(
       poses: catalog.spirits.length * 3,
       shareCards: catalog.spirits.length,
       jsGzipBytes: jsGzip,
+      commonJsGzipBytes: commonJsGzip,
+      largestLocaleGzipBytes: largestLocaleGzip,
+      allJsGzipBytes: allJsGzip,
       mapBytes: statSync("public" + art.worldMap).size,
       culturalHumanReview: false,
     },

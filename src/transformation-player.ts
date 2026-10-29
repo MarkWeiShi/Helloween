@@ -1,3 +1,4 @@
+import {t} from "../shared/i18n.mjs";
 export type Transformation = { entrance: string; loop: string; entranceAlpha?: string; loopAlpha?: string; poster: string; duration: number; loopDuration: number; revealAt: number };
 export function validTransformation(value: unknown): value is Transformation {
   const v = value as Transformation;
@@ -178,8 +179,8 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   const hidden = () => { if (document.hidden) pause(); };
   function audio() {
     for (const media of videos) { media.muted = !options.sound(); media.volume = .65; }
-    soundButton.textContent = options.sound() ? '声音：开' : '声音：关';
-    soundButton.setAttribute('aria-label', options.sound() ? '关闭变身声音' : '开启变身声音');
+    soundButton.textContent = options.sound() ? t("声音：开") : t("声音：关");
+    soundButton.setAttribute('aria-label', options.sound() ? t("关闭变身声音") : t("开启变身声音"));
     soundButton.setAttribute('aria-pressed', String(options.sound()));
   }
   audio();

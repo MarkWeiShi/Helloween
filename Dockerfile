@@ -15,6 +15,7 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build /app/dist ./dist
 COPY server ./server
 COPY shared ./shared
+COPY src/locales ./src/locales
 COPY content ./content
 COPY scripts/backup.mjs scripts/verify-backup.mjs scripts/metrics.mjs scripts/publish-assets.mjs scripts/loadtest.mjs scripts/volume-probe.mjs ./scripts/
 COPY --from=build /app/public/art/manifest.json ./public/art/manifest.json

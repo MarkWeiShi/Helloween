@@ -1,7 +1,8 @@
+import {t} from "../shared/i18n.mjs";
 import { detectPitch } from '../shared/reactions.mjs';
 export async function prepareMicrophone(signal?: AbortSignal) {
   if (signal?.aborted) throw new DOMException('Microphone cancelled', 'AbortError');
-  if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microphone unavailable. Please use HTTPS and a supported browser.');
+  if (!navigator.mediaDevices?.getUserMedia) throw new Error(t("Microphone unavailable. Please use HTTPS and a supported browser."));
   const stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:false},video:false});
   let context: AudioContext | undefined;
   const abort = () => { stream.getTracks().forEach(t=>t.stop()); void context?.close().catch(() => {}); };
@@ -20,6 +21,7 @@ export async function prepareMicrophone(signal?: AbortSignal) {
   const stop = () => { if(stopped)return; stopped = true; cancel?.(); cancel=undefined; clearInterval(timer); stream.getTracks().forEach(t=>t.stop()); source.disconnect(); void activeContext.close(); };
   return {
     stop,
+    stream,
     measure: (duration = 3500) => new Promise<{meanHz:number|null;peakHz:number|null;frames:number;meanRms:number|null}>(resolve => {
       cancel=()=>resolve({meanHz:null,peakHz:null,frames:0,meanRms:null});
       const values:number[] = [], levels:number[] = [], data = new Float32Array(analyser.fftSize);

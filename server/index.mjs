@@ -1,3 +1,5 @@
+import {requestLanguage,serverTranslator} from './localization.mjs';
+import { socialConfig, createWechatSigner } from './social.mjs';
 import { loadCuteMotions } from "./motions.mjs";
 import { createServer } from "node:http";
 import {
@@ -52,6 +54,7 @@ export function createApp({
     now,
     inviteRewards: process.env.INVITE_REWARDS_ENABLED !== "false",
   });
+  const signWechat = createWechatSigner();
   const windows = new Map();
   const limit = (key, max) => {
     if (!rateLimits) return;
@@ -85,7 +88,7 @@ export function createApp({
     const imageOrigins = assetOrigin ? new URL(assetOrigin).origin : "";
     res.setHeader(
       "Content-Security-Policy",
-      `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ${imageOrigins}; font-src 'self'; connect-src 'self' ${imageOrigins}; media-src 'self' blob:; base-uri 'self'; frame-ancestors 'none'; form-action 'self'`,
+      `default-src 'self'; script-src 'self' https://t1.kakaocdn.net https://res.wx.qq.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ${imageOrigins}; font-src 'self'; connect-src 'self' https://*.kakao.com ${imageOrigins}; frame-src 'self' https://*.kakao.com; media-src 'self' blob:; base-uri 'self'; frame-ancestors 'none'; form-action 'self'`,
     );
     const send = (status, data) => {
       res.writeHead(status, {
@@ -156,6 +159,13 @@ export function createApp({
           } catch {
             throw new ApiError(400, "The request could not be read.");
           }
+        }
+        if (req.method === "GET" && url.pathname === "/api/social/config") { send(200,socialConfig()); return; }
+        if (req.method === "POST" && url.pathname === "/api/social/wechat-signature") {
+          if (!playerId) throw new ApiError(401,"Open the game before sharing.");
+          try { send(200,await signWechat(body.url)); }
+          catch (error) { throw new ApiError(error.status || 502,error.message); }
+          return;
         }
         if (req.method === "POST" && url.pathname === "/api/session") {
           if (!playerId) {
@@ -314,18 +324,20 @@ export function createApp({
         res.end("Run npm run build, then open this page again.");
         return;
       }
-      if (isInvite) {
+      if (isInvite || file === join(staticRoot, "index.html")) {
+        const locale=requestLanguage(url,req.headers["accept-language"]);
+        const t=serverTranslator(locale);
         let html = readFileSync(file, "utf8");
         let invite;
         try {
-          invite = store.invite(path.split("/")[2]);
+          if(isInvite)invite = store.invite(path.split("/")[2]);
         } catch {}
         const spirit = invite && store.spirits.get(invite.spiritId);
         const title = invite
-          ? `${invite.name} sent ${spirit.name} to say Boo!`
+          ? t("{{0}} sent {{1}} to say Boo!",invite.name,t(spirit.name))
           : "Boo Around the World";
         const description =
-          "A little fright. A world of friendship. Meet a folklore friend and help their Halloween wish come true.";
+          t("A little fright. A world of friendship. Meet a folklore friend and help their Halloween wish come true.");
         const origin =
           process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
         const art = existsSync(join(ROOT, "public/art/manifest.json"))
@@ -335,6 +347,9 @@ export function createApp({
           : {};
         const image = `${assetOrigin || origin}${art.spirits?.[spirit?.id]?.share || art.share || "/art/world-map.webp"}`;
         html = html
+          .replace(/<html lang="[^"]*">/, `<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}">`)
+          .replace("Lighting the lanterns…",escape(t("Lighting the lanterns…")))
+          .replace(/(<meta name="description" content=")[^"]*/,`$1${escape(description)}`)
           .replace(/<title>.*?<\/title>/, `<title>${escape(title)}</title>`)
           .replace(
             "</head>",
@@ -343,6 +358,8 @@ export function createApp({
         res.writeHead(200, {
           "Content-Type": MIME[".html"],
           "Cache-Control": "no-cache",
+          "Vary": "Accept-Language",
+          "Content-Language": locale,
         });
         res.end(req.method === "HEAD" ? "" : html);
         return;

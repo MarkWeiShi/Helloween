@@ -6,7 +6,7 @@ test('globe character occupies viewport and keeps video uncropped',async()=>{
    const context=await browser.newContext({viewport,permissions:['microphone']});
    const page=await context.newPage();
    await page.goto('http://127.0.0.1:8787');
-   await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
+   await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
    const pin=page.locator('.globe-pin[data-spirit="kappa"]');
    await expect(pin).toBeVisible(); await pin.click();
    const dialog=page.locator('dialog.character-immersive');

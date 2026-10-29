@@ -1,3 +1,4 @@
+const shareCurve = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor"><path d="M3 27C4 16 9 10 20 10V4L30 14L20 24V18C12 18 7 21 3 27Z"/></svg>`;
 import ghost from "@phosphor-icons/core/assets/fill/ghost-fill.svg?raw";
 import candy from "@phosphor-icons/core/assets/fill/gift-fill.svg?raw";
 import globe from "@phosphor-icons/core/assets/regular/globe-hemisphere-west.svg?raw";
@@ -16,6 +17,7 @@ import download from "@phosphor-icons/core/assets/regular/download-simple.svg?ra
 import moon from "@phosphor-icons/core/assets/regular/moon-stars.svg?raw";
 import copy from "@phosphor-icons/core/assets/regular/copy.svg?raw";
 const icons: Record<string, string> = {
+  shareCurve,
   ghost,
   candy,
   globe,

@@ -15,7 +15,7 @@ for (const spiritId of ['jiangshi','ifrit','zhalmauyz-kempir']) test(`${spiritId
  });
  await page.request.post('/api/session',{data:{}});
  await page.request.post('/api/onboard',{data:{name:'Jiangshi pilot',country:'CN',spiritId}});
- await page.goto('/');await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
  await expect(page.locator('.play-lock')).toHaveCount(0);
  await page.locator(`.globe-pin[data-spirit="${spiritId}"]`).click();
  await expect.poll(()=>page.locator('video[data-phase="intro"]').evaluate((v:HTMLVideoElement)=>v.currentTime),{timeout:15000}).toBeGreaterThan(6.2);
@@ -26,7 +26,7 @@ for (const spiritId of ['jiangshi','ifrit','zhalmauyz-kempir']) test(`${spiritId
  expect(manifest.characters[spiritId].spokenName.startsAt).toBe(6);
  expect(manifest.characters[spiritId].spokenName.duration).toBe(2.8);
  await expect(page.locator('.transformation-name')).toHaveCount(0);
- await expect(page.locator('[data-personal-scare]')).not.toContainText('正在录音');
+ await expect(page.locator('[data-personal-scare]')).not.toContainText("Recording for");
  await page.screenshot({path:`artifacts/main-name-voices/${info.project.name}-${spiritId}.png`});
  await expect(page.locator('[data-play-transform]')).toBeVisible({timeout:6000});
  await page.locator('[data-play-transform]').click();

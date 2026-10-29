@@ -25,6 +25,8 @@ Open http://127.0.0.1:8787. Do not open the source `index.html` through `file://
 - Giving 100 candies to a character unlocks that character's original three-frame ending. Wallet spending never lowers lifetime earned candy. A character's wish only contributes once.
 - SQLite WAL, transactions, unique ledger IDs and operation keys protect balances and first completions. Guest credentials are random, HttpOnly cookies; only hashes are stored. Guest play does not provide robust unique-human verification or cross-device recovery.
 
+Invitation reactions: the sharer can optionally label each new link with a friend's name. Tapping unlock opens a compact bullet-point dialog explaining gameplay, microphone use, three-second local scoring and automatic private uploads for invitations. Microphone permission is requested only after the visitor confirms; dismissing the dialog leaves the game locked. The invitation has no name field or consent checkbox. At the transformation reveal, one microphone stream records three seconds and computes a local pitch/volume game score. The private inbox shows the recording, local score, visitor name, sender-only label, original link, and link visit/recording counts. New reactions use an existing player nickname, otherwise the sender’s private link label, otherwise the generated guest name. These are not verified SNS identities. Ordinary exploration remains local-only and does not upload audio. Cancel, close, navigation, or hiding the page during capture discards unfinished recordings; failed uploads can be retried from the open view. Replays do not send again; the server stores only one recording per invitation and browser guest. Existing five-second recordings remain playable. New metadata tables are created additively at server startup.
+
 The four all-time leaderboards cover personal/country candy and personal/country unique wish completions. Rankings use competition ranking, so equal totals share a rank.
 
 ## Content and art
@@ -70,3 +72,7 @@ See `docs/operations.md` for deployment, restoration, metrics and single-instanc
 ## Release acceptance
 
 See `docs/acceptance.md` for automated evidence and the outstanding human/native-platform gates. The implementation is an acceptance candidate until all release gates are satisfied. Do not infer cultural or human approval from source existence, generated art or automated tests.
+
+## Languages
+
+The public product supports 15 languages with automatic browser-language matching, a remembered manual choice, and Arabic RTL layout. See [localization coverage, draft status and maintenance](docs/LOCALIZATION.md). Run `npm run check:locales` to check bundle and placeholder completeness; long-form machine translations still require native review.

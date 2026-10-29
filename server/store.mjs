@@ -50,6 +50,8 @@ export class BooStore {
       CREATE TABLE IF NOT EXISTS story_reads(player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,read_at INTEGER NOT NULL,PRIMARY KEY(player_id,spirit_id));
       CREATE TABLE IF NOT EXISTS reactions(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mean_hz INTEGER,peak_hz INTEGER,frames INTEGER NOT NULL,created_at INTEGER NOT NULL,seen_at INTEGER,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS reaction_audio(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mime TEXT NOT NULL,audio BLOB NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
+      CREATE TABLE IF NOT EXISTS invite_labels(invite_id TEXT PRIMARY KEY REFERENCES invites(id),friend_name TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS reaction_details(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,name TEXT NOT NULL,score INTEGER,duration_ms INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
       CREATE INDEX IF NOT EXISTS matches_player ON matches(player_id,started_at);
       CREATE INDEX IF NOT EXISTS players_candies ON players(candies DESC);
       CREATE INDEX IF NOT EXISTS players_peace ON players(peace_count DESC);
@@ -373,16 +375,19 @@ export class BooStore {
       .run(matchId, id);
     return { ok: true };
   }
-  createInvite(id, { spiritId, channel }) {
+  createInvite(id, { spiritId, channel, friendName = "" }) {
     this.ready(id);
     this.spirit(spiritId);
     if (!CHANNELS.includes(channel))
       fail(400, "Choose a supported sharing option.");
+    if (typeof friendName !== 'string' || friendName.trim().length > 24 || /[\u0000-\u001f\u007f]/.test(friendName)) fail(400, 'Use a friend name of up to 24 characters.');
+    friendName = friendName.trim();
     const token = randomBytes(16).toString("base64url");
     const eligible = channel !== "facebook" && this.inviteRewards;
     this.db
       .prepare("INSERT INTO invites VALUES(?,?,?,?,?,?)")
       .run(token, id, spiritId, channel, eligible ? 1 : 0, this.now());
+    if (friendName) this.db.prepare('INSERT INTO invite_labels VALUES(?,?)').run(token,friendName);
     this.event("share_started", channel);
     return { id: token, eligible, spiritId, channel };
   }
@@ -415,8 +420,12 @@ export class BooStore {
   }
   reactionSummary(id) {
     const stats = this.db.prepare(`SELECT i.spirit_id AS spiritId, ROUND(AVG(r.mean_hz)) AS meanHz, COUNT(r.mean_hz) AS measured, COUNT(*) AS views FROM reactions r JOIN invites i ON i.id=r.invite_id WHERE i.sender_id=? GROUP BY i.spirit_id`).all(id);
-    const recent = this.db.prepare(`SELECT r.invite_id AS inviteId,r.player_id AS receiverId,p.name,i.spirit_id AS spiritId,r.mean_hz AS meanHz,r.peak_hz AS peakHz,r.created_at AS createdAt,r.seen_at AS seenAt, EXISTS(SELECT 1 FROM reaction_audio a WHERE a.invite_id=r.invite_id AND a.player_id=r.player_id) AS hasAudio FROM reactions r JOIN invites i ON i.id=r.invite_id JOIN players p ON p.id=r.player_id WHERE i.sender_id=? ORDER BY r.created_at DESC LIMIT 30`).all(id).map(r=>({...r,level:pitchLevel(r.meanHz)}));
-    return {stats,recent};
+    const recent = this.db.prepare(`SELECT r.invite_id AS inviteId,r.player_id AS receiverId,COALESCE(d.name,p.name) AS name,d.score,COALESCE(d.duration_ms,5000) AS durationMs,l.friend_name AS friendName,i.spirit_id AS spiritId,r.mean_hz AS meanHz,r.peak_hz AS peakHz,r.created_at AS createdAt,r.seen_at AS seenAt, EXISTS(SELECT 1 FROM reaction_audio a WHERE a.invite_id=r.invite_id AND a.player_id=r.player_id) AS hasAudio FROM reactions r JOIN invites i ON i.id=r.invite_id JOIN players p ON p.id=r.player_id LEFT JOIN reaction_details d ON d.invite_id=r.invite_id AND d.player_id=r.player_id LEFT JOIN invite_labels l ON l.invite_id=i.id WHERE i.sender_id=? ORDER BY r.created_at DESC LIMIT 30`).all(id).map(r=>({...r,level:pitchLevel(r.meanHz)}));
+    const links = this.db.prepare(`SELECT i.id AS inviteId,i.spirit_id AS spiritId,l.friend_name AS friendName,i.created_at AS createdAt,
+      (SELECT COUNT(*) FROM invite_visits v WHERE v.invite_id=i.id) AS visits,
+      (SELECT COUNT(*) FROM reaction_audio a WHERE a.invite_id=i.id) AS recordings
+      FROM invites i LEFT JOIN invite_labels l ON l.invite_id=i.id WHERE i.sender_id=? ORDER BY i.created_at DESC LIMIT 50`).all(id);
+    return {stats,recent,links};
   }
   recordReaction(id, token, body) {
     this.rawPlayer(id);
@@ -439,7 +448,22 @@ export class BooStore {
     if (invite.expired) fail(410, 'This invitation has expired.');
     if (body.consent !== true) fail(400, 'Recording and sending requires consent.');
     if (!['audio/webm', 'audio/ogg', 'audio/mp4'].includes(body.mime)) fail(415, 'Unsupported audio format.');
-    if (body.durationMs !== 5000 || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
+    if (![3000,5000].includes(body.durationMs) || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
+    const receiver = this.rawPlayer(id);
+    const label = this.db.prepare('SELECT friend_name FROM invite_labels WHERE invite_id=?').get(token)?.friend_name;
+    // New clients use the unlock notice and do not ask visitors for a name.
+    // Preserve supplied names from older clients and existing recordings.
+    const name = body.durationMs === 3000 && body.name !== undefined ? body.name :
+      receiver.initialized ? receiver.name : label || receiver.name;
+    if (typeof name !== 'string' || !name.trim() || name.trim().length > 24 || /[\u0000-\u001f\u007f]/.test(name)) fail(400, 'Enter your name (1–24 characters).');
+    const score = body.durationMs === 3000 ? body.score ?? null : null;
+    if (score !== null && (!Number.isInteger(score) || score < 0 || score > 100)) fail(400, 'Invalid local score.');
+    if (body.durationMs === 3000) {
+      const {meanHz,peakHz,frames} = body;
+      if (!Number.isInteger(frames) || frames < 0 || frames > 100 ||
+          (meanHz === null && peakHz === null ? frames !== 0 || score !== null :
+          !Number.isInteger(meanHz) || !Number.isInteger(peakHz) || meanHz < 70 || peakHz > 1200 || peakHz < meanHz || frames < 5)) fail(400, 'Invalid pitch measurement.');
+    }
     const audio = Buffer.from(body.audio, 'base64');
     if (!audio.length || audio.length > 512000) fail(413, 'Recording too large.');
     const valid = body.mime === 'audio/webm' ? audio.subarray(0,4).equals(Buffer.from([0x1a,0x45,0xdf,0xa3])) : body.mime === 'audio/ogg' ? audio.toString('ascii',0,4) === 'OggS' : audio.toString('ascii',4,8) === 'ftyp';
@@ -449,7 +473,10 @@ export class BooStore {
       const count = this.db.prepare('SELECT COUNT(*) AS n FROM reaction_audio WHERE player_id=? AND created_at>?').get(id,this.now()-86400000).n;
       if (count >= 20) fail(429, 'Daily recording limit reached.');
       this.db.prepare('INSERT INTO reaction_audio VALUES(?,?,?,?,?)').run(token,id,body.mime,audio,this.now());
-      this.db.prepare('INSERT OR IGNORE INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,NULL,NULL,0,?)').run(token,id,this.now());
+      this.db.prepare('INSERT INTO reaction_details VALUES(?,?,?,?,?)').run(token,id,name.trim(),score,body.durationMs);
+      if (body.durationMs === 3000) this.db.prepare(`INSERT INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,?,?,?,?)
+        ON CONFLICT(invite_id,player_id) DO UPDATE SET mean_hz=excluded.mean_hz,peak_hz=excluded.peak_hz,frames=excluded.frames`).run(token,id,body.meanHz,body.peakHz,body.frames,this.now());
+      else this.db.prepare('INSERT OR IGNORE INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,NULL,NULL,0,?)').run(token,id,this.now());
       this.db.prepare('UPDATE reactions SET seen_at=NULL,created_at=? WHERE invite_id=? AND player_id=?').run(this.now(),token,id);
       return {ok:true};
     });

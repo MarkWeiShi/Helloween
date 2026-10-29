@@ -35,7 +35,8 @@ export interface Region {
 }
 export interface ReactionSummary {
  stats: {spiritId:string;meanHz:number|null;measured:number;views:number}[];
- recent: {hasAudio?:number;inviteId:string;receiverId:string;name:string;spiritId:string;meanHz:number|null;peakHz:number|null;createdAt:number;seenAt:number|null;level:string}[];
+ links: {inviteId:string;spiritId:string;friendName:string|null;createdAt:number;visits:number;recordings:number}[];
+ recent: {score:number|null;durationMs:number;friendName:string|null;hasAudio?:number;inviteId:string;receiverId:string;name:string;spiritId:string;meanHz:number|null;peakHz:number|null;createdAt:number;seenAt:number|null;level:string}[];
 }
 export interface Player {
   shareVisits: number;

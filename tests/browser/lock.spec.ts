@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+test.use({baseURL:process.env.WD_ACCEPTANCE_ORIGIN || 'http://127.0.0.1:8787'});
 test('single lock over rotating world grants access only after mic and audio',async({page},info)=>{
  await page.addInitScript(()=>{
   (window as any).micStops=0;(window as any).tones=0;
@@ -20,7 +21,7 @@ test('single lock over rotating world grants access only after mic and audio',as
  const globe=page.locator('.globe-explorer');
  const lon=await globe.getAttribute('data-longitude');await expect.poll(()=>globe.getAttribute('data-longitude')).not.toBe(lon);
  await page.screenshot({path:`artifacts/${info.project.name}-play-lock.png`});
- await button.click();await expect(page.locator('.play-lock')).toHaveCount(0);
+ await button.click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();await expect(page.locator('.play-lock')).toHaveCount(0);
  await expect(page.locator('.app-shell')).not.toHaveAttribute('inert','');
  expect(await page.evaluate(()=>(window as any).micStops)).toBe(1);
  expect(await page.evaluate(()=>(window as any).tones)).toBe(6);
@@ -42,11 +43,42 @@ test('single lock over rotating world grants access only after mic and audio',as
  await page.screenshot({path:`artifacts/${info.project.name}-pacific-pumpkin.png`});
  await page.locator('.globe-pin[data-globe-spirit="kappa"]').click();await expect(page.locator('dialog')).toBeVisible();
 });
-test('denied microphone leaves the world locked and supports retry',async({page})=>{
- await page.addInitScript(()=>Object.defineProperty(navigator.mediaDevices,'getUserMedia',{value:async()=>{throw new DOMException('Denied','NotAllowedError');}}));
- await page.goto('/');await page.getByRole('button',{name:'Enable Mic & Play'}).click();
- await expect(page.locator('.mic-status')).toContainText('still locked');
+test('unlock asks for confirmation before microphone access; dismiss and denial keep the game locked',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.addInitScript(()=>{
+  (window as any).__micRequests=0;
+  Object.defineProperty(navigator.mediaDevices,'getUserMedia',{value:async()=>{(window as any).__micRequests++;throw new DOMException('Denied','NotAllowedError');}});
+ });
+ await page.goto('/');
+ const unlock=page.getByRole('button',{name:'Enable Mic & Play',exact:true});
+ await expect(unlock).toBeVisible();
+ await expect(page.locator('.play-lock-content p:not(:empty)')).toHaveCount(0);
+ await page.screenshot({path:'artifacts/unlock-button-mobile.png'});
+ await unlock.click();
+ await expect(page.getByRole('dialog',{name:"Before you start"})).toBeVisible();
+ await expect(page.locator('.unlock-points li')).toHaveCount(4);
+ await expect(page.locator('.unlock-points')).toContainText("Ordinary exploration does not upload audio");
+ expect(await page.evaluate(()=>(window as any).__micRequests)).toBe(0);
+ await page.keyboard.press('Escape');
+ await expect(page.locator('dialog')).toHaveCount(0);
  await expect(page.locator('.app-shell')).toHaveAttribute('inert','');
- await expect(page.getByRole('button',{name:'Enable Mic & Play'})).toBeEnabled();
- await expect(page.getByRole('button',{name:'Continue without microphone'})).toHaveCount(0);
+ await expect(unlock).toBeFocused();
+ expect(await page.evaluate(()=>(window as any).__micRequests)).toBe(0);
+ await unlock.click();
+ await page.getByRole('button',{name:'Close',exact:true}).click();
+ expect(await page.evaluate(()=>(window as any).__micRequests)).toBe(0);
+ await unlock.click();
+ const confirm=page.getByRole('button',{name:"Confirm and enable microphone",exact:true});
+ await expect(confirm).toBeInViewport({ratio:1});
+ await page.screenshot({path:'artifacts/unlock-confirmation-mobile.png'});
+ await confirm.click();
+ await expect(page.locator('.mic-status')).toContainText('still locked');
+ expect(await page.evaluate(()=>(window as any).__micRequests)).toBe(1);
+ await expect(page.locator('.app-shell')).toHaveAttribute('inert','');
+ await expect(unlock).toBeEnabled();
+ await unlock.click();
+ expect(await page.evaluate(()=>(window as any).__micRequests)).toBe(1);
+ await confirm.click();
+ await expect.poll(()=>page.evaluate(()=>(window as any).__micRequests)).toBe(2);
 });

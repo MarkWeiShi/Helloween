@@ -1,3 +1,4 @@
+import {t} from "../shared/i18n.mjs";
 import { geoOrthographic, geoPath, geoDistance, geoGraticule10, geoContains, geoRotation, geoArea } from 'd3-geo';
 import type { GeoPermissibleObjects } from 'd3-geo';
 
@@ -342,7 +343,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   const observer=new ResizeObserver(schedule);observer.observe(viewport);
   document.addEventListener('visibilitychange',schedule,{signal:signal.signal});
   landPromise ??= fetch('/geo/land.json').then(r=>{if(!r.ok)throw new Error('Land unavailable');return r.json();}).catch(err=>{landPromise=undefined;throw err;});
-  landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead)host.querySelector('.globe-hint')!.textContent='Globe details unavailable. You can still choose a region.';});
+  landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead)host.querySelector('.globe-hint')!.textContent=t("Globe details unavailable. You can still choose a region.");});
   viewport.addEventListener('pointerenter',ev=>{if(ev.pointerType==='mouse')hovering=true;},{signal:signal.signal});
   viewport.addEventListener('pointerleave',()=>{hovering=false;},{signal:signal.signal});
   let lastTick=performance.now();

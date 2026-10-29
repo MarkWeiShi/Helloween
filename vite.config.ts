@@ -4,5 +4,5 @@ export default defineConfig({
     port: 5173,
     proxy: { "/api": "http://127.0.0.1:8787", "/i/": "http://127.0.0.1:8787" },
   },
-  build: { target: "es2022", assetsInlineLimit: 0, rollupOptions: { input: { app:'index.html', jiangshiReview:'review/jiangshi-name.html' } } },
+  build: { manifest: true, target: "es2022", assetsInlineLimit: 0, rollupOptions: { input: { app:'index.html', jiangshiReview:'review/jiangshi-name.html' } } },
 });

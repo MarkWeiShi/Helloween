@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-29",
+  "status": "implemented-with-translation-drafts",
+  "deployed": false,
+  "nativeLanguageReview": false,
+  "culturalHumanReview": false,
+  "sourceMessages": 1238,
+  "languages": [
+    {
+      "code": "en",
+      "name": "English",
+      "messages": 1238
+    },
+    {
+      "code": "zh",
+      "name": "中文",
+      "messages": 1238
+    },
+    {
+      "code": "es",
+      "name": "Español",
+      "messages": 1238
+    },
+    {
+      "code": "pt",
+      "name": "Português",
+      "messages": 1238
+    },
+    {
+      "code": "fr",
+      "name": "Français",
+      "messages": 1238
+    },
+    {
+      "code": "de",
+      "name": "Deutsch",
+      "messages": 1238
+    },
+    {
+      "code": "it",
+      "name": "Italiano",
+      "messages": 1238
+    },
+    {
+      "code": "ru",
+      "name": "Русский",
+      "messages": 1238
+    },
+    {
+      "code": "ar",
+      "name": "العربية",
+      "messages": 1238
+    },
+    {
+      "code": "hi",
+      "name": "हिन्दी",
+      "messages": 1238
+    },
+    {
+      "code": "ja",
+      "name": "日本語",
+      "messages": 1238
+    },
+    {
+      "code": "ko",
+      "name": "한국어",
+      "messages": 1238
+    },
+    {
+      "code": "id",
+      "name": "Bahasa Indonesia",
+      "messages": 1238
+    },
+    {
+      "code": "th",
+      "name": "ไทย",
+      "messages": 1238
+    },
+    {
+      "code": "vi",
+      "name": "Tiếng Việt",
+      "messages": 1238
+    }
+  ],
+  "coverage": {
+    "missingKeys": 0,
+    "placeholderErrors": 0,
+    "invalidTranslationMarkers": 0
+  },
+  "verification": {
+    "unitTests": {
+      "passed": 62,
+      "failed": 0
+    },
+    "localizationBrowserTests": {
+      "browser": "Chromium (installed Chrome)",
+      "mobileViewport": {
+        "width": 390,
+        "height": 844
+      },
+      "passed": 20,
+      "failed": 0,
+      "languagechangeRefinementPassed": true
+    },
+    "existingFlowRegression": {
+      "passed": 8,
+      "failed": 1,
+      "failure": "tests/browser/lock.spec.ts expects rotation during the play lock. The unchanged pre-existing src/globe.ts guard pauses rotation while .play-lock is present."
+    },
+    "typecheckAndBuild": "passed",
+    "contentCheck": "passed",
+    "diffWhitespaceCheck": "passed",
+    "visualInspection": [
+      "Chinese mobile globe and consent",
+      "Spanish mobile consent",
+      "Arabic mobile consent and RTL direction"
+    ]
+  },
+  "scope": {
+    "characters": 56,
+    "storyFrames": 168,
+    "countryNames": "Intl.DisplayNames",
+    "languagePriority": [
+      "validated explicit choice in URL",
+      "saved manual preference",
+      "first supported browser preference",
+      "English"
+    ],
+    "keyboardLanguageAccess": false
+  },
+  "translationStatus": {
+    "method": "English-normalized source, authored control/disclosure overrides, offline M2M100 drafts for remaining content",
+    "chineseCharacterSummaries": "56 individually rewritten summaries",
+    "longFormContent": "Requires native editorial review; structural coverage is not semantic acceptance"
+  },
+  "preview": "http://127.0.0.1:18879/?lang=zh"
+}

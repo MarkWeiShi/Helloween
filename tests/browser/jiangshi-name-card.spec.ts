@@ -15,12 +15,12 @@ test('jiangshi card plays native-name tail and closing stops the video',async({p
  });
  await page.request.post('/api/session',{data:{}});
  await page.request.post('/api/onboard',{data:{name:'Jiangshi pilot',country:'CN',spiritId:'jiangshi'}});
- await page.goto('/');await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
  await expect(page.locator('.play-lock')).toHaveCount(0);
  await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
  await expect.poll(()=>page.locator('video[data-phase="intro"]').evaluate((v:HTMLVideoElement)=>v.currentTime),{timeout:15000}).toBeGreaterThan(6.2);
  await expect(page.locator('.transformation-name')).toHaveCount(0);
- await expect(page.locator('[data-personal-scare]')).not.toContainText('正在录音');
+ await expect(page.locator('[data-personal-scare]')).not.toContainText("Recording for");
  await page.screenshot({path:`artifacts/jiangshi-name-review/${info.project.name}-actual-card.png`});
  const video=await page.locator('video[data-phase="intro"]').elementHandle();
  await page.getByRole('button',{name:'Close character details',exact:true}).click();

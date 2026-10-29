@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {stripTypeScriptTypes} from 'node:module';
-const source = stripTypeScriptTypes((await fs.readFile(new URL('../src/microphone.ts',import.meta.url),'utf8')).replace(/import .*?;\n/, 'const detectPitch = () => null;\n'));
+const source = stripTypeScriptTypes((await fs.readFile(new URL('../src/microphone.ts',import.meta.url),'utf8')).replace(/import \{ detectPitch \}[^;]+;\n/, 'const detectPitch = () => null;\n').replace('../shared/i18n.mjs', new URL('../shared/i18n.mjs',import.meta.url).href));
 const {prepareMicrophone} = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 test('closing while AudioContext resume is pending immediately releases the granted microphone',async()=>{
  let stops=0, closes=0, resume;
