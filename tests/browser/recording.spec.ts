@@ -21,26 +21,20 @@ async function setup() {
  });
  await page.goto('/i/'+invitation.id);
  await expect(page.locator('#mic-notice')).toHaveCount(0);
- await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
  await expect(page.locator('.unlock-points')).toContainText("Only your inviter, Sender, can listen.");
  await expect(page.locator('[data-confirm-unlock]')).toBeInViewport({ratio:1});
  expect(await page.evaluate(()=>(window as any).__recordingEvidence.start)).toBe(0);
  await page.screenshot({path:'artifacts/reaction-unlock-dialog-mobile.png'});
- await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
- await expect(page.locator('.invitation-consent')).toBeVisible();
- await expect(page.locator('.invitation-consent input')).toHaveCount(0);
  return {browser,sender,receiver,page,invitation};
 }
-async function acceptInvitation(page:any) {
- await page.getByRole('button',{name:"Accept invitation",exact:true}).click();
+async function confirmUnlock(page:any) {
+ await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
 }
 test('two-second local scoring uploads named private audio and replay does not send twice',async()=>{
  const {browser,sender,receiver,page,invitation}=await setup();
  try {
   let uploads=0; page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
-  await expect(page.locator('[data-invite-play]')).toBeInViewport({ratio:1});
-  await page.screenshot({path:'artifacts/reaction-consent-mobile.png'});
-  await acceptInvitation(page);
+  await confirmUnlock(page);
   await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 2 seconds");
   await expect(page.locator('[data-personal-scare]')).toBeInViewport();
   await expect(page.locator('[data-personal-scare]')).toContainText("Your 2-second recording was sent",{timeout:15000});
@@ -87,8 +81,8 @@ test('ordinary exploration stays local and cancelling invitation capture never u
   await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
   await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
   expect(uploads).toBe(0);
-  await page.goto('/i/'+invitation.id);await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
-  await acceptInvitation(page);
+  await page.goto('/i/'+invitation.id);
+  await confirmUnlock(page);
   await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 2 seconds");
   await page.getByRole('button',{name:"Cancel recording and sending",exact:true}).click();
   await expect(page.locator('[data-personal-scare]')).toContainText("cancelled");
@@ -105,7 +99,7 @@ test('upload failure preserves score and allows retry with the same recording',a
    attempts++;bodies.push(route.request().postDataJSON());
    if(attempts===1)await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Try again'})});else await route.continue();
   });
-  await acceptInvitation(page);
+  await confirmUnlock(page);
   await expect(page.locator('[data-personal-scare]')).toContainText("Sending failed",{timeout:15000});
   await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/);
   await page.getByRole('button',{name:"Retry sending recording",exact:true}).click();
@@ -124,7 +118,7 @@ test('closing during capture releases the microphone and never uploads',async()=
    navigator.mediaDevices.getUserMedia=async constraints=>{const stream=await original(constraints);streams.push(stream);return stream;};
   });
   let uploads=0;page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
-  await acceptInvitation(page);
+  await confirmUnlock(page);
   await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 2 seconds");
   await page.getByRole('button',{name:'Close character details',exact:true}).click();
   await expect(page.locator('dialog')).toHaveCount(0);
