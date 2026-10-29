@@ -128,6 +128,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   const projection = geoOrthographic().clipAngle(90).precision(0.6);
   const graticule = geoGraticule10();
   const terrain = Array.from({length:6},(_,i)=>{const img=new Image();img.onload=()=>schedule();img.src=`/art/terrain/${i}.webp`;return img;});
+  const tintedTerrain = new WeakMap<HTMLImageElement, HTMLCanvasElement>();
 
   const visible = (p: [number, number]) => geoDistance(p, orientation) < Math.PI / 2 - 0.06;
   const schedule = () => { if (!frame && !dead) frame = requestAnimationFrame(draw); };
@@ -183,13 +184,20 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
         const [x,y] = projection(point)!;
         return [{x,y,kind,depth:Math.cos(geoDistance(point,orientation))}];
       }).sort((a,b)=>a.y-b.y);
-      ctx.filter="grayscale(1) sepia(1) saturate(1.7) hue-rotate(52deg)";ctx.globalAlpha=.72;
+      ctx.globalAlpha=.72;
       for (const {x,y,kind,depth} of projected) {
         const img = terrain[kind];
         if (!img.complete || !img.naturalWidth) continue;
+        let sprite = tintedTerrain.get(img);
+        if (!sprite) {
+          sprite = document.createElement('canvas'); sprite.width=img.naturalWidth; sprite.height=img.naturalHeight;
+          const tinted=sprite.getContext('2d')!;
+          tinted.filter="grayscale(1) sepia(1) saturate(1.7) hue-rotate(52deg)";
+          tinted.drawImage(img,0,0); tintedTerrain.set(img,sprite);
+        }
         const width = size * .09 * (.55 + .45 * depth);
         const height = width * (.6 + .4 * depth);
-        ctx.drawImage(img,x-width/2,y-height*.58,width,height);
+        ctx.drawImage(sprite,x-width/2,y-height*.58,width,height);
       }
       ctx.restore();
     }
@@ -340,7 +348,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   let lastTick=performance.now();
   const spin=setInterval(()=>{
     const now=performance.now(),elapsed=Math.min(now-lastTick,150);lastTick=now;
-    if(dead||document.hidden||reduced.matches||start||hovering||now<restUntil||document.querySelector('dialog[open]')||viewport.querySelector('.globe-pin:focus-visible'))return;
+    if(dead||document.hidden||reduced.matches||start||hovering||now<restUntil||document.querySelector('dialog[open], .play-lock')||viewport.querySelector('.globe-pin:focus-visible'))return;
     orientation=[orientation[0]+elapsed*.002,orientation[1]];schedule();
   },80);
   schedule();

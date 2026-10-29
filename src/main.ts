@@ -1,7 +1,6 @@
 import { createBgm } from "./bgm";
 import { mountPersonalScare, readScare, scareLabel } from "./personal-scare";
 import { pumpkinGreeting } from "./pumpkin-greeting";
-import { mountInvitationMotion } from "./invitation-motion";
 import "@fontsource-variable/fredoka/wght.css";
 import "@fontsource-variable/dm-sans/wght.css";
 import "./style.css";
@@ -442,10 +441,14 @@ async function openStory(id = selected) {
 function openInvite() {
   if (!invite) return;
   const s = spirit(invite.spiritId);
-  modal(`<div class="invitation-film"><div class="invitation-stage"><img class="invitation-still" src="${e(s.art ? asset(s.art.scare) : "")}" alt="${e(s.name)}"><div class="invitation-consent">${pumpkinGreeting}<button class="button primary full" data-invite-play>接受朋友的万圣节邀请</button></div><button class="button secondary invitation-replay" data-replay>↻ 再看一次</button></div><p class="recording-status" role="status" aria-live="polite"></p><button class="button secondary recording-cancel" data-cancel-record hidden>取消录音及发送</button><button class="button secondary" data-retry-audio hidden>重试发送录音</button><div class="invitation-controls">${actionPair(s.id, progress(s.id)?.donated || 0)}${button("Say Boo back", "respond", "primary full")}</div></div><button class="icon-button invitation-share" data-action="share" data-id="${e(s.id)}" aria-label="Share with friends">↪</button>`);
+  modal(`<div class="invitation-film"><div class="invitation-stage"><div class="invitation-consent">${pumpkinGreeting}<button class="button primary full" data-invite-play>接受朋友的万圣节邀请</button></div></div></div>`);
   const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
   dialog.classList.add('invitation-result', 'invitation-cinema');
-  modalCleanup = mountInvitationMotion(dialog.querySelector<HTMLElement>('.invitation-film')!, invite.id, s.id, () => sound, toggleTransformationSound);
+  dialog.querySelector<HTMLButtonElement>('[data-invite-play]')!.onclick = () => {
+    selected = s.id;
+    region = s.regionId;
+    revealCharacter(false);
+  };
 }
 
 async function respondInvite() {

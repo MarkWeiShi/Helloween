@@ -1,0 +1,19 @@
+{
+  "generated": 56,
+  "uniqueVoiceIds": 56,
+  "audioDurationSeconds": 2.8,
+  "mediaFilesInspected": 112,
+  "build": "passed",
+  "unitTests": 50,
+  "browserTests": 12,
+  "inAppBrowser": "56 choices visible; no overlay after transformation",
+  "humanListening": "pending",
+  "unsupportedLanguageDrafts": [
+    "adze",
+    "asanbosam",
+    "kalanoro"
+  ],
+  "temporarySlotsDeleted": 55,
+  "existingJiangshiVoice": "retained",
+  "deployment": "local only"
+}

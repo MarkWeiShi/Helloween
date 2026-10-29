@@ -3143,3 +3143,38 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .character-immersive.character-dialog .character-next { width:44px; height:60px; font-size:48px; background:#101a2c80; border-radius:20px; }
 .character-immersive .transformation-replay { bottom:calc(16px + env(safe-area-inset-bottom)); }
 .character-immersive.character-dialog.modal { animation:none; }
+
+/* Reserve visible controls first; let the uncropped video use remaining space. */
+.character-immersive.character-dialog.modal { overflow:hidden; }
+.character-immersive .globe-character { height:100%; min-height:0; display:flex; flex-direction:column; }
+.character-immersive .character-navigation { position:relative; flex:0 0 auto; box-sizing:border-box; }
+.character-immersive.character-dialog .globe-character .character-stage { flex:1 1 0; height:auto; min-height:0; overflow:hidden; }
+.character-immersive.character-dialog .character-info { flex:0 0 auto; padding:10px 20px calc(12px + env(safe-area-inset-bottom)); }
+.character-immersive .reaction-actions { margin-top:0; gap:16px; }
+.character-immersive.character-dialog .action-orb,
+.character-immersive.character-dialog .sweet-action .action-orb { width:68px; height:62px; font-size:52px; }
+.character-immersive.character-dialog .reaction-actions .action-caption { font-size:clamp(17px,4.5vw,26px); }
+.character-immersive .mini-meter { margin-top:8px; }
+@media(max-height:520px) {
+ .character-immersive .character-navigation { padding-top:6px; padding-bottom:4px; }
+ .character-immersive.character-dialog .action-orb,
+ .character-immersive.character-dialog .sweet-action .action-orb { width:44px; height:36px; font-size:32px; }
+ .character-immersive.character-dialog .reaction-actions .action-caption { font-size:17px; }
+ .character-immersive.character-dialog .character-info { padding-top:4px; padding-bottom:6px; }
+ .character-immersive .spirit-action { gap:2px; }
+}
+
+/* One continuous backdrop; the video sits outside all stage/card clipping. */
+.character-immersive.character-dialog.modal,
+.character-immersive.character-dialog .character-info { background:#101a2c; }
+.character-immersive.character-dialog .globe-character,
+.character-immersive.character-dialog .globe-character .character-stage { overflow:visible; background:transparent; }
+.character-immersive > .immersive-video-layer {
+  position:fixed; inset:auto; z-index:20; overflow:visible;
+  border:0; border-radius:0; pointer-events:none; background:transparent;
+}
+.character-immersive .has-immersive-player > .hero-spirit { visibility:hidden; }
+.character-immersive .character-navigation,
+.character-immersive .character-previous,
+.character-immersive .character-next,
+.character-immersive .transformation-replay { z-index:30; }

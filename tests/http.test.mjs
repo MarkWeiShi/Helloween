@@ -123,15 +123,21 @@ test("HTTP session, CSRF, visitor privacy and atomic gift retries", async () => 
 });
 
 test('video HTTP supports MIME, seeking, suffix ranges, HEAD and unsatisfiable ranges', async () => {
-  const {mkdir,writeFile,rm} = await import('node:fs/promises');
-  const root = new URL(`../dist/test-video-${process.pid}/`, import.meta.url);
-  await mkdir(root,{recursive:true});
+  const {mkdtemp,writeFile,rm} = await import('node:fs/promises');
+  const {tmpdir} = await import('node:os');
+  const {join} = await import('node:path');
+  const {pathToFileURL} = await import('node:url');
+  const root = pathToFileURL((await mkdtemp(join(tmpdir(),'boo-static-')))+ '/');
+  await writeFile(new URL('index.html',root),'<main>isolated static root</main>');
   await writeFile(new URL('test.mp4',root),Buffer.from('0123456789'));
   await writeFile(new URL('test.webm',root),Buffer.from('0123456789'));
-  const app = createApp({databasePath:':memory:',rateLimits:false});
+  const app = createApp({databasePath:':memory:',rateLimits:false,staticRoot:root.pathname});
   await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));
-  const base=`http://127.0.0.1:${app.server.address().port}/test-video-${process.pid}/`;
+  const base=`http://127.0.0.1:${app.server.address().port}/`;
   try {
+    assert.match(await (await fetch(base)).text(),/isolated static root/);
+    assert.match(await (await fetch(base+'a-client-route')).text(),/isolated static root/);
+    assert.equal((await fetch(base+'missing.mp4')).status,404);
     for (const [extension,mime] of [['mp4','video/mp4'],['webm','video/webm']]) {
       const whole=await fetch(`${base}test.${extension}`); assert.equal(whole.headers.get('content-type'),mime); assert.equal(await whole.text(),'0123456789');
       const head=await fetch(`${base}test.${extension}`,{method:'HEAD'}); assert.equal(head.headers.get('content-length'),'10'); assert.equal(await head.text(),'');

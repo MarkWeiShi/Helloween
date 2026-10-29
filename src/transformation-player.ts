@@ -40,6 +40,23 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   soundButton.onclick = () => { options.toggleSound?.(); audio(); };
   soundButton.hidden = !options.toggleSound;
   host.append(poster, canvas, ...videos, soundButton); stage.append(host);
+  // Place immersive playback directly in the dialog's top layer, outside stage clipping.
+  const immersive = stage.closest?.<HTMLDialogElement>('dialog.character-immersive');
+  let layerObserver: ResizeObserver | undefined;
+  const alignLayer = () => {
+    if (!immersive) return;
+    const bounds = stage.getBoundingClientRect();
+    Object.assign(host.style, {left:`${bounds.left}px`,top:`${bounds.top}px`,width:`${bounds.width}px`,height:`${bounds.height}px`});
+  };
+  if (immersive) {
+    host.classList.add('immersive-video-layer');
+    immersive.append(host);
+    stage.classList.add('has-immersive-player');
+    layerObserver = new ResizeObserver(alignLayer);
+    layerObserver.observe(stage);
+    window.addEventListener('resize', alignLayer);
+    alignLayer();
+  }
   poster.onerror = () => { poster.hidden = true; if (canvas.hidden) host.classList.remove('has-media'); };
   const gl = canvas.getContext('webgl', {alpha:true, premultipliedAlpha:false});
   let dead = false, ticket = 0, frame = 0, revealed = false, entry: Transformation | undefined, phase: 'idle'|'intro'|'loop' = 'idle';
@@ -171,6 +188,8 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
     if (dead) return; dead = true; pause(); for (const media of videos) { media.onended = null; media.onerror = null; media.onwaiting = null; media.onplaying = null; media.removeAttribute('src'); media.load(); }
     document.removeEventListener('visibilitychange', hidden); window.removeEventListener('pagehide', pause); window.removeEventListener('boo:sound', audio);
     if (gl) { gl.deleteTexture(texture); gl.deleteBuffer(buffer); gl.deleteProgram(program); shaders.forEach(s => gl.deleteShader(s)); gl.getExtension('WEBGL_lose_context')?.loseContext(); }
+    layerObserver?.disconnect(); window.removeEventListener('resize', alignLayer);
+    if (immersive) stage.classList.remove('has-immersive-player');
     host.remove();
   }};
 }

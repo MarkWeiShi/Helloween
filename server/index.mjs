@@ -46,6 +46,7 @@ export function createApp({
   catalog = loadCatalog(),
   now,
   rateLimits = true,
+  staticRoot = join(ROOT, "dist"),
 } = {}) {
   const store = new BooStore(databasePath, catalog, {
     now,
@@ -297,16 +298,16 @@ export function createApp({
         return;
       }
       const path = decodeURIComponent(url.pathname);
-      let file = resolve(ROOT, "dist", `.${path}`);
-      if (!file.startsWith(join(ROOT, "dist") + "/"))
-        file = join(ROOT, "dist/index.html");
+      let file = resolve(staticRoot, `.${path}`);
+      if (!file.startsWith(resolve(staticRoot) + "/"))
+        file = join(staticRoot, "index.html");
       const isInvite = /^\/i\/[\w-]+$/.test(path);
       if (!existsSync(file) || !statSync(file).isFile()) {
         if (extname(path)) {
           send(404, { error: "This asset could not be found." });
           return;
         }
-        file = join(ROOT, "dist/index.html");
+        file = join(staticRoot, "index.html");
       }
       if (!existsSync(file)) {
         res.writeHead(503, { "Content-Type": "text/plain" });
