@@ -104,6 +104,7 @@ export class BooStore {
       wallet: p.wallet,
       candies: p.candies,
       peaceCount: p.peace_count,
+      shareCount: this.db.prepare("SELECT COUNT(*) AS count FROM invites WHERE sender_id=?").get(id).count,
       shareVisits: this.db.prepare("SELECT COUNT(*) AS count FROM invite_visits v JOIN invites i ON i.id=v.invite_id WHERE i.sender_id=?").get(id).count,
       initialized: !!p.initialized,
       reactions: this.reactionSummary(id),

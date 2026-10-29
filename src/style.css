@@ -3039,3 +3039,14 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .globe-title .parade-counter { display:grid; grid-template-columns:30px minmax(32px,auto); align-items:center; column-gap:6px; padding:2px 0; min-height:32px; border:0; background:transparent; color:var(--cream); cursor:pointer; }
 .parade-counter .counter-icon { width:30px; font-size:24px; line-height:28px; text-align:center; }
 .parade-counter .counter-value { font-size:20px; line-height:28px; font-weight:500; font-variant-numeric:tabular-nums; text-align:left; }
+
+.explore-screen .globe-title { padding-bottom:156px; }
+.globe-title .parade-counter { column-gap:18px; grid-template-columns:30px minmax(80px,auto); }
+.parade-counter .counter-value { white-space:nowrap; }
+.stats-help { justify-self:end; display:grid; place-items:center; width:38px; height:38px; margin:0 0 4px; border:1px solid #b8c9df40; border-radius:50%; background:transparent; color:var(--cream); font-size:25px; cursor:pointer; }
+.stats-help:hover { background:#ffffff0c; }
+.stats-guide section { display:grid; grid-template-columns:36px 1fr; gap:16px; margin:22px 0; }
+.stats-guide section > span { font-size:28px; }
+.stats-guide h3 { margin:0 0 8px; font-size:18px; }
+.stats-guide p { margin:0; color:var(--muted); line-height:1.6; }
+.stats-guide small { display:block; margin-top:8px; color:var(--muted); line-height:1.5; }

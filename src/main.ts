@@ -247,7 +247,7 @@ function revealCharacter(animate = true) {
   dialog.querySelector<HTMLButtonElement>(".character-close")?.focus({preventScroll:true});
 }
 function mapPage() {
-  return `<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Your Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friends who opened your shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${player.shareVisits || 0}</span></button><button class="parade-counter" data-action="collection" aria-label="Spirits released"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${player.peaceCount}</span></button><button class="parade-counter" data-action="wallet" aria-label="Total sweets collected"><span class="counter-icon" aria-hidden="true">🍬</span><span class="counter-value" id="sweet-count">${player.candies}</span></button></div></div>
+  return `<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Your Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?">?</button><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend opens / shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${player.shareVisits || 0} / ${player.shareCount || 0}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits / total spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${player.peaceCount} / ${catalog.spirits.length}</span></button><button class="parade-counter" data-action="wallet" aria-label="Available sweets / total collected"><span class="counter-icon" aria-hidden="true">🍬</span><span class="counter-value" id="sweet-count">${player.wallet} / ${player.candies}</span></button></div></div>
   ${invite ? `<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
   <div class="explore-layout globe-layout"><section class="globe-explorer" aria-label="Explore cultures on the globe">
     <div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div>
@@ -727,6 +727,9 @@ document.addEventListener("click", async (ev) => {
       case "respond":
         await respondInvite();
         break;
+      case "stats-help":
+        modal(`<div class="modal-heading"><h2>Your Halloween numbers</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend opens / Shares</h3><p>Friends opening your invitation links / invitation links you have created to share. The same friend opening the same link again counts only once; your own visits do not count.</p><small>One link can reach several friends. Creating a link does not confirm that a message was sent or posted.</small></div></section><section><span aria-hidden="true">👻</span><div><h3>Released / Total spirits</h3><p>Spirits whose wishes you have completed / all currently playable spirits. Completing each spirit counts once.</p></div></section><section><span aria-hidden="true">🍬</span><div><h3>Available / Collected sweets</h3><p>Sweets currently in your bag / all sweets you have earned. Giving sweets reduces your bag balance, but never your lifetime total.</p></div></section></div>`);
+        break;
       case "reactions":
         await openReactions();
         break;
@@ -781,9 +784,9 @@ setInterval(() => {
         if(notified.has(key))continue;notified.add(key);
         toast(`${r.name}: ${r.hasAudio?'sent a 5-second voice reaction':r.meanHz===null?'no clear voice':`peak ${r.peakHz} Hz · ${r.level}`} — open Friend reactions`);
       }
-      const count=$('#reaction-count'); if(count)count.textContent=String(player.shareVisits || 0);
-      const peace=$('#peace-count');if(peace)peace.textContent=String(player.peaceCount);
-      const sweets=$('#sweet-count');if(sweets)sweets.textContent=String(player.candies);
+      const count=$('#reaction-count'); if(count)count.textContent=`${player.shareVisits || 0} / ${player.shareCount || 0}`;
+      const peace=$('#peace-count');if(peace)peace.textContent=`${player.peaceCount} / ${catalog.spirits.length}`;
+      const sweets=$('#sweet-count');if(sweets)sweets.textContent=`${player.wallet} / ${player.candies}`;
       const meter=overlay.querySelector<HTMLElement>('[data-reaction-spirit]');
       if(meter)meter.outerHTML=reactionMeter(meter.dataset.reactionSpirit!);
     }).catch(()=>{});

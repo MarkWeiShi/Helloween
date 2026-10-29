@@ -411,6 +411,26 @@
       "loopAlpha": "/art/transformations/asanbosam/loop.3d1fa53a92aa.webm",
       "poster": "/art/transformations/asanbosam/poster.191fdf3419e6.png"
     },
+    "tokoloshe": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/tokoloshe/entrance.865ef45cc931.mp4",
+      "loop": "/art/transformations/tokoloshe/loop.6f7635df04bc.mp4",
+      "entranceAlpha": "/art/transformations/tokoloshe/entrance.aedfbaf5b4d1.webm",
+      "loopAlpha": "/art/transformations/tokoloshe/loop.d1217da98118.webm",
+      "poster": "/art/transformations/tokoloshe/poster.613bdd903b55.png"
+    },
+    "kalanoro": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/kalanoro/entrance.ab96d9c5064c.mp4",
+      "loop": "/art/transformations/kalanoro/loop.6e3e18fac8b3.mp4",
+      "entranceAlpha": "/art/transformations/kalanoro/entrance.9e1e6b31e8a2.webm",
+      "loopAlpha": "/art/transformations/kalanoro/loop.b4bb3aad45e2.webm",
+      "poster": "/art/transformations/kalanoro/poster.f12d253f180d.png"
+    },
     "ghul": {
       "duration": 6,
       "loopDuration": 2,

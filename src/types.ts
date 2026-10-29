@@ -39,6 +39,7 @@ export interface ReactionSummary {
 }
 export interface Player {
   shareVisits: number;
+  shareCount: number;
   reactions: ReactionSummary;
   id: string;
   name: string;
