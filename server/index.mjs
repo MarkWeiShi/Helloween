@@ -248,6 +248,8 @@ export function createApp({
           /^\/api\/invites\/[\w-]+\/respond$/.test(url.pathname)
         )
           result = store.respond(playerId, url.pathname.split("/")[3]);
+        else if (req.method === "POST" && /^\/api\/invites\/[\w-]+\/visit$/.test(url.pathname))
+          result = store.recordInviteVisit(playerId,url.pathname.split("/")[3]);
         else if (req.method === "POST" && /^\/api\/invites\/[\w-]+\/reaction$/.test(url.pathname))
           result = store.recordReaction(playerId,url.pathname.split("/")[3],body);
         else if (req.method === "POST" && url.pathname === "/api/reactions/read")

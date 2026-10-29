@@ -38,6 +38,7 @@ export interface ReactionSummary {
  recent: {hasAudio?:number;inviteId:string;receiverId:string;name:string;spiritId:string;meanHz:number|null;peakHz:number|null;createdAt:number;seenAt:number|null;level:string}[];
 }
 export interface Player {
+  shareVisits: number;
   reactions: ReactionSummary;
   id: string;
   name: string;

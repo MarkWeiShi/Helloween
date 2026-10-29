@@ -400,6 +400,136 @@
       "entranceAlpha": "/art/transformations/cuca/entrance.ea44c5fe5666.webm",
       "loopAlpha": "/art/transformations/cuca/loop.48ec29b9b487.webm",
       "poster": "/art/transformations/cuca/poster.295e524d8ad6.png"
+    },
+    "asanbosam": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/asanbosam/entrance.65a9b812b83c.mp4",
+      "loop": "/art/transformations/asanbosam/loop.2198836b0453.mp4",
+      "entranceAlpha": "/art/transformations/asanbosam/entrance.35804088837a.webm",
+      "loopAlpha": "/art/transformations/asanbosam/loop.3d1fa53a92aa.webm",
+      "poster": "/art/transformations/asanbosam/poster.191fdf3419e6.png"
+    },
+    "ghul": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/ghul/entrance.6dc56238215d.mp4",
+      "loop": "/art/transformations/ghul/loop.5cfc1fd24f7f.mp4",
+      "entranceAlpha": "/art/transformations/ghul/entrance.99d062291dfd.webm",
+      "loopAlpha": "/art/transformations/ghul/loop.f9a29b5800a3.webm",
+      "poster": "/art/transformations/ghul/poster.2a012d800696.png"
+    },
+    "ifrit": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/ifrit/entrance.977f23271b4d.mp4",
+      "loop": "/art/transformations/ifrit/loop.0e485ccb179f.mp4",
+      "entranceAlpha": "/art/transformations/ifrit/entrance.8a817108b16d.webm",
+      "loopAlpha": "/art/transformations/ifrit/loop.622fc978a2af.webm",
+      "poster": "/art/transformations/ifrit/poster.42d557321b7b.png"
+    },
+    "marid": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/marid/entrance.a279d1993b03.mp4",
+      "loop": "/art/transformations/marid/loop.d6df9b2127cd.mp4",
+      "entranceAlpha": "/art/transformations/marid/entrance.e200b9f7f8a9.webm",
+      "loopAlpha": "/art/transformations/marid/loop.c24d99d0d246.webm",
+      "poster": "/art/transformations/marid/poster.04e38445a67b.png"
+    },
+    "nasnas": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/nasnas/entrance.e1304c1cabaa.mp4",
+      "loop": "/art/transformations/nasnas/loop.0459106aa181.mp4",
+      "entranceAlpha": "/art/transformations/nasnas/entrance.066093b90f02.webm",
+      "loopAlpha": "/art/transformations/nasnas/loop.f978b0176590.webm",
+      "poster": "/art/transformations/nasnas/poster.2a1085097c09.png"
+    },
+    "div": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/div/entrance.a1c55be59941.mp4",
+      "loop": "/art/transformations/div/loop.ae53e6f36cd2.mp4",
+      "entranceAlpha": "/art/transformations/div/entrance.d6cfff8846c6.webm",
+      "loopAlpha": "/art/transformations/div/loop.53f413595346.webm",
+      "poster": "/art/transformations/div/poster.1411ac8182c0.png"
+    },
+    "pari": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/pari/entrance.7cd89633f288.mp4",
+      "loop": "/art/transformations/pari/loop.e769f4c316bf.mp4",
+      "entranceAlpha": "/art/transformations/pari/entrance.6a65dddb713a.webm",
+      "loopAlpha": "/art/transformations/pari/loop.3042f1ae2c8e.webm",
+      "poster": "/art/transformations/pari/poster.2691a3feb60d.png"
+    },
+    "shahmaran": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/shahmaran/entrance.6520f83c18ee.mp4",
+      "loop": "/art/transformations/shahmaran/loop.ca130463f7a6.mp4",
+      "entranceAlpha": "/art/transformations/shahmaran/entrance.3c6ca4717975.webm",
+      "loopAlpha": "/art/transformations/shahmaran/loop.35286d40ba80.webm",
+      "poster": "/art/transformations/shahmaran/poster.0626e19bbb74.png"
+    },
+    "karakoncolos": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/karakoncolos/entrance.01cfc28e56db.mp4",
+      "loop": "/art/transformations/karakoncolos/loop.79d762c7ed40.mp4",
+      "entranceAlpha": "/art/transformations/karakoncolos/entrance.4c359274dff4.webm",
+      "loopAlpha": "/art/transformations/karakoncolos/loop.a1735a87adda.webm",
+      "poster": "/art/transformations/karakoncolos/poster.3f008b6a171f.png"
+    },
+    "zheztyrnak": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/zheztyrnak/entrance.df8a55c84c28.mp4",
+      "loop": "/art/transformations/zheztyrnak/loop.985a9182106d.mp4",
+      "entranceAlpha": "/art/transformations/zheztyrnak/entrance.8e93fb872eb0.webm",
+      "loopAlpha": "/art/transformations/zheztyrnak/loop.8bdfce85061d.webm",
+      "poster": "/art/transformations/zheztyrnak/poster.c69570db3b68.png"
+    },
+    "albasty": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/albasty/entrance.5c1806984bff.mp4",
+      "loop": "/art/transformations/albasty/loop.6020c8cbd643.mp4",
+      "entranceAlpha": "/art/transformations/albasty/entrance.f4d2d3466a21.webm",
+      "loopAlpha": "/art/transformations/albasty/loop.c09b0d306e78.webm",
+      "poster": "/art/transformations/albasty/poster.ba40e5a00543.png"
+    },
+    "zhalmauyz-kempir": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/zhalmauyz-kempir/entrance.f1be4a287fe4.mp4",
+      "loop": "/art/transformations/zhalmauyz-kempir/loop.46a03c6948cd.mp4",
+      "entranceAlpha": "/art/transformations/zhalmauyz-kempir/entrance.525aa4cb9925.webm",
+      "loopAlpha": "/art/transformations/zhalmauyz-kempir/loop.fecef46326ea.webm",
+      "poster": "/art/transformations/zhalmauyz-kempir/poster.2671f7460031.png"
+    },
+    "zhalgyz-koz": {
+      "duration": 6,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/zhalgyz-koz/entrance.8d573247fb1d.mp4",
+      "loop": "/art/transformations/zhalgyz-koz/loop.11f65897f7e6.mp4",
+      "entranceAlpha": "/art/transformations/zhalgyz-koz/entrance.2a8f30b1eb17.webm",
+      "loopAlpha": "/art/transformations/zhalgyz-koz/loop.070c808b3aba.webm",
+      "poster": "/art/transformations/zhalgyz-koz/poster.0b325303a53d.png"
     }
   }
 }

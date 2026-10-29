@@ -1,14 +1,15 @@
 // Publish an explicitly selected cute-only video segment as a globe sprite loop.
 // node scripts/prepare-cute-motion.mjs ID VIDEO START_SECONDS END_SECONDS
 import {execFileSync} from 'node:child_process';
-import {mkdtempSync,readdirSync,rmSync,mkdirSync,writeFileSync,renameSync,readFileSync} from 'node:fs';
+import {mkdtempSync,readdirSync,rmSync,mkdirSync,writeFileSync,renameSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import sharp from 'sharp';
+import {loadCatalog} from '../server/content.mjs';
 const [id,input,startArg,endArg]=process.argv.slice(2),start=Number(startArg),end=Number(endArg);
 if(!/^[a-z0-9-]+$/.test(id||'') || !input || !Number.isFinite(start) || !Number.isFinite(end) || start<0 || end<=start || end-start>3)throw Error('Usage: ID VIDEO START END (explicit cute-only range, max 3 seconds)');
-const catalog=JSON.parse(readFileSync('content/catalog.json','utf8'));
+const catalog=loadCatalog();
 if(!catalog.spirits.some(s=>s.id===id))throw Error('Unknown stable character ID');
 const dir=mkdtempSync(join(tmpdir(),'boo-cute-')),output='public/art/motions';
 mkdirSync(output,{recursive:true});

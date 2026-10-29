@@ -41,6 +41,7 @@ export class BooStore {
       CREATE TABLE IF NOT EXISTS ledger(id TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),reason TEXT NOT NULL,delta INTEGER NOT NULL,created_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS matches(id TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,opponent_id TEXT NOT NULL,seed INTEGER NOT NULL,started_at INTEGER NOT NULL,result TEXT,cancelled INTEGER NOT NULL DEFAULT 0);
       CREATE TABLE IF NOT EXISTS invites(id TEXT PRIMARY KEY,sender_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,channel TEXT NOT NULL,eligible INTEGER NOT NULL,created_at INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS invite_visits(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS responses(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),result TEXT NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS first_invites(player_id TEXT PRIMARY KEY REFERENCES players(id),invite_id TEXT NOT NULL REFERENCES invites(id));
       CREATE TABLE IF NOT EXISTS daily(player_id TEXT NOT NULL REFERENCES players(id),day TEXT NOT NULL,matches INTEGER NOT NULL DEFAULT 0,invites INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(player_id,day));
@@ -103,6 +104,7 @@ export class BooStore {
       wallet: p.wallet,
       candies: p.candies,
       peaceCount: p.peace_count,
+      shareVisits: this.db.prepare("SELECT COUNT(*) AS count FROM invite_visits v JOIN invites i ON i.id=v.invite_id WHERE i.sender_id=?").get(id).count,
       initialized: !!p.initialized,
       reactions: this.reactionSummary(id),
       progress: this.db
@@ -402,6 +404,13 @@ export class BooStore {
       eligible: !!row.eligible && this.inviteRewards,
       expired: this.now() - row.created_at > RULES.inviteLifetimeMs,
     };
+  }
+  recordInviteVisit(id, token) {
+    this.rawPlayer(id);
+    const invite = this.invite(token);
+    if (invite.senderId === id || invite.expired) return { counted: false };
+    const result = this.db.prepare("INSERT OR IGNORE INTO invite_visits VALUES(?,?,?)").run(token,id,this.now());
+    return { counted: result.changes > 0 };
   }
   reactionSummary(id) {
     const stats = this.db.prepare(`SELECT i.spirit_id AS spiritId, ROUND(AVG(r.mean_hz)) AS meanHz, COUNT(r.mean_hz) AS measured, COUNT(*) AS views FROM reactions r JOIN invites i ON i.id=r.invite_id WHERE i.sender_id=? GROUP BY i.spirit_id`).all(id);

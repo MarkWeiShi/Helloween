@@ -247,7 +247,7 @@ function revealCharacter(animate = true) {
   dialog.querySelector<HTMLButtonElement>(".character-close")?.focus({preventScroll:true});
 }
 function mapPage() {
-  return `<div class="page-title globe-title"><div><h1>The world is full of <span>little spirits.</span></h1><p>Spin the globe. Tap a friend. Discover their story.</p></div><div class="explore-counters"><button class="icon-button" data-action="sound" aria-label="${sound ? "Mute sound" : "Enable sound"}">${icon(sound ? "sound" : "mute")}</button><button class="reaction-inbox" data-action="reactions" aria-label="Friend reactions">🎃 <span id="reaction-count">${player.reactions?.recent.filter(r=>!r.seenAt).length || 0}</span></button><button class="collection-count" data-action="collection" aria-label="Open my collection">${icon("heart")}<strong>${player.peaceCount}</strong> / ${catalog.spirits.length} wishes</button></div></div>
+  return `<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Your Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friends who opened your shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${player.shareVisits || 0}</span></button><button class="parade-counter" data-action="collection" aria-label="Spirits released"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${player.peaceCount}</span></button><button class="parade-counter" data-action="wallet" aria-label="Total sweets collected"><span class="counter-icon" aria-hidden="true">🍬</span><span class="counter-value" id="sweet-count">${player.candies}</span></button></div></div>
   ${invite ? `<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
   <div class="explore-layout globe-layout"><section class="globe-explorer" aria-label="Explore cultures on the globe">
     <div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div>
@@ -781,7 +781,9 @@ setInterval(() => {
         if(notified.has(key))continue;notified.add(key);
         toast(`${r.name}: ${r.hasAudio?'sent a 5-second voice reaction':r.meanHz===null?'no clear voice':`peak ${r.peakHz} Hz · ${r.level}`} — open Friend reactions`);
       }
-      const count=$('#reaction-count'); if(count)count.textContent=String(unread.length);
+      const count=$('#reaction-count'); if(count)count.textContent=String(player.shareVisits || 0);
+      const peace=$('#peace-count');if(peace)peace.textContent=String(player.peaceCount);
+      const sweets=$('#sweet-count');if(sweets)sweets.textContent=String(player.candies);
       const meter=overlay.querySelector<HTMLElement>('[data-reaction-spirit]');
       if(meter)meter.outerHTML=reactionMeter(meter.dataset.reactionSpirit!);
     }).catch(()=>{});
@@ -800,6 +802,7 @@ async function boot() {
     if (token) {
       try {
         invite = await api<Invite>(`/invites/${token}`);
+        if(!invite.expired)void api(`/invites/${token}/visit`, {}).catch(()=>{});
       } catch {
         toast(
           "This invitation is no longer available. The parade is still open.",

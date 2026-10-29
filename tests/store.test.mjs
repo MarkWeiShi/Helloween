@@ -467,3 +467,19 @@ test('Kakao and WeChat links preserve their channel without awarding on creation
  assert.equal(store.state(sender.player.id).wallet,30);
  store.close();
 });
+
+test('share visits count distinct friend/link pairs without awarding sweets', () => {
+  const {store,player,tick}=setup();
+  const sender=player().player.id,friend=player().player.id;
+  const invite=store.createInvite(sender,{spiritId:'kappa',channel:'x'});
+  const before=store.state(sender).candies;
+  store.invite(invite.id); // Preview/read requests do not count.
+  assert.equal(store.state(sender).shareVisits,0);
+  assert.equal(store.recordInviteVisit(sender,invite.id).counted,false);
+  assert.equal(store.recordInviteVisit(friend,invite.id).counted,true);
+  assert.equal(store.recordInviteVisit(friend,invite.id).counted,false);
+  assert.equal(store.state(sender).shareVisits,1);
+  assert.equal(store.state(sender).candies,before);
+  tick(RULES.inviteLifetimeMs+1);
+  assert.equal(store.recordInviteVisit(player().player.id,invite.id).counted,false);
+});

@@ -8,6 +8,9 @@ const online = Number(process.argv[2] || 100000);
 const sessionMinutes = Number(process.argv[3] || 10);
 if (![online, sessionMinutes].every(n => Number.isFinite(n) && n > 0)) throw Error('Positive numeric arguments required');
 const seconds = 72 * 3600, visits = online * seconds / (sessionMinutes * 60);
+// Keep notification traffic fixed when visit length changes: 1 KB/poll,
+// plus a 40 KB budget for the other responses in each visit.
+const apiResponseBytesPerVisit = sessionMinutes * 60 / 15 * 1000 + 40000;
 const size = p => statSync(resolve(root, 'public', p.replace(/^\//, ''))).size;
 const manifest = JSON.parse(readFileSync(resolve(root, 'public/art/transformations/manifest.json')));
 const packs = Object.entries(manifest.characters).map(([id, v]) => ({id, bytes: ['entrance', 'loop', 'poster'].reduce((sum, k) => sum + size(v[k]), 0)}));
@@ -25,7 +28,7 @@ const fixedCosts = {
   audioPuts: clips / 1e6 * 5,
   audioOneHeadAndOnePlay: clips * 2 / 1e6 * 0.5,
   // 1 GB = 1e9 bytes here, conservatively budgeted; actual network meter governs invoice.
-  flyApiEgress: visits * 80000 / 1e9 * 0.04,
+  flyApiEgress: visits * apiResponseBytesPerVisit / 1e9 * 0.04,
 };
 const fixed = Object.values(fixedCosts).reduce((a, b) => a + b, 0);
 const scenarios = [
@@ -43,7 +46,7 @@ const scenarios = [
 console.log(JSON.stringify({
   asOf: '2026-10-29', region: 'nrt', evidence: 'local source/files; no production telemetry or capacity benchmark',
   assumptions: {hours: 72, online, sessionMinutes, visits, recordingClipsPerVisit: 0.2, audioBytesPerClip: 50000, pollsPerSecond: online / 15,
-    additionalApiCallsPerVisit: 20, totalApiRps: online / 15 + visits * 20 / seconds, apiResponseBytesPerVisit: 80000,
+    additionalApiCallsPerVisit: 20, totalApiRps: online / 15 + visits * 20 / seconds, apiResponseBytesPerVisit,
     allMachinesRun72Hours: true, mediaBytesAndGetCountsAreScenarioAssumptions: true, uniqueUsersUnknown: true},
   localAssets: {transformations: packs.length, meanTransformationBytes: packs.reduce((n, p) => n + p.bytes, 0) / packs.length,
     minTransformationBytes: Math.min(...packs.map(p => p.bytes)), maxTransformationBytes: Math.max(...packs.map(p => p.bytes)), motionBytes,
