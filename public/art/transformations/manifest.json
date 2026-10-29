@@ -2,554 +2,956 @@
   "version": 1,
   "characters": {
     "jiangshi": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/jiangshi/entrance.8c2a44c9e1a0.mp4",
+      "entrance": "/art/transformations/jiangshi/entrance-name.4865a3e09072.mp4",
       "loop": "/art/transformations/jiangshi/loop.20dd83a0adc3.mp4",
-      "entranceAlpha": "/art/transformations/jiangshi/entrance.ef1d14f1699e.webm",
       "loopAlpha": "/art/transformations/jiangshi/loop.8e2fee32f0f0.webm",
-      "poster": "/art/transformations/jiangshi/poster.b71052ed1c44.png"
+      "poster": "/art/transformations/jiangshi/poster.b71052ed1c44.png",
+      "spokenName": {
+        "text": "僵尸",
+        "language": "Mandarin Chinese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/jiangshi/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "nie-xiaoqian": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/nie-xiaoqian/entrance.180c7257c1d7.mp4",
+      "entrance": "/art/transformations/nie-xiaoqian/entrance-name.0e4f0050dea9.mp4",
       "loop": "/art/transformations/nie-xiaoqian/loop.e81ca52a2374.mp4",
-      "entranceAlpha": "/art/transformations/nie-xiaoqian/entrance.d3a6cfdbd3ea.webm",
       "loopAlpha": "/art/transformations/nie-xiaoqian/loop.9a3799fe1d30.webm",
-      "poster": "/art/transformations/nie-xiaoqian/poster.d6a1ac3cbbcc.png"
+      "poster": "/art/transformations/nie-xiaoqian/poster.d6a1ac3cbbcc.png",
+      "spokenName": {
+        "text": "聂小倩",
+        "language": "Mandarin Chinese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/nie-xiaoqian/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "yingning": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/yingning/entrance.77ac08189be1.mp4",
+      "entrance": "/art/transformations/yingning/entrance-name.5326c9e30b6c.mp4",
       "loop": "/art/transformations/yingning/loop.93b541ccd185.mp4",
-      "entranceAlpha": "/art/transformations/yingning/entrance.231cd57a8a25.webm",
       "loopAlpha": "/art/transformations/yingning/loop.a930faf8eb44.webm",
-      "poster": "/art/transformations/yingning/poster.beb296ac94e6.png"
+      "poster": "/art/transformations/yingning/poster.beb296ac94e6.png",
+      "spokenName": {
+        "text": "婴宁",
+        "language": "Mandarin Chinese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/yingning/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "painted-skin-ghost": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/painted-skin-ghost/entrance.d2b197e328a2.mp4",
+      "entrance": "/art/transformations/painted-skin-ghost/entrance-name.aa7374ca0e7f.mp4",
       "loop": "/art/transformations/painted-skin-ghost/loop.ec0bb6c9f6a9.mp4",
-      "entranceAlpha": "/art/transformations/painted-skin-ghost/entrance.35a5b429624a.webm",
       "loopAlpha": "/art/transformations/painted-skin-ghost/loop.5173bc2958d0.webm",
-      "poster": "/art/transformations/painted-skin-ghost/poster.ec5faa24e022.png"
+      "poster": "/art/transformations/painted-skin-ghost/poster.ec5faa24e022.png",
+      "spokenName": {
+        "text": "画皮鬼",
+        "language": "Mandarin Chinese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/painted-skin-ghost/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "kappa": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/kappa/entrance.409bc1d70311.mp4",
+      "entrance": "/art/transformations/kappa/entrance-name.692a0b31e705.mp4",
       "loop": "/art/transformations/kappa/loop.db2d9d5d07e5.mp4",
-      "entranceAlpha": "/art/transformations/kappa/entrance.457879957050.webm",
       "loopAlpha": "/art/transformations/kappa/loop.df70b7e61f09.webm",
-      "poster": "/art/transformations/kappa/poster.c3ae2c2f9321.png"
+      "poster": "/art/transformations/kappa/poster.c3ae2c2f9321.png",
+      "spokenName": {
+        "text": "河童",
+        "language": "Japanese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/kappa/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "bake-danuki": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/bake-danuki/entrance.6d700c1f8330.mp4",
+      "entrance": "/art/transformations/bake-danuki/entrance-name.80e0d77b7e64.mp4",
       "loop": "/art/transformations/bake-danuki/loop.7dacf9f5da66.mp4",
-      "entranceAlpha": "/art/transformations/bake-danuki/entrance.17bf952374f4.webm",
       "loopAlpha": "/art/transformations/bake-danuki/loop.87a1ec690cff.webm",
-      "poster": "/art/transformations/bake-danuki/poster.d22acd3ed1c1.png"
+      "poster": "/art/transformations/bake-danuki/poster.d22acd3ed1c1.png",
+      "spokenName": {
+        "text": "化け狸",
+        "language": "Japanese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/bake-danuki/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "chochin-obake": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/chochin-obake/entrance.0d5f672462f2.mp4",
+      "entrance": "/art/transformations/chochin-obake/entrance-name.e0cd4c44d5c5.mp4",
       "loop": "/art/transformations/chochin-obake/loop.cbb77ba0203e.mp4",
-      "entranceAlpha": "/art/transformations/chochin-obake/entrance.eb9a959d8f33.webm",
       "loopAlpha": "/art/transformations/chochin-obake/loop.20192fc94260.webm",
-      "poster": "/art/transformations/chochin-obake/poster.2ee84de7d77e.png"
+      "poster": "/art/transformations/chochin-obake/poster.2ee84de7d77e.png",
+      "spokenName": {
+        "text": "提灯お化け",
+        "language": "Japanese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/chochin-obake/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "kasa-obake": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/kasa-obake/entrance.502e385931ab.mp4",
+      "entrance": "/art/transformations/kasa-obake/entrance-name.5fb66b4d0205.mp4",
       "loop": "/art/transformations/kasa-obake/loop.0e170a7a721e.mp4",
-      "entranceAlpha": "/art/transformations/kasa-obake/entrance.c0e6c98fd716.webm",
       "loopAlpha": "/art/transformations/kasa-obake/loop.0ee213f6e91c.webm",
-      "poster": "/art/transformations/kasa-obake/poster.8826f8cbf2ff.png"
+      "poster": "/art/transformations/kasa-obake/poster.8826f8cbf2ff.png",
+      "spokenName": {
+        "text": "唐傘お化け",
+        "language": "Japanese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/kasa-obake/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "dokkaebi": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/dokkaebi/entrance.5805c6815192.mp4",
+      "entrance": "/art/transformations/dokkaebi/entrance-name.98c7bb45e659.mp4",
       "loop": "/art/transformations/dokkaebi/loop.478132c429e2.mp4",
-      "entranceAlpha": "/art/transformations/dokkaebi/entrance.055fd1f7adc8.webm",
       "loopAlpha": "/art/transformations/dokkaebi/loop.29508b9fd3a8.webm",
-      "poster": "/art/transformations/dokkaebi/poster.61528b2dd2f4.png"
+      "poster": "/art/transformations/dokkaebi/poster.61528b2dd2f4.png",
+      "spokenName": {
+        "text": "도깨비",
+        "language": "Korean",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/dokkaebi/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "gumiho": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/gumiho/entrance.4b9e3e9fb7b6.mp4",
+      "entrance": "/art/transformations/gumiho/entrance-name.ded168ebc3db.mp4",
       "loop": "/art/transformations/gumiho/loop.79a1670a0648.mp4",
-      "entranceAlpha": "/art/transformations/gumiho/entrance.c20dd40c95fe.webm",
       "loopAlpha": "/art/transformations/gumiho/loop.ae87fc1bb00b.webm",
-      "poster": "/art/transformations/gumiho/poster.9b04fb78e37b.png"
+      "poster": "/art/transformations/gumiho/poster.9b04fb78e37b.png",
+      "spokenName": {
+        "text": "구미호",
+        "language": "Korean",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/gumiho/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "bulgasari": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/bulgasari/entrance.6f69c44f3d16.mp4",
+      "entrance": "/art/transformations/bulgasari/entrance-name.52040b9305d5.mp4",
       "loop": "/art/transformations/bulgasari/loop.86db2a68037f.mp4",
-      "entranceAlpha": "/art/transformations/bulgasari/entrance.c81df8c70d4b.webm",
       "loopAlpha": "/art/transformations/bulgasari/loop.b76389ccb28c.webm",
-      "poster": "/art/transformations/bulgasari/poster.d3287a2f31f5.png"
+      "poster": "/art/transformations/bulgasari/poster.d3287a2f31f5.png",
+      "spokenName": {
+        "text": "불가사리",
+        "language": "Korean",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/bulgasari/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "gaekgwi": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/gaekgwi/entrance.428494d1992e.mp4",
+      "entrance": "/art/transformations/gaekgwi/entrance-name.95c90ca4957d.mp4",
       "loop": "/art/transformations/gaekgwi/loop.f0278229b69d.mp4",
-      "entranceAlpha": "/art/transformations/gaekgwi/entrance.59fb0bc7a036.webm",
       "loopAlpha": "/art/transformations/gaekgwi/loop.2cdc4511497b.webm",
-      "poster": "/art/transformations/gaekgwi/poster.c51abff4a19b.png"
+      "poster": "/art/transformations/gaekgwi/poster.c51abff4a19b.png",
+      "spokenName": {
+        "text": "객귀",
+        "language": "Korean",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/gaekgwi/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "krahang": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/krahang/entrance.a81dc0df6280.mp4",
+      "entrance": "/art/transformations/krahang/entrance-name.6ab337afc0c0.mp4",
       "loop": "/art/transformations/krahang/loop.bb3cdb900e06.mp4",
-      "entranceAlpha": "/art/transformations/krahang/entrance.5efe49205801.webm",
       "loopAlpha": "/art/transformations/krahang/loop.7673ef91a031.webm",
-      "poster": "/art/transformations/krahang/poster.86df895a46fa.png"
+      "poster": "/art/transformations/krahang/poster.86df895a46fa.png",
+      "spokenName": {
+        "text": "กระหัง",
+        "language": "Thai",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/krahang/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "phi-kong-koi": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/phi-kong-koi/entrance.8c2d787b44f0.mp4",
+      "entrance": "/art/transformations/phi-kong-koi/entrance-name.5f6a70df6484.mp4",
       "loop": "/art/transformations/phi-kong-koi/loop.a352d33bfacb.mp4",
-      "entranceAlpha": "/art/transformations/phi-kong-koi/entrance.923d58b8761f.webm",
       "loopAlpha": "/art/transformations/phi-kong-koi/loop.9b744a3bf40e.webm",
-      "poster": "/art/transformations/phi-kong-koi/poster.775b12b7e92c.png"
+      "poster": "/art/transformations/phi-kong-koi/poster.775b12b7e92c.png",
+      "spokenName": {
+        "text": "ผีกองกอย",
+        "language": "Thai",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/phi-kong-koi/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "nang-tani": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/nang-tani/entrance.dfc94640c22b.mp4",
+      "entrance": "/art/transformations/nang-tani/entrance-name.d4cc9cd66167.mp4",
       "loop": "/art/transformations/nang-tani/loop.69795c7489e3.mp4",
-      "entranceAlpha": "/art/transformations/nang-tani/entrance.0ff1d04d03b4.webm",
       "loopAlpha": "/art/transformations/nang-tani/loop.761734dda27f.webm",
-      "poster": "/art/transformations/nang-tani/poster.f73209a43554.png"
+      "poster": "/art/transformations/nang-tani/poster.f73209a43554.png",
+      "spokenName": {
+        "text": "นางตานี",
+        "language": "Thai",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/nang-tani/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "krasue": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/krasue/entrance.b99c2bd6ba4f.mp4",
+      "entrance": "/art/transformations/krasue/entrance-name.233bc1e26314.mp4",
       "loop": "/art/transformations/krasue/loop.40d3ca5a9f2e.mp4",
-      "entranceAlpha": "/art/transformations/krasue/entrance.4ff16b91ff4b.webm",
       "loopAlpha": "/art/transformations/krasue/loop.e62ded14f9db.webm",
-      "poster": "/art/transformations/krasue/poster.9b0818e75458.png"
+      "poster": "/art/transformations/krasue/poster.9b0818e75458.png",
+      "spokenName": {
+        "text": "กระสือ",
+        "language": "Thai",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/krasue/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "tikbalang": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/tikbalang/entrance.49042a90129c.mp4",
+      "entrance": "/art/transformations/tikbalang/entrance-name.a2d36c4f1383.mp4",
       "loop": "/art/transformations/tikbalang/loop.1748e50f0655.mp4",
-      "entranceAlpha": "/art/transformations/tikbalang/entrance.01a7bf494294.webm",
       "loopAlpha": "/art/transformations/tikbalang/loop.224792f012ec.webm",
-      "poster": "/art/transformations/tikbalang/poster.3671f26776cb.png"
+      "poster": "/art/transformations/tikbalang/poster.3671f26776cb.png",
+      "spokenName": {
+        "text": "Tikbalang",
+        "language": "Filipino Tagalog",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/tikbalang/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "kapre": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/kapre/entrance.681eeb85868f.mp4",
+      "entrance": "/art/transformations/kapre/entrance-name.c614950bdc0d.mp4",
       "loop": "/art/transformations/kapre/loop.30eee4bc54c0.mp4",
-      "entranceAlpha": "/art/transformations/kapre/entrance.87b17d125302.webm",
       "loopAlpha": "/art/transformations/kapre/loop.e4f6e90796b5.webm",
-      "poster": "/art/transformations/kapre/poster.3fe488a5530d.png"
+      "poster": "/art/transformations/kapre/poster.3fe488a5530d.png",
+      "spokenName": {
+        "text": "Kapre",
+        "language": "Filipino Tagalog",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/kapre/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "duwende": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/duwende/entrance.68dfd42bccb0.mp4",
+      "entrance": "/art/transformations/duwende/entrance-name.10d702fa511e.mp4",
       "loop": "/art/transformations/duwende/loop.36b5ce05c38a.mp4",
-      "entranceAlpha": "/art/transformations/duwende/entrance.5f9d1b8c2ddf.webm",
       "loopAlpha": "/art/transformations/duwende/loop.fa991622dfc5.webm",
-      "poster": "/art/transformations/duwende/poster.ec719542871d.png"
+      "poster": "/art/transformations/duwende/poster.ec719542871d.png",
+      "spokenName": {
+        "text": "Duwende",
+        "language": "Filipino Tagalog",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/duwende/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "santelmo": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/santelmo/entrance.4e7c2ce2a798.mp4",
+      "entrance": "/art/transformations/santelmo/entrance-name.7cb64f75f865.mp4",
       "loop": "/art/transformations/santelmo/loop.692724819906.mp4",
-      "entranceAlpha": "/art/transformations/santelmo/entrance.2163b748fd9d.webm",
       "loopAlpha": "/art/transformations/santelmo/loop.10d6f7cb6297.webm",
-      "poster": "/art/transformations/santelmo/poster.c4b8446c553a.png"
+      "poster": "/art/transformations/santelmo/poster.c4b8446c553a.png",
+      "spokenName": {
+        "text": "Santelmo",
+        "language": "Filipino Tagalog",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/santelmo/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "puca": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/puca/entrance.730aa19a8186.mp4",
+      "entrance": "/art/transformations/puca/entrance-name.317ff4aa7dbd.mp4",
       "loop": "/art/transformations/puca/loop.e359681bada4.mp4",
-      "entranceAlpha": "/art/transformations/puca/entrance.99ab19685922.webm",
       "loopAlpha": "/art/transformations/puca/loop.00a5563cda54.webm",
-      "poster": "/art/transformations/puca/poster.2c8e3ac6f2fc.png"
+      "poster": "/art/transformations/puca/poster.2c8e3ac6f2fc.png",
+      "spokenName": {
+        "text": "Púca",
+        "language": "Irish Gaelic",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/puca/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "banshee": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/banshee/entrance.e652f5461000.mp4",
+      "entrance": "/art/transformations/banshee/entrance-name.ff6ce203305c.mp4",
       "loop": "/art/transformations/banshee/loop.2d0ba1c00d4f.mp4",
-      "entranceAlpha": "/art/transformations/banshee/entrance.22dc15ca532f.webm",
       "loopAlpha": "/art/transformations/banshee/loop.b7f449ec745a.webm",
-      "poster": "/art/transformations/banshee/poster.6bc9d797f5cd.png"
+      "poster": "/art/transformations/banshee/poster.6bc9d797f5cd.png",
+      "spokenName": {
+        "text": "Bean sí",
+        "language": "Irish Gaelic",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/banshee/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "dullahan": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/dullahan/entrance.0a0bf8238302.mp4",
+      "entrance": "/art/transformations/dullahan/entrance-name.662456922bb7.mp4",
       "loop": "/art/transformations/dullahan/loop.1dcca3f4902c.mp4",
-      "entranceAlpha": "/art/transformations/dullahan/entrance.7d3eedbacc26.webm",
       "loopAlpha": "/art/transformations/dullahan/loop.dbad9c43daf1.webm",
-      "poster": "/art/transformations/dullahan/poster.7baaa7b90935.png"
+      "poster": "/art/transformations/dullahan/poster.7baaa7b90935.png",
+      "spokenName": {
+        "text": "Dúlachán",
+        "language": "Irish Gaelic",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/dullahan/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "merrow": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/merrow/entrance.072c69e4a8c8.mp4",
+      "entrance": "/art/transformations/merrow/entrance-name.e4f1d7c7dbec.mp4",
       "loop": "/art/transformations/merrow/loop.245be609afb7.mp4",
-      "entranceAlpha": "/art/transformations/merrow/entrance.82076c638f6e.webm",
       "loopAlpha": "/art/transformations/merrow/loop.22c31e1d8a67.webm",
-      "poster": "/art/transformations/merrow/poster.2439a7d139da.png"
+      "poster": "/art/transformations/merrow/poster.2439a7d139da.png",
+      "spokenName": {
+        "text": "Murúch",
+        "language": "Irish Gaelic",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/merrow/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "brownie": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/brownie/entrance.fa0f77aed7e0.mp4",
+      "entrance": "/art/transformations/brownie/entrance-name.6a78ec7ce0c3.mp4",
       "loop": "/art/transformations/brownie/loop.7e9a76ff2796.mp4",
-      "entranceAlpha": "/art/transformations/brownie/entrance.22b4cacea407.webm",
       "loopAlpha": "/art/transformations/brownie/loop.a2cb0b290eec.webm",
-      "poster": "/art/transformations/brownie/poster.dfad89a149ef.png"
+      "poster": "/art/transformations/brownie/poster.dfad89a149ef.png",
+      "spokenName": {
+        "text": "Brownie",
+        "language": "Scottish English",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/brownie/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "kelpie": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/kelpie/entrance.0ce967e3fd36.mp4",
+      "entrance": "/art/transformations/kelpie/entrance-name.1ba835a581eb.mp4",
       "loop": "/art/transformations/kelpie/loop.f4c86c8345be.mp4",
-      "entranceAlpha": "/art/transformations/kelpie/entrance.4074c2fa937a.webm",
       "loopAlpha": "/art/transformations/kelpie/loop.806dcc7dd8a5.webm",
-      "poster": "/art/transformations/kelpie/poster.12d68c53bcbc.png"
+      "poster": "/art/transformations/kelpie/poster.12d68c53bcbc.png",
+      "spokenName": {
+        "text": "Kelpie",
+        "language": "Scottish English",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/kelpie/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "selkie": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/selkie/entrance.338a8c1dade5.mp4",
+      "entrance": "/art/transformations/selkie/entrance-name.6ced486b88d8.mp4",
       "loop": "/art/transformations/selkie/loop.116d8bc76603.mp4",
-      "entranceAlpha": "/art/transformations/selkie/entrance.5505fba51dbe.webm",
       "loopAlpha": "/art/transformations/selkie/loop.e7c2a93ae7f8.webm",
-      "poster": "/art/transformations/selkie/poster.d62f06ab90d4.png"
+      "poster": "/art/transformations/selkie/poster.d62f06ab90d4.png",
+      "spokenName": {
+        "text": "Selkie",
+        "language": "Orkney Scottish English",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/selkie/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "boggart": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/boggart/entrance.11189eab517d.mp4",
+      "entrance": "/art/transformations/boggart/entrance-name.a643e7bb1cac.mp4",
       "loop": "/art/transformations/boggart/loop.bfbc04800cb9.mp4",
-      "entranceAlpha": "/art/transformations/boggart/entrance.a8765462fffd.webm",
       "loopAlpha": "/art/transformations/boggart/loop.65890524e7dc.webm",
-      "poster": "/art/transformations/boggart/poster.e36c309569e3.png"
+      "poster": "/art/transformations/boggart/poster.e36c309569e3.png",
+      "spokenName": {
+        "text": "Boggart",
+        "language": "Northern English Lancashire",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/boggart/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "headless-horseman": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/headless-horseman/entrance.ee26b84b022d.mp4",
+      "entrance": "/art/transformations/headless-horseman/entrance-name.2c0210c0ece9.mp4",
       "loop": "/art/transformations/headless-horseman/loop.0b1a6b1b1b9e.mp4",
-      "entranceAlpha": "/art/transformations/headless-horseman/entrance.c2b0c199d8f1.webm",
       "loopAlpha": "/art/transformations/headless-horseman/loop.681be0b951d0.webm",
-      "poster": "/art/transformations/headless-horseman/poster.a8d5ccbe7026.png"
+      "poster": "/art/transformations/headless-horseman/poster.a8d5ccbe7026.png",
+      "spokenName": {
+        "text": "Headless Horseman",
+        "language": "American English New York",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/headless-horseman/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "jersey-devil": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/jersey-devil/entrance.e3bf9daeb9ed.mp4",
+      "entrance": "/art/transformations/jersey-devil/entrance-name.daf1323eb114.mp4",
       "loop": "/art/transformations/jersey-devil/loop.56bcd459a54f.mp4",
-      "entranceAlpha": "/art/transformations/jersey-devil/entrance.ceb52a4f1156.webm",
       "loopAlpha": "/art/transformations/jersey-devil/loop.a9d237282dec.webm",
-      "poster": "/art/transformations/jersey-devil/poster.8032faf94164.png"
+      "poster": "/art/transformations/jersey-devil/poster.8032faf94164.png",
+      "spokenName": {
+        "text": "Jersey Devil",
+        "language": "American English New Jersey",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/jersey-devil/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "jackalope": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/jackalope/entrance.e83196bb206c.mp4",
+      "entrance": "/art/transformations/jackalope/entrance-name.ef70c07697d5.mp4",
       "loop": "/art/transformations/jackalope/loop.a22012892580.mp4",
-      "entranceAlpha": "/art/transformations/jackalope/entrance.21fdde295bba.webm",
       "loopAlpha": "/art/transformations/jackalope/loop.9f8e7e0c3f8c.webm",
-      "poster": "/art/transformations/jackalope/poster.6e0c0512e4e3.png"
+      "poster": "/art/transformations/jackalope/poster.6e0c0512e4e3.png",
+      "spokenName": {
+        "text": "Jackalope",
+        "language": "Western American English",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/jackalope/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "hidebehind": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/hidebehind/entrance.659e41010a75.mp4",
+      "entrance": "/art/transformations/hidebehind/entrance-name.e9d2a80ae2dd.mp4",
       "loop": "/art/transformations/hidebehind/loop.171a5a3c1164.mp4",
-      "entranceAlpha": "/art/transformations/hidebehind/entrance.eccdfb4be306.webm",
       "loopAlpha": "/art/transformations/hidebehind/loop.d84bc09574aa.webm",
-      "poster": "/art/transformations/hidebehind/poster.c4f4a6ea9ac9.png"
+      "poster": "/art/transformations/hidebehind/poster.c4f4a6ea9ac9.png",
+      "spokenName": {
+        "text": "Hidebehind",
+        "language": "Northern American English",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/hidebehind/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "la-planchada": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/la-planchada/entrance.67a39c300e6f.mp4",
+      "entrance": "/art/transformations/la-planchada/entrance-name.109023dca0fb.mp4",
       "loop": "/art/transformations/la-planchada/loop.a6bc2c6627e1.mp4",
-      "entranceAlpha": "/art/transformations/la-planchada/entrance.d06625360112.webm",
       "loopAlpha": "/art/transformations/la-planchada/loop.3ff433c5b0fe.webm",
-      "poster": "/art/transformations/la-planchada/poster.7a32999d5fd0.png"
+      "poster": "/art/transformations/la-planchada/poster.7a32999d5fd0.png",
+      "spokenName": {
+        "text": "La Planchada",
+        "language": "Mexican Spanish",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/la-planchada/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "la-pascualita": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/la-pascualita/entrance.39b479a2e070.mp4",
+      "entrance": "/art/transformations/la-pascualita/entrance-name.4ba7f46f899c.mp4",
       "loop": "/art/transformations/la-pascualita/loop.3f939488ba96.mp4",
-      "entranceAlpha": "/art/transformations/la-pascualita/entrance.de32ef30d310.webm",
       "loopAlpha": "/art/transformations/la-pascualita/loop.d1bc2db1050e.webm",
-      "poster": "/art/transformations/la-pascualita/poster.36c54b39953a.png"
+      "poster": "/art/transformations/la-pascualita/poster.36c54b39953a.png",
+      "spokenName": {
+        "text": "La Pascualita",
+        "language": "Mexican Spanish Chihuahua",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/la-pascualita/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "la-mulata-de-cordoba": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/la-mulata-de-cordoba/entrance.30e8f25836f4.mp4",
+      "entrance": "/art/transformations/la-mulata-de-cordoba/entrance-name.d7234e325709.mp4",
       "loop": "/art/transformations/la-mulata-de-cordoba/loop.37d242c95784.mp4",
-      "entranceAlpha": "/art/transformations/la-mulata-de-cordoba/entrance.2aecbea1044b.webm",
       "loopAlpha": "/art/transformations/la-mulata-de-cordoba/loop.3a19d0d039ee.webm",
-      "poster": "/art/transformations/la-mulata-de-cordoba/poster.8aa68a104f40.png"
+      "poster": "/art/transformations/la-mulata-de-cordoba/poster.8aa68a104f40.png",
+      "spokenName": {
+        "text": "La Mulata de Córdoba",
+        "language": "Mexican Spanish Veracruz",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/la-mulata-de-cordoba/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "el-charro-negro": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/el-charro-negro/entrance.d06d5bb0d523.mp4",
+      "entrance": "/art/transformations/el-charro-negro/entrance-name.336c1d069dc3.mp4",
       "loop": "/art/transformations/el-charro-negro/loop.873fffd93332.mp4",
-      "entranceAlpha": "/art/transformations/el-charro-negro/entrance.b5bd4e8719f6.webm",
       "loopAlpha": "/art/transformations/el-charro-negro/loop.08d7fabfe804.webm",
-      "poster": "/art/transformations/el-charro-negro/poster.8efae61dfd5f.png"
+      "poster": "/art/transformations/el-charro-negro/poster.8efae61dfd5f.png",
+      "spokenName": {
+        "text": "El Charro Negro",
+        "language": "Mexican Spanish",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/el-charro-negro/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "saci": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/saci/entrance.f1561826c1a8.mp4",
+      "entrance": "/art/transformations/saci/entrance-name.786d386550fc.mp4",
       "loop": "/art/transformations/saci/loop.67f48b95d185.mp4",
-      "entranceAlpha": "/art/transformations/saci/entrance.1ec8670aa6e0.webm",
       "loopAlpha": "/art/transformations/saci/loop.c58ae3e01c7d.webm",
-      "poster": "/art/transformations/saci/poster.8ba3031888a9.png"
+      "poster": "/art/transformations/saci/poster.8ba3031888a9.png",
+      "spokenName": {
+        "text": "Saci",
+        "language": "Brazilian Portuguese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/saci/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "curupira": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/curupira/entrance.dd6b8c4b2c19.mp4",
+      "entrance": "/art/transformations/curupira/entrance-name.9cdf7db10294.mp4",
       "loop": "/art/transformations/curupira/loop.efc6a9526edc.mp4",
-      "entranceAlpha": "/art/transformations/curupira/entrance.0b6ee09e8fd8.webm",
       "loopAlpha": "/art/transformations/curupira/loop.4d64ac0379cd.webm",
-      "poster": "/art/transformations/curupira/poster.614102e5ce5f.png"
+      "poster": "/art/transformations/curupira/poster.614102e5ce5f.png",
+      "spokenName": {
+        "text": "Curupira",
+        "language": "Brazilian Portuguese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/curupira/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "boitata": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/boitata/entrance.fba4b2e57474.mp4",
+      "entrance": "/art/transformations/boitata/entrance-name.7853c861ee5e.mp4",
       "loop": "/art/transformations/boitata/loop.e9729a5c28bd.mp4",
-      "entranceAlpha": "/art/transformations/boitata/entrance.6792e9b4dd63.webm",
       "loopAlpha": "/art/transformations/boitata/loop.c9e83a7c2551.webm",
-      "poster": "/art/transformations/boitata/poster.844d9a793bae.png"
+      "poster": "/art/transformations/boitata/poster.844d9a793bae.png",
+      "spokenName": {
+        "text": "Boitatá",
+        "language": "Brazilian Portuguese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/boitata/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "cuca": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/cuca/entrance.25ffc83cf181.mp4",
+      "entrance": "/art/transformations/cuca/entrance-name.9f72c10eeefd.mp4",
       "loop": "/art/transformations/cuca/loop.d77289920c43.mp4",
-      "entranceAlpha": "/art/transformations/cuca/entrance.ea44c5fe5666.webm",
       "loopAlpha": "/art/transformations/cuca/loop.48ec29b9b487.webm",
-      "poster": "/art/transformations/cuca/poster.295e524d8ad6.png"
+      "poster": "/art/transformations/cuca/poster.295e524d8ad6.png",
+      "spokenName": {
+        "text": "Cuca",
+        "language": "Brazilian Portuguese",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/cuca/name-v1.wav",
+        "nativeReview": "pending"
+      }
+    },
+    "adze": {
+      "duration": 8.8,
+      "loopDuration": 2,
+      "revealAt": 2.3,
+      "entrance": "/art/transformations/adze/entrance-name.cd21f92f9d56.mp4",
+      "loop": "/art/transformations/adze/loop.ba9c22c52fb6.mp4",
+      "loopAlpha": "/art/transformations/adze/loop.92a9adcc0a37.webm",
+      "poster": "/art/transformations/adze/poster.cc16ab3268f3.png",
+      "spokenName": {
+        "text": "Adzé",
+        "language": "Ewe of Ghana and Togo",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/adze/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "asanbosam": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/asanbosam/entrance.65a9b812b83c.mp4",
+      "entrance": "/art/transformations/asanbosam/entrance-name.59bb69fb4e5a.mp4",
       "loop": "/art/transformations/asanbosam/loop.2198836b0453.mp4",
-      "entranceAlpha": "/art/transformations/asanbosam/entrance.35804088837a.webm",
       "loopAlpha": "/art/transformations/asanbosam/loop.3d1fa53a92aa.webm",
-      "poster": "/art/transformations/asanbosam/poster.191fdf3419e6.png"
+      "poster": "/art/transformations/asanbosam/poster.191fdf3419e6.png",
+      "spokenName": {
+        "text": "Asanbosam",
+        "language": "Akan Twi of Ghana",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/asanbosam/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "tokoloshe": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/tokoloshe/entrance.865ef45cc931.mp4",
+      "entrance": "/art/transformations/tokoloshe/entrance-name.db78eebc84ca.mp4",
       "loop": "/art/transformations/tokoloshe/loop.6f7635df04bc.mp4",
-      "entranceAlpha": "/art/transformations/tokoloshe/entrance.aedfbaf5b4d1.webm",
       "loopAlpha": "/art/transformations/tokoloshe/loop.d1217da98118.webm",
-      "poster": "/art/transformations/tokoloshe/poster.613bdd903b55.png"
+      "poster": "/art/transformations/tokoloshe/poster.613bdd903b55.png",
+      "spokenName": {
+        "text": "Tikoloshe",
+        "language": "Zulu of Southern Africa",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/tokoloshe/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "kalanoro": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/kalanoro/entrance.ab96d9c5064c.mp4",
+      "entrance": "/art/transformations/kalanoro/entrance-name.31af2ef97df3.mp4",
       "loop": "/art/transformations/kalanoro/loop.6e3e18fac8b3.mp4",
-      "entranceAlpha": "/art/transformations/kalanoro/entrance.9e1e6b31e8a2.webm",
       "loopAlpha": "/art/transformations/kalanoro/loop.b4bb3aad45e2.webm",
-      "poster": "/art/transformations/kalanoro/poster.f12d253f180d.png"
+      "poster": "/art/transformations/kalanoro/poster.f12d253f180d.png",
+      "spokenName": {
+        "text": "Kalanoro",
+        "language": "Malagasy",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/kalanoro/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "ghul": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/ghul/entrance.6dc56238215d.mp4",
+      "entrance": "/art/transformations/ghul/entrance-name.829966b8ee30.mp4",
       "loop": "/art/transformations/ghul/loop.5cfc1fd24f7f.mp4",
-      "entranceAlpha": "/art/transformations/ghul/entrance.99d062291dfd.webm",
       "loopAlpha": "/art/transformations/ghul/loop.f9a29b5800a3.webm",
-      "poster": "/art/transformations/ghul/poster.2a012d800696.png"
+      "poster": "/art/transformations/ghul/poster.2a012d800696.png",
+      "spokenName": {
+        "text": "غول",
+        "language": "Arabic Arabian Peninsula",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/ghul/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "ifrit": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/ifrit/entrance.977f23271b4d.mp4",
+      "entrance": "/art/transformations/ifrit/entrance-name.31adffa94c96.mp4",
       "loop": "/art/transformations/ifrit/loop.0e485ccb179f.mp4",
-      "entranceAlpha": "/art/transformations/ifrit/entrance.8a817108b16d.webm",
       "loopAlpha": "/art/transformations/ifrit/loop.622fc978a2af.webm",
-      "poster": "/art/transformations/ifrit/poster.42d557321b7b.png"
+      "poster": "/art/transformations/ifrit/poster.42d557321b7b.png",
+      "spokenName": {
+        "text": "عفريت",
+        "language": "Arabic Iraqi",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/ifrit/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "marid": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/marid/entrance.a279d1993b03.mp4",
+      "entrance": "/art/transformations/marid/entrance-name.47aa973d13d0.mp4",
       "loop": "/art/transformations/marid/loop.d6df9b2127cd.mp4",
-      "entranceAlpha": "/art/transformations/marid/entrance.e200b9f7f8a9.webm",
       "loopAlpha": "/art/transformations/marid/loop.c24d99d0d246.webm",
-      "poster": "/art/transformations/marid/poster.04e38445a67b.png"
+      "poster": "/art/transformations/marid/poster.04e38445a67b.png",
+      "spokenName": {
+        "text": "مارد",
+        "language": "Arabic Iraqi",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/marid/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "nasnas": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/nasnas/entrance.e1304c1cabaa.mp4",
+      "entrance": "/art/transformations/nasnas/entrance-name.4e7f125a7c12.mp4",
       "loop": "/art/transformations/nasnas/loop.0459106aa181.mp4",
-      "entranceAlpha": "/art/transformations/nasnas/entrance.066093b90f02.webm",
       "loopAlpha": "/art/transformations/nasnas/loop.f978b0176590.webm",
-      "poster": "/art/transformations/nasnas/poster.2a1085097c09.png"
+      "poster": "/art/transformations/nasnas/poster.2a1085097c09.png",
+      "spokenName": {
+        "text": "نسناس",
+        "language": "Arabic Yemeni",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/nasnas/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "div": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/div/entrance.a1c55be59941.mp4",
+      "entrance": "/art/transformations/div/entrance-name.50421ee48d12.mp4",
       "loop": "/art/transformations/div/loop.ae53e6f36cd2.mp4",
-      "entranceAlpha": "/art/transformations/div/entrance.d6cfff8846c6.webm",
       "loopAlpha": "/art/transformations/div/loop.53f413595346.webm",
-      "poster": "/art/transformations/div/poster.1411ac8182c0.png"
+      "poster": "/art/transformations/div/poster.1411ac8182c0.png",
+      "spokenName": {
+        "text": "دیو",
+        "language": "Persian Iranian",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/div/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "pari": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/pari/entrance.7cd89633f288.mp4",
+      "entrance": "/art/transformations/pari/entrance-name.d2e06ac83c92.mp4",
       "loop": "/art/transformations/pari/loop.e769f4c316bf.mp4",
-      "entranceAlpha": "/art/transformations/pari/entrance.6a65dddb713a.webm",
       "loopAlpha": "/art/transformations/pari/loop.3042f1ae2c8e.webm",
-      "poster": "/art/transformations/pari/poster.2691a3feb60d.png"
+      "poster": "/art/transformations/pari/poster.2691a3feb60d.png",
+      "spokenName": {
+        "text": "پری",
+        "language": "Persian Iranian",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/pari/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "shahmaran": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/shahmaran/entrance.6520f83c18ee.mp4",
+      "entrance": "/art/transformations/shahmaran/entrance-name.084f9dfd7901.mp4",
       "loop": "/art/transformations/shahmaran/loop.ca130463f7a6.mp4",
-      "entranceAlpha": "/art/transformations/shahmaran/entrance.3c6ca4717975.webm",
       "loopAlpha": "/art/transformations/shahmaran/loop.35286d40ba80.webm",
-      "poster": "/art/transformations/shahmaran/poster.0626e19bbb74.png"
+      "poster": "/art/transformations/shahmaran/poster.0626e19bbb74.png",
+      "spokenName": {
+        "text": "Şahmaran",
+        "language": "Turkish Anatolian",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/shahmaran/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "karakoncolos": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/karakoncolos/entrance.01cfc28e56db.mp4",
+      "entrance": "/art/transformations/karakoncolos/entrance-name.6f40b3ceb832.mp4",
       "loop": "/art/transformations/karakoncolos/loop.79d762c7ed40.mp4",
-      "entranceAlpha": "/art/transformations/karakoncolos/entrance.4c359274dff4.webm",
       "loopAlpha": "/art/transformations/karakoncolos/loop.a1735a87adda.webm",
-      "poster": "/art/transformations/karakoncolos/poster.3f008b6a171f.png"
+      "poster": "/art/transformations/karakoncolos/poster.3f008b6a171f.png",
+      "spokenName": {
+        "text": "Karakoncolos",
+        "language": "Turkish Black Sea",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/karakoncolos/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "zheztyrnak": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/zheztyrnak/entrance.df8a55c84c28.mp4",
+      "entrance": "/art/transformations/zheztyrnak/entrance-name.e30c58902c35.mp4",
       "loop": "/art/transformations/zheztyrnak/loop.985a9182106d.mp4",
-      "entranceAlpha": "/art/transformations/zheztyrnak/entrance.8e93fb872eb0.webm",
       "loopAlpha": "/art/transformations/zheztyrnak/loop.8bdfce85061d.webm",
-      "poster": "/art/transformations/zheztyrnak/poster.c69570db3b68.png"
+      "poster": "/art/transformations/zheztyrnak/poster.c69570db3b68.png",
+      "spokenName": {
+        "text": "Жезтырнақ",
+        "language": "Kazakh",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/zheztyrnak/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "albasty": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/albasty/entrance.5c1806984bff.mp4",
+      "entrance": "/art/transformations/albasty/entrance-name.b2d343cb18be.mp4",
       "loop": "/art/transformations/albasty/loop.6020c8cbd643.mp4",
-      "entranceAlpha": "/art/transformations/albasty/entrance.f4d2d3466a21.webm",
       "loopAlpha": "/art/transformations/albasty/loop.c09b0d306e78.webm",
-      "poster": "/art/transformations/albasty/poster.ba40e5a00543.png"
+      "poster": "/art/transformations/albasty/poster.ba40e5a00543.png",
+      "spokenName": {
+        "text": "Албасты",
+        "language": "Kazakh",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/albasty/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "zhalmauyz-kempir": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/zhalmauyz-kempir/entrance.f1be4a287fe4.mp4",
+      "entrance": "/art/transformations/zhalmauyz-kempir/entrance-name.0f3c85e1a4a2.mp4",
       "loop": "/art/transformations/zhalmauyz-kempir/loop.46a03c6948cd.mp4",
-      "entranceAlpha": "/art/transformations/zhalmauyz-kempir/entrance.525aa4cb9925.webm",
       "loopAlpha": "/art/transformations/zhalmauyz-kempir/loop.fecef46326ea.webm",
-      "poster": "/art/transformations/zhalmauyz-kempir/poster.2671f7460031.png"
+      "poster": "/art/transformations/zhalmauyz-kempir/poster.2671f7460031.png",
+      "spokenName": {
+        "text": "Жалмауыз кемпір",
+        "language": "Kazakh",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/zhalmauyz-kempir/name-v1.wav",
+        "nativeReview": "pending"
+      }
     },
     "zhalgyz-koz": {
-      "duration": 6,
+      "duration": 8.8,
       "loopDuration": 2,
       "revealAt": 2.3,
-      "entrance": "/art/transformations/zhalgyz-koz/entrance.8d573247fb1d.mp4",
+      "entrance": "/art/transformations/zhalgyz-koz/entrance-name.d80cc35b4ea5.mp4",
       "loop": "/art/transformations/zhalgyz-koz/loop.11f65897f7e6.mp4",
-      "entranceAlpha": "/art/transformations/zhalgyz-koz/entrance.2a8f30b1eb17.webm",
       "loopAlpha": "/art/transformations/zhalgyz-koz/loop.070c808b3aba.webm",
-      "poster": "/art/transformations/zhalgyz-koz/poster.0b325303a53d.png"
+      "poster": "/art/transformations/zhalgyz-koz/poster.0b325303a53d.png",
+      "spokenName": {
+        "text": "Жалғыз көзді дәу",
+        "language": "Kazakh",
+        "startsAt": 6,
+        "duration": 2.8,
+        "audio": "/art/name-reveals/zhalgyz-koz/name-v1.wav",
+        "nativeReview": "pending"
+      }
     }
   }
 }

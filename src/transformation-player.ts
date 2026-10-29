@@ -26,9 +26,9 @@ export function markTransformationPlayed(player: string, id: string) {
   try { localStorage.setItem(key, '1'); } catch {}
 }
 export function mountTransformation(stage: HTMLElement, id: string, options: {
-  sound: () => boolean; toggleSound?: () => void; onReveal?: () => void; onIntroEnd?: () => void; onStart?: () => void; onError?: () => void; onPause?: () => void;
+  sound: () => boolean; fillCharacter?: boolean; toggleSound?: () => void; onReveal?: () => void; onIntroEnd?: () => void; onStart?: () => void; onError?: () => void; onPause?: () => void;
 }) {
-  const host = document.createElement('div'); host.className = 'transformation-player';
+  const host = document.createElement('div'); host.className = 'transformation-player'; if(options.fillCharacter)host.classList.add('fill-character');
   const poster = document.createElement('img'); poster.alt = ''; poster.hidden = true;
   const canvas = document.createElement('canvas'); canvas.width = 720; canvas.height = 1280;
   const videos = [document.createElement('video'), document.createElement('video')];
@@ -51,7 +51,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
     program = gl.createProgram();
     for (const [type, source] of [
       [gl.VERTEX_SHADER, 'attribute vec2 p;varying vec2 uv;void main(){uv=vec2((p.x+1.0)*0.5,(1.0-p.y)*0.5);gl_Position=vec4(p,0.,1.);}'],
-      [gl.FRAGMENT_SHADER, 'precision mediump float;varying vec2 uv;uniform sampler2D image;void main(){vec4 c=texture2D(image,uv);float d=c.g-max(c.r,c.b);float a=1.-smoothstep(.10,.34,d);c.g=min(c.g,max(c.r,c.b)+.035);gl_FragColor=vec4(c.rgb,a);}'],
+      [gl.FRAGMENT_SHADER, 'precision mediump float;varying vec2 uv;uniform sampler2D image;uniform vec4 crop;void main(){vec4 c=texture2D(image,crop.xy+uv*crop.zw);float d=c.g-max(c.r,c.b);float a=1.-smoothstep(.10,.34,d);c.g=min(c.g,max(c.r,c.b)+.035);gl_FragColor=vec4(c.rgb,a);}'],
     ] as const) {
       const shader = gl.createShader(type)!; shaders.push(shader); gl.shaderSource(shader, source); gl.compileShader(shader);
       if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw Error('Shader failed');
@@ -65,13 +65,54 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
     for (const p of [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D,p,gl.LINEAR);
     gl.viewport(0,0,canvas.width,canvas.height); ready = true;
   } catch { ready = false; }
+  // Embedded browsers and disabled GPU acceleration can reject WebGL entirely.
+  // Keep the same video/audio flow and composite the green background in 2D.
+  const software = !gl ? canvas.getContext('2d', {willReadFrequently:true}) : null;
+  if (software) { canvas.width = 360; canvas.height = 640; ready = true; }
   function pause() { clearTimeout(stallTimer); phase = 'idle'; ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); options.onPause?.(); }
   function fail() { pause(); phase = 'idle'; canvas.hidden = true; poster.hidden = !entry; host.classList.toggle('has-media', !!entry); options.onError?.(); }
+  const sample = document.createElement('canvas'); sample.width=96;sample.height=170;
+  const sampleContext=options.fillCharacter?sample.getContext('2d',{willReadFrequently:true}):null;
+  function framing() {
+    let crop=[0,0,1,1];
+    if(sampleContext){
+      sampleContext.drawImage(video,0,0,96,170);
+      const pixels=sampleContext.getImageData(0,0,96,170).data;
+      let left=96,right=0,top=170,bottom=0;
+      for(let y=0;y<170;y++)for(let x=0;x<96;x++){
+        const i=(y*96+x)*4;
+        if(pixels[i+1]-Math.max(pixels[i],pixels[i+2])<26){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}
+      }
+      if(right>left && bottom>top){
+        const aspect=stage.clientWidth/Math.max(1,stage.clientHeight);
+        const sourceAspect=video.videoWidth/video.videoHeight;
+        const h=Math.max((bottom-top+1)/170*1.08,(right-left+1)/96*sourceAspect/aspect*1.08);
+        const w=h*aspect/sourceAspect;
+        crop=[(left+right+1)/192-w/2,(top+bottom+1)/340-h/2,w,h];
+      }
+    }
+    return crop;
+  }
   function draw() {
     if (dead || video.paused || video.ended) return;
     if (phase === 'intro' && !revealed && entry && video.currentTime >= entry.revealAt) { revealed = true; options.onReveal?.(); }
-    if (ready && gl && video.readyState >= 2) try {
-      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,video); gl.drawArrays(gl.TRIANGLES,0,6);
+    if (ready && video.readyState >= 2) try {
+      const crop = framing();
+      if (gl) {
+        gl.uniform4fv(gl.getUniformLocation(program!,'crop'),crop);
+        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,video); gl.drawArrays(gl.TRIANGLES,0,6);
+      } else if (software) {
+        software.clearRect(0,0,canvas.width,canvas.height);
+        software.drawImage(video,crop[0]*video.videoWidth,crop[1]*video.videoHeight,crop[2]*video.videoWidth,crop[3]*video.videoHeight,0,0,canvas.width,canvas.height);
+        const image=software.getImageData(0,0,canvas.width,canvas.height), data=image.data;
+        for(let i=0;i<data.length;i+=4){
+          const other=Math.max(data[i],data[i+2]);
+          const t=Math.max(0,Math.min(1,((data[i+1]-other)/255-.10)/.24));
+          data[i+3]=Math.round(data[i+3]*(1-t*t*(3-2*t)));
+          data[i+1]=Math.min(data[i+1],other+9);
+        }
+        software.putImageData(image,0,0);
+      }
       host.classList.add('has-media'); poster.hidden = true;
     } catch { fail(); return; }
     frame = requestAnimationFrame(draw);
@@ -108,7 +149,8 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   intro.onended = () => {
     if (phase !== 'intro' || !entry || dead || document.hidden || video !== intro) return;
     options.onIntroEnd?.();
-    phase = 'loop'; const generation = ticket;
+    phase = 'loop';
+    const generation = ticket;
     void source(loop, generation).catch(() => { if (!dead && generation === ticket) fail(); });
   };
   for (const media of videos) {

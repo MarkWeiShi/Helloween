@@ -26,16 +26,18 @@ test('seen state survives a new runtime instance and remains isolated by charact
  assert.equal(restored.hasPlayedTransformation('other-player','banshee'),false);
  assert.equal(restored.hasPlayedTransformation('persisted-player','kappa'),false);
 });
-test('real video changes from entrance to infinite action loop and releases resources on close', async () => {
+for (const renderer of ['webgl','2d']) test(`${renderer}: video changes from entrance to infinite action loop and releases resources on close`, async () => {
  const callbacks = new Map(); let nextFrame=0;
  globalThis.requestAnimationFrame = cb => { callbacks.set(++nextFrame,cb); return nextFrame; };
  globalThis.cancelAnimationFrame = id => callbacks.delete(id);
  const gl = new Proxy({}, {get:(_,name) => name === 'getShaderParameter' || name === 'getProgramParameter' ? () => true : name === 'getExtension' ? () => null : () => ({})});
+ let composited;
+ const software={clearRect(){},drawImage(){},getImageData(){return {data:new Uint8ClampedArray([0,255,0,255,200,20,20,255])};},putImageData(image){composited=image.data;}};
  class Element extends EventTarget {
   children=[]; dataset={}; attributes={}; hidden=false; paused=true; ended=false; readyState=2; currentTime=0; loop=false;
   classList={add(){},toggle(){}};
   append(...nodes){this.children.push(...nodes);}
-  getContext(){return gl;}
+  getContext(kind){return renderer==='webgl'?gl:kind==='2d'?software:null;}
   play(){this.paused=false;return Promise.resolve();}
   pause(){this.paused=true;}
   setAttribute(key,value){this.attributes[key]=value;}
@@ -49,6 +51,7 @@ test('real video changes from entrance to infinite action loop and releases reso
  const stage = new Element(); const motion=runtime.mountTransformation(stage,'jiangshi',{sound:()=>audible,toggleSound:()=>{audible=!audible;},onReveal:()=>reveals++,onPause:()=>pauses++});
  const host=stage.children[0], video=host.children[2], loop=host.children[3];
  assert.equal(await motion.play(),true);
+ if(renderer==='2d') { assert.equal(composited[3],0); assert.equal(composited[7],255); }
  assert.equal(video.src,entry.entrance); assert.equal(video.muted,true); assert.equal(video.loop,false);
  host.children[4].onclick(); assert.equal(video.muted,false); assert.equal(loop.muted,false); assert.equal(host.children[4].getAttribute('aria-pressed'),'true');
  assert.equal(loop.src,entry.loop); assert.equal(loop.preload,'auto'); assert.equal(loop.loads,1); assert.equal(loop.paused,true);

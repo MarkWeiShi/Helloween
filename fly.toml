@@ -1,4 +1,4 @@
-app = 'boo-around-the-world'
+app = 'helloween'
 primary_region = 'nrt'
 kill_signal = 'SIGTERM'
 kill_timeout = '30s'
@@ -11,7 +11,7 @@ kill_timeout = '30s'
   HOST = '0.0.0.0'
   PORT = '8080'
   DATABASE_PATH = '/data/boo.sqlite'
-  PUBLIC_ORIGIN = 'https://boo-around-the-world.fly.dev'
+  PUBLIC_ORIGIN = 'https://helloween.fly.dev'
   INVITE_REWARDS_ENABLED = 'true'
 
 [[mounts]]

@@ -1,0 +1,674 @@
+{
+  "jiangshi": {
+    "source": "public/art/name-reveals/jiangshi/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "僵尸",
+      "language": "Mandarin Chinese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/jiangshi/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "nie-xiaoqian": {
+    "source": "public/art/name-reveals/nie-xiaoqian/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "聂小倩",
+      "language": "Mandarin Chinese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/nie-xiaoqian/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "yingning": {
+    "source": "public/art/name-reveals/yingning/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "婴宁",
+      "language": "Mandarin Chinese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/yingning/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "painted-skin-ghost": {
+    "source": "public/art/name-reveals/painted-skin-ghost/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "画皮鬼",
+      "language": "Mandarin Chinese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/painted-skin-ghost/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "kappa": {
+    "source": "public/art/name-reveals/kappa/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "河童",
+      "language": "Japanese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/kappa/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "bake-danuki": {
+    "source": "public/art/name-reveals/bake-danuki/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "化け狸",
+      "language": "Japanese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/bake-danuki/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "chochin-obake": {
+    "source": "public/art/name-reveals/chochin-obake/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "提灯お化け",
+      "language": "Japanese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/chochin-obake/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "kasa-obake": {
+    "source": "public/art/name-reveals/kasa-obake/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "唐傘お化け",
+      "language": "Japanese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/kasa-obake/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "dokkaebi": {
+    "source": "public/art/name-reveals/dokkaebi/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "도깨비",
+      "language": "Korean",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/dokkaebi/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "gumiho": {
+    "source": "public/art/name-reveals/gumiho/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "구미호",
+      "language": "Korean",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/gumiho/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "bulgasari": {
+    "source": "public/art/name-reveals/bulgasari/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "불가사리",
+      "language": "Korean",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/bulgasari/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "gaekgwi": {
+    "source": "public/art/name-reveals/gaekgwi/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "객귀",
+      "language": "Korean",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/gaekgwi/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "krahang": {
+    "source": "public/art/name-reveals/krahang/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "กระหัง",
+      "language": "Thai",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/krahang/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "phi-kong-koi": {
+    "source": "public/art/name-reveals/phi-kong-koi/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "ผีกองกอย",
+      "language": "Thai",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/phi-kong-koi/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "nang-tani": {
+    "source": "public/art/name-reveals/nang-tani/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "นางตานี",
+      "language": "Thai",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/nang-tani/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "krasue": {
+    "source": "public/art/name-reveals/krasue/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "กระสือ",
+      "language": "Thai",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/krasue/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "tikbalang": {
+    "source": "public/art/name-reveals/tikbalang/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Tikbalang",
+      "language": "Filipino Tagalog",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/tikbalang/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "kapre": {
+    "source": "public/art/name-reveals/kapre/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Kapre",
+      "language": "Filipino Tagalog",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/kapre/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "duwende": {
+    "source": "public/art/name-reveals/duwende/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Duwende",
+      "language": "Filipino Tagalog",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/duwende/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "santelmo": {
+    "source": "public/art/name-reveals/santelmo/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Santelmo",
+      "language": "Filipino Tagalog",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/santelmo/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "puca": {
+    "source": "public/art/name-reveals/puca/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Púca",
+      "language": "Irish Gaelic",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/puca/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "banshee": {
+    "source": "public/art/name-reveals/banshee/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Bean sí",
+      "language": "Irish Gaelic",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/banshee/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "dullahan": {
+    "source": "public/art/name-reveals/dullahan/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Dúlachán",
+      "language": "Irish Gaelic",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/dullahan/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "merrow": {
+    "source": "public/art/name-reveals/merrow/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Murúch",
+      "language": "Irish Gaelic",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/merrow/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "brownie": {
+    "source": "public/art/name-reveals/brownie/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Brownie",
+      "language": "Scottish English",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/brownie/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "kelpie": {
+    "source": "public/art/name-reveals/kelpie/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Kelpie",
+      "language": "Scottish English",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/kelpie/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "selkie": {
+    "source": "public/art/name-reveals/selkie/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Selkie",
+      "language": "Orkney Scottish English",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/selkie/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "boggart": {
+    "source": "public/art/name-reveals/boggart/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Boggart",
+      "language": "Northern English Lancashire",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/boggart/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "headless-horseman": {
+    "source": "public/art/name-reveals/headless-horseman/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Headless Horseman",
+      "language": "American English New York",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/headless-horseman/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "jersey-devil": {
+    "source": "public/art/name-reveals/jersey-devil/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Jersey Devil",
+      "language": "American English New Jersey",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/jersey-devil/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "jackalope": {
+    "source": "public/art/name-reveals/jackalope/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Jackalope",
+      "language": "Western American English",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/jackalope/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "hidebehind": {
+    "source": "public/art/name-reveals/hidebehind/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Hidebehind",
+      "language": "Northern American English",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/hidebehind/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "la-planchada": {
+    "source": "public/art/name-reveals/la-planchada/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "La Planchada",
+      "language": "Mexican Spanish",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/la-planchada/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "la-pascualita": {
+    "source": "public/art/name-reveals/la-pascualita/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "La Pascualita",
+      "language": "Mexican Spanish Chihuahua",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/la-pascualita/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "la-mulata-de-cordoba": {
+    "source": "public/art/name-reveals/la-mulata-de-cordoba/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "La Mulata de Córdoba",
+      "language": "Mexican Spanish Veracruz",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/la-mulata-de-cordoba/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "el-charro-negro": {
+    "source": "public/art/name-reveals/el-charro-negro/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "El Charro Negro",
+      "language": "Mexican Spanish",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/el-charro-negro/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "saci": {
+    "source": "public/art/name-reveals/saci/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Saci",
+      "language": "Brazilian Portuguese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/saci/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "curupira": {
+    "source": "public/art/name-reveals/curupira/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Curupira",
+      "language": "Brazilian Portuguese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/curupira/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "boitata": {
+    "source": "public/art/name-reveals/boitata/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Boitatá",
+      "language": "Brazilian Portuguese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/boitata/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "cuca": {
+    "source": "public/art/name-reveals/cuca/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Cuca",
+      "language": "Brazilian Portuguese",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/cuca/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "adze": {
+    "source": "public/art/name-reveals/adze/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Adzé",
+      "language": "Ewe of Ghana and Togo",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/adze/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "asanbosam": {
+    "source": "public/art/name-reveals/asanbosam/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Asanbosam",
+      "language": "Akan Twi of Ghana",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/asanbosam/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "tokoloshe": {
+    "source": "public/art/name-reveals/tokoloshe/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Tikoloshe",
+      "language": "Zulu of Southern Africa",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/tokoloshe/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "kalanoro": {
+    "source": "public/art/name-reveals/kalanoro/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Kalanoro",
+      "language": "Malagasy",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/kalanoro/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "ghul": {
+    "source": "public/art/name-reveals/ghul/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "غول",
+      "language": "Arabic Arabian Peninsula",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/ghul/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "ifrit": {
+    "source": "public/art/name-reveals/ifrit/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "عفريت",
+      "language": "Arabic Iraqi",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/ifrit/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "marid": {
+    "source": "public/art/name-reveals/marid/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "مارد",
+      "language": "Arabic Iraqi",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/marid/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "nasnas": {
+    "source": "public/art/name-reveals/nasnas/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "نسناس",
+      "language": "Arabic Yemeni",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/nasnas/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "div": {
+    "source": "public/art/name-reveals/div/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "دیو",
+      "language": "Persian Iranian",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/div/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "pari": {
+    "source": "public/art/name-reveals/pari/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "پری",
+      "language": "Persian Iranian",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/pari/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "shahmaran": {
+    "source": "public/art/name-reveals/shahmaran/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Şahmaran",
+      "language": "Turkish Anatolian",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/shahmaran/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "karakoncolos": {
+    "source": "public/art/name-reveals/karakoncolos/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Karakoncolos",
+      "language": "Turkish Black Sea",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/karakoncolos/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "zheztyrnak": {
+    "source": "public/art/name-reveals/zheztyrnak/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Жезтырнақ",
+      "language": "Kazakh",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/zheztyrnak/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "albasty": {
+    "source": "public/art/name-reveals/albasty/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Албасты",
+      "language": "Kazakh",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/albasty/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "zhalmauyz-kempir": {
+    "source": "public/art/name-reveals/zhalmauyz-kempir/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Жалмауыз кемпір",
+      "language": "Kazakh",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/zhalmauyz-kempir/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  },
+  "zhalgyz-koz": {
+    "source": "public/art/name-reveals/zhalgyz-koz/entrance-name-v3.mp4",
+    "duration": 8.8,
+    "spokenName": {
+      "text": "Жалғыз көзді дәу",
+      "language": "Kazakh",
+      "startsAt": 6,
+      "duration": 2.8,
+      "audio": "/art/name-reveals/zhalgyz-koz/name-v1.wav",
+      "nativeReview": "pending"
+    }
+  }
+}

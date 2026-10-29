@@ -1,0 +1,60 @@
+{
+  "character": "jiangshi",
+  "scope": "Single-character local review pilot",
+  "spokenText": "僵尸",
+  "nativeName": "僵尸",
+  "locale": "zh-CN",
+  "voiceDirection": "A fictional Chinese jiangshi awakened after a supernatural transformation. Adult male native Mandarin Chinese, resonant low baritone, dry grainy chest resonance, restrained ancient menace and a subtle breathy rasp. Slow deliberate dramatic diction, clear Chinese consonants. Intimate cinematic character performance, not announcer or narrator. No shouting, no cartoon comedy, no exaggerated monster distortion. Clean studio recording.",
+  "engine": "ElevenLabs Voice Design + eleven_v3",
+  "voice": "zODwFBa1jJqwge0ttXCg",
+  "processing": "Loudness normalization -17 LUFS, -2 dBTP; pad to 2.6 seconds. No pitch shift.",
+  "audio": "public/art/name-reveals/jiangshi/name-zh-cn-v2.wav",
+  "entrance": "public/art/name-reveals/jiangshi/entrance-name-v2.mp4",
+  "timing": {
+    "transformation": [
+      0,
+      6
+    ],
+    "spokenNameAndTitle": [
+      6,
+      8.6
+    ],
+    "then": "existing action loop"
+  },
+  "titleMotion": "Cinnabar seal with two staggered brush glyphs; media-clock driven reveal; persistent centered title in final loop. Reduced motion removes transforms.",
+  "humanApproval": "pending",
+  "deployment": "local only",
+  "validation": {
+    "build": true,
+    "unitTests": 49,
+    "inAppBrowser": "verified persistent central title; screenshot artifacts/jiangshi-elevenlabs-v2/iab-review.png",
+    "humanListening": "pending user review",
+    "automatedTranscription": "unavailable: speech-to-text endpoint returned 401; generation succeeded",
+    "audioDurationSeconds": 2.6,
+    "browserChecks": 9,
+    "browsers": [
+      "Chrome desktop",
+      "Chrome mobile viewport",
+      "WebKit mobile viewport",
+      "Codex in-app browser"
+    ]
+  },
+  "generationRequest": {
+    "text": "[ominous][slowly] 僵尸。",
+    "model_id": "eleven_v3",
+    "language_code": "zh",
+    "voice_settings": {
+      "stability": 0.5,
+      "similarity_boost": 0.8,
+      "speed": 0.8
+    }
+  },
+  "voiceDesignRequest": {
+    "voice_description": "A fictional Chinese jiangshi awakened after a supernatural transformation. Adult male native Mandarin Chinese, resonant low baritone, dry grainy chest resonance, restrained ancient menace and a subtle breathy rasp. Slow deliberate dramatic diction, clear Chinese consonants. Intimate cinematic character performance, not announcer or narrator. No shouting, no cartoon comedy, no exaggerated monster distortion. Clean studio recording.",
+    "model_id": "eleven_ttv_v3",
+    "auto_generate_text": true,
+    "seed": 3729
+  },
+  "supersededBy": "assets/name-voices.json",
+  "status": "Historical v2 provenance only; title effect withdrawn by user; active player uses name-only audio"
+}

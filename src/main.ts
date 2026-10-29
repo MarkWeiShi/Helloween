@@ -185,11 +185,19 @@ function render() {
     clearInterval(boardTimer);
     boardTimer = undefined;
   }
-  app.innerHTML = `<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav></div>`;
+  app.innerHTML = `<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav></div>${page === "map" ? `<button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?">?</button>` : ""}`;
   if (page === "map") {
     const host=$(".globe-explorer")!;
     const stopGlobe=mountGlobe(host, region), stopMotions=mountCuteMotions(host);
-    globeCleanup=()=>{stopMotions();stopGlobe();};
+    const title=$('.globe-title')!;
+    const alignStats=()=>{
+      const heading=title.querySelector('h1')!.getBoundingClientRect();
+      const subtitle=title.querySelector('p')!.getBoundingClientRect();
+      title.style.setProperty('--stats-top',`${subtitle.top+subtitle.height/2-title.getBoundingClientRect().top-16}px`);
+      app.style.setProperty('--help-top',`${heading.top+heading.height/2-19}px`);
+    };
+    const titleObserver=new ResizeObserver(alignStats);titleObserver.observe(title);alignStats();
+    globeCleanup=()=>{titleObserver.disconnect();stopMotions();stopGlobe();};
 
   }
   if (page === "boards") {
@@ -230,14 +238,14 @@ function revealCharacter(animate = true) {
   characterOpen = true;
   modal(characterPanel());
   const dialog = overlay.querySelector<HTMLDialogElement>("dialog")!;
-  dialog.classList.add("character-dialog");
+  dialog.classList.add("character-dialog", "character-immersive");
   dialog.setAttribute("aria-label", "Folklore character details");
   dialog.querySelector(".modal-close")?.remove();
   bindCharacterSwipe();
   const current = spirit();
   if (current?.art && current.regionId === region) {
     const previousCleanup = modalCleanup;
-    const cleanup = mountPersonalScare(dialog, player.id, current.id, asset(current.art.scare), locked => { characterLocked = locked; }, () => sound, toggleTransformationSound);
+    const cleanup = mountPersonalScare(dialog, player.id, current.id, asset(current.art.scare), locked => { characterLocked = locked; }, () => true);
     modalCleanup = () => { cleanup(); previousCleanup?.(); };
   }
   if (animate && !characterLocked && !reduced.matches) dialog.querySelector(".hero-spirit")?.animate(
@@ -246,8 +254,11 @@ function revealCharacter(animate = true) {
   );
   dialog.querySelector<HTMLButtonElement>(".character-close")?.focus({preventScroll:true});
 }
+function counterFraction(current: number, total: number) {
+  return `<span class="counter-current">${current}</span><span class="counter-slash">/</span><span class="counter-total">${total}</span>`;
+}
 function mapPage() {
-  return `<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Your Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?">?</button><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend opens / shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${player.shareVisits || 0} / ${player.shareCount || 0}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits / total spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${player.peaceCount} / ${catalog.spirits.length}</span></button><button class="parade-counter" data-action="wallet" aria-label="Available sweets / total collected"><span class="counter-icon" aria-hidden="true">🍬</span><span class="counter-value" id="sweet-count">${player.wallet} / ${player.candies}</span></button></div></div>
+  return `<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend opens / shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterFraction(player.shareVisits || 0, player.shareCount || 0)}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits / total spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${counterFraction(player.peaceCount, catalog.spirits.length)}</span></button><button class="parade-counter" data-action="wallet" aria-label="Available sweets / total collected"><span class="counter-icon" aria-hidden="true">🍬</span><span class="counter-value" id="sweet-count">${counterFraction(player.wallet, player.candies)}</span></button></div></div>
   ${invite ? `<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
   <div class="explore-layout globe-layout"><section class="globe-explorer" aria-label="Explore cultures on the globe">
     <div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div>
@@ -264,10 +275,10 @@ function mapPage() {
 function reactionMeter(id: string) {
   const stat=player.reactions?.stats.find(x=>x.spiritId===id);
   const hz=stat?.meanHz ?? null;
-  return `<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${pitchScore(hz)}" aria-label="Scariness game score"></progress><strong>${pitchScore(hz)} / 100</strong><small>scariness</small></div>`;
+  return `<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${pitchScore(hz)}" aria-label="Scariness game score"></progress><strong>Scariness ${pitchScore(hz)} / 100</strong></div>`;
 }
 function actionPair(id:string, donated=0, preview=false) {
-  return `<div class="reaction-actions"><div>${preview ? '<button class="spirit-action" disabled><span class="action-orb">🎃</span><span class="action-caption">Trick</span></button>' : characterAction('🎃','Trick','share','scare-action','Trick — scare a friend',id)}${reactionMeter(id)}</div><div>${preview ? '<button class="spirit-action" disabled><span class="action-orb">🍬</span><span class="action-caption">Treat</span></button>' : characterAction('🍬','Treat',donated>=100?'story':'gift','sweet-action','Treat — give sweet',id)}<div class="mini-meter"><progress max="100" value="${donated}" aria-label="Wish candy progress"></progress><strong>${donated} / 100</strong><small>sweetness</small></div></div></div>`;
+  return `<div class="reaction-actions"><div>${preview ? '<button class="spirit-action" disabled><span class="action-orb">🎃</span><span class="action-caption">Trick a Friend</span></button>' : characterAction('🎃','Trick a Friend','share','scare-action','Trick — scare a friend',id)}${reactionMeter(id)}</div><div>${preview ? '<button class="spirit-action" disabled><span class="action-orb">🍬</span><span class="action-caption">Treat a Friend</span></button>' : characterAction('🍬','Treat a Friend',donated>=100?'story':'gift','sweet-action','Treat — give sweet',id)}<div class="mini-meter"><progress max="100" value="${donated}" aria-label="Wish candy progress"></progress><strong>Sweetness ${donated} / 100</strong></div></div></div>`;
 }
 function characterPanel() {
   const s = spirit(), r = catalog.regions.find(r => r.id === region)!;
@@ -277,7 +288,7 @@ function characterPanel() {
   const previous = friends[(index - 1 + friends.length) % friends.length];
   const next = friends[(index + 1) % friends.length];
   const arrows = friends.length ? `<button class="icon-button character-previous" data-spirit="${previous.id}" aria-label="Previous character in ${e(r.name)}">‹</button><button class="icon-button character-next" data-spirit="${next.id}" aria-label="Next character in ${e(r.name)}">›</button>` : `<button class="icon-button character-previous" data-action="preview-page" data-direction="-1" aria-label="Previous region character">‹</button><button class="icon-button character-next" data-action="preview-page" data-direction="1" aria-label="Next region character">›</button>`;
-  return `<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="Selected folklore character"><div class="character-navigation"><span><small>${friends.length ? `${index+1} / ${friends.length}` : 'FIRST LOOK'}</small></span><button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div><div class="character-stage" tabindex="0" role="group" aria-label="Character gallery. Swipe left or right to change character.">${arrows}<span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : `<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}</div><div class="character-info"><div class="name-line"><h2>${e(friends.length?s.name:preview.name)}</h2>${friends.length?`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:''}</div><p class="description">${e(friends.length?s.shortDescription:'An original folklore friend. Their story and invitation are coming soon.')}</p>${friends.length && s.art ? `<p class="personal-scare" data-personal-scare role="status" aria-live="polite">${scareLabel(readScare(player.id, s.id))}</p><button class="button secondary full" data-play-transform>播放变身</button>` : ""}${friends.length?`<p class="wish-caption">${e(s.wish)}</p>`:''}${friends.length&&!player.initialized?button('Choose me','join','primary full'):actionPair(friends.length?s.id:region,p?.donated && friends.length?p.donated:0,!friends.length)}</div></section>`;
+  return `<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:'<span></span>'}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div><div class="character-stage" tabindex="0" role="group" aria-label="Character gallery. Swipe left or right to change character.">${arrows}<span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : `<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${friends.length && s.art ? '<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button><span data-personal-scare role="status" aria-live="polite" class="sr-only"></span>':''}</div><div class="character-info">${friends.length&&!player.initialized?button('Choose me','join','primary full'):actionPair(friends.length?s.id:region,p?.donated && friends.length?p.donated:0,!friends.length)}</div></section>`;
 }
 async function openReactions() {
   const data=await api('/me'); player=data.player;
@@ -602,7 +613,7 @@ document.addEventListener("click", async (ev) => {
   );
   if (!target) return;
   if (characterLocked) return;
-  if (gate && target.dataset.action !== "enter") return;
+  if (gate && !["enter", "stats-help", "close"].includes(target.dataset.action || "")) return;
   if (target.dataset.ht) {
     event("hellotalk_clicked", target.dataset.ht);
     return;
@@ -728,7 +739,9 @@ document.addEventListener("click", async (ev) => {
         await respondInvite();
         break;
       case "stats-help":
-        modal(`<div class="modal-heading"><h2>Your Halloween numbers</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend opens / Shares</h3><p>Friends opening your invitation links / invitation links you have created to share. The same friend opening the same link again counts only once; your own visits do not count.</p><small>One link can reach several friends. Creating a link does not confirm that a message was sent or posted.</small></div></section><section><span aria-hidden="true">👻</span><div><h3>Released / Total spirits</h3><p>Spirits whose wishes you have completed / all currently playable spirits. Completing each spirit counts once.</p></div></section><section><span aria-hidden="true">🍬</span><div><h3>Available / Collected sweets</h3><p>Sweets currently in your bag / all sweets you have earned. Giving sweets reduces your bag balance, but never your lifetime total.</p></div></section></div>`);
+        modal(`<div class="sheet-handle" aria-hidden="true"></div><div class="stats-sheet-heading"><span aria-hidden="true">✦ 🎃 ✦</span><h2 id="stats-sheet-title">Your Halloween magic</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend opens / Shares</h3><p>Unique friend visits / share links created.</p></div></section><section><span aria-hidden="true">👻</span><div><h3>Released / Total spirits</h3><p>Wishes completed / spirits to discover.</p></div></section><section><span aria-hidden="true">🍬</span><div><h3>Available / Collected sweets</h3><p>In your bag / all sweets ever earned.</p></div></section></div><p class="stats-sheet-note">Repeat visits to the same link count once. A share link is not a confirmed send.</p>`);
+        overlay.querySelector('dialog')!.classList.add('stats-sheet');
+        overlay.querySelector('dialog')!.setAttribute('aria-labelledby','stats-sheet-title');
         break;
       case "reactions":
         await openReactions();
@@ -784,9 +797,9 @@ setInterval(() => {
         if(notified.has(key))continue;notified.add(key);
         toast(`${r.name}: ${r.hasAudio?'sent a 5-second voice reaction':r.meanHz===null?'no clear voice':`peak ${r.peakHz} Hz · ${r.level}`} — open Friend reactions`);
       }
-      const count=$('#reaction-count'); if(count)count.textContent=`${player.shareVisits || 0} / ${player.shareCount || 0}`;
-      const peace=$('#peace-count');if(peace)peace.textContent=`${player.peaceCount} / ${catalog.spirits.length}`;
-      const sweets=$('#sweet-count');if(sweets)sweets.textContent=`${player.wallet} / ${player.candies}`;
+      const count=$('#reaction-count'); if(count)count.innerHTML=counterFraction(player.shareVisits || 0, player.shareCount || 0);
+      const peace=$('#peace-count');if(peace)peace.innerHTML=counterFraction(player.peaceCount, catalog.spirits.length);
+      const sweets=$('#sweet-count');if(sweets)sweets.innerHTML=counterFraction(player.wallet, player.candies);
       const meter=overlay.querySelector<HTMLElement>('[data-reaction-spirit]');
       if(meter)meter.outerHTML=reactionMeter(meter.dataset.reactionSpirit!);
     }).catch(()=>{});

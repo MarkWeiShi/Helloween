@@ -20,10 +20,11 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   let microphoneRequest: AbortController | undefined;
   const release = () => { generation++; microphoneRequest?.abort(); microphoneRequest = undefined; capture?.stop(); capture = undefined; busy = false; button.disabled = false; };
   const motion = mountTransformation(root.querySelector<HTMLElement>('.character-stage')!, spirit, {
-    sound, toggleSound,
+    sound: () => true, fillCharacter: false,
+    onIntroEnd: () => { button.hidden = false; },
     onStart: () => { markTransformationPlayed(player, spirit); status.textContent = first ? '正在变身…' : scareLabel(readScare(player, spirit)); },
-    onPause: () => { release(); if (!dead && document.hidden) status.textContent = '播放已暂停；点击播放变身可重新观看。'; },
-    onError: () => { status.textContent = '变身素材暂不可用，请点击播放重试。'; },
+    onPause: () => { release(); button.hidden = false; if (!dead && document.hidden) status.textContent = '播放已暂停；点击播放变身可重新观看。'; },
+    onError: () => { button.hidden = false; status.textContent = '变身素材暂不可用，请点击播放重试。'; },
     onReveal: () => {
       if (!first || !capture) return;
       const ticket = generation;
@@ -40,7 +41,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   async function play() {
     if (busy || dead) return;
     // Pause the old playback before preparing a new microphone session.
-    motion.pause(); busy = true; button.disabled = true;
+    motion.pause(); busy = true; button.disabled = true; button.hidden = true;
     first = !readScare(player, spirit);
     const ticket = generation;
     if (first) {
@@ -62,10 +63,10 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     const started = await motion.play();
     if (dead || ticket !== generation) return;
     if (!started) { capture?.stop(); capture = undefined; }
-    if (!dead) { busy = false; button.disabled = false; button.hidden = false; }
+    if (!dead) { busy = false; button.disabled = false; if (!started) button.hidden = false; }
   }
   button.onclick = () => { void play(); };
   lock(false);
-  if (!hasPlayedTransformation(player, spirit)) void play();
+  void play();
   return () => { dead = true; release(); motion.dispose(); lock(false); };
 }

@@ -24,6 +24,8 @@ const atomicJSON = (path, value) => {
 // retries a generation job and never includes access-bearing provider URLs.
 export function prepareTransformations({ requireAll = false } = {}) {
   const catalog = loadCatalog();
+  const pilotPath = join(root, 'content/name-reveal-pilots.json');
+  const pilots = existsSync(pilotPath) ? read(pilotPath) : {};
   const characters = {}, pending = [], provenance = [];
   mkdirSync(output, { recursive: true });
   for (const spirit of catalog.spirits) {
@@ -45,6 +47,20 @@ export function prepareTransformations({ requireAll = false } = {}) {
       if (!existsSync(to)) copyFileSync(from, to);
       descriptor[key] = `/art/transformations/${spirit.id}/${filename}`;
       published.push({ role: key, file: descriptor[key], bytes: data.length, sha256 });
+    }
+    const pilot = pilots[spirit.id];
+    if (pilot) {
+      const data = readFileSync(join(root, pilot.source));
+      const sha256 = createHash('sha256').update(data).digest('hex');
+      const filename = `entrance-name.${sha256.slice(0, 12)}.mp4`;
+      const to = join(output, spirit.id, filename);
+      if (!existsSync(to)) copyFileSync(join(root, pilot.source), to);
+      descriptor.entrance = `/art/transformations/${spirit.id}/${filename}`;
+      descriptor.duration = pilot.duration;
+      descriptor.spokenName = pilot.spokenName;
+      // The original alpha entrance ends before the new spoken-name tail.
+      delete descriptor.entranceAlpha;
+      published.push({role:'name-reveal-pilot',file:descriptor.entrance,bytes:data.length,sha256,source:pilot.source});
     }
     characters[spirit.id] = descriptor;
     provenance.push({ id: spirit.id, source: folder.slice(root.length + 1), model: manifest.model, files: published });
