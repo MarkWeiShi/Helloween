@@ -3349,6 +3349,7 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .scariness-row .reaction-capture-controls { grid-column:1 / -1; }
 
 .corner-ui-icon{display:block;width:30px;height:30px;object-fit:contain;pointer-events:none}
+.home-sound-toggle{position:fixed;top:max(68px,calc(env(safe-area-inset-top) + 56px));right:max(12px,env(safe-area-inset-right));width:44px;height:44px;z-index:81;border:1.5px solid #b8c9df61;border-radius:50%;background:#0f192c33;color:var(--cream)}
 
 /* Align the subtitle with the first counter while allowing translated titles to wrap. */
 .explore-screen .globe-title > div:first-child{display:grid;grid-template-rows:minmax(52px,auto) auto}

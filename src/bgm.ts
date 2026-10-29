@@ -18,7 +18,11 @@ export function createBgm(canPlay: () => boolean) {
     startedAt=context.currentTime;source.start(0,offset);
   }
   function start(audioContext: AudioContext) {
-    context=audioContext;
+    if(context!==audioContext){
+      context?.removeEventListener('statechange',sync);
+      context=audioContext;
+      context.addEventListener('statechange',sync);
+    }
     loading ??= fetch('/audio/halloween-loop.mp3').then(r=>{if(!r.ok)throw Error('BGM unavailable');return r.arrayBuffer();})
       .then(bytes=>audioContext.decodeAudioData(bytes)).then(decoded=>{buffer=decoded;sync();})
       .catch(()=>{loading=undefined;});
