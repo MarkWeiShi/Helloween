@@ -124,7 +124,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Default",
+    "Trick or Treat!": "Trick or Treat!"
   },
   "zh": {
     "Language": "语言",
@@ -448,7 +450,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "默认",
+    "Trick or Treat!": "不给糖就捣蛋！"
   },
   "es": {
     "Language": "Idioma",
@@ -610,7 +614,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Predeterminado",
+    "Trick or Treat!": "¡Truco o trato!"
   },
   "pt": {
     "Language": "Idioma",
@@ -772,7 +778,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Padrão",
+    "Trick or Treat!": "Doces ou travessuras!"
   },
   "fr": {
     "Language": "Langue",
@@ -934,7 +942,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Par défaut",
+    "Trick or Treat!": "Des bonbons ou un sort !"
   },
   "de": {
     "Language": "Sprache",
@@ -1096,7 +1106,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Standard",
+    "Trick or Treat!": "Süßes oder Saures!"
   },
   "it": {
     "Language": "Lingua",
@@ -1258,7 +1270,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Predefinita",
+    "Trick or Treat!": "Dolcetto o scherzetto!"
   },
   "ru": {
     "Language": "Язык",
@@ -1420,7 +1434,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "По умолчанию",
+    "Trick or Treat!": "Сладость или гадость!"
   },
   "ar": {
     "Language": "اللغة",
@@ -1582,7 +1598,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "الافتراضية",
+    "Trick or Treat!": "حلوى أم خدعة!"
   },
   "hi": {
     "Language": "भाषा",
@@ -1744,7 +1762,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "डिफ़ॉल्ट",
+    "Trick or Treat!": "ट्रिक या ट्रीट!"
   },
   "ja": {
     "Language": "言語",
@@ -1908,7 +1928,9 @@
     "Kobold": "Kobold",
     "Lutin": "Lutin",
     "Household spirit": "家の精霊",
-    "Tall-tale creature": "ほら話に登場する生き物"
+    "Tall-tale creature": "ほら話に登場する生き物",
+    "Default": "デフォルト",
+    "Trick or Treat!": "トリック・オア・トリート！"
   },
   "ko": {
     "Language": "언어",
@@ -2071,7 +2093,9 @@
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
     "Lutin": "Lutin",
-    "Tokoloshe, also spelled tikoloshe, appears in several Southern African language traditions, including isiZulu and isiXhosa. Descriptions often present a small hairy being associated with water, mischief or harm. Accounts differ across communities. The smooth pebble and peaceful riverside wish belong to this game, not to a traditional protective practice.": "토콜로셰는 티콜로셰라고도 하며, 줄루어와 코사어를 비롯한 남부 아프리카의 여러 언어 전통에 등장합니다. 흔히 몸집이 작고 털이 많으며 물, 장난 또는 해악과 관련된 존재로 묘사됩니다. 이야기는 공동체마다 다릅니다. 매끄러운 조약돌과 강가에서 평화를 바라는 소원은 이 게임의 창작 설정이며, 전통적인 보호 관습을 나타내지 않습니다."
+    "Tokoloshe, also spelled tikoloshe, appears in several Southern African language traditions, including isiZulu and isiXhosa. Descriptions often present a small hairy being associated with water, mischief or harm. Accounts differ across communities. The smooth pebble and peaceful riverside wish belong to this game, not to a traditional protective practice.": "토콜로셰는 티콜로셰라고도 하며, 줄루어와 코사어를 비롯한 남부 아프리카의 여러 언어 전통에 등장합니다. 흔히 몸집이 작고 털이 많으며 물, 장난 또는 해악과 관련된 존재로 묘사됩니다. 이야기는 공동체마다 다릅니다. 매끄러운 조약돌과 강가에서 평화를 바라는 소원은 이 게임의 창작 설정이며, 전통적인 보호 관습을 나타내지 않습니다.",
+    "Default": "기본값",
+    "Trick or Treat!": "트릭 오어 트릿!"
   },
   "id": {
     "Language": "Bahasa",
@@ -2233,7 +2257,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Default",
+    "Trick or Treat!": "Trick or Treat!"
   },
   "th": {
     "Language": "ภาษา",
@@ -2395,7 +2421,9 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "ค่าเริ่มต้น",
+    "Trick or Treat!": "หลอกหรือเลี้ยง!"
   },
   "vi": {
     "Language": "Ngôn ngữ",
@@ -2557,6 +2585,8 @@
     "El Tunche": "El Tunche",
     "Bunyip": "Bunyip",
     "Kobold": "Kobold",
-    "Lutin": "Lutin"
+    "Lutin": "Lutin",
+    "Default": "Mặc định",
+    "Trick or Treat!": "Cho kẹo hay bị ghẹo!"
   }
 }

@@ -163,7 +163,7 @@ function hellotalk(where = "map") {
   return html`<a class="hellotalk" href="https://www.hellotalk.com/en/download" target="_blank" rel="noopener noreferrer" data-ht="${where}"><span class="ht-mark">Hi</span><span>Meet the world on <strong>HelloTalk</strong></span>${icon("arrow")}</a>`;
 }
 function header() {
-  return html`<header class="site-header"><a class="brand" href="/" aria-label="Boo Around the World home">${icon("ghost")}<span>boo<span class="brand-dot">.</span><small>around the world</small></span></a><nav class="desktop-nav" aria-label="Main navigation">${navItems()}</nav><div class="header-tools">${languageSelector()}<button class="home-country" data-action="profile" aria-label="Your parade profile">${player.country ? flag(player.country) : icon("globe")}<span>${player.country ? e(player.name) : t("Your parade")}</span></button><button class="candy-bag" data-action="wallet" aria-label="Candy bag, ${player.wallet} candies">${icon("candy")}<strong>${player.wallet}</strong></button><button class="icon-button sound-toggle" data-action="sound" aria-label="${sound ? t("Mute sound") : t("Enable sound")}">${icon(sound ? "sound" : "mute")}</button></div></header>`;
+  return html`<header class="site-header"><a class="brand" href="/" aria-label="Boo Around the World home">${icon("ghost")}<span>boo<span class="brand-dot">.</span><small>around the world</small></span></a><nav class="desktop-nav" aria-label="Main navigation">${navItems()}</nav><div class="header-tools">${""}<button class="home-country" data-action="profile" aria-label="Your parade profile">${player.country ? flag(player.country) : icon("globe")}<span>${player.country ? e(player.name) : t("Your parade")}</span></button><button class="icon-button sound-toggle" data-action="sound" aria-label="${sound ? t("Mute sound") : t("Enable sound")}">${icon(sound ? "sound" : "mute")}</button></div></header>`;
 }
 function navItems() {
   return [
@@ -187,18 +187,11 @@ function render() {
     boardTimer = undefined;
   }
   app.innerHTML = html`<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav></div>${page === "map" ? html`<button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?">?</button>` : ""}`;
+  app.insertAdjacentHTML("beforeend", languageSelector());
   if (page === "map") {
     const host=$(".globe-explorer")!;
     const stopGlobe=mountGlobe(host, region), stopMotions=mountCuteMotions(host);
-    const title=$('.globe-title')!;
-    const alignStats=()=>{
-      const heading=title.querySelector('h1')!.getBoundingClientRect();
-      const subtitle=title.querySelector('p')!.getBoundingClientRect();
-      title.style.setProperty('--stats-top',`${subtitle.top+subtitle.height/2-title.getBoundingClientRect().top-16}px`);
-      app.style.setProperty('--help-top',`${heading.top+heading.height/2-19}px`);
-    };
-    const titleObserver=new ResizeObserver(alignStats);titleObserver.observe(title);alignStats();
-    globeCleanup=()=>{titleObserver.disconnect();stopMotions();stopGlobe();};
+    globeCleanup=()=>{stopMotions();stopGlobe();};
 
   }
   if (page === "boards") {
@@ -259,7 +252,7 @@ function counterFraction(current: number, total: number) {
   return html`<span class="counter-current">${current}</span><span class="counter-slash">/</span><span class="counter-total">${total}</span>`;
 }
 function mapPage() {
-  return '<div class="map-language">'+languageSelector()+'</div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend opens / shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterFraction(player.shareVisits || 0, player.shareCount || 0)}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits / total spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${counterFraction(player.peaceCount, catalog.spirits.length)}</span></button><button class="parade-counter" data-action="wallet" aria-label="Available sweets / total collected"><span class="counter-icon" aria-hidden="true">🍬</span><span class="counter-value" id="sweet-count">${counterFraction(player.wallet, player.candies)}</span></button></div></div>
+  return '<div class="language-space" aria-hidden="true"></div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title">Scary <span class="hello-accent">Hello</span>ween</h1><p>Join HelloTalk to Hear Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend opens / shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterFraction(player.shareVisits || 0, player.shareCount || 0)}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits / total spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${counterFraction(player.peaceCount, catalog.spirits.length)}</span></button></div></div>
   ${invite ? html`<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
   <div class="explore-layout globe-layout"><section class="globe-explorer" aria-label="Explore cultures on the globe">
     <div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div>
@@ -270,7 +263,6 @@ function mapPage() {
     }).join('')}</div>
     </div>
     <div class="globe-zoom" role="group" aria-label="Globe zoom"><button data-zoom="in" aria-label="Zoom in">➕</button><span class="zoom-level" aria-live="polite">1 / 3</span><button data-zoom="out" aria-label="Zoom out">➖</button></div>
-    <div class="globe-controls"><button class="icon-button" data-turn="west" aria-label="Rotate globe west">‹</button><p class="globe-hint">Drag to explore <span>·</span> Tap a little spirit</p><button class="icon-button" data-turn="east" aria-label="Rotate globe east">›</button></div>
   </section></div>`;
 }
 function reactionMeter(id: string) {
@@ -278,8 +270,8 @@ function reactionMeter(id: string) {
   const hz=stat?.meanHz ?? null;
   return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${pitchScore(hz)}" aria-label="Scariness game score"></progress><strong>Scariness ${pitchScore(hz)} / 100</strong></div>`;
 }
-function actionPair(id:string, donated=0, preview=false) {
-  return html`<div class="reaction-actions"><div>${preview ? html`<button class="spirit-action" disabled><span class="action-orb">🎃</span><span class="action-caption">Trick a Friend</span></button>` : characterAction('🎃',t("Trick a Friend"),'share','scare-action',t("Trick — scare a friend"),id)}${reactionMeter(id)}</div><div>${preview ? html`<button class="spirit-action" disabled><span class="action-orb">🍬</span><span class="action-caption">Treat a Friend</span></button>` : characterAction('🍬',t("Treat a Friend"),donated>=100?'story':'gift','sweet-action',t("Treat — give sweet"),id)}<div class="mini-meter"><progress max="100" value="${donated}" aria-label="Wish candy progress"></progress><strong>Sweetness ${donated} / 100</strong></div></div></div>`;
+function actionPair(id:string, preview=false) {
+  return html`<div class="reaction-actions"><div>${preview ? html`<button class="spirit-action" disabled><span class="action-orb">🎃</span><span class="action-caption">Trick or Treat!</span></button>` : characterAction('🎃',t("Trick or Treat!"),'share','scare-action',t("Trick or Treat!"),id)}${reactionMeter(id)}</div></div>`;
 }
 function characterPanel() {
   const s = spirit(), r = catalog.regions.find(r => r.id === region)!;
@@ -289,7 +281,7 @@ function characterPanel() {
   const previous = friends[(index - 1 + friends.length) % friends.length];
   const next = friends[(index + 1) % friends.length];
   const arrows = friends.length ? html`<button class="icon-button character-previous" data-spirit="${previous.id}" aria-label="Previous character in ${e(r.name)}">‹</button><button class="icon-button character-next" data-spirit="${next.id}" aria-label="Next character in ${e(r.name)}">›</button>` : html`<button class="icon-button character-previous" data-action="preview-page" data-direction="-1" aria-label="Previous region character">‹</button><button class="icon-button character-next" data-action="preview-page" data-direction="1" aria-label="Next region character">›</button>`;
-  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Character gallery. Swipe left or right to change character.">${arrows}<span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${friends.length && s.art ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${friends.length && s.art ? html`<p data-personal-scare role="status" aria-live="polite" class="personal-scare"></p>` : ""}${actionPair(friends.length?s.id:region,p?.donated && friends.length?p.donated:0,!friends.length)}</div></section>`;
+  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Character gallery. Swipe left or right to change character.">${arrows}<span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${friends.length && s.art ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${friends.length && s.art ? html`<p data-personal-scare role="status" aria-live="polite" class="personal-scare"></p>` : ""}${actionPair(friends.length?s.id:region,!friends.length)}</div></section>`;
 }
 async function openReactions() {
   const data=await api('/me'); player=data.player;
@@ -374,45 +366,9 @@ function openProfile(next?: () => void | Promise<void>) {
     }
   });
 }
-function openGift(id = selected) {
-  const s = spirit(id),
-    p = progress(id);
-  if (p?.peaceAt) {
-    openStory(id);
-    return;
-  }
-  const remaining = 100 - (p?.donated || 0);
-  modal(
-    html`<div class="gift-art">${portrait(s)}</div><div class="modal-heading"><h2>A little sweetness<br>for ${e(s.name)}.</h2><p>${e(s.wish)}</p></div><div class="gift-progress"><strong>${p?.donated || 0}<small> / 100</small></strong><span>${icon("candy")} You have ${player.wallet}</span></div><p class="fine-print center">Your gift helps this wish come true. Your total collected score stays the same.</p><div class="gift-buttons">${button(t("Give 10"), "donate", "secondary", `data-id="${id}" data-amount="10" ${player.wallet < Math.min(10, remaining) ? "disabled" : ""}`)}${button(msg`Fulfil the wish · ${remaining}`, "donate", "primary", `data-id="${id}" data-amount="complete" ${player.wallet < remaining ? "disabled" : ""}`)}</div>${player.wallet < remaining ? button(t("🎃 Invite a friend to collect sweets"), "share", "text-button full") : ""}`,
-  );
-}
-async function donate(id: string, amount: string, btn: HTMLButtonElement) {
-  const requestId = btn.dataset.requestId || crypto.randomUUID();
-  btn.dataset.requestId = requestId;
-  btn.disabled = true;
-  try {
-    const data = await api(`/spirits/${id}/gifts`, {
-      amount: amount === "complete" ? "complete" : 10,
-      requestId,
-    });
-    player = data.player;
-    closeModal();
-    render();
-    playTone("peace");
-    if (data.completed) openStory(id);
-    else {
-      toast(msg`${data.spent} candies, and a little closer to a happy ending.`);
-      openGift(id);
-    }
-  } catch (err) {
-    toast((err as Error).message);
-    btn.disabled = false;
-  }
-}
 async function openStory(id = selected) {
   const s = spirit(id);
   if (!progress(id)?.peaceAt) {
-    openGift(id);
     return;
   }
   if (!s.story) {
@@ -547,11 +503,6 @@ async function downloadCard(id: string) {
     window.open(asset(art.share), "_blank", "noopener,noreferrer");
   }
 }
-function openWallet() {
-  modal(
-    html`<div class="modal-heading">${icon("candy")}<h2>A bag full<br>of possibilities.</h2><p>You have ${player.wallet} candies to share with the folklore friends.</p></div><div class="wallet-rules"><p><strong>30</strong> A welcome to the parade</p><p><strong>20</strong> First eligible invitation response</p><p><strong>100</strong> One wish fulfilled</p></div><p class="fine-print">${player.remainingInvites} inviter bonuses remain today. Daily limits reset at 00:00 UTC. Your all-time collected score is ${player.candies}.</p>${button(t("Find a wish to fulfil"), "close", "primary full")}`,
-  );
-}
 function openAbout() {
   modal(
     html`<div class="modal-heading">${icon("globe")}<h2>Many cultures.<br>A little shared kindness.</h2></div><p>This parade brings together ghosts, spirits, creatures and figures from folklore and literature. They do not all represent the souls of people who have died.</p><p>Each character's cultural background has its own source links. The warm three-part endings are new Halloween stories written for this game, not claims about the original traditions.</p><p>Countries on the leaderboard are chosen by players. Folklore can belong to several communities, and a map marker never means exclusive ownership.</p><h3>Your visit</h3><p>We store a guest identifier in this browser, your chosen nickname and country, game progress, reward records and aggregate activity counts. There is no SNS login, contact-list import or cross-device account.</p><p>If you enable the microphone, your first character transformation samples your voice on your device for 3 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records three seconds and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.</p><p class="fine-print">No cash prizes or purchases. Clearing browser cookies loses access to this guest's progress.</p>${hellotalk()}<div class="store-links"><a href="https://apps.apple.com/us/app/hellotalk-language-learning/id557130558" target="_blank" rel="noopener noreferrer" data-ht="store">App Store</a><a href="https://play.google.com/store/apps/details?id=com.hellotalk" target="_blank" rel="noopener noreferrer" data-ht="store">Google Play</a></div>`,
@@ -561,7 +512,7 @@ function showGate() {
   // Render the actual live world once, then lock its interaction with an inert shell.
   gate=false;page='map';render();gate=true;
   app.querySelector<HTMLElement>('.app-shell')!.inert=true;
-  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content">${languageSelector()}<button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
+  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
   app.querySelector<HTMLButtonElement>('.play-unlock')!.focus({preventScroll:true});
 }
 function openUnlockConsent() {
@@ -694,9 +645,6 @@ document.addEventListener("click", async (ev) => {
       case "about":
         openAbout();
         break;
-      case "wallet":
-        openWallet();
-        break;
       case "equip":
         characterOpen = true;
         selected = target.dataset.id!;
@@ -707,16 +655,6 @@ document.addEventListener("click", async (ev) => {
         page = "map";
         render();
         if (!player.initialized) openProfile();
-        break;
-      case "gift":
-        requirePlayer(() => openGift(target.dataset.id || selected));
-        break;
-      case "donate":
-        await donate(
-          target.dataset.id!,
-          target.dataset.amount!,
-          target as HTMLButtonElement,
-        );
         break;
       case "story":
         openStory(target.dataset.id || selected);
@@ -741,7 +679,7 @@ document.addEventListener("click", async (ev) => {
         await respondInvite();
         break;
       case "stats-help":
-        modal(html`<div class="sheet-handle" aria-hidden="true"></div><div class="stats-sheet-heading"><span aria-hidden="true">✦ 🎃 ✦</span><h2 id="stats-sheet-title">Your Halloween magic</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend opens / Shares</h3><p>Unique friend visits / share links created.</p></div></section><section><span aria-hidden="true">👻</span><div><h3>Released / Total spirits</h3><p>Wishes completed / spirits to discover.</p></div></section><section><span aria-hidden="true">🍬</span><div><h3>Available / Collected sweets</h3><p>In your bag / all sweets ever earned.</p></div></section></div><p class="stats-sheet-note">Repeat visits to the same link count once. A share link is not a confirmed send.</p>`);
+        modal(html`<div class="sheet-handle" aria-hidden="true"></div><div class="stats-sheet-heading"><span aria-hidden="true">✦ 🎃 ✦</span><h2 id="stats-sheet-title">Your Halloween magic</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend opens / Shares</h3><p>Unique friend visits / share links created.</p></div></section><section><span aria-hidden="true">👻</span><div><h3>Released / Total spirits</h3><p>Wishes completed / spirits to discover.</p></div></section></div><p class="stats-sheet-note">Repeat visits to the same link count once. A share link is not a confirmed send.</p>`);
         overlay.querySelector('dialog')!.classList.add('stats-sheet');
         overlay.querySelector('dialog')!.setAttribute('aria-labelledby','stats-sheet-title');
         break;
@@ -801,7 +739,6 @@ setInterval(() => {
       }
       const count=$('#reaction-count'); if(count)count.innerHTML=counterFraction(player.shareVisits || 0, player.shareCount || 0);
       const peace=$('#peace-count');if(peace)peace.innerHTML=counterFraction(player.peaceCount, catalog.spirits.length);
-      const sweets=$('#sweet-count');if(sweets)sweets.innerHTML=counterFraction(player.wallet, player.candies);
       const meter=overlay.querySelector<HTMLElement>('[data-reaction-spirit]');
       if(meter)meter.outerHTML=reactionMeter(meter.dataset.reactionSpirit!);
     }).catch(()=>{});

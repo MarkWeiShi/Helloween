@@ -334,8 +334,6 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
     if(ev.target!==viewport)return;
     if(ev.key==='ArrowLeft'||ev.key==='ArrowRight'){ev.preventDefault();rotate(ev.key==='ArrowLeft'?-35:35);}
   },{signal:signal.signal});
-  host.querySelector('[data-turn="west"]')!.addEventListener('click',()=>rotate(-55),{signal:signal.signal});
-  host.querySelector('[data-turn="east"]')!.addEventListener('click',()=>rotate(55),{signal:signal.signal});
   picker?.addEventListener('change',()=>{
     const pin=pins.find(p=>p.dataset.region===picker.value);if(!pin)return;
     orientation=[anchors[picker.value][0],Math.max(-15,Math.min(40,anchors[picker.value][1]-8))];schedule();pin.click();
@@ -343,7 +341,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   const observer=new ResizeObserver(schedule);observer.observe(viewport);
   document.addEventListener('visibilitychange',schedule,{signal:signal.signal});
   landPromise ??= fetch('/geo/land.json').then(r=>{if(!r.ok)throw new Error('Land unavailable');return r.json();}).catch(err=>{landPromise=undefined;throw err;});
-  landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead)host.querySelector('.globe-hint')!.textContent=t("Globe details unavailable. You can still choose a region.");});
+  landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead){const caption=host.querySelector('.globe-caption');if(caption){caption.querySelector('p')!.textContent=t("Globe details unavailable. You can still choose a region.");caption.classList.add('visible');}}});
   viewport.addEventListener('pointerenter',ev=>{if(ev.pointerType==='mouse')hovering=true;},{signal:signal.signal});
   viewport.addEventListener('pointerleave',()=>{hovering=false;},{signal:signal.signal});
   let lastTick=performance.now();

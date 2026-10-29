@@ -2880,7 +2880,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .character-dialog .character-info { padding-top:0; }
 .character-dialog .description { margin:8px 0; font-size:14px; }
 .wish-caption { margin:8px 0; color:var(--muted); font-size:12px; }
-.reaction-actions { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:16px; text-align:center; }
+.reaction-actions { display:grid; grid-template-columns:minmax(0, 1fr); width:min(100%, 450px); margin:16px auto 0; text-align:center; }
 .reaction-actions>div { min-width:0; display:flex; flex-direction:column; align-items:center; }
 .mini-meter { width:100%; max-width:180px; display:grid; gap:5px; margin-top:9px; }
 .mini-meter progress { appearance:none; width:100%; height:5px; border:0; border-radius:4px; overflow:hidden; background:#ffffff16; }
@@ -2909,7 +2909,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
   line-height: 1.15;
 }
 :is(.character-dialog, .invitation-result) .reaction-actions > div:first-child .action-caption { color: #ffab59; }
-:is(.character-dialog, .invitation-result) .reaction-actions > div:last-child .action-caption { color: #78c6ff; }
+
 
 /* Invitation playback ends with the same actions as the character card. */
 .invitation-result .invitation-share { position:absolute; top:18px; right:64px; }
@@ -2991,8 +2991,8 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .globe-pin:hover,.globe-pin.touched { z-index:200!important; }
 .globe-explorer { position:relative; }
 .globe-viewport { overflow:hidden; border-radius:0; }
-.globe-zoom { position:absolute; right:4px; bottom:65px; z-index:220; display:flex; flex-direction:column; align-items:center; gap:5px; padding:6px; background:#17273ddd; border:1px solid #b5dded44; border-radius:24px; box-shadow:0 5px 20px #030c2544; backdrop-filter:blur(10px); }
-.globe-zoom button { display:grid; place-items:center; width:44px; height:44px; background:transparent; border:0; border-radius:50%; font-size:23px; cursor:pointer; }
+.globe-zoom { position:absolute; right:4px; bottom:calc(105px + env(safe-area-inset-bottom)); z-index:220; display:flex; flex-direction:column; align-items:center; gap:3px; padding:4px; background:#17273ddd; border:1px solid #b5dded44; border-radius:24px; box-shadow:0 5px 20px #030c2544; backdrop-filter:blur(10px); }
+.globe-zoom button { display:grid; place-items:center; width:40px; height:40px; background:transparent; border:0; border-radius:50%; font-size:20px; cursor:pointer; }
 .globe-zoom button:hover:not(:disabled) { background:#9ed4ff22; }
 .globe-zoom button:disabled { opacity:.28; cursor:default; }
 .zoom-level { color:#c6d9ec; font-size:11px; font-variant-numeric:tabular-nums; }
@@ -3215,15 +3215,36 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .unlock-consent .unlock-acceptance { margin: 0 0 16px; font-size: 12px; color: var(--muted); line-height: 1.6; }
 
 /* Keep language selection accessible before microphone permission and on mobile. */
-.language-picker{display:inline-flex;align-items:center;gap:.35rem;max-width:11rem;min-width:0;color:inherit}
-.language-picker select{font:inherit;font-size:.8rem;max-width:9rem;min-height:36px;border:1px solid #aab5ca55;border-radius:12px;background:#17223b;color:#fff;padding:.35rem .5rem;text-overflow:ellipsis}
-.play-lock-content>.language-picker{margin-block-end:1rem;pointer-events:auto}
+.language-picker{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));z-index:90}
+.language-trigger{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:transparent;border-radius:50%;color:inherit;cursor:pointer}
+.language-trigger span{font-size:21px;line-height:28px}
+.language-trigger:hover,.language-trigger[aria-expanded="true"]{background:#ffffff12}
+.language-trigger:focus-visible,.language-menu button:focus-visible{outline:2px solid #a2dcf0;outline-offset:2px}
+.language-menu{position:fixed;inset:auto;top:max(62px,calc(env(safe-area-inset-top) + 50px));right:max(12px,env(safe-area-inset-right));margin:0;width:min(194px,calc(100vw - 24px));max-height:calc(100dvh - 76px);overflow-y:auto;overscroll-behavior:contain;padding:6px;border:1px solid #aab5ca55;border-radius:16px;background:rgb(27 40 64 / 40%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;box-shadow:0 16px 42px #0005}
+.language-menu button{display:flex;align-items:center;gap:8px;width:100%;height:clamp(26px,calc((100dvh - 92px) / 16),40px);min-height:0;padding:2px 8px;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;font-size:12px;text-align:start;cursor:pointer}
+.language-menu button:hover,.language-menu button[aria-checked="true"]{background:#ffffff12}
+.language-flag{font-size:20px;line-height:22px;flex:none}
+.language-check{margin-inline-start:auto;color:#b7eadc}
 html[lang="ar"] body,html[lang="hi"] body,html[lang="th"] body{font-family:system-ui,sans-serif;line-height:1.65}
 html[dir="rtl"] .site-header,html[dir="rtl"] .board-row,html[dir="rtl"] .modal-heading{text-align:start}
 html[dir="rtl"] .brand,html[dir="rtl"] .globe-controls,html[dir="rtl"] .character-stage,html[dir="rtl"] .globe-zoom{direction:ltr}
 html[dir="rtl"] input[type="url"],html[dir="rtl"] .share-link-label input{direction:ltr;text-align:left}
-.language-picker select:focus-visible{outline:3px solid #ffd781;outline-offset:3px}
-@media(max-width:600px){.header-tools{gap:.3rem}.header-tools .language-picker{max-width:6.5rem}.header-tools .language-picker select{max-width:5rem}.header-tools .language-picker>span{display:none}.button{white-space:normal}.desktop-nav{min-width:0}}
+@media(max-width:600px){.header-tools{gap:.3rem}.button{white-space:normal}.desktop-nav{min-width:0}.language-trigger span{font-size:21px}}
 
-.map-language{display:flex;justify-content:flex-end;align-items:center;min-height:42px;flex:none;padding-top:env(safe-area-inset-top)}
+.language-space{min-height:54px;flex:none;padding-top:env(safe-area-inset-top)}
 .explore-screen .globe-title{padding-top:0}
+
+/* Symmetric corner controls and a screen-aligned statistics rail. */
+#app > .stats-help{top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));right:auto;width:44px;height:44px;font-size:21px;line-height:28px;border:0}
+.globe-title .explore-counters{position:fixed;left:max(12px,env(safe-area-inset-left));right:auto;top:max(68px,calc(env(safe-area-inset-top) + 56px));bottom:auto;z-index:20;direction:ltr}
+.language-space{min-height:0;padding:0}
+.explore-screen .globe-title{padding-top:max(16px,env(safe-area-inset-top));padding-bottom:64px}
+.explore-screen .globe-title h1{padding:0 58px;font-size:clamp(23px,3.4vw,40px)}
+@media(max-height:600px) and (min-width:500px){.language-menu:popover-open{display:grid;grid-template-columns:1fr 1fr;width:360px;gap:0 4px}.language-menu button{height:30px}}
+
+/* Persistent circular outlines for the two corner controls. */
+#app > .stats-help,.language-trigger{box-sizing:border-box;border:1.5px solid rgba(184,201,223,.38);border-radius:50%;background:rgba(15,25,44,.2)}
+#app > .stats-help:hover,.language-trigger:hover,.language-trigger[aria-expanded="true"]{border-color:rgba(184,201,223,.6);background:rgba(255,255,255,.06)}
+
+/* Keep the single invitation action centered at the foot of the character card. */
+.character-dialog .reaction-actions .mini-meter { max-width:100%; }

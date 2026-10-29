@@ -25,15 +25,31 @@ export function content<T>(value:T):T {const result=localizeCatalog(value,dictio
  const countries=(result as {countries?:{code:string;name:string}[]})?.countries;
  if(countries){const names=new Intl.DisplayNames([locale],{type:"region"});for(const country of countries)country.name=names.of(country.code)||country.name;}
  return result;}
+const languageFlags: Record<string,string> = {en:'🇬🇧',zh:'🇨🇳',es:'🇪🇸',pt:'🇧🇷',fr:'🇫🇷',de:'🇩🇪',it:'🇮🇹',ru:'🇷🇺',ar:'🇸🇦',hi:'🇮🇳',ja:'🇯🇵',ko:'🇰🇷',id:'🇮🇩',th:'🇹🇭',vi:'🇻🇳'};
 export function languageSelector() {
- return `<label class="language-picker"><span aria-hidden="true">🌐</span><select data-language aria-label="${t('Language')}"><option value="auto" ${preference==='auto'?'selected':''}>${t('Device language')}</option>${languages.map(([code,name])=>`<option value="${code}" lang="${code}" ${preference===code?'selected':''}>${name}</option>`).join('')}</select></label>`;
+ const option=(code:string,name:string,flag:string)=>`<button type="button" role="menuitemradio" aria-checked="${preference===code}" data-language="${code}"><span class="language-flag" aria-hidden="true">${flag}</span><span lang="${code==='auto'?locale:code}" dir="auto">${name}</span><span class="language-check" aria-hidden="true">${preference===code?'✓':''}</span></button>`;
+ return `<div class="language-picker"><button type="button" class="language-trigger" popovertarget="language-menu" aria-label="${t('Language')}" title="${t('Language')}" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu"><span aria-hidden="true">🌐</span></button><div id="language-menu" class="language-menu" popover="auto" role="menu" aria-label="${t('Language')}">${option('auto',t('Default'),'🌐')}${languages.map(([code,name])=>option(code,name,languageFlags[code])).join('')}</div></div>`;
 }
-document.addEventListener('change',event=>{
- const select=event.target;
- if(!(select instanceof HTMLSelectElement)||!select.matches('[data-language]'))return;
- try{localStorage.setItem(storageKey,select.value);}catch{}
- // A reload also stops active microphone sessions and avoids mixing languages in
- // an open invitation, while retaining the route, cookie and saved game progress.
- const url=new URL(location.href);url.searchParams.set('lang',select.value);location.assign(url.href);
+document.addEventListener('toggle',event=>{
+ const menu=event.target;
+ if(!(menu instanceof HTMLElement)||menu.id!=='language-menu')return;
+ const open=menu.matches(':popover-open');
+ document.querySelector('.language-trigger')?.setAttribute('aria-expanded',String(open));
+ if(open)menu.querySelector<HTMLButtonElement>('[aria-checked="true"]')?.focus({preventScroll:true});
+},true);
+document.addEventListener('keydown',event=>{
+ if(!(event.target instanceof Element)||!event.target.closest('#language-menu'))return;
+ const options=[...document.querySelectorAll<HTMLButtonElement>('#language-menu [data-language]')];
+ const current=options.indexOf(document.activeElement as HTMLButtonElement);
+ const index=event.key==='Home'?0:event.key==='End'?options.length-1:event.key==='ArrowDown'?(current+1)%options.length:event.key==='ArrowUp'?(current-1+options.length)%options.length:-1;
+ if(index>=0){event.preventDefault();options[index]?.focus();}
+});
+document.addEventListener('click',event=>{
+ const option=event.target instanceof Element?event.target.closest<HTMLButtonElement>('[data-language]'):null;
+ if(!option)return;
+ const value=option.dataset.language!;
+ try{localStorage.setItem(storageKey,value);}catch{}
+ // Reload retains the invitation route and guest progress, and ends audio capture.
+ const url=new URL(location.href);url.searchParams.set('lang',value);location.assign(url.href);
 });
 window.addEventListener('languagechange',()=>{if(preference==='auto')location.reload();});

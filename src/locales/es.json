@@ -1236,5 +1236,7 @@
   "麦克风不可用，本次仅播放动画。": "El micrófono no está disponible. Sólo se juega la animación.",
   "麦克风不可用，本次仅播放动画，不录音或上传。": "El micrófono no está disponible. Juega la animación sin grabar o descargar.",
   "麦克风未获授权或不可用。请允许麦克风后重试，或关闭邀请。": "Acceso al micrófono rechazado o inaccesible. Permitir el acceso y retiro, o cerrar la invitación.",
-  "🎃 Invite a friend to collect sweets": "Invita a un amigo para recoger dulces"
+  "🎃 Invite a friend to collect sweets": "Invita a un amigo para recoger dulces",
+  "Default": "Predeterminado",
+  "Trick or Treat!": "¡Truco o trato!"
 }

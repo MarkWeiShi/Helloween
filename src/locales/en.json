@@ -1236,5 +1236,7 @@
   "麦克风不可用，本次仅播放动画。": "Microphone unavailable. Playing the animation only.",
   "麦克风不可用，本次仅播放动画，不录音或上传。": "Microphone unavailable. Playing the animation without recording or uploading.",
   "麦克风未获授权或不可用。请允许麦克风后重试，或关闭邀请。": "Microphone access denied or unavailable. Allow access and retry, or close the invitation.",
-  "🎃 Invite a friend to collect sweets": "🎃 Invite a friend to collect sweets"
+  "🎃 Invite a friend to collect sweets": "🎃 Invite a friend to collect sweets",
+  "Default": "Default",
+  "Trick or Treat!": "Trick or Treat!"
 }

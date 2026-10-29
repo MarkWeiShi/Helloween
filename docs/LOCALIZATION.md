@@ -4,7 +4,7 @@ The product supports English (`en`), Simplified Chinese (`zh`), Spanish (`es`), 
 
 ## Language selection
 
-A manual language choice takes priority. It is saved under `boo:language` in browser local storage; the current URL also keeps `lang` so selection works when storage is blocked and preserves invitation paths. “Device language” follows the first supported entry in `navigator.languages`, including regional variants such as `pt-BR` and `zh-CN`. Unsupported preferences fall back to English. Chinese variants currently use the Simplified Chinese bundle. Language menus are available before microphone permission, on the globe, and in the ordinary header.
+A manual language choice takes priority. It is saved under `boo:language` in browser local storage; the current URL also keeps `lang` so selection works when storage is blocked and preserves invitation paths. “Default” follows the first supported entry in `navigator.languages`, including regional variants such as `pt-BR` and `zh-CN`. Unsupported preferences fall back to English. Chinese variants currently use the Simplified Chinese bundle. A single globe icon in the top-right corner opens a flag-and-language menu. It sits outside the inert game shell, so it remains usable before microphone permission. Clicking outside or pressing Escape closes it; arrow keys navigate its options.
 
 Browsers expose their preferred languages, not the currently selected software keyboard/input language. The language list can reflect browser or operating-system settings; it is not inferred from a player's country or IP. See [Navigator.languages](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages).
 

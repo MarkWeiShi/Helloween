@@ -5,7 +5,7 @@ test('globe character occupies viewport and keeps video uncropped',async()=>{
   for(const viewport of [{width:390,height:844},{width:320,height:568},{width:844,height:390},{width:1280,height:800}]) {
    const context=await browser.newContext({viewport,permissions:['microphone']});
    const page=await context.newPage();
-   await page.goto('http://127.0.0.1:8787');
+   await page.goto(`${process.env.WD_ACCEPTANCE_ORIGIN || 'http://127.0.0.1:8787'}/?lang=en`);
    await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
    const pin=page.locator('.globe-pin[data-spirit="kappa"]');
    await expect(pin).toBeVisible(); await pin.click();
@@ -23,9 +23,11 @@ test('globe character occupies viewport and keeps video uncropped',async()=>{
    const info=await dialog.locator('.character-info').boundingBox();
    expect(info!.y+info!.height).toBeLessThanOrEqual(viewport.height+1);
    expect((await stage.boundingBox())!.y+(await stage.boundingBox())!.height).toBeLessThanOrEqual(info!.y+1);
-   await expect(dialog.getByRole('button',{name:'Trick — scare a friend',exact:true})).toBeInViewport();
-   await expect(dialog.getByRole('button',{name:'Treat — give sweet',exact:true})).toBeInViewport();
-   await expect(dialog.locator('.mini-meter')).toContainText(['Scariness 0 / 100','Sweetness 0 / 100']);
+   await expect(dialog.getByRole('button',{name:'Trick or Treat!',exact:true})).toBeInViewport();
+   await expect(page.locator('[data-action=wallet], [data-action=gift], [data-action=donate]')).toHaveCount(0);
+   const actions=(await dialog.locator('.reaction-actions').boundingBox())!;
+   expect(actions.x+actions.width/2).toBeCloseTo(viewport.width/2,0);
+   await expect(dialog.locator('.mini-meter')).toContainText(['Scariness 0 / 100']);
    expect(await dialog.evaluate(el=>el.scrollHeight<=el.clientHeight+1)).toBe(true);
    await page.screenshot({path:`artifacts/immersive-${viewport.width}.png`});
    await page.getByRole('button',{name:'Close character details',exact:true}).click();
