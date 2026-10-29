@@ -24,3 +24,14 @@ test('every playable and regional ghost has a verified animated cute GIF and inv
   }
  }
 });
+
+test('CDN release includes GIFs, preview gallery and post copy',async()=>{
+ const {publicFiles,rewritePublicPaths}=await import('../scripts/lib/public-content.mjs');
+ const files=new Set(publicFiles('public'));
+ const manifest=JSON.parse(readFileSync('public/art/share-challenges/manifest.json'));
+ for(const c of Object.values(manifest.characters))assert.ok(files.has(c.gif.slice(1)),c.id);
+ assert.ok(files.has('art/share-challenges/index.html'));
+ assert.ok(files.has('art/share-challenges/posts.zh.txt'));
+ const rewritten=rewritePublicPaths(manifest,'/releases/test');
+ for(const c of Object.values(rewritten.characters))assert.ok(c.gif.startsWith('/releases/test/art/share-challenges/'));
+});

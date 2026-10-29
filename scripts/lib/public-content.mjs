@@ -14,7 +14,7 @@ export function publicFiles(root) {
       if(item.name.startsWith('.') || path==='art/source')continue;
       if(item.isSymbolicLink())throw new Error(`Unexpected public symlink: ${path}`);
       if(item.isDirectory())walk(join(dir,item.name),path+'/');
-      else if(/\.(json|webp|png|jpe?g|svg|ico|mp4|webm|mp3|wav|ogg|woff2?)$/i.test(item.name))paths.push(path);
+      else if(/\.(json|gif|webp|png|jpe?g|svg|ico|mp4|webm|mp3|wav|ogg|woff2?)$/i.test(item.name) || ['art/share-challenges/index.html','art/share-challenges/posts.zh.txt'].includes(path))paths.push(path);
     }
   }
   walk(root); return paths;
