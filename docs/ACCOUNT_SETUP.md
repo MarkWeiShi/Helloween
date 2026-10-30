@@ -139,3 +139,9 @@ LINE can reproduce the composition using Flex layout, APNG portrait and native t
 LINE now composes a horizontal Flex body: APNG portrait on the left, native name, English name and localized culture on the right, plus the invitation button. The static fallback is a portrait PNG, not a duplicate landscape card. The preview uses the same two-column layout. The original language parameter survives LINE login redirects.
 
 Kakao now selects the localized landscape GIF from the X-card manifest and falls back to its matching JPEG if GIF scraping is rejected. The JPEG contains the same names and cultural note. The old two-line friendship slogan is removed from all new localized GIFs and JPEGs. Both LINE and Kakao still require recipient selection and confirmation; no test message is sent by this change.
+
+## Facebook sharing without game login
+
+The Facebook button opens the public Facebook share window (`sharer/sharer.php`). It does not require `FACEBOOK_APP_ID`, an app secret, Facebook Login, or a business portfolio. The player writes their own message and confirms on Facebook; opening the window is not proof of posting or delivery. Keep Facebook out of the enabled game auth providers until production login requirements are completed; existing X login is unchanged.
+
+The shared URL is `/api/share/facebook/:invite?lang=:locale`. Its server-rendered Open Graph metadata selects the matching localized static ghost card. Browsers immediately continue to the original `/i/:invite` consent flow. Crawler requests do not create sessions, visits, rewards, or recordings, and metadata excludes sender/recipient details. The API origin must use the game's `PUBLIC_ORIGIN`; the matching `/art/x-cards/*.jpg` assets must be published on the static origin. Facebook may cache previews; real composer/recipient rendering still needs manual verification. This path does not promise animated GIF previews.

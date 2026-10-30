@@ -1,4 +1,5 @@
 import {createTelemetry} from './telemetry.mjs';
+import {facebookShareDocument} from './facebook-share.mjs';
 import {createAuth} from "./auth.mjs";
 import {loadPublicContent,publicCatalog} from './public-content.mjs';
 import { socialConfig, createWechatSigner } from './social.mjs';
@@ -83,6 +84,15 @@ export function createApp({
           buildId: process.env.APP_BUILD_ID || "local",
         });
         return;
+      }
+      const facebookShare=url.pathname.match(/^\/api\/share\/facebook\/([\w-]+)$/);
+      if (req.method==='GET' && facebookShare) {
+        const invite=store.invite(facebookShare[1]);
+        const spirit=catalog.spirits.find(s=>s.id===invite.spiritId);
+        if(!spirit)throw new ApiError(404,'This invitation could not be found.');
+        const origin=process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
+        res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});
+        res.end(facebookShareDocument(invite,spirit,origin,url.searchParams.get('lang')));return;
       }
       const token = (req.headers.cookie || "")
         .split(";")

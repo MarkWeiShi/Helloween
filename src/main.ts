@@ -434,7 +434,7 @@ async function respondInvite() {
   });
 }
 function shareChannelIcon(channel: string) {
-  const logos: Record<string,string> = {x:'x',line:'line',facebook:'messenger',kakao:'kakaotalk',wechat:'wechat'};
+  const logos: Record<string,string> = {x:'x',line:'line',facebook:'facebook',kakao:'kakaotalk',wechat:'wechat'};
   return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="/icons/social/${logos[channel]}.svg" alt="" aria-hidden="true" width="24" height="24">`;
 }
 function openShare(id = selected) {
@@ -443,7 +443,7 @@ function openShare(id = selected) {
       html`<button class="icon-button modal-close share-shortcut" aria-label="Choose a sharing app">${icon("shareCurve")}</button><div class="share-preview"><div>${portrait(s, "scare")}<span>Boo from ${e(s.culture)}!</span></div><h2>A little fright.<br>A world of friendship.</h2></div><div class="modal-heading"><h2>Who needs a little Boo?</h2><p>Send ${e(s.name)} on a friendly Halloween visit.</p></div><label>Friend’s name / 朋友备注（可选）<input id="share-friend-name" maxlength="24" placeholder="例如：小明"></label><p class="fine-print">每次分享生成独立链接。备注仅你可见，可用来识别朋友的声音；朋友无需填写名字。</p><div class="share-options">${[
         ["x", t("Scare X Friends")],
         ["line", t("Scare Line Friends")],
-        ["facebook", t("Scare Messenger Friends")],
+        ["facebook", "Facebook"],
         ["kakao", t("Scare Kakao Friends")],
         ["wechat", t("Scare Wechat Friends")],
         ["copy", t("Copy link")],

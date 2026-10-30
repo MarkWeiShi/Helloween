@@ -5,7 +5,7 @@ type Config={lineLiffId?:string;origin:string;kakaoKey:string;wechatReady:boolea
 type KakaoSDK={isInitialized():boolean;init(key:string):void;Share:{sendDefault(data:unknown):void;scrapImage(data:{imageUrl:string}):Promise<{infos:{original:{url:string}}}>}};
 type WechatSDK={config(data:unknown):void;ready(cb:()=>void):void;error(cb:()=>void):void;updateAppMessageShareData(data:unknown):void;updateTimelineShareData(data:unknown):void};
 declare global {interface Window {Kakao?:KakaoSDK;wx?:WechatSDK}}
-const names:Record<string,string>={x:'X',line:'LINE',facebook:'Messenger',kakao:'KakaoTalk',wechat:'WeChat'};
+const names:Record<string,string>={x:'X',line:'LINE',facebook:'Facebook',kakao:'KakaoTalk',wechat:'WeChat'};
 const loaders=new Map<string,Promise<void>>();
 function load(src:string){
  if(!loaders.has(src))loaders.set(src,new Promise<void>((resolve,reject)=>{const script=document.createElement('script');script.src=src;script.crossOrigin='anonymous';const timer=setTimeout(()=>{script.remove();reject(Error(t("Sharing service timed out. Please try again.")));},12000);script.onload=()=>{clearTimeout(timer);resolve();};script.onerror=()=>{clearTimeout(timer);script.remove();reject(Error(t("Sharing service could not load. Please try again.")));};document.head.append(script);}).catch(error=>{loaders.delete(src);throw error;}));
@@ -55,10 +55,12 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
  }
  const targets:Record<string,string>={x:`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,line:`https://line.me/R/share?text=${encodeURIComponent(text+' '+url)}`};
  if(channel==='facebook'){
-  const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const target=config.facebookAppId ? `https://www.facebook.com/dialog/send?app_id=${encodeURIComponent(config.facebookAppId)}&link=${encodeURIComponent(url)}&redirect_uri=${encodeURIComponent(config.origin+'/')}` : '';
-  frame(html`<p>Send this invitation privately in Messenger. Sign in there if asked, choose your friend, then confirm.</p>${typeof navigator.share==='function'?html`<button type="button" class="button primary full" data-device-share>Choose Messenger in sharing apps</button>`:''}${target&&!mobile?html`<a class="button primary full" target="_blank" rel="noopener noreferrer" href="${e(target)}">Continue to Messenger</a>`:html`<p>Copy the invitation link below and paste it into your Messenger conversation.</p>`}${!config.facebookAppId?html`<p>The website’s Messenger dialog is awaiting application setup.</p>`:''}`);
-  const button=panel.querySelector<HTMLButtonElement>('[data-device-share]');if(button)button.onclick=()=>{void navigator.share({title:t("Halloween surprise"),text,url}).catch(error=>{if(error.name!=='AbortError'&&panel.isConnected){const note=document.createElement('p');note.textContent=t("Sharing apps could not open. Copy the invitation link into Messenger instead.");panel.append(note);}});};return;
+  const token=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
+  const shareUrl=token?new URL(`/api/share/facebook/${encodeURIComponent(token)}?lang=${encodeURIComponent(locale)}`,url).href:url;
+  const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+  const poster=spiritId?`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`:image;
+  const guidance=html`<p>Continue to ${e(name)}. If you are signed out, ${e(name)} will ask you to sign in before you choose friends or confirm your post.</p><a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Continue to ${e(name)}</a>`;
+  frame(`<img src="${e(poster)}" alt="" width="960" height="504" style="max-width:100%;height:auto;border-radius:16px">${guidance}`);return;
  }
  if(targets[channel]){
   frame(html`<p>Continue to ${e(name)}. If you are signed out, ${e(name)} will ask you to sign in before you choose friends or confirm your post.</p><a class="button primary full" href="${e(targets[channel])}" target="_blank" rel="noopener noreferrer">Continue to ${e(name)}</a>`);return;

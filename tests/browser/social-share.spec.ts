@@ -29,7 +29,7 @@ test('share icon matches close; Trick and icon lead to truthful platform sign-in
   const link=page.getByRole('link',{name:`Continue to ${platform}`,exact:true});await expect(link).toBeVisible();expect(new URL((await link.getAttribute('href'))!).hostname).toBe(host);
   await expect(page.locator('.social-handoff')).toContainText('Nothing is sent automatically');
  }
- await page.getByRole('button',{name:'Messenger'}).click();await expect(page.locator('.social-handoff')).toContainText('privately in Messenger');
+ await page.getByRole('button',{name:'Facebook',exact:true}).click();await expect(page.getByRole('link',{name:'Continue to Facebook',exact:true})).toHaveAttribute('href',/facebook\.com\/sharer\/sharer\.php/);
  await page.getByRole('button',{name:'KakaoTalk'}).click();await expect(page.locator('.social-handoff')).toContainText('not connected');
  await page.getByRole('button',{name:'WeChat'}).click();await expect(page.locator('.social-handoff')).toContainText('top-right');
  await page.screenshot({path:`artifacts/social-share/${info.project.name}-guide.png`});
