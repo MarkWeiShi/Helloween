@@ -1327,5 +1327,9 @@
   "● 5s · record & send": "● 录音5秒 · 发送",
   "● 5s · local only": "● 录音5秒 · 本机",
   "No recording · retry": "录音失败 · 重试",
-  "Starting mic…": "启动麦克风…"
+  "Starting mic…": "启动麦克风…",
+  "Friend visits": "好友访问",
+  "Released spirits": "已释放鬼怪",
+  "Friends who opened your links. Repeat visits to the same link count once.": "好友打开你分享链接的次数；同一好友重复打开同一链接只计一次。",
+  "Spirits whose wishes you have completed.": "你已完成心愿并释放的鬼怪数量。"
 }

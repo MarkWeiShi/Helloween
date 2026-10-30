@@ -1327,5 +1327,9 @@
   "● 5s · record & send": "● 5с · отправка",
   "● 5s · local only": "● 5с · локально",
   "No recording · retry": "Нет звука · повтор",
-  "Starting mic…": "Запуск микрофона…"
+  "Starting mic…": "Запуск микрофона…",
+  "Friend visits": "Визиты друзей",
+  "Released spirits": "Освобождённые духи",
+  "Friends who opened your links. Repeat visits to the same link count once.": "Друзья, открывшие твои ссылки. Повторные посещения одной ссылки считаются один раз.",
+  "Spirits whose wishes you have completed.": "Духи, чьи желания ты исполнил."
 }

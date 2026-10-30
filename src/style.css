@@ -3406,3 +3406,31 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 @media (prefers-reduced-motion:reduce) {
  .character-dialog .scare-action .action-orb::after { animation:none; transform:translate(0,0); }
 }
+
+/* Shared English campaign artwork across all locales. */
+.explore-screen .globe-title h1.halloween-image-title{padding:0 42px;display:flex;justify-content:center;align-items:center;min-height:52px;line-height:1}
+.halloween-title-image{display:block;width:90%;max-width:594px;height:auto;direction:ltr}
+@media(max-width:600px){.explore-screen .globe-title h1.halloween-image-title{padding:0 30px}}
+@media(max-height:500px){.halloween-title-image{max-width:306px}}
+
+/* Two aligned header rows: campaign and controls, then subtitle and pumpkin. */
+.explore-screen{--campaign-row:clamp(60px,9vw,113px);--campaign-top:max(8px,env(safe-area-inset-top))}
+.explore-screen .globe-title{padding-top:var(--campaign-top)}
+.explore-screen .globe-title > div:first-child{grid-template-rows:var(--campaign-row) auto}
+.explore-screen .globe-title h1.halloween-image-title{height:var(--campaign-row);min-height:0;align-self:center}
+.explore-screen .halloween-title-image{max-height:100%;object-fit:contain}
+.explore-screen #app > .stats-help,.explore-screen .language-picker{top:calc(var(--campaign-top) + var(--campaign-row)/2 - 22px)}
+.explore-screen .language-menu{top:calc(var(--campaign-top) + var(--campaign-row)/2 + 28px)}
+.explore-screen .globe-title p{min-height:44px}
+.explore-screen .globe-title .explore-counters{position:absolute;top:calc(var(--campaign-top) + var(--campaign-row));left:max(8px,calc(env(safe-area-inset-left) - 4px))}
+.explore-screen .globe-title .parade-counter{min-height:44px}
+.explore-screen .home-sound-toggle{top:calc(var(--campaign-top) + var(--campaign-row))}
+
+/* Localized neon subtitle artwork; keep its row aligned with the pumpkin. */
+.campaign-subtitle-image{display:block;width:90%;max-width:476px;height:auto;max-height:29px;object-fit:contain}
+.explore-screen .globe-title p.campaign-subtitle{padding-left:80px;padding-right:80px}
+.explore-screen .globe-title .explore-counters{grid-template-columns:26px max-content;column-gap:3px;row-gap:0}
+.explore-screen .globe-title .parade-counter{column-gap:3px}
+.explore-screen .globe-title .counter-current{padding-left:0}
+
+.explore-screen .globe-title .parade-counter + .parade-counter{min-height:30px;margin-top:-6px}

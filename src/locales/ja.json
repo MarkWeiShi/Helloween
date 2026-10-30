@@ -1327,5 +1327,9 @@
   "● 5s · record & send": "● 5秒録音 · 送信",
   "● 5s · local only": "● 5秒録音 · 端末内",
   "No recording · retry": "録音失敗 · 再試行",
-  "Starting mic…": "マイク起動中…"
+  "Starting mic…": "マイク起動中…",
+  "Friend visits": "友達の訪問",
+  "Released spirits": "解放した精霊",
+  "Friends who opened your links. Repeat visits to the same link count once.": "友達がリンクを開いた回数。同じ友達による同じリンクへの再訪問は1回と数えます。",
+  "Spirits whose wishes you have completed.": "願いをかなえて解放した精霊の数。"
 }

@@ -1327,5 +1327,9 @@
   "● 5s · record & send": "● 5s · enviar",
   "● 5s · local only": "● 5s · local",
   "No recording · retry": "Sin audio · reintenta",
-  "Starting mic…": "Iniciando micro…"
+  "Starting mic…": "Iniciando micro…",
+  "Friend visits": "Visitas de amigos",
+  "Released spirits": "Espíritus liberados",
+  "Friends who opened your links. Repeat visits to the same link count once.": "Amigos que abrieron tus enlaces. Las visitas repetidas al mismo enlace cuentan una vez.",
+  "Spirits whose wishes you have completed.": "Espíritus cuyos deseos has cumplido."
 }

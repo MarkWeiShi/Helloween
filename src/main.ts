@@ -204,7 +204,6 @@ function render() {
   }
   app.innerHTML = html`<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : page === "links" ? linksPage(player) : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer></div><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav>${page === "map" ? html`<button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?"><img class="corner-ui-icon" src="/art/ui/help-question.webp" width="30" height="30" alt="" aria-hidden="true"></button>` : ""}`;
   app.insertAdjacentHTML("beforeend", languageSelector());
-  if(page === 'map') app.insertAdjacentHTML('beforeend',html`<button class="home-sound-toggle icon-button" data-action="sound" aria-label="${sound ? t('Mute sound') : t('Enable sound')}" aria-pressed="${sound}">${icon(sound ? 'sound' : 'mute')}</button>`);
   if (page === "map") {
     const host=$(".globe-explorer")!;
     const stopGlobe=mountGlobe(host, region), stopMotions=mountCuteMotions(host);
@@ -244,8 +243,8 @@ function revealCharacter(animate = true, shared?: SharedReaction) {
   );
   dialog.querySelector<HTMLButtonElement>(".character-close")?.focus({preventScroll:true});
 }
-function counterFraction(current: number, total: number) {
-  return html`<span class="counter-current">${current}</span><span class="counter-slash">/</span><span class="counter-total">${total}</span>`;
+function counterNumber(current: number) {
+  return html`<span class="counter-current">${current}</span>`;
 }
 function folklorePreview(s: Spirit) {
   // Use the already localized, source-informed folklore rather than the playful tagline.
@@ -254,7 +253,7 @@ function folklorePreview(s: Spirit) {
   return sentence.toLocaleLowerCase(locale).includes(origin.toLocaleLowerCase(locale)) ? sentence : `${origin} · ${sentence}`;
 }
 function mapPage() {
-  return '<div class="language-space" aria-hidden="true"></div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title">${e(t("Scary Halloween")).replace(e(t("Halloween")), `<span class="hello-accent">${e(t("Halloween"))}</span>`)} <span class="halloween-byline" translate="no" lang="en">${"by HelloTalk"}</span></h1><p>Join HelloTalk to Hear Friends Scream</p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend opens / shares"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterFraction(player.shareVisits || 0, player.shareCount || 0)}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits / total spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${counterFraction(player.peaceCount, catalog.spirits.length)}</span></button></div></div>
+  return '<div class="language-space" aria-hidden="true"></div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title halloween-image-title" translate="no" lang="en"><img class="halloween-title-image" src="/art/ui/halloween-tricks-title.webp" width="2126" height="403" alt="${"Halloween Tricks by HelloTalk"}" fetchpriority="high"></h1><p class="campaign-subtitle"><img class="campaign-subtitle-image" src="/art/ui/subtitles/${e(locale)}.webp" alt="${e(t("Join HelloTalk to Hear Friends Scream"))}" fetchpriority="high"></p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend visits"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterNumber(player.shareVisits || 0)}</span></button><button class="parade-counter" data-action="collection" aria-label="Released spirits"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="peace-count">${counterNumber(player.peaceCount)}</span></button></div></div>
   ${invite ? html`<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
   <div class="explore-layout globe-layout"><div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div><section class="globe-explorer" aria-label="Explore cultures on the globe">
     <div class="globe-viewport" tabindex="0" role="group" aria-label="Interactive globe. Drag to rotate, or use left and right arrow keys."><span class="globe-spark spark-one">✦</span><span class="globe-spark spark-two">✧</span><span class="globe-spark spark-three">✦</span><canvas aria-hidden="true"></canvas>
@@ -520,7 +519,7 @@ function showGate() {
   // Render the actual live world once, then lock its interaction with an inert shell.
   gate=false;page='map';render();gate=true;
   app.querySelector<HTMLElement>('.app-shell')!.inert=true;
-  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><a class="text-button" href="/my-links">${e(t("Friends’ screams"))}</a><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
+  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
   app.querySelector<HTMLButtonElement>('.play-unlock')!.focus({preventScroll:true});
 }
 function openUnlockConsent() {
@@ -692,7 +691,7 @@ document.addEventListener("click", async (ev) => {
         await respondInvite();
         break;
       case "stats-help":
-        modal(html`<div class="sheet-handle" aria-hidden="true"></div><div class="stats-sheet-heading"><span aria-hidden="true">✦ 🎃 ✦</span><h2 id="stats-sheet-title">Your Halloween magic</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend opens / Shares</h3><p>Unique friend visits / share links created.</p></div></section><section><span aria-hidden="true">👻</span><div><h3>Released / Total spirits</h3><p>Wishes completed / spirits to discover.</p></div></section></div><p class="stats-sheet-note">Repeat visits to the same link count once. A share link is not a confirmed send.</p>`);
+        modal(html`<div class="sheet-handle" aria-hidden="true"></div><div class="stats-sheet-heading"><span aria-hidden="true">✦ 🎃 ✦</span><h2 id="stats-sheet-title">Your Halloween magic</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend visits</h3><p>Friends who opened your links. Repeat visits to the same link count once.</p></div></section><section><span aria-hidden="true">👻</span><div><h3>Released spirits</h3><p>Spirits whose wishes you have completed.</p></div></section></div><p class="stats-sheet-note">Repeat visits to the same link count once. A share link is not a confirmed send.</p>`);
         overlay.querySelector('dialog')!.classList.add('stats-sheet');
         overlay.querySelector('dialog')!.setAttribute('aria-labelledby','stats-sheet-title');
         break;
@@ -741,8 +740,8 @@ async function refreshPlayer() {
         if(notified.has(key))continue;notified.add(key);
         toast(msg`${r.name}: ${r.hasAudio?msg`sent a ${r.durationMs / 1000}-second voice reaction`:r.meanHz===null?t("no clear voice"):msg`peak ${r.peakHz} Hz · ${t(r.level)}`} — open Friend reactions`);
       }
-      const count=$('#reaction-count'); if(count)count.innerHTML=counterFraction(player.shareVisits || 0, player.shareCount || 0);
-      const peace=$('#peace-count');if(peace)peace.innerHTML=counterFraction(player.peaceCount, catalog.spirits.length);
+      const count=$('#reaction-count'); if(count)count.innerHTML=counterNumber(player.shareVisits || 0);
+      const peace=$('#peace-count');if(peace)peace.innerHTML=counterNumber(player.peaceCount);
       const meter=overlay.querySelector<HTMLElement>('[data-reaction-spirit]');
       if(meter){
         const score=pitchScore(player.reactions?.stats.find(x=>x.spiritId===meter.dataset.reactionSpirit)?.meanHz ?? null);

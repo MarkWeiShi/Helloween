@@ -223,7 +223,11 @@
     "● 5s · record & send": "● 5s · send",
     "● 5s · local only": "● 5s · local",
     "No recording · retry": "No audio · retry",
-    "Starting mic…": "Starting mic…"
+    "Starting mic…": "Starting mic…",
+    "Friend visits": "Friend visits",
+    "Released spirits": "Released spirits",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Friends who opened your links. Repeat visits to the same link count once.",
+    "Spirits whose wishes you have completed.": "Spirits whose wishes you have completed."
   },
   "zh": {
     "Language": "语言",
@@ -638,7 +642,11 @@
     "● 5s · record & send": "● 录音5秒 · 发送",
     "● 5s · local only": "● 录音5秒 · 本机",
     "No recording · retry": "录音失败 · 重试",
-    "Starting mic…": "启动麦克风…"
+    "Starting mic…": "启动麦克风…",
+    "Friend visits": "好友访问",
+    "Released spirits": "已释放鬼怪",
+    "Friends who opened your links. Repeat visits to the same link count once.": "好友打开你分享链接的次数；同一好友重复打开同一链接只计一次。",
+    "Spirits whose wishes you have completed.": "你已完成心愿并释放的鬼怪数量。"
   },
   "es": {
     "Language": "Idioma",
@@ -887,7 +895,11 @@
     "● 5s · record & send": "● 5s · enviar",
     "● 5s · local only": "● 5s · local",
     "No recording · retry": "Sin audio · reintenta",
-    "Starting mic…": "Iniciando micro…"
+    "Starting mic…": "Iniciando micro…",
+    "Friend visits": "Visitas de amigos",
+    "Released spirits": "Espíritus liberados",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Amigos que abrieron tus enlaces. Las visitas repetidas al mismo enlace cuentan una vez.",
+    "Spirits whose wishes you have completed.": "Espíritus cuyos deseos has cumplido."
   },
   "pt": {
     "Language": "Idioma",
@@ -1136,7 +1148,11 @@
     "● 5s · record & send": "● 5s · enviar",
     "● 5s · local only": "● 5s · local",
     "No recording · retry": "Sem áudio · tente",
-    "Starting mic…": "Iniciando micro…"
+    "Starting mic…": "Iniciando micro…",
+    "Friend visits": "Visitas de amigos",
+    "Released spirits": "Espíritos libertados",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Amigos que abriram seus links. Visitas repetidas ao mesmo link contam uma vez.",
+    "Spirits whose wishes you have completed.": "Espíritos cujos desejos você realizou."
   },
   "fr": {
     "Language": "Langue",
@@ -1385,7 +1401,11 @@
     "● 5s · record & send": "● 5s · envoyer",
     "● 5s · local only": "● 5s · local",
     "No recording · retry": "Sans audio · réessayer",
-    "Starting mic…": "Démarrage micro…"
+    "Starting mic…": "Démarrage micro…",
+    "Friend visits": "Visites des amis",
+    "Released spirits": "Esprits libérés",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Amis ayant ouvert tes liens. Les visites répétées du même lien ne comptent qu’une fois.",
+    "Spirits whose wishes you have completed.": "Esprits dont tu as exaucé les souhaits."
   },
   "de": {
     "Language": "Sprache",
@@ -1634,7 +1654,11 @@
     "● 5s · record & send": "● 5s · senden",
     "● 5s · local only": "● 5s · lokal",
     "No recording · retry": "Kein Ton · erneut",
-    "Starting mic…": "Mikro startet…"
+    "Starting mic…": "Mikro startet…",
+    "Friend visits": "Besuche von Freunden",
+    "Released spirits": "Befreite Geister",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Freunde, die deine Links geöffnet haben. Wiederholte Besuche desselben Links zählen einmal.",
+    "Spirits whose wishes you have completed.": "Geister, deren Wünsche du erfüllt hast."
   },
   "it": {
     "Language": "Lingua",
@@ -1883,7 +1907,11 @@
     "● 5s · record & send": "● 5s · invia",
     "● 5s · local only": "● 5s · locale",
     "No recording · retry": "No audio · riprova",
-    "Starting mic…": "Avvio microfono…"
+    "Starting mic…": "Avvio microfono…",
+    "Friend visits": "Visite degli amici",
+    "Released spirits": "Spiriti liberati",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Amici che hanno aperto i tuoi link. Le visite ripetute allo stesso link contano una volta.",
+    "Spirits whose wishes you have completed.": "Spiriti di cui hai esaudito i desideri."
   },
   "ru": {
     "Language": "Язык",
@@ -2132,7 +2160,11 @@
     "● 5s · record & send": "● 5с · отправка",
     "● 5s · local only": "● 5с · локально",
     "No recording · retry": "Нет звука · повтор",
-    "Starting mic…": "Запуск микрофона…"
+    "Starting mic…": "Запуск микрофона…",
+    "Friend visits": "Визиты друзей",
+    "Released spirits": "Освобождённые духи",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Друзья, открывшие твои ссылки. Повторные посещения одной ссылки считаются один раз.",
+    "Spirits whose wishes you have completed.": "Духи, чьи желания ты исполнил."
   },
   "ar": {
     "Language": "اللغة",
@@ -2381,7 +2413,11 @@
     "● 5s · record & send": "● 5ث · إرسال",
     "● 5s · local only": "● 5ث · محلي",
     "No recording · retry": "لا تسجيل · أعد",
-    "Starting mic…": "تشغيل الميكروفون…"
+    "Starting mic…": "تشغيل الميكروفون…",
+    "Friend visits": "زيارات الأصدقاء",
+    "Released spirits": "الأرواح المحررة",
+    "Friends who opened your links. Repeat visits to the same link count once.": "الأصدقاء الذين فتحوا روابطك. تُحتسب الزيارات المتكررة للرابط نفسه مرة واحدة.",
+    "Spirits whose wishes you have completed.": "الأرواح التي حققت أمنياتها."
   },
   "hi": {
     "Language": "भाषा",
@@ -2630,7 +2666,11 @@
     "● 5s · record & send": "● 5से · भेजें",
     "● 5s · local only": "● 5से · स्थानीय",
     "No recording · retry": "रिकॉर्डिंग नहीं · फिर करें",
-    "Starting mic…": "माइक शुरू…"
+    "Starting mic…": "माइक शुरू…",
+    "Friend visits": "दोस्तों की विज़िट",
+    "Released spirits": "मुक्त आत्माएँ",
+    "Friends who opened your links. Repeat visits to the same link count once.": "आपके लिंक खोलने वाले दोस्त। उसी लिंक पर बार-बार आने को एक बार गिना जाता है।",
+    "Spirits whose wishes you have completed.": "वे आत्माएँ जिनकी इच्छाएँ आपने पूरी की हैं।"
   },
   "ja": {
     "Language": "言語",
@@ -2881,7 +2921,11 @@
     "● 5s · record & send": "● 5秒録音 · 送信",
     "● 5s · local only": "● 5秒録音 · 端末内",
     "No recording · retry": "録音失敗 · 再試行",
-    "Starting mic…": "マイク起動中…"
+    "Starting mic…": "マイク起動中…",
+    "Friend visits": "友達の訪問",
+    "Released spirits": "解放した精霊",
+    "Friends who opened your links. Repeat visits to the same link count once.": "友達がリンクを開いた回数。同じ友達による同じリンクへの再訪問は1回と数えます。",
+    "Spirits whose wishes you have completed.": "願いをかなえて解放した精霊の数。"
   },
   "ko": {
     "Language": "언어",
@@ -3131,7 +3175,11 @@
     "● 5s · record & send": "● 5초 녹음 · 전송",
     "● 5s · local only": "● 5초 녹음 · 기기 내",
     "No recording · retry": "녹음 실패 · 재시도",
-    "Starting mic…": "마이크 시작 중…"
+    "Starting mic…": "마이크 시작 중…",
+    "Friend visits": "친구 방문",
+    "Released spirits": "해방한 유령",
+    "Friends who opened your links. Repeat visits to the same link count once.": "친구가 공유 링크를 연 횟수입니다. 같은 친구가 같은 링크를 다시 열어도 한 번만 셉니다.",
+    "Spirits whose wishes you have completed.": "소원을 이루어 주고 해방한 유령 수입니다."
   },
   "id": {
     "Language": "Bahasa",
@@ -3380,7 +3428,11 @@
     "● 5s · record & send": "● 5d · kirim",
     "● 5s · local only": "● 5d · lokal",
     "No recording · retry": "Tanpa audio · ulang",
-    "Starting mic…": "Memulai mik…"
+    "Starting mic…": "Memulai mik…",
+    "Friend visits": "Kunjungan teman",
+    "Released spirits": "Roh yang dibebaskan",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Teman yang membuka tautanmu. Kunjungan berulang ke tautan yang sama dihitung sekali.",
+    "Spirits whose wishes you have completed.": "Roh yang keinginannya telah kamu penuhi."
   },
   "th": {
     "Language": "ภาษา",
@@ -3629,7 +3681,11 @@
     "● 5s · record & send": "● 5วิ · ส่ง",
     "● 5s · local only": "● 5วิ · ในเครื่อง",
     "No recording · retry": "ไม่มีเสียง · ลองใหม่",
-    "Starting mic…": "กำลังเปิดไมค์…"
+    "Starting mic…": "กำลังเปิดไมค์…",
+    "Friend visits": "การเข้าชมจากเพื่อน",
+    "Released spirits": "วิญญาณที่ปลดปล่อย",
+    "Friends who opened your links. Repeat visits to the same link count once.": "เพื่อนที่เปิดลิงก์ของคุณ การเปิดลิงก์เดิมซ้ำจะนับเพียงครั้งเดียว",
+    "Spirits whose wishes you have completed.": "วิญญาณที่คุณทำความปรารถนาให้สำเร็จแล้ว"
   },
   "vi": {
     "Language": "Ngôn ngữ",
@@ -3878,6 +3934,10 @@
     "● 5s · record & send": "● 5giây · gửi",
     "● 5s · local only": "● 5giây · cục bộ",
     "No recording · retry": "Không âm · thử lại",
-    "Starting mic…": "Đang bật mic…"
+    "Starting mic…": "Đang bật mic…",
+    "Friend visits": "Lượt bạn bè ghé thăm",
+    "Released spirits": "Linh hồn đã giải thoát",
+    "Friends who opened your links. Repeat visits to the same link count once.": "Bạn bè đã mở liên kết của bạn. Mở lại cùng một liên kết chỉ tính một lần.",
+    "Spirits whose wishes you have completed.": "Những linh hồn mà bạn đã hoàn thành điều ước."
   }
 }

@@ -1327,5 +1327,9 @@
   "● 5s · record & send": "● 5giây · gửi",
   "● 5s · local only": "● 5giây · cục bộ",
   "No recording · retry": "Không âm · thử lại",
-  "Starting mic…": "Đang bật mic…"
+  "Starting mic…": "Đang bật mic…",
+  "Friend visits": "Lượt bạn bè ghé thăm",
+  "Released spirits": "Linh hồn đã giải thoát",
+  "Friends who opened your links. Repeat visits to the same link count once.": "Bạn bè đã mở liên kết của bạn. Mở lại cùng một liên kết chỉ tính một lần.",
+  "Spirits whose wishes you have completed.": "Những linh hồn mà bạn đã hoàn thành điều ước."
 }

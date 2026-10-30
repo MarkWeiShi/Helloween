@@ -1327,5 +1327,9 @@
   "● 5s · record & send": "● 5วิ · ส่ง",
   "● 5s · local only": "● 5วิ · ในเครื่อง",
   "No recording · retry": "ไม่มีเสียง · ลองใหม่",
-  "Starting mic…": "กำลังเปิดไมค์…"
+  "Starting mic…": "กำลังเปิดไมค์…",
+  "Friend visits": "การเข้าชมจากเพื่อน",
+  "Released spirits": "วิญญาณที่ปลดปล่อย",
+  "Friends who opened your links. Repeat visits to the same link count once.": "เพื่อนที่เปิดลิงก์ของคุณ การเปิดลิงก์เดิมซ้ำจะนับเพียงครั้งเดียว",
+  "Spirits whose wishes you have completed.": "วิญญาณที่คุณทำความปรารถนาให้สำเร็จแล้ว"
 }

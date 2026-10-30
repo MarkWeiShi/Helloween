@@ -1327,5 +1327,9 @@
   "● 5s · record & send": "● 5s · send",
   "● 5s · local only": "● 5s · local",
   "No recording · retry": "No audio · retry",
-  "Starting mic…": "Starting mic…"
+  "Starting mic…": "Starting mic…",
+  "Friend visits": "Friend visits",
+  "Released spirits": "Released spirits",
+  "Friends who opened your links. Repeat visits to the same link count once.": "Friends who opened your links. Repeat visits to the same link count once.",
+  "Spirits whose wishes you have completed.": "Spirits whose wishes you have completed."
 }
