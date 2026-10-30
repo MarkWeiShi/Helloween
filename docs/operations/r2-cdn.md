@@ -26,3 +26,14 @@ Cloudflare supports multi-region edge caching but not guaranteed pre-pushed perm
 Observed cold → warm TTFB: SIN 1814 → 60/29 ms; FRA 953 → 79/52 ms; IAD reached ATL 1169 ms MISS, EWR 430 ms MISS, ATL 41 ms HIT. All responses 206, 65536 bytes. The probe's existing same-region Fly baseline was faster (4–96 ms), so these measurements do not support claiming CDN is universally faster than the existing Fly regional fleet. They do demonstrate multi-region caching and cold-cache overhead. Re-measure real-user p50/p95 after rollout before claiming global improvements.
 
 Sources: https://developers.cloudflare.com/cache/interaction-cloudflare-products/r2/ and https://developers.cloudflare.com/cache/how-to/tiered-cache/.
+
+## This rollout
+
+- Source: isolated `codex/r2-assets-cutover`, based on live `6c8538e`; no unrelated login changes from CDNSolution were deployed.
+- Frontend/CSP commit: `a3848d6`.
+- Pinned image: `registry.fly.io/helloween:cdn-a3848d6-20261031@sha256:4ca13348b0132c9175a55ae0d6cf3ac4222dcdb9218f1a7887fbcb486bd99076`.
+- Image is an additive frontend/CSP layer on the existing production image; API and immutable media layers unchanged.
+- Tokyo static deployment: `aa915f4f5055698c29c8`. Keep `STATIC_DEPLOYMENT_ID` pinned to it on restarts. Clearing this variable triggers a full historical-media integrity scan and delayed API startup during this rollout.
+- Prior Tokyo deployment for rollback: `38c54031e9eabd72f5e2`. Prior image digest: `sha256:9e842bdd78f66812e528f25d197f13f53d343c812b21add5339081348c174e0a`.
+- Three-region warmup fetched 75 actual no-query URLs (catalogs, terrain, 56 thumbnails and selected videos), 23,231,078 bytes per region, all 200. This is one-time warmup, not a recurring scheduler or permanent cache reservation.
+- Local production-origin browser test of built assets recorded 94 successful CDN requests and no console/page errors; it was not physical-device playback acceptance.
