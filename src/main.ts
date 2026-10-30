@@ -219,30 +219,6 @@ function render() {
   }
   bgm.sync();
 }
-function bindCharacterSwipe() {
-  const stage = $(".globe-character .character-stage");
-  if (!stage) return;
-  let start: { x: number; y: number; time: number; id: number } | null = null;
-  stage.addEventListener("pointerdown", ev => {
-    if ((ev.target as Element).closest("button") || ev.button !== 0) return;
-    start = { x: ev.clientX, y: ev.clientY, time: Date.now(), id: ev.pointerId };
-    stage.setPointerCapture(ev.pointerId);
-  });
-  stage.addEventListener("pointercancel", () => { start = null; });
-  stage.addEventListener("pointerup", ev => {
-    if (!start || start.id !== ev.pointerId) return;
-    const dx = ev.clientX - start.x, dy = ev.clientY - start.y;
-    const elapsed = Date.now() - start.time;
-    start = null;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4 && elapsed < 1000)
-      stage.querySelector<HTMLButtonElement>(dx < 0 ? ".character-next" : ".character-previous")?.click();
-  });
-  stage.addEventListener("keydown", ev => {
-    if (ev.target !== stage || !["ArrowLeft", "ArrowRight"].includes(ev.key)) return;
-    ev.preventDefault();
-    stage.querySelector<HTMLButtonElement>(ev.key === "ArrowRight" ? ".character-next" : ".character-previous")?.click();
-  });
-}
 function characterAction(emoji: string, label: string, action: string, style: string, accessible = label, id = selected) {
   return html`<button class="spirit-action ${style}" data-id="${e(id)}" data-action="${action}" aria-label="${e(accessible)}"><span class="action-orb" aria-hidden="true">${emoji}</span><span class="action-caption">${e(label)}</span></button>`;
 }
@@ -253,7 +229,6 @@ function revealCharacter(animate = true, shared?: SharedReaction) {
   dialog.classList.add("character-dialog", "character-immersive");
   dialog.setAttribute("aria-label", t("Folklore character details"));
   dialog.querySelector(".modal-close")?.remove();
-  bindCharacterSwipe();
   const current = spirit();
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasCharacter = current?.art && current.regionId === region;
@@ -300,16 +275,12 @@ function actionPair(id:string, preview=false) {
   return html`<div class="reaction-actions"><div>${preview ? html`<button class="spirit-action" disabled><span class="action-orb">🎃</span><span class="action-caption">Trick or Treat!</span></button>` : characterAction('🎃',t("Trick or Treat!"),'share','scare-action',t("Trick or Treat!"),id)}${reactionMeter(id)}</div></div>`;
 }
 function characterPanel() {
-  const s = spirit(), r = catalog.regions.find(r => r.id === region)!;
+  const s = spirit();
   const p = progress(), friends = catalog.spirits.filter(x => x.regionId === region);
   const preview = regionPreviews[region];
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasTransformation = !!(friends.length ? s.art : previewId);
-  const index = friends.findIndex(x => x.id === selected);
-  const previous = friends[(index - 1 + friends.length) % friends.length];
-  const next = friends[(index + 1) % friends.length];
-  const arrows = friends.length ? html`<button class="icon-button character-previous" data-spirit="${previous.id}" aria-label="Previous character in ${e(r.name)}">‹</button><button class="icon-button character-next" data-spirit="${next.id}" aria-label="Next character in ${e(r.name)}">›</button>` : html`<button class="icon-button character-previous" data-action="preview-page" data-direction="-1" aria-label="Previous region character">‹</button><button class="icon-button character-next" data-action="preview-page" data-direction="1" aria-label="Next region character">›</button>`;
-  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Character gallery. Swipe left or right to change character.">${arrows}<span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
+  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
 }
 async function openReactions() {
   player=(await api('/me')).player;
@@ -727,14 +698,6 @@ document.addEventListener("click", async (ev) => {
       case "reactions":
         await openReactions();
         break;
-      case "preview-page": {
-        const regions = catalog.regions;
-        const i = regions.findIndex(r=>r.id === region);
-        region = regions[(i + Number(target.dataset.direction) + regions.length) % regions.length].id;
-        const first = catalog.spirits.find(x=>x.regionId===region);
-        if(first) selected=first.id;
-        render(); revealCharacter(); break;
-      }
       case "collection":
         closeModal();
         page = "codex";
