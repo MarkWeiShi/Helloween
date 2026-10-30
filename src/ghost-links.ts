@@ -1,3 +1,4 @@
+import {mountHelloTalkUnlock} from './hellotalk-unlock';
 import {api,client,escape as e} from './api';
 import {t,locale} from './i18n';
 import type {Catalog,Player} from './types';
@@ -7,6 +8,7 @@ export function linksPage(player:Player) {
 }
 type Voice={inviteId:string;receiverId:string;spiritId:string;name:string;country:string|null;durationMs:number;createdAt:number};
 export function mountLinks(root:HTMLElement,catalog:Catalog) {
+ const playback=mountHelloTalkUnlock(root);
  let recordings:Voice[]=[],busy=false,dead=false;
  const grid=root.querySelector<HTMLElement>('[data-links-grid]')!,status=root.querySelector<HTMLElement>('[data-links-status]')!,filter=root.querySelector<HTMLSelectElement>('[data-ghost-filter]')!,country=root.querySelector<HTMLSelectElement>('[data-country-filter]')!,capacity=root.querySelector<HTMLElement>('[data-voice-capacity]')!;
  const date=(value:number)=>new Date(value).toLocaleString(locale,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -17,7 +19,7 @@ export function mountLinks(root:HTMLElement,catalog:Catalog) {
   country.innerHTML=`<option value="">${e(t('All countries'))}</option>`+[...new Set(recordings.map(r=>r.country).filter((c):c is string=>!!c))].sort().map(code=>`<option value="${e(code)}">${e(countryName(code))}</option>`).join('');country.value=nation;
   const visible=recordings.filter(r=>(!filter.value||r.spiritId===filter.value)&&(!country.value||r.country===country.value));
   capacity.textContent=`${recordings.length} / 50 · ${t(recordings.length>=50?'Storage full. Delete a voice to receive new recordings.':'Voices saved · newest first')}`;
-  grid.innerHTML=visible.map(r=>{const spirit=catalog.spirits.find(s=>s.id===r.spiritId);return `<article class="ghost-link-card"><header>${spirit?.art?`<img src="${e(catalog.assetOrigin+spirit.art.thumb)}" alt="" width="56" height="56">`:''}<div><h2>${e(r.name)}</h2><p>${e(spirit?.name || r.spiritId)}${r.country?` · ${e(countryName(r.country))}`:''}</p><small><time datetime="${new Date(r.createdAt).toISOString()}">${e(date(r.createdAt))}</time> · ${r.durationMs/1000}s</small></div></header><div class="voice-detail"><audio controls preload="none" src="${e(client.audio.url(r.inviteId,r.receiverId))}" aria-label="${e(r.name)} · ${e(t('Voice reaction'))}"></audio></div><div class="ghost-link-meta"><a href="/i/${e(r.inviteId)}" target="_blank" rel="noopener">${e(t('Open invitation'))} ↗</a><button class="text-button" data-delete-invite="${e(r.inviteId)}" data-receiver="${e(r.receiverId)}">${e(t('Delete voice'))}</button></div></article>`;}).join('');
+  grid.innerHTML=visible.map(r=>{const spirit=catalog.spirits.find(s=>s.id===r.spiritId);return `<article class="ghost-link-card"><header>${spirit?.art?`<img src="${e(catalog.assetOrigin+spirit.art.thumb)}" alt="" width="56" height="56">`:''}<div><h2>${e(r.name)}</h2><p>${e(spirit?.name || r.spiritId)}${r.country?` · ${e(countryName(r.country))}`:''}</p><small><time datetime="${new Date(r.createdAt).toISOString()}">${e(date(r.createdAt))}</time> · ${r.durationMs/1000}s</small></div></header><div class="voice-detail"><button class="button secondary" data-unlock-play disabled>${e(t('Play voice'))}</button><audio hidden controls preload="none" data-voice-audio="${e(client.audio.url(r.inviteId,r.receiverId))}" aria-label="${e(r.name)} · ${e(t('Voice reaction'))}"></audio></div><div class="ghost-link-meta"><a href="/i/${e(r.inviteId)}" target="_blank" rel="noopener">${e(t('Open invitation'))} ↗</a><button class="text-button" data-delete-invite="${e(r.inviteId)}" data-receiver="${e(r.receiverId)}">${e(t('Delete voice'))}</button></div></article>`;}).join('');
   if(!visible.length)grid.innerHTML=`<div class="ghost-links-empty"><span aria-hidden="true">👻</span><p>${e(t(recordings.length?'No voices match these filters.':'Choose a ghost and share an invitation. Your friends’ voices will appear here.'))}</p></div>`;
   grid.querySelectorAll<HTMLButtonElement>('[data-delete-invite]').forEach(button=>button.onclick=async()=>{
    if(busy||!window.confirm(t('Delete this voice permanently? This frees space for a new recording.')))return;
@@ -26,6 +28,7 @@ export function mountLinks(root:HTMLElement,catalog:Catalog) {
    catch(error){if(!dead)status.textContent=(error as Error).message;}
    finally{busy=false;if(!dead)button.disabled=false;}
   });
+  playback.refresh();
   grid.querySelectorAll('audio').forEach(audio=>audio.onplay=()=>grid.querySelectorAll('audio').forEach(other=>{if(other!==audio)other.pause();}));
  }
  async function load() {
@@ -35,5 +38,5 @@ export function mountLinks(root:HTMLElement,catalog:Catalog) {
   finally{busy=false;}
  }
  filter.onchange=draw;country.onchange=draw;root.querySelector<HTMLButtonElement>('[data-links-refresh]')!.onclick=()=>void load();void load();
- return ()=>{dead=true;grid.querySelectorAll('audio').forEach(audio=>audio.pause());};
+ return ()=>{dead=true;playback.destroy();grid.querySelectorAll('audio').forEach(audio=>audio.pause());};
 }

@@ -1354,5 +1354,10 @@
   "No voices match these filters.": "No voices match these filters.",
   "Delete this voice permanently? This frees space for a new recording.": "Delete this voice permanently? This frees space for a new recording.",
   "Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording.": "Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording.",
-  "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.": "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice."
+  "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.": "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.",
+  "Invalid JSON.": "Invalid JSON.",
+  "Invalid event.": "Invalid event.",
+  "Send JSON.": "Send JSON.",
+  "Use POST.": "Use POST.",
+  "Webhook too large.": "Webhook too large."
 }

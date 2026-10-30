@@ -347,7 +347,7 @@ export class BooStore {
     if (score !== null && (!Number.isInteger(score) || score < 0 || score > 100)) fail(400, 'Invalid local score.');
     if (hasMeasurement) {
       const {meanHz,peakHz,frames} = body;
-      if (!Number.isInteger(frames) || frames < 0 || frames > 100 ||
+      if (!Number.isInteger(frames) || frames < 0 || frames > Math.ceil(body.durationMs / 50) ||
           (meanHz === null && peakHz === null ? frames !== 0 || score !== null :
           !Number.isInteger(meanHz) || !Number.isInteger(peakHz) || meanHz < 70 || peakHz > 1200 || peakHz < meanHz || frames < 5)) fail(400, 'Invalid pitch measurement.');
     }

@@ -59,7 +59,7 @@ for (const mode of ['valid','full','retry','expired','denied']) test(`${mode} in
  await page.keyboard.press('Escape');
  await expect(dialog).toBeVisible();
  // Even a synthetic click must not route to sharing while the invitation is locked.
- await dialog.locator('.character-share').evaluate((button:HTMLButtonElement)=>button.click());
+ await dialog.locator('.character-sns [data-action="send-share"]').first().evaluate((button:HTMLButtonElement)=>button.click());
  await expect(dialog).toBeVisible();
  if(mode==='retry'){
   await dialog.locator('video[data-phase="intro"]').dispatchEvent('error');

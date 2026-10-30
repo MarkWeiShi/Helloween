@@ -6,8 +6,8 @@ import {personalScareScore} from '../shared/reactions.mjs';
 import {mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-const audio={consent:true,mime:'audio/webm',durationMs:5000,audio:Buffer.from([0x1a,0x45,0xdf,0xa3,1,2,3]).toString('base64'),score:null,meanHz:null,peakHz:null,frames:0};
-const measured=(hz,rms)=>({...audio,scoringVersion:2,echoCancellation:true,meanHz:hz,peakHz:hz,frames:10,meanRms:rms,score:99});
+const audio={consent:true,mime:'audio/webm',durationMs:6000,audio:Buffer.from([0x1a,0x45,0xdf,0xa3,1,2,3]).toString('base64'),score:null,meanHz:null,peakHz:null,frames:0};
+const measured=(hz,rms)=>({...audio,scoringVersion:2,echoCancellation:true,meanHz:hz,peakHz:hz,frames:120,meanRms:rms,score:99});
 test('four boards attribute recordings to sharers, weight friends equally, exclude legacy scores and deduplicate retries',()=>{
  const store=new BooStore(':memory:',loadCatalog());
  try {

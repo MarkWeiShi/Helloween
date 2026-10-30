@@ -1,3 +1,4 @@
+import {createBranchUnlock} from "./branch-unlock.mjs";
 import {createXPublisher} from './x-publish.mjs';
 import {createTelemetry} from './telemetry.mjs';
 import {facebookShareDocument} from './facebook-share.mjs';
@@ -24,6 +25,7 @@ export function createApp({
   catalog = loadCatalog(),
   now,
   authOptions,
+  branchOptions,
   xPublisherOptions,
   rateLimits = true,
   publicContent = loadPublicContent(ROOT),
@@ -32,6 +34,7 @@ export function createApp({
   const store = new BooStore(databasePath, catalog, {
     now,
   });
+  const branchUnlock = createBranchUnlock(store, branchOptions);
   const auth = createAuth({db:store.db,...authOptions});
   const publishX=createXPublisher(xPublisherOptions);
   store.db.exec("CREATE TABLE IF NOT EXISTS x_posts(invite_id TEXT PRIMARY KEY,player_id TEXT NOT NULL,status TEXT NOT NULL,result TEXT)");
@@ -96,6 +99,21 @@ export function createApp({
         const origin=process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
         res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});
         res.end(facebookShareDocument(invite,spirit,origin,url.searchParams.get('lang')));return;
+      }
+      if (url.pathname === '/api/branch/webhook') {
+        if (req.method !== 'POST') throw new ApiError(405, 'Use POST.');
+        branchUnlock.authorize(req,url);
+        if (!req.headers['content-type']?.startsWith('application/json')) throw new ApiError(415,'Send JSON.');
+        let raw = '';
+        for await (const chunk of req) {
+          raw += chunk;
+          if (Buffer.byteLength(raw) > 65536) throw new ApiError(413,'Webhook too large.');
+        }
+        let body;
+        try { body = JSON.parse(raw); } catch { throw new ApiError(400,'Invalid JSON.'); }
+        if (!body || typeof body !== 'object' || Array.isArray(body)) throw new ApiError(400,'Invalid event.');
+        send(200,branchUnlock.receive(body));
+        return;
       }
       const token = (req.headers.cookie || "")
         .split(";")
@@ -231,6 +249,13 @@ export function createApp({
             throw error;
           }return;
         }
+        if(req.method==='GET' && url.pathname==='/api/hellotalk-unlock') {
+          send(200,branchUnlock.status(playerId));return;
+        }
+        if(req.method==='POST' && url.pathname==='/api/hellotalk-unlock') {
+          limit(`ht-unlock:${playerId}`,6);
+          send(200,await branchUnlock.start(playerId));return;
+        }
         if(req.method==='POST' && url.pathname==='/api/auth/start') {
           limit(`auth:${ip}`,10);
           send(200,await auth.start(token,body,process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`));return;
@@ -258,6 +283,7 @@ export function createApp({
         }
         const audioGet = url.pathname.match(/^\/api\/invites\/([\w-]+)\/audio\/([\w-]+)$/);
         if (req.method === 'GET' && audioGet) {
+          branchUnlock.requireAccess(playerId);
           const recording = store.reactionAudio(playerId,audioGet[1],audioGet[2]);
           res.writeHead(200, {'Content-Type':recording.mime,'Cache-Control':'private, no-store','Content-Length':recording.audio.length});
           res.end(Buffer.from(recording.audio));

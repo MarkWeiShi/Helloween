@@ -1354,5 +1354,10 @@
   "No voices match these filters.": "没有符合筛选条件的声音。",
   "Delete this voice permanently? This frees space for a new recording.": "确定永久删除这条声音吗？删除后可腾出空间接收新录音。",
   "Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording.": "已存满 50 条声音。请邀请人删除声音后重试发送；请保持本页打开，以保留待发送录音。",
-  "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.": "邀请人已存满 50 条声音。录音仅分享给邀请人；请保持本页打开，待对方删除声音后重试发送。"
+  "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.": "邀请人已存满 50 条声音。录音仅分享给邀请人；请保持本页打开，待对方删除声音后重试发送。",
+  "Invalid JSON.": "Invalid JSON.",
+  "Invalid event.": "Invalid event.",
+  "Send JSON.": "Send JSON.",
+  "Use POST.": "Use POST.",
+  "Webhook too large.": "Webhook too large."
 }

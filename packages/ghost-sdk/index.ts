@@ -45,7 +45,7 @@ export function createGhostClient({baseUrl='/api',timeoutMs=15000,fetch:fetcher=
     links:(offset=0,spirit='')=>request<{links:GhostLink[];hasMore:boolean;spirits:string[]}>(`/my-links?${new URLSearchParams({offset:String(offset),spirit})}`),
     readReactions:()=>request<{player:Player}>('/reactions/read',{}),
     story:(key:string)=>request<{story:NonNullable<Spirit['story']>;peaceLabel:string}>(`/spirits/${id(key)}/story`),
-    rankings:<T=unknown>(scope='trick')=>request<T>(`/scream-rankings?scope=${id(scope)}`),
+    rankings:<T=unknown>(scope='trick',group='players')=>request<T>(`/scream-rankings?scope=${id(scope)}&group=${id(group)}`),
     event:(event:string,detail='')=>request('/events',{event,detail}),
     social:{config:<T=unknown>()=>request<T>('/social/config'),wechatSignature:<T=unknown>(pageUrl:string)=>request<T>('/social/wechat-signature',{url:pageUrl})},
   };

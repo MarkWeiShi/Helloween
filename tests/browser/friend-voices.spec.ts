@@ -1,10 +1,9 @@
 import {test,expect} from '@playwright/test';
-import {createApp} from '../../server/index.mjs';
+import {startBrowserApp} from '../helpers/nginx.mjs';
 
 test('timeline sorts across links, combines filters, and deletes only on confirmation',async({page,context})=>{
- const app=createApp({databasePath:':memory:',rateLimits:false});
- await new Promise<void>(r=>app.server.listen(0,'127.0.0.1',r));
- const origin=`http://127.0.0.1:${(app.server.address() as any).port}`;
+ const app=await startBrowserApp({databasePath:':memory:',rateLimits:false});
+ const origin=app.origin;
  try {
   const owner=app.store.createGuest();app.store.onboard(owner.player.id,{name:'Owner',country:'CN',spiritId:'jiangshi'});
   const links=['jiangshi','kappa'].map(spiritId=>app.store.createInvite(owner.player.id,{spiritId,channel:'copy'}));
@@ -39,5 +38,5 @@ test('timeline sorts across links, combines filters, and deletes only on confirm
   await page.getByRole('button',{name:'Refresh',exact:true}).click();
   await expect(page.locator('.ghost-link-card')).toHaveCount(50);
   await expect(page.locator('.ghost-link-card h2').first()).toHaveText(extra.player.name);
- } finally {await new Promise<void>(r=>app.server.close(()=>r()));app.close();}
+ } finally {await app.stop();}
 });

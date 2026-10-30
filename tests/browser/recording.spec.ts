@@ -79,7 +79,7 @@ test('six-second local scoring uploads named private audio and replay does not s
   expect(after.player.reactions.links.find((l:any)=>l.inviteId===named.id)).toBeTruthy();
  } finally {await browser.close();}
 });
-test('ordinary exploration stays local and cancelling invitation capture never uploads',async()=>{
+test('ordinary exploration stays local and leaving invitation capture never uploads',async()=>{
  const {browser,page,sender,invitation}=await setup();
  try {
   let uploads=0;page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
@@ -91,9 +91,8 @@ test('ordinary exploration stays local and cancelling invitation capture never u
   await page.goto('/i/'+invitation.id);
   await confirmUnlock(page);
   await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
-  await page.getByRole('button',{name:"Cancel recording and sending",exact:true}).click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Cancelled");
-  await expect(page.locator('[data-play-transform]')).toBeVisible({timeout:15000});
+  await expect(page.locator('.character-info')).toHaveAttribute('inert','');
+  await page.goto('about:blank');
   expect(uploads).toBe(0);
   expect((await(await sender.request.get('/api/me')).json()).player.reactions.recent).toHaveLength(0);
  }finally{await browser.close();}
@@ -116,7 +115,7 @@ for (const full of [false,true]) test(`${full?'full storage':'upload failure'} p
  }finally{await browser.close();}
 });
 
-test('closing during capture releases the microphone and never uploads',async()=>{
+test('pagehide during locked capture releases the microphone and never uploads',async()=>{
  const {browser,page,sender}=await setup();
  try {
   await page.evaluate(()=>{
@@ -127,8 +126,8 @@ test('closing during capture releases the microphone and never uploads',async()=
   let uploads=0;page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await confirmUnlock(page);
   await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
-  await page.getByRole('button',{name:'Close character details',exact:true}).click();
-  await expect(page.locator('dialog')).toHaveCount(0);
+  await expect(page.locator('dialog.character-immersive')).toHaveAttribute('data-playback-locked','');
+  await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));
   expect(await page.evaluate(()=>(window as any).__streams.every((s:MediaStream)=>s.getTracks().every(t=>t.readyState==='ended')))).toBe(true);
   // Wait past the capture deadline to detect any stale upload callback.
   await page.waitForTimeout(3500);
