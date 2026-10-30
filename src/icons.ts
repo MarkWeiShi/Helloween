@@ -16,6 +16,8 @@ import mute from "@phosphor-icons/core/assets/regular/speaker-slash.svg?raw";
 import download from "@phosphor-icons/core/assets/regular/download-simple.svg?raw";
 import moon from "@phosphor-icons/core/assets/regular/moon-stars.svg?raw";
 import copy from "@phosphor-icons/core/assets/regular/copy.svg?raw";
+import instagram from "@phosphor-icons/core/assets/regular/instagram-logo.svg?raw";
+import tiktok from "@phosphor-icons/core/assets/regular/tiktok-logo.svg?raw";
 const icons: Record<string, string> = {
   shareCurve,
   ghost,
@@ -35,6 +37,8 @@ const icons: Record<string, string> = {
   download,
   moon,
   copy,
+  instagram,
+  tiktok,
 };
 export const icon = (name: string) =>
   `<span class="icon" aria-hidden="true">${icons[name] || star}</span>`;

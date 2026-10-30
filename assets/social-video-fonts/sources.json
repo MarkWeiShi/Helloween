@@ -1,0 +1,53 @@
+{
+  "usage": "Embedded only in offline-rendered social videos; original font licenses retained.",
+  "fonts": [
+    {
+      "file": "arefruqaa/ArefRuqaa-Regular.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/arefruqaa/ArefRuqaa-Regular.ttf",
+      "license": "arefruqaa/OFL.txt",
+      "sha256": "ceb786d83ba92f35e96efcd8623c2858d288e0c543c8761ba35b1020989464f9"
+    },
+    {
+      "file": "caveat/Caveat[wght].ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/Caveat%5Bwght%5D.ttf",
+      "license": "caveat/OFL.txt",
+      "sha256": "0bdb6b660482d31531b3945849fba5916b3ef8695da7024a9e6b9ee3c4157988"
+    },
+    {
+      "file": "gaegu/Gaegu-Regular.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/gaegu/Gaegu-Regular.ttf",
+      "license": "gaegu/OFL.txt",
+      "sha256": "aa52c98336f7c62e2896fc8b12b56a75d5b476d88a2f104b0980f4f7ce0adfc3"
+    },
+    {
+      "file": "gulzar/Gulzar-Regular.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/gulzar/Gulzar-Regular.ttf",
+      "license": "gulzar/OFL.txt",
+      "sha256": "246337973ac64e8b70fe611405dcf32a395a8885c4497dc45dbc4975d3ac0831"
+    },
+    {
+      "file": "itim/Itim-Regular.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/itim/Itim-Regular.ttf",
+      "license": "itim/OFL.txt",
+      "sha256": "9164d7eb92ca717b53b07193e3445c96782222d24215151b8d2851b576b17645"
+    },
+    {
+      "file": "mashanzheng/MaShanZheng-Regular.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/mashanzheng/MaShanZheng-Regular.ttf",
+      "license": "mashanzheng/OFL.txt",
+      "sha256": "6d2546bb189c732a8ca29af9e22457b152387d158aa459e4ac2ce1e51788b7fb"
+    },
+    {
+      "file": "shantellsans/ShantellSans[BNCE,INFM,SPAC,wght].ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/shantellsans/ShantellSans%5BBNCE%2CINFM%2CSPAC%2Cwght%5D.ttf",
+      "license": "shantellsans/OFL.txt",
+      "sha256": "d98a7913853f78d71aa0b86daf66b5eddb5a3266c07bfd51ef70632b88c41084"
+    },
+    {
+      "file": "yomogi/Yomogi-Regular.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/yomogi/Yomogi-Regular.ttf",
+      "license": "yomogi/OFL.txt",
+      "sha256": "ec280f473a03187292905618f24fdb08a6dcbf8620b52637e3b589fe745259b9"
+    }
+  ]
+}

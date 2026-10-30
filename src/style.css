@@ -3399,3 +3399,8 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 @media (prefers-reduced-motion:reduce) {
  .character-dialog .scare-action .action-orb::after { animation:none; transform:translate(0,0); }
 }
+
+.social-video-preview{display:block;width:min(100%,300px);max-height:55vh;aspect-ratio:9/16;object-fit:contain;margin:16px auto;border-radius:16px;background:#181322}
+.social-video-caption{display:block;box-sizing:border-box;width:100%;min-height:130px;margin:8px 0 12px;padding:12px;resize:vertical}
+.social-handoff ol{padding-inline-start:24px;line-height:1.6}
+.social-handoff li+li{margin-top:10px}

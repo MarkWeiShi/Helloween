@@ -1,6 +1,7 @@
 import {t, msg, html} from "../shared/i18n.mjs";
 import {api,escape as e} from './api';
 import {locale} from './i18n';
+import {mountVideoShare} from './social-video-share';
 type Config={origin:string;kakaoKey:string;wechatReady:boolean;facebookAppId:string};
 type KakaoSDK={isInitialized():boolean;init(key:string):void;Share:{sendDefault(data:unknown):void}};
 type WechatSDK={config(data:unknown):void;ready(cb:()=>void):void;error(cb:()=>void):void;updateAppMessageShareData(data:unknown):void;updateTimelineShareData(data:unknown):void};
@@ -13,6 +14,7 @@ function load(src:string){
 }
 export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string){
  const panel=document.createElement('section');panel.className='social-handoff';panel.setAttribute('aria-live','polite');node.replaceChildren(panel);
+ if(channel==='instagram'||channel==='tiktok'){await mountVideoShare(panel,channel,url,spiritId);return;}
  const name=names[channel];if(!name)return;
  panel.textContent=msg`Preparing ${name} sharing…`;
  const config=await api<Config>('/social/config');if(!panel.isConnected)return;

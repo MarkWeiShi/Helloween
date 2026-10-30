@@ -457,9 +457,9 @@ test('consented reaction reports are private, idempotent, and never award candy'
  store.close();
 });
 
-test('Kakao and WeChat links preserve their channel without awarding on creation',()=>{
+test('social links preserve their channel without awarding on creation',()=>{
  const {store,player}=setup(); const sender=player();
- for(const channel of ['kakao','wechat']) {
+ for(const channel of ['kakao','wechat','instagram','tiktok']) {
   const link=store.createInvite(sender.player.id,{spiritId:'kappa',channel});
   assert.equal(store.invite(link.id).channel,channel);
   assert.equal(store.invite(link.id).spiritId,'kappa');

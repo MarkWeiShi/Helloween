@@ -15,6 +15,7 @@
     "test:browser": "playwright test",
     "assets": "node scripts/prepare-assets.mjs",
     "assets:transformations": "node scripts/prepare-transformations.mjs",
+    "assets:social-videos": "node scripts/prepare-social-videos.mjs",
     "check:content": "node scripts/check-content.mjs",
     "loadtest": "node scripts/loadtest.mjs",
     "backup": "node scripts/backup.mjs",
