@@ -6,7 +6,7 @@ test.afterAll(async()=>{await app.stop();});
 for(const channel of ['line','facebook','kakao','wechat','copy','x'])test(`guest ${channel} sharing uses only the selected provider`,async({page,context})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.addInitScript(()=>{
-  Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>({getTracks:()=>[{stop(){}}]})}});
+  Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>({getTracks:()=>[{stop(){}}],getAudioTracks:()=>[{getSettings:()=>({echoCancellation:true})}]})}});
   (window as any).AudioContext=class {
    state='running';currentTime=0;destination={};sampleRate=48000;
    resume(){return Promise.resolve();}close(){return Promise.resolve();}
