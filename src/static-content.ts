@@ -1,9 +1,10 @@
 import {fetchJson} from '../packages/ghost-sdk/request-signal';
+import {publicAssetData} from './public-assets';
 import {catalogUrl,motionsUrl} from 'virtual:ghost-content';
 import type {Catalog} from './types';
 export type Motion = {sheet:string;frames:number;fps:number};
 async function read<T>(url:string):Promise<T> {
- return fetchJson<T>(url,{credentials:'omit'});
+ return publicAssetData(await fetchJson<T>(url,{credentials:'omit'}));
 }
 export const loadCatalog=()=>read<Catalog>(catalogUrl);
 let motions:Promise<{motions:Record<string,Motion>}>|undefined;

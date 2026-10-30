@@ -5,7 +5,8 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 ARG PUBLIC_ORIGIN=https://helloween.fly.dev
-RUN PUBLIC_ORIGIN=$PUBLIC_ORIGIN npm run build:all
+ARG PUBLIC_ASSET_ORIGIN=
+RUN PUBLIC_ORIGIN=$PUBLIC_ORIGIN PUBLIC_ASSET_ORIGIN=$PUBLIC_ASSET_ORIGIN npm run build:all
 
 FROM node:24-bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends nginx && rm -rf /var/lib/apt/lists/*

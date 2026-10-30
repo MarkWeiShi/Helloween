@@ -1,4 +1,5 @@
 import {fetchJson} from '../packages/ghost-sdk/request-signal';
+import {publicAssetData} from './public-assets';
 import {t} from "../shared/i18n.mjs";
 export type Transformation = { entrance: string; loop: string; entranceAlpha?: string; loopAlpha?: string; poster: string; duration: number; loopDuration: number; revealAt: number };
 export function validTransformation(value: unknown): value is Transformation {
@@ -13,7 +14,7 @@ export async function loadTransformation(id: string) {
   }).catch(error => { manifest = undefined; throw error; });
   const entry = (await manifest)[id];
   if (!validTransformation(entry)) { manifest = undefined; throw Error('Transformation not ready'); }
-  return entry;
+  return publicAssetData(entry);
 }
 const seen = new Set<string>();
 const seenKey = (player: string, id: string) => `boo:transformation:v1:${player}:${id}`;

@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { stripTypeScriptTypes } from 'node:module';
-const code = stripTypeScriptTypes((await fs.readFile(new URL('../src/transformation-player.ts', import.meta.url), 'utf8')).replace('../packages/ghost-sdk/request-signal',new URL('../dist-sdk/request-signal.js',import.meta.url).href).replace('../shared/i18n.mjs', new URL('../shared/i18n.mjs',import.meta.url).href));
+const assetSource=stripTypeScriptTypes((await fs.readFile(new URL('../src/public-assets.ts',import.meta.url),'utf8')).replace("import {assetOrigin,releasePrefix} from 'virtual:ghost-content';","const assetOrigin='',releasePrefix='/releases/21e0f86429f2cfe9808d';"));
+const assetModule='data:text/javascript;base64,'+Buffer.from(assetSource).toString('base64');
+const code = stripTypeScriptTypes((await fs.readFile(new URL('../src/transformation-player.ts', import.meta.url), 'utf8')).replace('./public-assets',assetModule).replace('../packages/ghost-sdk/request-signal',new URL('../dist-sdk/request-signal.js',import.meta.url).href).replace('../shared/i18n.mjs', new URL('../shared/i18n.mjs',import.meta.url).href));
 const runtime = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 const entry = {entrance:'/art/transformations/jiangshi/entrance.mp4',loop:'/art/transformations/jiangshi/loop.mp4',poster:'/art/transformations/jiangshi/poster.png',duration:6,loopDuration:2,revealAt:2.3};
 test('manifest rejects missing loop, arbitrary external media and invalid reveal timing', () => {

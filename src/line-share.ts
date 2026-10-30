@@ -1,3 +1,4 @@
+import {publicAssetData} from './public-assets';
 import './line-share.css';
 import {resolveLanguage,resolveBrowserLanguage} from '../shared/i18n.mjs';
 import {loadCatalog} from './static-content';
@@ -9,7 +10,7 @@ const root=document.querySelector<HTMLElement>('#line-share')!;
 let language=resolveLanguage([new URL(location.href).searchParams.get('lang'),resolveBrowserLanguage(navigator)]);
 let cn=language==='zh';
 const label=(zh:string,en:string)=>cn?zh:en;
-async function read(path:string){const r=await fetch(path);if(!r.ok)throw Error(label('邀请加载失败，请返回游戏重试。','Could not load the invitation. Return to the game and try again.'));return r.json();}
+async function read(path:string){const r=await fetch(path);if(!r.ok)throw Error(label('邀请加载失败，请返回游戏重试。','Could not load the invitation. Return to the game and try again.'));return publicAssetData(await r.json());}
 async function sdk(){
  if(window.liff)return window.liff;
  await new Promise<void>((resolve,reject)=>{

@@ -1,3 +1,4 @@
+import {publicAssetData} from './public-assets';
 import {showShareLoading} from './share-loading';
 import {watchShareReturn,returnToGame} from './share-return';
 import {t, msg, html} from "../shared/i18n.mjs";
@@ -71,7 +72,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    let gifImage:string|undefined;
    const label=(zh:string,en:string)=>locale==='zh'?zh:en;
    frame(`<img class="share-card-preview" src="${e(hostedImage)}" alt="${e(label('鬼卡片预览','Ghost card preview'))}" width="960" height="504"><label>${e(label('分享文案','Your message'))}<textarea data-kakao-caption maxlength="200" style="width:100%;min-height:90px">${e(text)}</textarea></label><label class="fine-print"><input type="checkbox" data-kakao-animated disabled> ${e(label('使用动图（可能较慢）','Use animated card (may be slower)'))}</label><button type="button" class="button primary full" data-open-kakao>${e(label('选择 KakaoTalk 好友','Continue to KakaoTalk'))}</button><p data-kakao-status role="status"></p>`,true);
-   void fetch('/art/x-cards/manifest.json').then(r=>r.json()).then(manifest=>{const base=manifest.characters?.[spiritId||''];const entry=base?{...base,...(base.localized?.[locale]||base.localized?.en||{})}:null;if(entry&&!entry.previewOnly&&entry.bytes<=5000000){gifImage=new URL(entry.gif,config.origin||location.origin).href;const option=panel.querySelector<HTMLInputElement>('[data-kakao-animated]');if(option)option.disabled=false;}}).catch(()=>{});
+   void fetch('/art/x-cards/manifest.json').then(r=>r.json()).then(publicAssetData).then(manifest=>{const base=manifest.characters?.[spiritId||''];const entry=base?{...base,...(base.localized?.[locale]||base.localized?.en||{})}:null;if(entry&&!entry.previewOnly&&entry.bytes<=5000000){gifImage=new URL(entry.gif,config.origin||location.origin).href;const option=panel.querySelector<HTMLInputElement>('[data-kakao-animated]');if(option)option.disabled=false;}}).catch(()=>{});
    panel.querySelector<HTMLButtonElement>('[data-open-kakao]')!.onclick=async()=>{
     const status=panel.querySelector<HTMLElement>('[data-kakao-status]')!;
     try{

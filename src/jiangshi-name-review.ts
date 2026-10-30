@@ -1,3 +1,4 @@
+import {publicAssetData} from './public-assets';
 import './style.css';
 import { loadTransformation, mountTransformation } from './transformation-player';
 const stage=document.querySelector<HTMLElement>('.review-stage')!;
@@ -31,7 +32,7 @@ async function choose(id:string){
 play.onclick=()=>{audio.pause();void player?.play();};
 document.querySelector<HTMLButtonElement>('#review-pause')!.onclick=()=>player?.pause();
 audio.onplay=()=>player?.pause();select.onchange=()=>void choose(select.value);
-void fetch('/art/name-reveals/manifest.json',{cache:'no-cache'}).then(r=>r.json()).then(data=>{
+void fetch('/art/name-reveals/manifest.json',{cache:'no-cache'}).then(r=>r.json()).then(publicAssetData).then(data=>{
  items=data.items;
  for(const item of items){const option=document.createElement('option');option.value=item.id;option.textContent=`${item.nativeName} · ${item.language}${item.audio?'':' · 制作中'}`;select.append(option);}
  document.querySelector('#review-coverage')!.textContent=`已制作 ${data.generated} / ${data.total}，逐个音频为独立定制声线；母语与表演质量待人工听审。`;
