@@ -25,7 +25,8 @@ test('first real transformation measures locally, stays dismissible, and persist
   await expect(page.locator('.character-close')).toBeEnabled();
   await expect(page.locator('.character-close')).toBeEnabled({timeout:10000});
   await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
-  await page.locator('.character-next').click();
+  await page.locator('.character-close').click();
+  await page.locator(`.globe-pin[data-spirit]:not([data-spirit="${id}"])`).first().dispatchEvent('click');
   await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
   await expect(page.locator('.character-close')).toBeEnabled();
   await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
