@@ -1,3 +1,4 @@
+import {watchShareReturn} from './share-return';
 import {loadCatalog} from './static-content';
 import {previewTransformations} from '../shared/preview-transformations.mjs';
 import {showAccount} from "./account";
@@ -454,16 +455,25 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   if(btn?.disabled)return;
   if(channel==='line' || (channel==='facebook' && player.initialized)) {
     if(btn)btn.disabled=true;
+    const destination=channel==='facebook'?window.open('about:blank','_blank'):null;
+    if(destination)destination.opener=null;
     try {
       if(channel==='line') {
         const config=await api('/social/config');
-        if(config.lineLiffId){const data=await api('/invites',{spiritId:id,channel});location.assign(`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(data.id)}&lang=${encodeURIComponent(locale)}`);return;}
+        if(config.lineLiffId){
+          const data=await api('/invites',{spiritId:id,channel});
+          const target=`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(data.id)}&lang=${encodeURIComponent(locale)}`;
+          modal(`<h2>LINE</h2><a class="button primary full" data-line-app href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(locale==='zh'?'在 LINE 中打开':'Open in LINE')}</a><p class="fine-print">${e(locale==='zh'?'发送后，使用左上角 Safari 返回游戏。':'After sharing, use the Safari return link to resume the game.')}</p>`);
+          overlay.querySelector<HTMLAnchorElement>('[data-line-app]')!.onclick=()=>watchShareReturn();return;
+        }
       } else {
         const data=await api('/invites',{spiritId:id,channel});
         const card=new URL(`/api/share/facebook/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url);
-        location.assign(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`);return;
+        const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`;
+        if(destination){watchShareReturn();destination.location.href=target;}else{modal(`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);}
+        return;
       }
-    }catch(error){toast((error as Error).message);return;}
+    }catch(error){destination?.close();toast((error as Error).message);return;}
     finally{if(btn)btn.disabled=false;}
   }
   const pending={id,channel};
@@ -476,8 +486,8 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel.toUpperCase()}`)}</h2>${!player.initialized?`<div class="share-profile"><label>${e(t('Your parade name'))}<input id="share-name" maxlength="24" value="${e(player.name)}"></label><label>${e(t('Your country or region'))}<select id="share-country"><option value="">${e(t('Choose your home'))}</option>${catalog.countries.map(c=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<div id="share-link"></div>`);
   overlay.querySelector('dialog')!.classList.add('compact-share');
   const node=$('#share-link')!;
-  const beforeConfirm=async()=>{
-    if(!player.initialized){const result=await api('/onboard',{name:($('#share-name') as HTMLInputElement).value,country:($('#share-country') as HTMLSelectElement).value,spiritId:id});player=result.player;}
+  const beforeConfirm=()=>{
+    if(!player.initialized)return api('/onboard',{name:($('#share-name') as HTMLInputElement).value,country:($('#share-country') as HTMLSelectElement).value,spiritId:id}).then(result=>{player=result.player;});
   };
   try {
     const data=await api('/invites',{spiritId:id,channel});
@@ -825,3 +835,5 @@ async function boot() {
   }
 }
 void boot();
+
+document.addEventListener('boo:share-return',()=>{closeModal();});

@@ -4,8 +4,19 @@ import {normalizeLanguage} from '../shared/i18n.mjs';
 
 export function createXPublisher({fetcher=fetch,sleep=ms=>new Promise(r=>setTimeout(r,ms))}={}) {
  async function request(path,token,body) {
-  const response=await fetcher(`https://api.x.com/2/${path}`,{method:body?'POST':'GET',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(20000)});
-  if(!response.ok)throw new ApiError(response.status===401?401:502,'X could not complete publishing. Check your X authorization and API access.');
+  let response;
+  try{response=await fetcher(`https://api.x.com/2/${path}`,{method:body?'POST':'GET',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(20000)});}
+  catch{const error=new ApiError(502,'X did not confirm the result. Check your X posts before trying again.');error.code='X_UNCONFIRMED';throw error;}
+  if(!response.ok){
+   const status=response.status;
+   const message=status===402?'X API credits are exhausted. Automatic GIF publishing requires the app owner to add credits. You can use manual sharing instead.':status===401?'X authorization expired or was revoked. Sign in to X again.':status===403?'X rejected this request. Check the app posting permissions and X account restrictions.':status===429?'X is rate limiting requests. Please wait before trying again.':'X could not complete publishing. Check your X authorization and API access.';
+   const error=new ApiError(status>=400&&status<500?status:502,message);
+   error.code=status===402?'X_CREDITS_DEPLETED':status===401?'X_AUTH_REQUIRED':status===403?'X_FORBIDDEN':status===429?'X_RATE_LIMITED':'X_REQUEST_FAILED';
+   // Explicit provider rejections cannot have created a post; transport errors and
+   // 5xx responses remain uncertain and must never trigger an automatic repost.
+   error.postRejected=path==='tweets'&&[400,401,402,403,404,413,415,422,429].includes(status);
+   throw error;
+  }
   const result=await response.json();if(result.errors?.length)throw new ApiError(502,'X could not complete publishing.');return result.data;
  }
  return async function publish({token,spiritId,language,text,origin,beforePost,cardSha}) {

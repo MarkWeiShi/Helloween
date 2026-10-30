@@ -16,7 +16,8 @@ test('X authorization resumes the selected platform with profile and publishing 
  await expect(publish).toBeVisible();
  await expect(page.locator('#share-name')).toBeVisible();await expect(page.locator('#share-country')).toBeVisible();
  await expect(page.locator('[data-action=send-share]')).toHaveCount(0);
- await expect(dialog).not.toContainText(/cand(y|ies)|Download|Copy full post|Keep every little Boo/);
+ await expect(dialog).not.toContainText(/cand(y|ies)|Keep every little Boo/);
+ await expect(page.getByRole('link',{name:'Download GIF',exact:true})).not.toBeVisible();
  expect(posts).toHaveLength(0);
  await page.locator('#share-name').fill('Share tester');await page.locator('#share-country').selectOption('JP');
  const rect=await publish.boundingBox();expect(rect!.y+rect!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
@@ -52,7 +53,7 @@ for(const channel of ['facebook','kakao'])test(`${channel} resumes into one comp
  const rect=await action.boundingBox();expect(rect!.y+rect!.height).toBeLessThan(page.viewportSize()!.height);
  await page.locator('#share-name').fill('Card tester');await page.locator('#share-country').selectOption('JP');
  await page.screenshot({path:`artifacts/social-share/${info.project.name}-compact-${channel}.png`});
- if(channel==='kakao'){expect(await page.evaluate(()=>(window as any).sent)).toBeUndefined();await action.click();await expect.poll(()=>page.evaluate(()=>(window as any).sent?.objectType)).toBe('feed');}
+ if(channel==='kakao'){expect(await page.evaluate(()=>(window as any).sent)).toBeUndefined();await action.click();await expect(page.locator('[data-kakao-status]')).toContainText('Profile saved');await action.click();await expect.poll(()=>page.evaluate(()=>(window as any).sent?.objectType)).toBe('feed');}
  else {await context.route('https://www.facebook.com/**',r=>r.fulfill({body:'Test share window'}));const popup=context.waitForEvent('page');await action.click();const target=await popup;await expect.poll(()=>app.store.state(login.player.id).country).toBe('JP');await target.close();}
  expect(app.store.state(login.player.id).country).toBe('JP');
  await expect(dialog).not.toContainText(/cand(y|ies)|bonus/);

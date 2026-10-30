@@ -3476,3 +3476,7 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .rankings-screen .screams-header{padding-inline-start:54px}
 
 .voice-timeline{grid-template-columns:minmax(0,1fr);max-width:800px;margin-inline:auto}.voice-timeline .voice-detail{padding:0 20px 16px}.voice-timeline .ghost-link-meta{border-bottom:0}.ghost-links-toolbar{flex-wrap:wrap}.voice-timeline .ghost-link-card h2{font-size:19px}
+.social-handoff [data-kakao-animated]{width:auto;min-height:0;margin-inline-end:8px}
+.social-handoff [data-back-game]{min-height:38px;margin-top:8px}
+.social-handoff [data-x-manual]{font-size:13px;margin-top:10px}
+.social-handoff [data-x-manual] summary{cursor:pointer;padding:8px 0}
