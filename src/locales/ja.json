@@ -1331,5 +1331,7 @@
   "Friend visits": "友達の訪問",
   "Released spirits": "解放した精霊",
   "Friends who opened your links. Repeat visits to the same link count once.": "友達がリンクを開いた回数。同じ友達による同じリンクへの再訪問は1回と数えます。",
-  "Spirits whose wishes you have completed.": "願いをかなえて解放した精霊の数。"
+  "Spirits whose wishes you have completed.": "願いをかなえて解放した精霊の数。",
+  "Friends’ scream score": "友達の絶叫スコア",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "動画を見た友達の総合絶叫スコア（0〜100）。友達ごとに有効な録音の平均を出し、全員の平均を計算します。スコアがない場合は 0。"
 }

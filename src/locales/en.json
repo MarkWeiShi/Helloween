@@ -1331,5 +1331,7 @@
   "Friend visits": "Friend visits",
   "Released spirits": "Released spirits",
   "Friends who opened your links. Repeat visits to the same link count once.": "Friends who opened your links. Repeat visits to the same link count once.",
-  "Spirits whose wishes you have completed.": "Spirits whose wishes you have completed."
+  "Spirits whose wishes you have completed.": "Spirits whose wishes you have completed.",
+  "Friends’ scream score": "Friends’ scream score",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0."
 }

@@ -41,6 +41,7 @@ export interface ReactionSummary {
 export interface Player {
   account: boolean;
   shareVisits: number;
+  friendScreamScore: number | null;
   shareCount: number;
   reactions: ReactionSummary;
   id: string;

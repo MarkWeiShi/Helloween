@@ -1331,5 +1331,7 @@
   "Friend visits": "زيارات الأصدقاء",
   "Released spirits": "الأرواح المحررة",
   "Friends who opened your links. Repeat visits to the same link count once.": "الأصدقاء الذين فتحوا روابطك. تُحتسب الزيارات المتكررة للرابط نفسه مرة واحدة.",
-  "Spirits whose wishes you have completed.": "الأرواح التي حققت أمنياتها."
+  "Spirits whose wishes you have completed.": "الأرواح التي حققت أمنياتها.",
+  "Friends’ scream score": "تقييم صرخات الأصدقاء",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "التقييم الإجمالي للصرخات بعد مشاهدة فيديوهاتك (0–100). نحسب متوسط التسجيلات ذات التقييم الصالح لكل صديق، ثم المتوسط بين الأصدقاء. لا تقييمات صالحة بعد: 0."
 }

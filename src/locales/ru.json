@@ -1331,5 +1331,7 @@
   "Friend visits": "Визиты друзей",
   "Released spirits": "Освобождённые духи",
   "Friends who opened your links. Repeat visits to the same link count once.": "Друзья, открывшие твои ссылки. Повторные посещения одной ссылки считаются один раз.",
-  "Spirits whose wishes you have completed.": "Духи, чьи желания ты исполнил."
+  "Spirits whose wishes you have completed.": "Духи, чьи желания ты исполнил.",
+  "Friends’ scream score": "Крики друзей",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Общая оценка криков после просмотра ваших видео (0–100). Сначала среднее по записям с оценкой каждого друга, затем среднее между друзьями. Нет оценок: 0."
 }

@@ -1331,5 +1331,7 @@
   "Friend visits": "好友访问",
   "Released spirits": "已释放鬼怪",
   "Friends who opened your links. Repeat visits to the same link count once.": "好友打开你分享链接的次数；同一好友重复打开同一链接只计一次。",
-  "Spirits whose wishes you have completed.": "你已完成心愿并释放的鬼怪数量。"
+  "Spirits whose wishes you have completed.": "你已完成心愿并释放的鬼怪数量。",
+  "Friends’ scream score": "朋友整体尖叫评分",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "朋友观看视频后的整体尖叫评分（0–100）。先取每位朋友有效录音的平均分，再对朋友取平均。暂无有效评分时显示 0。"
 }

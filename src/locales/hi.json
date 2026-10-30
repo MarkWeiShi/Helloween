@@ -1331,5 +1331,7 @@
   "Friend visits": "दोस्तों की विज़िट",
   "Released spirits": "मुक्त आत्माएँ",
   "Friends who opened your links. Repeat visits to the same link count once.": "आपके लिंक खोलने वाले दोस्त। उसी लिंक पर बार-बार आने को एक बार गिना जाता है।",
-  "Spirits whose wishes you have completed.": "वे आत्माएँ जिनकी इच्छाएँ आपने पूरी की हैं।"
+  "Spirits whose wishes you have completed.": "वे आत्माएँ जिनकी इच्छाएँ आपने पूरी की हैं।",
+  "Friends’ scream score": "दोस्तों की चीख का स्कोर",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "आपके वीडियो देखने के बाद दोस्तों की चीख का कुल स्कोर (0–100)। पहले हर दोस्त की मान्य रिकॉर्डिंग का औसत, फिर सभी दोस्तों का औसत लेते हैं। मान्य स्कोर न होने पर: 0।"
 }

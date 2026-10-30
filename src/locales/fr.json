@@ -1331,5 +1331,7 @@
   "Friend visits": "Visites des amis",
   "Released spirits": "Esprits libérés",
   "Friends who opened your links. Repeat visits to the same link count once.": "Amis ayant ouvert tes liens. Les visites répétées du même lien ne comptent qu’une fois.",
-  "Spirits whose wishes you have completed.": "Esprits dont tu as exaucé les souhaits."
+  "Spirits whose wishes you have completed.": "Esprits dont tu as exaucé les souhaits.",
+  "Friends’ scream score": "Cris des amis",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Score global des cris après vos vidéos (0–100). Moyenne des enregistrements valides de chaque ami, puis moyenne entre amis. Aucun score valide : 0."
 }

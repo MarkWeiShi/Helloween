@@ -1331,5 +1331,7 @@
   "Friend visits": "Kunjungan teman",
   "Released spirits": "Roh yang dibebaskan",
   "Friends who opened your links. Repeat visits to the same link count once.": "Teman yang membuka tautanmu. Kunjungan berulang ke tautan yang sama dihitung sekali.",
-  "Spirits whose wishes you have completed.": "Roh yang keinginannya telah kamu penuhi."
+  "Spirits whose wishes you have completed.": "Roh yang keinginannya telah kamu penuhi.",
+  "Friends’ scream score": "Skor jeritan teman",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Skor keseluruhan jeritan setelah teman menonton videomu (0–100). Rata-rata rekaman valid tiap teman, lalu rata-rata antar teman. Belum ada skor valid: 0."
 }

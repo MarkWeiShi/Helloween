@@ -3431,6 +3431,6 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .explore-screen .globe-title p.campaign-subtitle{padding-left:80px;padding-right:80px}
 .explore-screen .globe-title .explore-counters{grid-template-columns:26px max-content;column-gap:3px;row-gap:0}
 .explore-screen .globe-title .parade-counter{column-gap:3px}
-.explore-screen .globe-title .counter-current{padding-left:0}
+.explore-screen .globe-title .counter-current{padding-left:0;text-align:left;font-variant-numeric:tabular-nums}
 
 .explore-screen .globe-title .parade-counter + .parade-counter{min-height:30px;margin-top:-6px}

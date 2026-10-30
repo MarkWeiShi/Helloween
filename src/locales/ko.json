@@ -1331,5 +1331,7 @@
   "Friend visits": "친구 방문",
   "Released spirits": "해방한 유령",
   "Friends who opened your links. Repeat visits to the same link count once.": "친구가 공유 링크를 연 횟수입니다. 같은 친구가 같은 링크를 다시 열어도 한 번만 셉니다.",
-  "Spirits whose wishes you have completed.": "소원을 이루어 주고 해방한 유령 수입니다."
+  "Spirits whose wishes you have completed.": "소원을 이루어 주고 해방한 유령 수입니다.",
+  "Friends’ scream score": "친구들의 비명 점수",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "영상을 본 친구들의 종합 비명 점수(0–100). 친구별 유효 녹음 점수의 평균을 구한 뒤 친구 간 평균을 계산해요. 유효 점수가 없으면 0."
 }

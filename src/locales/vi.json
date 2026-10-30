@@ -1331,5 +1331,7 @@
   "Friend visits": "Lượt bạn bè ghé thăm",
   "Released spirits": "Linh hồn đã giải thoát",
   "Friends who opened your links. Repeat visits to the same link count once.": "Bạn bè đã mở liên kết của bạn. Mở lại cùng một liên kết chỉ tính một lần.",
-  "Spirits whose wishes you have completed.": "Những linh hồn mà bạn đã hoàn thành điều ước."
+  "Spirits whose wishes you have completed.": "Những linh hồn mà bạn đã hoàn thành điều ước.",
+  "Friends’ scream score": "Điểm hét của bạn bè",
+  "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Điểm hét tổng thể sau khi bạn bè xem video của bạn (0–100). Tính trung bình các bản ghi hợp lệ của từng người, rồi lấy trung bình giữa bạn bè. Chưa có điểm hợp lệ: 0."
 }
