@@ -2,7 +2,7 @@ import {api} from './api';
 import {locale} from './i18n';
 
 type UnlockState = {enabled:boolean; available:boolean; signedIn:boolean; unlocked:boolean; pending:boolean; expiresAt:number|null; url?:string};
-// The list stays visible; only playback waits for a server-issued grant.
+// The first play click grants playback and takes the visitor to HelloTalk once.
 export function mountHelloTalkUnlock(root:HTMLElement) {
   const status=root.querySelector<HTMLElement>('[data-links-status]')!;
   let dead=false,checking=false,requesting=false,state:UnlockState|undefined;
@@ -32,15 +32,14 @@ export function mountHelloTalkUnlock(root:HTMLElement) {
   async function play(event:Event) {
     const button=(event.target as HTMLElement).closest<HTMLButtonElement>('[data-unlock-play]');
     if(!button||!state||requesting||dead)return;
-    if(!state.signedIn){status.textContent=copy('请先登录游戏账号，再解锁播放。','Sign in to the game before unlocking playback.');return;}
-    if(!state.available){status.textContent=copy('HelloTalk 验证暂不可用，请稍后重试。','HelloTalk verification is currently unavailable. Please try again later.');return;}
+    if(!state.available){status.textContent=copy('HelloTalk 链接暂不可用，请稍后重试。','The HelloTalk link is currently unavailable. Please try again later.');return;}
     requesting=true;refresh();
-    status.textContent=copy('正在打开 HelloTalk；安装并打开后，请返回本页播放。','Opening HelloTalk. After installing and opening it, return here to play.');
+    status.textContent=copy('正在打开 HelloTalk，返回本页即可播放。','Opening HelloTalk. Return here to play.');
     try {
       const result=await api<UnlockState>('/hellotalk-unlock',{});
       if(dead)return;
       state=result;
-      if(result.unlocked){refresh();status.textContent=copy('已解锁，请点击播放。','Unlocked. Tap play.');return;}
+      if(result.unlocked&&!result.url){refresh();status.textContent=copy('已解锁，请点击播放。','Unlocked. Tap play.');return;}
       const link=new URL(result.url||'');
       if(link.protocol!=='https:'||link.hostname!=='brc.hellotalk.com')throw new Error('Invalid HelloTalk link.');
       // Keep a return entry pointing directly to the recordings tab, including locale.
@@ -51,9 +50,8 @@ export function mountHelloTalkUnlock(root:HTMLElement) {
     finally{requesting=false;if(!dead)refresh();}
   }
   root.addEventListener('click',play);
-  const timer=setInterval(()=>void check(),5000);
   const resume=()=>void check();
   window.addEventListener('focus',resume);window.addEventListener('pageshow',resume);document.addEventListener('visibilitychange',resume);
   void check();
-  return {refresh, destroy(){dead=true;clearInterval(timer);root.removeEventListener('click',play);window.removeEventListener('focus',resume);window.removeEventListener('pageshow',resume);document.removeEventListener('visibilitychange',resume);}};
+  return {refresh, destroy(){dead=true;root.removeEventListener('click',play);window.removeEventListener('focus',resume);window.removeEventListener('pageshow',resume);document.removeEventListener('visibilitychange',resume);}};
 }

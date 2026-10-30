@@ -1,10 +1,9 @@
 import {test,expect} from '@playwright/test';
 import {startBrowserApp} from '../helpers/nginx.mjs';
 
-test('friends screams unlocks on verified callback without navigating into the app webview',async({page,context})=>{
+test('first play redirects once and returning unlocks playback without a callback',async({page,context})=>{
  let linkData:any;
- const secret='browser-test-webhook-secret-not-production';
- const app=await startBrowserApp({databasePath:':memory:',rateLimits:false,branchOptions:{enabled:true,secret}});
+ const app=await startBrowserApp({databasePath:':memory:',rateLimits:false,branchOptions:{enabled:true}});
  const base=app.origin;
  try {
   const guest=app.store.createGuest();const login=app.store.accountLogin(guest.player.id,'browser-unlock');
@@ -25,15 +24,12 @@ test('friends screams unlocks on verified callback without navigating into the a
   await page.locator('[data-unlock-play]').click();
   await expect(page).toHaveURL(/https:\/\/brc\.hellotalk\.com\/Helloween2026\?/);
   await page.goBack();
-  await expect(page.locator('[data-unlock-play]')).toBeVisible();
-  const response=await page.request.post(base+'/api/branch/webhook',{headers:{Authorization:`Bearer ${secret}`},data:{
-   id:'browser-event',name:'open',timestamp:Date.now(),user_data:{os:'Android'},last_attributed_touch_data:{
-    '~campaign':linkData.campaign,'~feature':linkData.feature,'~channel':linkData.channel,unlock_id:linkData.data.unlock_id}}});
-  expect(response.status()).toBe(200);
   await expect(page.locator('audio')).toBeVisible({timeout:12000});
   expect((await page.request.get(audioPath)).status()).toBe(200);
   await expect(page.locator('[data-unlock-play]')).toBeHidden();
   expect((await page.request.get(base+'/api/my-links')).status()).toBe(200);
   await page.reload();await expect(page.locator('audio')).toBeVisible();
+  await expect(page.locator('[data-unlock-play]')).toBeHidden();
+  await page.goto(base+'/my-links?lang=en');await expect(page.locator('audio')).toBeVisible();
  } finally {await app.stop();}
 });
