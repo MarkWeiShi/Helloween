@@ -43,7 +43,6 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
       const verifier=randomBytes(48).toString('base64url');
       const state=begin(session,{verifier,provider:body.provider});
       const redirect=new URL('/api/auth/callback',origin);redirect.searchParams.set('state',state);
-      if(body.provider==='x' && body.popup===true)redirect.searchParams.set('sharePopup','1');
       const target=new URL(`${url.replace(/\/$/,'')}/auth/v1/authorize`);
       target.search=new URLSearchParams({provider:body.provider,redirect_to:redirect.href,code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'s256'}).toString();
       // Supabase supplies X's baseline login scopes; request the approved posting scope too.

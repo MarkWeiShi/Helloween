@@ -1,7 +1,6 @@
 import {test,expect} from '@playwright/test';
 test.use({baseURL:process.env.WD_CHALLENGE_ORIGIN || 'http://127.0.0.1:5174'});
 test('animated X challenge includes the correct GIF and this invitation across five interface languages',async({page})=>{
- await page.route('**/api/social/x/status',r=>r.fulfill({json:{connected:true}}));
  await page.route('**/api/social/config',route=>route.fulfill({json:{origin:'https://example.com',kakaoKey:'',wechatReady:false,facebookAppId:''}}));
  for(const lang of ['zh','en','ja','ko','ar']){
   await page.goto(`/art/share-challenges/index.html?lang=${lang}`);

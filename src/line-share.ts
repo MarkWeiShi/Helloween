@@ -6,8 +6,8 @@ import {escape as e} from './api';
 type Liff={init(options:{liffId:string}):Promise<void>;isLoggedIn():boolean;isInClient?():boolean;login(options:{redirectUri:string}):void;isApiAvailable(name:string):boolean;shareTargetPicker(messages:unknown[],options:{isMultiple:boolean}):Promise<{status:string}|undefined>};
 declare global{interface Window{liff?:Liff}}
 const root=document.querySelector<HTMLElement>('#line-share')!;
-let language=resolveLanguage([new URL(location.href).searchParams.get('lang'),...navigator.languages]);
-let cn=language==='zh';
+const language=resolveLanguage([new URL(location.href).searchParams.get('lang'),...navigator.languages]);
+const cn=language==='zh';
 const label=(zh:string,en:string)=>cn?zh:en;
 async function read(path:string){const r=await fetch(path);if(!r.ok)throw Error(label('邀请加载失败，请返回游戏重试。','Could not load the invitation. Return to the game and try again.'));return r.json();}
 async function sdk(){
@@ -24,7 +24,6 @@ async function start(){
  if(!config.lineLiffId)throw Error(label('LINE 卡片分享尚未启用。','LINE card sharing is not enabled yet.'));
  // Initialize before reading or changing URLs: LIFF can complete an OAuth redirect here.
  const liff=await sdk();await liff.init({liffId:config.lineLiffId});
- language=resolveLanguage([new URL(location.href).searchParams.get('lang'),...navigator.languages]);cn=language==='zh';
  const token=new URL(location.href).searchParams.get('invite')||'';
  if(!/^[\w-]{1,80}$/.test(token))throw Error(label('请从游戏中的 LINE 分享按钮打开此页。','Open this page using the LINE share button in the game.'));
  const [invite,catalog]=await Promise.all([read('/api/invites/'+token),loadCatalog()]);

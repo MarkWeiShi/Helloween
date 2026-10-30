@@ -109,8 +109,8 @@ export function createApp({
           if(!playerId) throw new Error('Missing session');
           const subject=await auth.finish(token,url.searchParams.get('state'),url.searchParams.get('code'));
           const login=store.accountLogin(playerId,subject);setSession(login.token);
-          res.writeHead(303,{Location:'/my-links?signin=success'+(url.searchParams.get('sharePopup')==='1'?'&sharePopup=1':''),'Cache-Control':'no-store','Referrer-Policy':'no-referrer'});res.end();
-        } catch {res.writeHead(303,{Location:'/my-links?signin=failed'+(url.searchParams.get('sharePopup')==='1'?'&sharePopup=1':''),'Cache-Control':'no-store','Referrer-Policy':'no-referrer'});res.end();}
+          res.writeHead(303,{Location:'/my-links?signin=success','Cache-Control':'no-store','Referrer-Policy':'no-referrer'});res.end();
+        } catch {res.writeHead(303,{Location:'/my-links?signin=failed','Cache-Control':'no-store','Referrer-Policy':'no-referrer'});res.end();}
         return;
       }
       if (url.pathname.startsWith("/api/")) {

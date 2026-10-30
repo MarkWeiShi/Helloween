@@ -66,8 +66,6 @@ test('X OAuth 2.0 uses the existing session-bound PKCE account flow and stays op
  assert.equal(target.searchParams.get('provider'),'x');
  assert.equal(target.searchParams.get('scopes'),'tweet.read users.read tweet.write media.write');
  assert.equal(target.searchParams.get('code_challenge_method'),'s256');
- const popupStart=await auth.start('owner-session',{provider:'x',popup:true},'https://game.example');
- assert.equal(new URL(new URL(popupStart.url).searchParams.get('redirect_to')).searchParams.get('sharePopup'),'1');
  const callback=new URL(target.searchParams.get('redirect_to'));
  assert.equal(callback.origin,'https://game.example');
  const state=callback.searchParams.get('state');
