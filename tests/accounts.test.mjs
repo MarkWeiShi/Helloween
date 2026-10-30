@@ -4,20 +4,35 @@ import {BooStore} from '../server/store.mjs';
 import {loadCatalog} from '../server/content.mjs';
 import {createApp} from '../server/index.mjs';
 const body={consent:true,mime:'audio/webm',durationMs:2000,audio:Buffer.from([0x1a,0x45,0xdf,0xa3,1,2,3]).toString('base64'),score:null,meanHz:null,peakHz:null,frames:0};
-test('first five successful recordings per link, retries, privacy and pagination',()=>{
+test('fifty recordings across links, deletion, retries, privacy and pagination',()=>{
  const store=new BooStore(':memory:',loadCatalog());
  try{
  const sender=store.createGuest().player.id;store.onboard(sender,{name:'Owner',country:'JP',spiritId:'kappa'});
- const link=store.createInvite(sender,{spiritId:'kappa',channel:'copy'}),friends=Array.from({length:6},()=>store.createGuest().player.id);
- for(const friend of friends.slice(0,5))store.recordAudio(friend,link.id,body);
+ const link=store.createInvite(sender,{spiritId:'kappa',channel:'copy'}),friends=Array.from({length:51},()=>store.createGuest().player.id);
+ for(const friend of friends.slice(0,50))store.recordAudio(friend,link.id,body);
  assert.equal(store.recordAudio(friends[0],link.id,body).alreadySent,true);
- assert.equal(store.recordAudio(friends[5],link.id,body).full,true);
+ assert.equal(store.recordAudio(friends[50],link.id,body).full,true);
  assert.equal(store.invite(link.id).recordingFull,true);
- assert.deepEqual(store.ghostLinks(sender).links[0].recordings.map(r=>r.receiverId),friends.slice(0,5));
+ assert.deepEqual(store.ghostLinks(sender).links[0].recordings.map(r=>r.receiverId),friends.slice(0,50));
+ assert.equal(store.friendVoices(sender).total,50);
+ const other=store.createInvite(sender,{spiritId:'jiangshi',channel:'copy'});
+ assert.equal(store.recordAudio(friends[50],other.id,body).full,true);
+ assert.throws(()=>store.deleteRecording(friends[1],link.id,friends[0]),{status:404});
+ store.deleteRecording(sender,link.id,friends[0]);
+ assert.equal(store.invite(other.id).recordingFull,false);
+ assert.throws(()=>store.reactionAudio(sender,link.id,friends[0]),{status:404});
+ store.onboard(friends[50],{name:'New friend',country:'JP',spiritId:'kappa'});
+ assert.deepEqual(store.recordAudio(friends[50],other.id,{...body,language:'en',amplitudeRms:.4}),{ok:true});
+ assert.equal(store.friendVoices(sender).total,50);
+ assert.equal(store.friendVoices(sender).recordings[0].country,'JP');
+ assert.equal(store.friendVoices(sender).recordings[0].spiritId,'jiangshi');
+ store.deleteRecording(sender,other.id,friends[50]);
+ assert.equal(store.db.prepare('SELECT COUNT(*) AS n FROM reaction_intensity').get().n,0);
+ assert.deepEqual(store.recordAudio(friends[50],other.id,body),{ok:true});
  assert.equal(store.ghostLinks(friends[0]).links.length,0);
  assert.throws(()=>store.reactionAudio(friends[0],link.id,friends[1]),{status:404});
  for(let i=0;i<21;i++)store.createInvite(sender,{spiritId:'jiangshi',channel:'copy'});
- assert.equal(store.ghostLinks(sender).links.length,20);assert.equal(store.ghostLinks(sender).hasMore,true);assert.equal(store.ghostLinks(sender,20).links.length,2);
+ assert.equal(store.ghostLinks(sender).links.length,20);assert.equal(store.ghostLinks(sender).hasMore,true);assert.equal(store.ghostLinks(sender,20).links.length,3);
  assert.equal(store.ghostLinks(sender,0,'kappa').links.length,1);assert.equal(store.ghostLinks(sender,0,'jiangshi').hasMore,true);
  }finally{store.close();}
 });

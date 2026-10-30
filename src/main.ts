@@ -402,7 +402,7 @@ function openInvite(accepted = false) {
     if (invitation.expired) return;
     selected = s.id;
     region = s.regionId;
-    revealCharacter(false, invitation.recordingFull ? undefined : {inviteId:invitation.id}, true);
+    revealCharacter(false, {inviteId:invitation.id}, true);
   };
   // Unlock already explains and accepts invitation playback and recording.
   if (accepted && !invitation.expired) {
@@ -520,7 +520,7 @@ function showGate() {
 }
 function openUnlockConsent() {
   if (!gate || gateBusy) return;
-  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${t("Recording starts at 3 seconds into the video and lasts 6 seconds.")}</li><li>${invite?.recordingFull ? t("This link already has five recordings. You can still play; no recording will be uploaded.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li>${invite && !invite.expired ? "" : html`<li>录音中可随时取消或关闭。</li>`}</ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
+  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${t("Recording starts at 3 seconds into the video and lasts 6 seconds.")}</li><li>${invite?.recordingFull ? t("Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li>${invite && !invite.expired ? "" : html`<li>录音中可随时取消或关闭。</li>`}</ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
   const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
   dialog.classList.add('unlock-consent');
   dialog.setAttribute('aria-labelledby', 'unlock-title');

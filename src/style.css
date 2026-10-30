@@ -3474,3 +3474,5 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .rankings-screen{--campaign-row:clamp(60px,9vw,113px);--campaign-top:max(8px,env(safe-area-inset-top))}
 .rankings-screen #app > .stats-help{top:calc(var(--campaign-top) + var(--campaign-row)/2 - 22px)}
 .rankings-screen .screams-header{padding-inline-start:54px}
+
+.voice-timeline{grid-template-columns:minmax(0,1fr);max-width:800px;margin-inline:auto}.voice-timeline .voice-detail{padding:0 20px 16px}.voice-timeline .ghost-link-meta{border-bottom:0}.ghost-links-toolbar{flex-wrap:wrap}.voice-timeline .ghost-link-card h2{font-size:19px}

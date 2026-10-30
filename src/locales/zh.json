@@ -1343,5 +1343,16 @@
   "Ranked by friends’ combined volume and pitch scores.": "按朋友反馈的音量与音高综合分排名。",
   "Ranked by recordings received through shared links.": "按分享链接收到的录音数量排名。",
   "We request echo cancellation and noise suppression to reduce video sound in the microphone. Valid voice samples produce a 0–100 game score: 50% pitch and 50% logarithmic volume. Pitch maps 70–1200 Hz and volume maps −40–0 dB to the score range.": "采集声音时请求启用回声消除和降噪，以抑制麦克风中的视频原声。有效人声换算为 0–100 分：音高占 50%，对数音量占 50%。音高 70–1200 Hz、音量 −40–0 dB 分别映射到评分范围。",
-  "Your country": "你的国家"
+  "Your country": "你的国家",
+  "All your friends’ voices, in one timeline. Save up to 50 voices.": "朋友的声音按时间排列，最多保存 50 条。",
+  "Filter by country": "按朋友国家筛选",
+  "All countries": "全部国家",
+  "Storage full. Delete a voice to receive new recordings.": "容量已满，请删除声音后再接收新录音。",
+  "Voices saved · newest first": "已保存声音 · 最新在前",
+  "Play voice": "播放声音",
+  "Delete voice": "删除声音",
+  "No voices match these filters.": "没有符合筛选条件的声音。",
+  "Delete this voice permanently? This frees space for a new recording.": "确定永久删除这条声音吗？删除后可腾出空间接收新录音。",
+  "Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording.": "已存满 50 条声音。请邀请人删除声音后重试发送；请保持本页打开，以保留待发送录音。",
+  "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.": "邀请人已存满 50 条声音。录音仅分享给邀请人；请保持本页打开，待对方删除声音后重试发送。"
 }

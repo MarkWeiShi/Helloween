@@ -45,8 +45,12 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     status.textContent = t("Sending…");
     try {
       const result = await api<{alreadySent?: boolean; full?: boolean}>(`/invites/${shared.inviteId}/audio`, pending);
+      if (result.full) {
+        if (!dead) { status.textContent = t("Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording."); retry.hidden = false; cancel.hidden = false; }
+        return;
+      }
       pending = undefined; sent = true;
-      if (!dead) status.textContent = result.full ? t("Link full · not sent") : result.alreadySent ? t("Already sent") : t("Voice sent");
+      if (!dead) status.textContent = result.alreadySent ? t("Already sent") : t("Voice sent");
     } catch {
       if (!dead) { status.textContent = t("Send failed · retry"); retry.hidden = false; cancel.hidden = false; }
     } finally { sending = false; if (!dead) button.disabled = false; }

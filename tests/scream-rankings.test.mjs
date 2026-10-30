@@ -39,9 +39,7 @@ test('four boards attribute recordings to sharers, weight friends equally, exclu
  assert.throws(()=>store.screamRankings(jp,'intensity','languages'),{status:400});
  assert.throws(()=>store.recordAudio(b,unsupported,{...measured(635,.1),meanRms:2}),{status:400});
  assert.equal(personalScareScore(635,.1),50);
- store.db.prepare('DELETE FROM reaction_scores_v2 WHERE invite_id=? AND player_id=?').run(x,a);
- store.db.prepare('DELETE FROM reaction_details WHERE invite_id=? AND player_id=?').run(x,a);
- store.db.prepare('DELETE FROM reaction_audio WHERE invite_id=? AND player_id=?').run(x,a);
+ store.deleteRecording(jp,x,a);
  assert.equal(store.screamRankings(jp).self.score,2);
  assert.equal(store.screamRankings(jp,'intensity').self.score,50);
  } finally {store.close();}

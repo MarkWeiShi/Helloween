@@ -249,6 +249,13 @@ export function createApp({
           send(200,store.ghostLinks(playerId,offset,url.searchParams.get("spirit") || ""));return;
         }
 
+        if (req.method === 'GET' && url.pathname === '/api/friend-voices') {
+          send(200,store.friendVoices(playerId));return;
+        }
+        const audioDelete = url.pathname.match(/^\/api\/invites\/([\w-]+)\/audio\/([\w-]+)\/delete$/);
+        if (req.method === 'POST' && audioDelete) {
+          send(200,store.deleteRecording(playerId,audioDelete[1],audioDelete[2]));return;
+        }
         const audioGet = url.pathname.match(/^\/api\/invites\/([\w-]+)\/audio\/([\w-]+)$/);
         if (req.method === 'GET' && audioGet) {
           const recording = store.reactionAudio(playerId,audioGet[1],audioGet[2]);

@@ -1343,5 +1343,16 @@
   "Ranked by friends’ combined volume and pitch scores.": "Ranked by friends’ combined volume and pitch scores.",
   "Ranked by recordings received through shared links.": "Ranked by recordings received through shared links.",
   "We request echo cancellation and noise suppression to reduce video sound in the microphone. Valid voice samples produce a 0–100 game score: 50% pitch and 50% logarithmic volume. Pitch maps 70–1200 Hz and volume maps −40–0 dB to the score range.": "We request echo cancellation and noise suppression to reduce video sound in the microphone. Valid voice samples produce a 0–100 game score: 50% pitch and 50% logarithmic volume. Pitch maps 70–1200 Hz and volume maps −40–0 dB to the score range.",
-  "Your country": "Your country"
+  "Your country": "Your country",
+  "All your friends’ voices, in one timeline. Save up to 50 voices.": "All your friends’ voices, in one timeline. Save up to 50 voices.",
+  "Filter by country": "Filter by country",
+  "All countries": "All countries",
+  "Storage full. Delete a voice to receive new recordings.": "Storage full. Delete a voice to receive new recordings.",
+  "Voices saved · newest first": "Voices saved · newest first",
+  "Play voice": "Play voice",
+  "Delete voice": "Delete voice",
+  "No voices match these filters.": "No voices match these filters.",
+  "Delete this voice permanently? This frees space for a new recording.": "Delete this voice permanently? This frees space for a new recording.",
+  "Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording.": "Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording.",
+  "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.": "Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice."
 }

@@ -200,7 +200,28 @@ export class BooStore {
     const hasMore=links.length>20;
     return {hasMore,spirits:this.db.prepare('SELECT DISTINCT spirit_id FROM invites WHERE sender_id=? ORDER BY spirit_id').all(id).map(r=>r.spirit_id),links:links.slice(0,20).map(link=>({...link,recordings:this.db.prepare(`SELECT a.player_id AS receiverId,COALESCE(d.name,p.name) AS name,COALESCE(d.duration_ms,5000) AS durationMs,a.created_at AS createdAt
       FROM reaction_audio a JOIN players p ON p.id=a.player_id LEFT JOIN reaction_details d ON d.invite_id=a.invite_id AND d.player_id=a.player_id
-      WHERE a.invite_id=? ORDER BY a.created_at ASC,a.rowid ASC LIMIT 5`).all(link.inviteId)}))};
+      WHERE a.invite_id=? ORDER BY a.created_at ASC,a.rowid ASC`).all(link.inviteId)}))};
+  }
+  recordingCount(id) {
+    return this.db.prepare('SELECT COUNT(*) AS n FROM reaction_audio a JOIN invites i ON i.id=a.invite_id WHERE i.sender_id=?').get(id).n;
+  }
+  friendVoices(id) {
+    const recordings = this.db.prepare(`SELECT a.invite_id AS inviteId,a.player_id AS receiverId,i.spirit_id AS spiritId,
+      COALESCE(d.name,p.name) AS name,p.country AS country,COALESCE(d.duration_ms,5000) AS durationMs,a.created_at AS createdAt
+      FROM reaction_audio a JOIN invites i ON i.id=a.invite_id JOIN players p ON p.id=a.player_id
+      LEFT JOIN reaction_details d ON d.invite_id=a.invite_id AND d.player_id=a.player_id
+      WHERE i.sender_id=? ORDER BY a.created_at DESC,a.rowid DESC`).all(id);
+    return {recordings,total:recordings.length,limit:50};
+  }
+  deleteRecording(id, token, receiver) {
+    return this.transaction(() => {
+      this.reactionAudio(id,token,receiver);
+      this.db.prepare('DELETE FROM reaction_scores_v2 WHERE invite_id=? AND player_id=?').run(token,receiver);
+      this.db.prepare('DELETE FROM reaction_intensity WHERE invite_id=? AND player_id=?').run(token,receiver);
+      this.db.prepare('DELETE FROM reaction_details WHERE invite_id=? AND player_id=?').run(token,receiver);
+      this.db.prepare('DELETE FROM reaction_audio WHERE invite_id=? AND player_id=?').run(token,receiver);
+      return {ok:true};
+    });
   }
   onboard(id, { name, country, spiritId }) {
     this.spirit(spiritId);
@@ -273,7 +294,7 @@ export class BooStore {
       spiritId: row.spirit_id,
       channel: row.channel,
       expired: this.now() - row.created_at > RULES.inviteLifetimeMs,
-      recordingFull: this.db.prepare("SELECT COUNT(*) AS n FROM reaction_audio WHERE invite_id=?").get(token).n >= 5,
+      recordingFull: this.recordingCount(row.sender_id) >= 50,
     };
   }
   recordInviteVisit(id, token) {
@@ -346,7 +367,7 @@ export class BooStore {
       if (this.db.prepare('SELECT 1 FROM reaction_audio WHERE invite_id=? AND player_id=?').get(token,id)) return {ok:true, alreadySent:true};
       const member = this.db.prepare('SELECT subject FROM account_members WHERE player_id=?').get(id);
       if(member && this.db.prepare(`SELECT 1 FROM reaction_audio a JOIN account_members m ON m.player_id=a.player_id WHERE a.invite_id=? AND m.subject=?`).get(token,member.subject)) return {ok:true,alreadySent:true};
-      if(this.db.prepare('SELECT COUNT(*) AS n FROM reaction_audio WHERE invite_id=?').get(token).n >= 5) return {ok:true,full:true};
+      if(this.recordingCount(invite.senderId) >= 50) return {ok:true,full:true};
       const count = this.db.prepare('SELECT COUNT(*) AS n FROM reaction_audio WHERE player_id=? AND created_at>?').get(id,this.now()-86400000).n;
       if (count >= 20) fail(429, 'Daily recording limit reached.');
       this.db.prepare('INSERT INTO reaction_audio VALUES(?,?,?,?,?)').run(token,id,body.mime,audio,this.now());
