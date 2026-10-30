@@ -229,7 +229,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Friends who opened your links. Repeat visits to the same link count once.",
     "Spirits whose wishes you have completed.": "Spirits whose wishes you have completed.",
     "Friends’ scream score": "Friends’ scream score",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.",
+    "Confirm and publish to X": "Confirm and publish to X",
+    "Post text": "Post text",
+    "Uploading and publishing…": "Uploading and publishing…",
+    "View published post": "View published post",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "Recording starts at 3 seconds into the video and lasts 6 seconds.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6s · send",
+    "● 6s · local only": "● 6s · local",
+    "Continue to {{1}}": "Continue to {{1}}"
   },
   "zh": {
     "Language": "语言",
@@ -429,7 +438,7 @@
     "Replay transformation": "重播变身",
     "Folklore character details": "民俗角色详情",
     "Character gallery. Swipe left or right to change character.": "角色展示。左右滑动切换角色。",
-    "Candy bag, {{6}} candies": "糖果袋，共 {{6}} 颗糖果",
+    "Candy bag, {{6}} small gifts": "小礼物袋，共 {{6}} 颗小礼物",
     "Candies to give": "可赠送糖果",
     "Total collected": "累计获得",
     "A little friendly competition. A lot of kindness.": "来一场友好竞赛，分享更多善意。",
@@ -440,15 +449,15 @@
     "Make yourself": "欢迎来到",
     "at ghost.": "小鬼的世界。",
     "No account needed. A name, a home, and a little imagination.": "无需注册账号，只需昵称、国家或地区，还有一点想象力。",
-    "Your country is fixed once you receive your welcome candies. You can explore characters from every culture.": "领取欢迎糖果后，国家或地区将无法更改。你仍可探索所有文化的角色。",
-    "Your country stays fixed after your first candy. Your progress belongs to this browser. Clearing its cookies or opening another browser starts a new visit.": "领取第一颗糖果后，国家或地区将无法更改。游戏进度属于当前浏览器；清除 Cookie 或使用其他浏览器会开始新的访问。",
-    "Welcome to the parade! 30 candies are in your bag.": "欢迎加入巡游！30 颗糖果已放入你的袋子。",
+    "Your country is fixed once you receive your welcome small gifts. You can explore characters from every culture.": "领取欢迎小礼物后，国家或地区将无法更改。你仍可探索所有文化的角色。",
+    "Your country stays fixed after your first a small gift. Your progress belongs to this browser. Clearing its cookies or opening another browser starts a new visit.": "领取第一颗小礼物后，国家或地区将无法更改。游戏进度属于当前浏览器；清除 Cookie 或使用其他浏览器会开始新的访问。",
+    "Welcome to the parade! 30 small gifts are in your bag.": "欢迎加入巡游！30 颗小礼物已放入你的袋子。",
     "Back to the world": "返回世界",
     "Your visit has expired. Please reload.": "本次访问已过期，请刷新页面。",
     "Choose your character and home country first.": "请先选择角色和所属国家或地区。",
     "Use a name between 1 and 24 characters.": "昵称长度需为 1 至 24 个字符。",
     "Choose a country or region from the list.": "请从列表中选择国家或地区。",
-    "Your country is fixed after your first candy.": "领取第一颗糖果后，国家或地区将无法更改。",
+    "Your country is fixed after your first a small gift.": "领取第一颗小礼物后，国家或地区将无法更改。",
     "Explore the map": "探索地图",
     "Our Halloween tale · {{0}}": "我们的万圣节故事 · {{0}}",
     "A new story imagined for this game.": "专为这款游戏创作的新故事。",
@@ -473,14 +482,14 @@
     "Invitation link copied. Send it to someone who needs a smile.": "邀请链接已复制，发给朋友，送上一点欢乐吧。",
     "Friend’s name / 朋友备注（可选）": "朋友备注（可选）",
     "This invitation is no longer available. The parade is still open.": "此邀请已失效，你仍可继续探索巡游。",
-    "Candy bag, {{4}} candies": "糖果袋，共 {{4}} 颗糖果",
-    "Candy bag, {{5}} candies": "糖果袋，共 {{5}} 颗糖果",
+    "Candy bag, {{4}} small gifts": "小礼物袋，共 {{4}} 颗小礼物",
+    "Candy bag, {{5}} small gifts": "小礼物袋，共 {{5}} 颗小礼物",
     "{{0}} Explore the map": "{{0}} 探索地图",
     "{{0}} Revisit the ending": "{{0}} 重温故事结局",
     "{{0}} Share this little happy ending": "{{0}} 分享温暖结局",
     "Kappa are river beings in Japanese folklore, often shown with a shell and a water-filled hollow on the head. Tales may describe mischief, wrestling or dangerous encounters near water. They are not automatically human ghosts. Our version keeps the river setting while giving one kappa an original, friendly task.": "河童是日本民俗中的河流生灵，常被描绘为背上有壳、头顶有盛水的凹盘。故事里，它们会恶作剧、摔跤，也可能让人在水边遭遇危险；不能简单把它们视为人死后的鬼魂。本游戏保留了河流背景，并为这只河童创作了一个友善的新任务。",
     "The kappa waited beside an empty picnic spot with a cucumber cut into careful little stars. Since the old footbridge closed, nobody had stopped there long enough to share a snack.": "河童守在空荡荡的野餐地点旁，把黄瓜仔细切成一颗颗小星星。自从旧人行桥关闭，就再也没有人停下来，与它分享一顿点心。",
-    "Your candy gift brought neighbors to the riverbank. They repaired the railing and cleared the path while the kappa held a basket of tools, keeping its precious head dish perfectly level.": "你的糖果礼物把邻居们带到了河边。大家修好栏杆、清理小路，河童则提着工具篮，小心保持头顶珍贵的水盘平稳。",
+    "Your kindness brought neighbors to the riverbank. They repaired the railing and cleared the path while the kappa held a basket of tools, keeping its precious head dish perfectly level.": "你的小礼物礼物把邻居们带到了河边。大家修好栏杆、清理小路，河童则提着工具篮，小心保持头顶珍贵的水盘平稳。",
     "At noon, people returned to the safe picnic spot. The kappa passed around cucumber stars and listened to the chatter. It had not needed a bigger river, only someone to sit beside it.": "中午，大家回到已经安全的野餐地点。河童分发着星星形状的黄瓜，听着热闹的聊天声。它需要的并不是更大的河流，只是有人愿意坐在身旁。",
     "Japanese lantern-yokai imagery": "日本灯笼妖怪意象",
     "Japanese umbrella-yokai imagery": "日本伞妖怪意象",
@@ -650,7 +659,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "好友打开你分享链接的次数；同一好友重复打开同一链接只计一次。",
     "Spirits whose wishes you have completed.": "你已完成心愿并释放的鬼怪数量。",
     "Friends’ scream score": "朋友整体尖叫评分",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "朋友观看视频后的整体尖叫评分（0–100）。先取每位朋友有效录音的平均分，再对朋友取平均。暂无有效评分时显示 0。"
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "朋友观看视频后的整体尖叫评分（0–100）。先取每位朋友有效录音的平均分，再对朋友取平均。暂无有效评分时显示 0。",
+    "Confirm and publish to X": "确认并发布到 X",
+    "Post text": "分享文案",
+    "Uploading and publishing…": "正在上传并发布…",
+    "View published post": "查看已发布帖文",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "录音从视频播放第 3 秒开始，持续 6 秒。",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 录音6秒 · 发送",
+    "● 6s · local only": "● 录音6秒 · 本机",
+    "Continue to {{1}}": "前往 {{1}}"
   },
   "es": {
     "Language": "Idioma",
@@ -905,7 +923,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Amigos que abrieron tus enlaces. Las visitas repetidas al mismo enlace cuentan una vez.",
     "Spirits whose wishes you have completed.": "Espíritus cuyos deseos has cumplido.",
     "Friends’ scream score": "Gritos de tus amigos",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Puntuación global de los gritos tras ver tus vídeos (0–100). Se promedian las grabaciones válidas de cada amigo y luego las medias de todos. Sin puntuaciones válidas: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Puntuación global de los gritos tras ver tus vídeos (0–100). Se promedian las grabaciones válidas de cada amigo y luego las medias de todos. Sin puntuaciones válidas: 0.",
+    "Confirm and publish to X": "Confirmar y publicar en X",
+    "Post text": "Texto de la publicación",
+    "Uploading and publishing…": "Subiendo y publicando…",
+    "View published post": "Ver publicación",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "La grabación empieza en el segundo 3 del vídeo y dura 6 segundos.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6s · enviar",
+    "● 6s · local only": "● 6s · local",
+    "Continue to {{1}}": "Continuar a {{1}}"
   },
   "pt": {
     "Language": "Idioma",
@@ -1160,7 +1187,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Amigos que abriram seus links. Visitas repetidas ao mesmo link contam uma vez.",
     "Spirits whose wishes you have completed.": "Espíritos cujos desejos você realizou.",
     "Friends’ scream score": "Gritos dos amigos",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Nota geral dos gritos após verem seus vídeos (0–100). Calculamos a média das gravações válidas de cada amigo e depois a média entre amigos. Sem notas válidas: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Nota geral dos gritos após verem seus vídeos (0–100). Calculamos a média das gravações válidas de cada amigo e depois a média entre amigos. Sem notas válidas: 0.",
+    "Confirm and publish to X": "Confirmar e publicar no X",
+    "Post text": "Texto da publicação",
+    "Uploading and publishing…": "Enviando e publicando…",
+    "View published post": "Ver publicação",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "A gravação começa no segundo 3 do vídeo e dura 6 segundos.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6s · enviar",
+    "● 6s · local only": "● 6s · local",
+    "Continue to {{1}}": "Continuar para {{1}}"
   },
   "fr": {
     "Language": "Langue",
@@ -1415,7 +1451,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Amis ayant ouvert tes liens. Les visites répétées du même lien ne comptent qu’une fois.",
     "Spirits whose wishes you have completed.": "Esprits dont tu as exaucé les souhaits.",
     "Friends’ scream score": "Cris des amis",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Score global des cris après vos vidéos (0–100). Moyenne des enregistrements valides de chaque ami, puis moyenne entre amis. Aucun score valide : 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Score global des cris après vos vidéos (0–100). Moyenne des enregistrements valides de chaque ami, puis moyenne entre amis. Aucun score valide : 0.",
+    "Confirm and publish to X": "Confirmer et publier sur X",
+    "Post text": "Texte du message",
+    "Uploading and publishing…": "Envoi et publication…",
+    "View published post": "Voir la publication",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "L’enregistrement commence à la troisième seconde de la vidéo et dure 6 secondes.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6s · envoyer",
+    "● 6s · local only": "● 6s · local",
+    "Continue to {{1}}": "Continuer vers {{1}}"
   },
   "de": {
     "Language": "Sprache",
@@ -1670,7 +1715,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Freunde, die deine Links geöffnet haben. Wiederholte Besuche desselben Links zählen einmal.",
     "Spirits whose wishes you have completed.": "Geister, deren Wünsche du erfüllt hast.",
     "Friends’ scream score": "Schrei-Score der Freunde",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Gesamtwertung der Schreie nach deinen Videos (0–100). Erst der Mittelwert gültiger Aufnahmen pro Freund, dann der Mittelwert aller Freunde. Noch keine gültigen Werte: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Gesamtwertung der Schreie nach deinen Videos (0–100). Erst der Mittelwert gültiger Aufnahmen pro Freund, dann der Mittelwert aller Freunde. Noch keine gültigen Werte: 0.",
+    "Confirm and publish to X": "Bestätigen und auf X posten",
+    "Post text": "Beitragstext",
+    "Uploading and publishing…": "Wird hochgeladen und veröffentlicht…",
+    "View published post": "Beitrag ansehen",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "Die Aufnahme beginnt bei Sekunde 3 des Videos und dauert 6 Sekunden.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6s · senden",
+    "● 6s · local only": "● 6s · lokal",
+    "Continue to {{1}}": "Weiter zu {{1}}"
   },
   "it": {
     "Language": "Lingua",
@@ -1925,7 +1979,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Amici che hanno aperto i tuoi link. Le visite ripetute allo stesso link contano una volta.",
     "Spirits whose wishes you have completed.": "Spiriti di cui hai esaudito i desideri.",
     "Friends’ scream score": "Urla degli amici",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Punteggio complessivo delle urla dopo i tuoi video (0–100). Prima la media delle registrazioni valide di ogni amico, poi la media tra amici. Nessun punteggio valido: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Punteggio complessivo delle urla dopo i tuoi video (0–100). Prima la media delle registrazioni valide di ogni amico, poi la media tra amici. Nessun punteggio valido: 0.",
+    "Confirm and publish to X": "Conferma e pubblica su X",
+    "Post text": "Testo del post",
+    "Uploading and publishing…": "Caricamento e pubblicazione…",
+    "View published post": "Visualizza il post",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "La registrazione inizia al secondo 3 del video e dura 6 secondi.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6s · invia",
+    "● 6s · local only": "● 6s · locale",
+    "Continue to {{1}}": "Continua su {{1}}"
   },
   "ru": {
     "Language": "Язык",
@@ -2180,7 +2243,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Друзья, открывшие твои ссылки. Повторные посещения одной ссылки считаются один раз.",
     "Spirits whose wishes you have completed.": "Духи, чьи желания ты исполнил.",
     "Friends’ scream score": "Крики друзей",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Общая оценка криков после просмотра ваших видео (0–100). Сначала среднее по записям с оценкой каждого друга, затем среднее между друзьями. Нет оценок: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Общая оценка криков после просмотра ваших видео (0–100). Сначала среднее по записям с оценкой каждого друга, затем среднее между друзьями. Нет оценок: 0.",
+    "Confirm and publish to X": "Подтвердить и опубликовать в X",
+    "Post text": "Текст публикации",
+    "Uploading and publishing…": "Загрузка и публикация…",
+    "View published post": "Посмотреть публикацию",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "Запись начинается на 3-й секунде видео и длится 6 секунд.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6с · отправка",
+    "● 6s · local only": "● 6с · локально",
+    "Continue to {{1}}": "Перейти в {{1}}"
   },
   "ar": {
     "Language": "اللغة",
@@ -2435,7 +2507,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "الأصدقاء الذين فتحوا روابطك. تُحتسب الزيارات المتكررة للرابط نفسه مرة واحدة.",
     "Spirits whose wishes you have completed.": "الأرواح التي حققت أمنياتها.",
     "Friends’ scream score": "تقييم صرخات الأصدقاء",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "التقييم الإجمالي للصرخات بعد مشاهدة فيديوهاتك (0–100). نحسب متوسط التسجيلات ذات التقييم الصالح لكل صديق، ثم المتوسط بين الأصدقاء. لا تقييمات صالحة بعد: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "التقييم الإجمالي للصرخات بعد مشاهدة فيديوهاتك (0–100). نحسب متوسط التسجيلات ذات التقييم الصالح لكل صديق، ثم المتوسط بين الأصدقاء. لا تقييمات صالحة بعد: 0.",
+    "Confirm and publish to X": "تأكيد النشر على X",
+    "Post text": "نص المنشور",
+    "Uploading and publishing…": "جارٍ الرفع والنشر…",
+    "View published post": "عرض المنشور",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "يبدأ التسجيل عند الثانية 3 من الفيديو ويستمر 6 ثوانٍ.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6ث · إرسال",
+    "● 6s · local only": "● 6ث · محلي",
+    "Continue to {{1}}": "المتابعة إلى {{1}}"
   },
   "hi": {
     "Language": "भाषा",
@@ -2690,7 +2771,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "आपके लिंक खोलने वाले दोस्त। उसी लिंक पर बार-बार आने को एक बार गिना जाता है।",
     "Spirits whose wishes you have completed.": "वे आत्माएँ जिनकी इच्छाएँ आपने पूरी की हैं।",
     "Friends’ scream score": "दोस्तों की चीख का स्कोर",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "आपके वीडियो देखने के बाद दोस्तों की चीख का कुल स्कोर (0–100)। पहले हर दोस्त की मान्य रिकॉर्डिंग का औसत, फिर सभी दोस्तों का औसत लेते हैं। मान्य स्कोर न होने पर: 0।"
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "आपके वीडियो देखने के बाद दोस्तों की चीख का कुल स्कोर (0–100)। पहले हर दोस्त की मान्य रिकॉर्डिंग का औसत, फिर सभी दोस्तों का औसत लेते हैं। मान्य स्कोर न होने पर: 0।",
+    "Confirm and publish to X": "पुष्टि करके X पर पोस्ट करें",
+    "Post text": "पोस्ट का पाठ",
+    "Uploading and publishing…": "अपलोड और पोस्ट किया जा रहा है…",
+    "View published post": "प्रकाशित पोस्ट देखें",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "वीडियो के तीसरे सेकंड पर रिकॉर्डिंग शुरू होती है और 6 सेकंड चलती है।",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6से · भेजें",
+    "● 6s · local only": "● 6से · स्थानीय",
+    "Continue to {{1}}": "{{1}} पर आगे बढ़ें"
   },
   "ja": {
     "Language": "言語",
@@ -2947,7 +3037,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "友達がリンクを開いた回数。同じ友達による同じリンクへの再訪問は1回と数えます。",
     "Spirits whose wishes you have completed.": "願いをかなえて解放した精霊の数。",
     "Friends’ scream score": "友達の絶叫スコア",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "動画を見た友達の総合絶叫スコア（0〜100）。友達ごとに有効な録音の平均を出し、全員の平均を計算します。スコアがない場合は 0。"
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "動画を見た友達の総合絶叫スコア（0〜100）。友達ごとに有効な録音の平均を出し、全員の平均を計算します。スコアがない場合は 0。",
+    "Confirm and publish to X": "X に投稿する",
+    "Post text": "投稿文",
+    "Uploading and publishing…": "アップロードして投稿中…",
+    "View published post": "投稿を見る",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "動画の再生開始から3秒後に録音を開始し、6秒間録音します。",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6秒録音 · 送信",
+    "● 6s · local only": "● 6秒録音 · 端末内",
+    "Continue to {{1}}": "{{1}} に進む"
   },
   "ko": {
     "Language": "언어",
@@ -3203,7 +3302,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "친구가 공유 링크를 연 횟수입니다. 같은 친구가 같은 링크를 다시 열어도 한 번만 셉니다.",
     "Spirits whose wishes you have completed.": "소원을 이루어 주고 해방한 유령 수입니다.",
     "Friends’ scream score": "친구들의 비명 점수",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "영상을 본 친구들의 종합 비명 점수(0–100). 친구별 유효 녹음 점수의 평균을 구한 뒤 친구 간 평균을 계산해요. 유효 점수가 없으면 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "영상을 본 친구들의 종합 비명 점수(0–100). 친구별 유효 녹음 점수의 평균을 구한 뒤 친구 간 평균을 계산해요. 유효 점수가 없으면 0.",
+    "Confirm and publish to X": "X에 게시 확인",
+    "Post text": "게시글 내용",
+    "Uploading and publishing…": "업로드 및 게시 중…",
+    "View published post": "게시글 보기",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "영상 재생 3초 후 녹음이 시작되어 6초간 지속됩니다.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6초 녹음 · 전송",
+    "● 6s · local only": "● 6초 녹음 · 기기 내",
+    "Continue to {{1}}": "{{1}}로 계속"
   },
   "id": {
     "Language": "Bahasa",
@@ -3458,7 +3566,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Teman yang membuka tautanmu. Kunjungan berulang ke tautan yang sama dihitung sekali.",
     "Spirits whose wishes you have completed.": "Roh yang keinginannya telah kamu penuhi.",
     "Friends’ scream score": "Skor jeritan teman",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Skor keseluruhan jeritan setelah teman menonton videomu (0–100). Rata-rata rekaman valid tiap teman, lalu rata-rata antar teman. Belum ada skor valid: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Skor keseluruhan jeritan setelah teman menonton videomu (0–100). Rata-rata rekaman valid tiap teman, lalu rata-rata antar teman. Belum ada skor valid: 0.",
+    "Confirm and publish to X": "Konfirmasi dan posting ke X",
+    "Post text": "Teks postingan",
+    "Uploading and publishing…": "Mengunggah dan memposting…",
+    "View published post": "Lihat postingan",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "Perekaman dimulai pada detik ke-3 video dan berlangsung selama 6 detik.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6d · kirim",
+    "● 6s · local only": "● 6d · lokal",
+    "Continue to {{1}}": "Lanjutkan ke {{1}}"
   },
   "th": {
     "Language": "ภาษา",
@@ -3713,7 +3830,16 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "เพื่อนที่เปิดลิงก์ของคุณ การเปิดลิงก์เดิมซ้ำจะนับเพียงครั้งเดียว",
     "Spirits whose wishes you have completed.": "วิญญาณที่คุณทำความปรารถนาให้สำเร็จแล้ว",
     "Friends’ scream score": "คะแนนเสียงกรี๊ดของเพื่อน",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "คะแนนเสียงกรี๊ดรวมหลังเพื่อนดูวิดีโอของคุณ (0–100) เฉลี่ยคะแนนจากเสียงที่ใช้ได้ของแต่ละคน แล้วเฉลี่ยระหว่างเพื่อน หากยังไม่มีคะแนนที่ใช้ได้จะแสดง 0"
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "คะแนนเสียงกรี๊ดรวมหลังเพื่อนดูวิดีโอของคุณ (0–100) เฉลี่ยคะแนนจากเสียงที่ใช้ได้ของแต่ละคน แล้วเฉลี่ยระหว่างเพื่อน หากยังไม่มีคะแนนที่ใช้ได้จะแสดง 0",
+    "Confirm and publish to X": "ยืนยันและโพสต์บน X",
+    "Post text": "ข้อความโพสต์",
+    "Uploading and publishing…": "กำลังอัปโหลดและโพสต์…",
+    "View published post": "ดูโพสต์",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "เริ่มบันทึกเมื่อวิดีโอเล่นถึงวินาทีที่ 3 และบันทึกนาน 6 วินาที",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6วิ · ส่ง",
+    "● 6s · local only": "● 6วิ · ในเครื่อง",
+    "Continue to {{1}}": "ไปต่อที่ {{1}}"
   },
   "vi": {
     "Language": "Ngôn ngữ",
@@ -3968,6 +4094,15 @@
     "Friends who opened your links. Repeat visits to the same link count once.": "Bạn bè đã mở liên kết của bạn. Mở lại cùng một liên kết chỉ tính một lần.",
     "Spirits whose wishes you have completed.": "Những linh hồn mà bạn đã hoàn thành điều ước.",
     "Friends’ scream score": "Điểm hét của bạn bè",
-    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Điểm hét tổng thể sau khi bạn bè xem video của bạn (0–100). Tính trung bình các bản ghi hợp lệ của từng người, rồi lấy trung bình giữa bạn bè. Chưa có điểm hợp lệ: 0."
+    "Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.": "Điểm hét tổng thể sau khi bạn bè xem video của bạn (0–100). Tính trung bình các bản ghi hợp lệ của từng người, rồi lấy trung bình giữa bạn bè. Chưa có điểm hợp lệ: 0.",
+    "Confirm and publish to X": "Xác nhận và đăng lên X",
+    "Post text": "Nội dung bài đăng",
+    "Uploading and publishing…": "Đang tải lên và đăng…",
+    "View published post": "Xem bài đăng",
+    "Recording starts at 3 seconds into the video and lasts 6 seconds.": "Bắt đầu ghi âm ở giây thứ 3 của video và kéo dài 6 giây.",
+    "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+    "● 6s · record & send": "● 6giây · gửi",
+    "● 6s · local only": "● 6giây · cục bộ",
+    "Continue to {{1}}": "Tiếp tục đến {{1}}"
   }
 }

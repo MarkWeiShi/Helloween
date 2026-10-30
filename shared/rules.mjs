@@ -1,12 +1,4 @@
 export const RULES = Object.freeze({
-  welcome: 30,
-  win: 20,
-  draw: 15,
-  loss: 10,
-  invite: 20,
-  matchDaily: 20,
-  inviteDaily: 10,
-  peaceCost: 100,
   roundMs: 5000,
   roundCount: 3,
   matchMs: 15000,

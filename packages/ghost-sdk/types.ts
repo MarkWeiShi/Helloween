@@ -48,14 +48,9 @@ export interface Player {
   name: string;
   country: string | null;
   selected: string | null;
-  wallet: number;
-  candies: number;
   peaceCount: number;
   initialized: boolean;
-  progress: { spiritId: string; donated: number; peaceAt: number | null }[];
-  remainingMatches: number;
-  remainingInvites: number;
-  hasClaimedInvite: boolean;
+  progress: { spiritId: string; peaceAt: number | null }[];
 }
 export interface Catalog {
   version: number;
@@ -65,7 +60,6 @@ export interface Catalog {
   rules: Record<string, number>;
   assetOrigin: string;
   worldMap: string;
-  inviteRewards: boolean;
 }
 export interface Invite {
   recordingFull: boolean;
@@ -74,7 +68,6 @@ export interface Invite {
   country: string;
   spiritId: string;
   channel: string;
-  eligible: boolean;
   expired: boolean;
 }
 export interface Challenge {

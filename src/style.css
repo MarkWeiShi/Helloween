@@ -3434,3 +3434,23 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .explore-screen .globe-title .counter-current{padding-left:0;text-align:left;font-variant-numeric:tabular-nums}
 
 .explore-screen .globe-title .parade-counter + .parade-counter{min-height:30px;margin-top:-6px}
+
+/* One compact confirmation sheet after provider authentication. */
+.compact-share {width:min(560px,calc(100vw - 24px));padding:24px;max-height:calc(100dvh - 24px);overflow:auto;}
+.compact-share > h2 {font-size:24px;margin:8px 48px 12px 0;}
+.share-profile {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.share-profile label {font-size:13px;min-width:0;}
+.share-profile input,.share-profile select {width:100%;min-height:40px;padding:8px;box-sizing:border-box;}
+.compact-share .social-handoff {padding:0;border:0;margin:0;}
+.share-card-preview {width:100%;height:auto;max-height:220px;object-fit:contain;border-radius:14px;}
+.compact-share textarea {width:100%;box-sizing:border-box;min-height:84px;max-height:100px;font-size:14px;padding:10px;margin:10px 0;}
+.compact-share .button {min-height:46px;margin-top:8px;}
+.compact-share [role=status] {font-size:13px;margin:8px 0 0;}
+.compact-share .social-handoff>h3 {display:none;}
+@media(max-width:420px){.compact-share{padding:18px}.share-card-preview{max-height:180px}.share-profile{gap:8px}}
+
+.compact-share textarea{font-family:inherit;color:var(--cream,#f7f0df);background:#121b32;border:1px solid #526077;border-radius:12px;resize:vertical}
+.share-confirm-note,.share-more{font-size:12px;line-height:1.4;color:var(--muted);margin:8px 0 0}
+.share-more summary{cursor:pointer;min-height:28px;padding:5px 0}
+.compact-share .share-more .share-link-label{display:block}
+.compact-share .social-handoff label{font-size:13px}

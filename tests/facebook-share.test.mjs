@@ -7,7 +7,7 @@ test('Facebook preview escapes metadata and constrains locale and destination',(
  const html=facebookShareDocument({id:'abc',name:'PRIVATE'}, {id:'jiangshi',name:'<script>bad</script>'},'https://helloween.fly.dev','evil/../../');
  assert.match(html,/jiangshi.en.jpg/);
  assert.match(html,/&lt;script&gt;/);
- assert.match(html,/location.replace\("\/i\/abc\?lang=en"\)/);
+ assert.ok(html.includes('location.replace("/?invite=abc&lang=en")'));
  assert.ok(!html.includes('PRIVATE'));
 });
 test('Facebook crawler gets the correct card without sessions or attributed visits',async()=>{
@@ -23,7 +23,7 @@ test('Facebook crawler gets the correct card without sessions or attributed visi
   assert.equal(response.status,200);assert.equal(response.headers.get('set-cookie'),null);
   const html=await response.text();
   assert.match(html,/og:image/);assert.match(html,/jiangshi.zh.jpg/);
-  assert.ok(html.includes(`/i/${invite.id}?lang=zh`));assert.ok(!html.includes('PRIVATE'));
+  assert.ok(html.includes(`/?invite=${invite.id}&lang=zh`));assert.ok(!html.includes('PRIVATE'));
   assert.equal(app.store.db.prepare('SELECT COUNT(*) AS n FROM invite_visits').get().n,before);
   assert.equal((await fetch(`${base}/api/share/facebook/missing`)).status,404);
  } finally {await new Promise(r=>app.server.close(r));app.close();}

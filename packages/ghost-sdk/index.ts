@@ -4,17 +4,17 @@ export class GhostApiError extends Error {
   constructor(message:string, public status=0, public retryAfterMs=0) {super(message);this.name='GhostApiError';}
 }
 export interface ClientOptions {baseUrl?:string; timeoutMs?:number; fetch?:typeof fetch}
-export interface RequestOptions {signal?:AbortSignal}
+export interface RequestOptions {signal?:AbortSignal;timeoutMs?:number}
 export interface GhostLink {inviteId:string;spiritId:string;createdAt:number;friendName:string|null;visits:number;recordings:{receiverId:string;name:string;durationMs:number;createdAt:number}[]}
 export interface AudioInput {consent:boolean;mime:string;audio:string;durationMs:number;[key:string]:unknown}
 export function createGhostClient({baseUrl='/api',timeoutMs=15000,fetch:fetcher=globalThis.fetch}:ClientOptions={}) {
   const base=baseUrl.replace(/\/$/,'');
   const url=(path:string)=>{if(!path.startsWith('/') || path.startsWith('//'))throw new TypeError('API path must start with one slash');return base+path;};
-  async function request<T>(path:string,body?:unknown,{signal}:RequestOptions={}):Promise<T> {
+  async function request<T>(path:string,body?:unknown,{signal,timeoutMs:requestTimeoutMs=timeoutMs}:RequestOptions={}):Promise<T> {
     for(let attempt=0;;attempt++) {
       try {
         const response=await fetcher(url(path),{method:body===undefined?'GET':'POST',credentials:'same-origin',
-          signal:AbortSignal.any([AbortSignal.timeout(timeoutMs),...(signal?[signal]:[])]),
+          signal:AbortSignal.any([AbortSignal.timeout(requestTimeoutMs),...(signal?[signal]:[])]),
           headers:body===undefined?{}:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
         const retry=response.headers.get('Retry-After');
         const wait=retry===null?0:/^\d+$/.test(retry)?Number(retry)*1000:Math.max(0,Date.parse(retry)-Date.now());
@@ -34,7 +34,7 @@ export function createGhostClient({baseUrl='/api',timeoutMs=15000,fetch:fetcher=
   }
   const id=(v:string)=>encodeURIComponent(v);
   return {request,url,
-    config:()=>request<{inviteRewards:boolean;contentVersion:number;release:string|null}>('/config'),
+    config:()=>request<{contentVersion:number;release:string|null}>('/config'),
     session:()=>request<{player:Player}>('/session',{}),
     me:(options?:RequestOptions)=>request<{player:Player}>('/me',undefined,options),
     onboard:(body:{name:string;country:string;spiritId:string})=>request<{player:Player}>('/onboard',body),
@@ -45,9 +45,7 @@ export function createGhostClient({baseUrl='/api',timeoutMs=15000,fetch:fetcher=
     links:(offset=0,spirit='')=>request<{links:GhostLink[];hasMore:boolean;spirits:string[]}>(`/my-links?${new URLSearchParams({offset:String(offset),spirit})}`),
     readReactions:()=>request<{player:Player}>('/reactions/read',{}),
     story:(key:string)=>request<{story:NonNullable<Spirit['story']>;peaceLabel:string}>(`/spirits/${id(key)}/story`),
-    gift:(key:string,amount:number,requestId:string)=>request<{player:Player}>(`/spirits/${id(key)}/gifts`,{amount,requestId}),
     rankings:<T=unknown>(scope='trick')=>request<T>(`/scream-rankings?scope=${id(scope)}`),
-    leaderboard:<T=unknown>(scope='players',metric='candies')=>request<T>(`/leaderboards?${new URLSearchParams({scope,metric})}`),
     event:(event:string,detail='')=>request('/events',{event,detail}),
     social:{config:<T=unknown>()=>request<T>('/social/config'),wechatSignature:<T=unknown>(pageUrl:string)=>request<T>('/social/wechat-signature',{url:pageUrl})},
   };

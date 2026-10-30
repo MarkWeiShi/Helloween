@@ -11,7 +11,7 @@ function load(src:string){
  if(!loaders.has(src))loaders.set(src,new Promise<void>((resolve,reject)=>{const script=document.createElement('script');script.src=src;script.crossOrigin='anonymous';const timer=setTimeout(()=>{script.remove();reject(Error(t("Sharing service timed out. Please try again.")));},12000);script.onload=()=>{clearTimeout(timer);resolve();};script.onerror=()=>{clearTimeout(timer);script.remove();reject(Error(t("Sharing service could not load. Please try again.")));};document.head.append(script);}).catch(error=>{loaders.delete(src);throw error;}));
  return loaders.get(src)!;
 }
-export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string){
+export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string,beforeConfirm:()=>Promise<void>=async()=>{}){
  const panel=document.createElement('section');panel.className='social-handoff';panel.setAttribute('aria-live','polite');node.replaceChildren(panel);
  const name=names[channel];if(!name)return;
  panel.textContent=msg`Preparing ${name} sharing…`;
@@ -19,7 +19,13 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
  const local=['localhost','127.0.0.1','[::1]'].includes(new URL(url).hostname);
  const notice=local?html`<p>This is a local preview link. Open the game on <a href="https://helloween.fly.dev" target="_blank" rel="noopener noreferrer">helloween.fly.dev</a> to create an invitation friends can open.</p>`:'';
  const link=html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(url)}"></label>`;
- const frame=(body:string)=>{panel.innerHTML=html`<h3>Share with ${e(name)}</h3>${notice}${body}${link}<p>You choose who receives it and confirm inside ${e(name)}. Nothing is sent automatically.</p>`;panel.scrollIntoView({block:'nearest'});};
+ const frame=(body:string,compact=false)=>{panel.innerHTML=compact?`<h3>${e(name)}</h3>${body}<p class="share-confirm-note">${e(locale==='zh'?'在平台内选择好友或发布，确认后才会分享。':'Confirm recipients or publish on the platform. Nothing is sent automatically.')}</p><details class="share-more"><summary>${e(locale==='zh'?'链接与其他选项':'Link and other options')}</summary>${notice}${link}</details>`:html`<h3>Share with ${e(name)}</h3>${notice}${body}${link}<p>You choose who receives it and confirm inside ${e(name)}. Nothing is sent automatically.</p>`;panel.scrollIntoView({block:'nearest'});
+  panel.querySelectorAll<HTMLAnchorElement>('a.button.primary').forEach(anchor=>anchor.onclick=event=>{
+   event.preventDefault();const popup=window.open('about:blank','_blank');
+   if(popup)popup.opener=null;
+   void beforeConfirm().then(()=>{if(popup)popup.location.href=anchor.href;else location.assign(anchor.href);}).catch(error=>{popup?.close();const note=document.createElement('p');note.setAttribute('role','alert');note.textContent=error.message;panel.append(note);});
+  });
+ };
  if(channel==='x' && spiritId){
   const cn=locale==='zh';
   const label=(zh:string,en:string)=>cn?zh:en;
@@ -31,13 +37,20 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    const baseChallenge=manifest.characters[spiritId];
    const challenge=baseChallenge?{...baseChallenge,...(baseChallenge.localized?.[locale]||baseChallenge.localized?.en||{})}:null;
    if(!challenge || challenge.previewOnly)throw Error('GIF unavailable');
-   const post=(cn?challenge.textZh:challenge.textEn).replace('［本次邀请链接］',url);
-   const target=`https://x.com/intent/tweet?text=${encodeURIComponent(post)}`;
-   frame(`<h4>${e(label('分享动态挑战','Share an animated challenge'))}</h4><img src="${e(challenge.gif)}" alt="${e(challenge.nameZh)}" width="960" height="504" style="width:100%;max-width:960px;height:auto;border-radius:16px"><p>${e(label('先下载动态卡片，再打开 X 并附图。点击帖文中的专属链接进入游戏；点击动图会打开媒体。','Download the animated card, then attach it on X. Open the invitation link in the post to play; tapping the GIF opens the media.'))}</p><a class="button secondary full" href="${e(challenge.gif)}" download="${e(spiritId)}-challenge.gif">${e(label('下载动态 GIF','Download animated GIF'))}</a><textarea readonly aria-label="${e(label('分享帖文','Share post'))}" style="width:100%;min-height:150px;box-sizing:border-box">${e(post)}</textarea><button class="button secondary full" data-copy-post>${e(label('复制完整帖文','Copy full post'))}</button><p data-copy-status role="status"></p><a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(label('打开 X 发帖','Continue to X'))}</a>`);
-   panel.querySelector<HTMLButtonElement>('[data-copy-post]')!.onclick=async()=>{
-    const status=panel.querySelector<HTMLElement>('[data-copy-status]')!;
-    try{await navigator.clipboard.writeText(post);status.textContent=label('帖文已复制。','Post copied.');}
-    catch{panel.querySelector('textarea')!.select();status.textContent=label('请选择并复制上方帖文。','Select and copy the post above.');}
+   const inviteId=new URL(url).pathname.split('/').pop()!;
+   const shareUrl=new URL(`/api/share/card/${inviteId}?lang=${locale}`,url).href;
+   const post=(cn?challenge.textZh:challenge.textEn).replace('［本次邀请链接］',shareUrl);
+   panel.innerHTML=`<img class="share-card-preview" src="${e(challenge.gif)}" alt="${e(challenge.name)}" width="960" height="504"><textarea data-x-text aria-label="${e(t('Post text'))}" maxlength="280" rows="3">${e(post)}</textarea><button class="button primary full" data-publish-x>${e(t('Confirm and publish to X'))}</button><p data-x-status role="status"></p>`;
+   panel.querySelector<HTMLButtonElement>('[data-publish-x]')!.onclick=async()=>{
+    const button=panel.querySelector<HTMLButtonElement>('[data-publish-x]')!,status=panel.querySelector<HTMLElement>('[data-x-status]')!;
+    button.disabled=true;
+    try {
+     await beforeConfirm();
+     status.textContent=t('Uploading and publishing…');
+     const response=await fetch('/api/social/x/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inviteId,cardSha:challenge.sha256,language:locale,text:panel.querySelector<HTMLTextAreaElement>('[data-x-text]')!.value,confirm:true}),signal:AbortSignal.timeout(90000)});
+     const result=await response.json();if(!response.ok)throw Error(result.error||'Publishing failed');
+     status.innerHTML=`<a href="${e(result.url)}" target="_blank" rel="noopener noreferrer">${e(t('View published post'))}</a>`;
+    }catch(error){status.textContent=(error as Error).message;button.disabled=false;}
    };
    return;
   }catch{
@@ -59,8 +72,8 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
   const shareUrl=token?new URL(`/api/share/facebook/${encodeURIComponent(token)}?lang=${encodeURIComponent(locale)}`,url).href:url;
   const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
   const poster=spiritId?`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`:image;
-  const guidance=html`<p>Continue to ${e(name)}. If you are signed out, ${e(name)} will ask you to sign in before you choose friends or confirm your post.</p><a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Continue to ${e(name)}</a>`;
-  frame(`<img src="${e(poster)}" alt="" width="960" height="504" style="max-width:100%;height:auto;border-radius:16px">${guidance}`);return;
+  const guidance=html`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Continue to ${e(name)}</a>`;
+  frame(`<img class="share-card-preview" src="${e(poster)}" alt="" width="960" height="504">${guidance}`,true);return;
  }
  if(targets[channel]){
   frame(html`<p>Continue to ${e(name)}. If you are signed out, ${e(name)} will ask you to sign in before you choose friends or confirm your post.</p><a class="button primary full" href="${e(targets[channel])}" target="_blank" rel="noopener noreferrer">Continue to ${e(name)}</a>`);return;
@@ -91,10 +104,11 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    if(hostedUrl.protocol!=='https:')throw Error('Kakao returned an unsupported image URL.');
    const hostedImage=hostedUrl.href;
    const label=(zh:string,en:string)=>locale==='zh'?zh:en;
-   frame(`${usingGif?`<p>${e(label('动图已准备。KakaoTalk 可能显示静态封面；点击卡片可观看完整变身。','GIF prepared. KakaoTalk may show a still cover; tap the card for the full transformation.'))}</p><a class="button secondary full" href="${e(cardImage)}" download="${e(spiritId||'ghost')}-challenge.gif">${e(label('下载 GIF','Download GIF'))}</a>`:''}<img src="${e(hostedImage)}" alt="${e(label('鬼卡片预览','Ghost card preview'))}" width="320" style="max-width:100%;height:auto;border-radius:16px"><label>${e(label('分享文案','Your message'))}<textarea data-kakao-caption maxlength="200" style="width:100%;min-height:90px">${e(text)}</textarea></label><p>${e(label('选择好友或聊天室，并在 KakaoTalk 中确认发送。点击卡片即可打开本次变身邀请。','Choose friends or a chat, then confirm in KakaoTalk. The card opens this transformation invitation.'))}</p><button type="button" class="button primary full" data-open-kakao>${e(label('选择 KakaoTalk 好友','Continue to KakaoTalk'))}</button><p data-kakao-status role="status"></p>`);
-   panel.querySelector<HTMLButtonElement>('[data-open-kakao]')!.onclick=()=>{
+   frame(`<img class="share-card-preview" src="${e(hostedImage)}" alt="${e(label('鬼卡片预览','Ghost card preview'))}" width="960" height="504"><label>${e(label('分享文案','Your message'))}<textarea data-kakao-caption maxlength="200" style="width:100%;min-height:90px">${e(text)}</textarea></label><button type="button" class="button primary full" data-open-kakao>${e(label('选择 KakaoTalk 好友','Continue to KakaoTalk'))}</button><p data-kakao-status role="status"></p>`,true);
+   panel.querySelector<HTMLButtonElement>('[data-open-kakao]')!.onclick=async()=>{
     const status=panel.querySelector<HTMLElement>('[data-kakao-status]')!;
     try{
+     await beforeConfirm();
      const description=panel.querySelector<HTMLTextAreaElement>('[data-kakao-caption]')!.value.trim().slice(0,200)||text.slice(0,200);
      kakao.Share.sendDefault({objectType:'feed',content:{title:label('送你一个万圣节惊喜','A Halloween surprise for you'),description,imageUrl:hostedImage,imageWidth:cardWidth,imageHeight:cardHeight,link:{webUrl:url,mobileWebUrl:url}},buttons:[{title:label('观看变身','Watch transformation'),link:{webUrl:url,mobileWebUrl:url}}]});
      status.textContent=label('请在 KakaoTalk 中确认；此页面无法确认是否已发送。','Confirm in KakaoTalk. This page cannot confirm delivery.');

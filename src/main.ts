@@ -294,7 +294,7 @@ function codexPage() {
   return html`<div class="page-title"><div><h1>Your little<br><span>world of wonders.</span></h1><p>${player.peaceCount} wishes fulfilled. Every story is worth a little kindness.</p></div>${button(msg`${icon("globe")} Explore the map`, "map", "secondary")}</div><div class="codex-grid">${catalog.spirits
     .map((s) => {
       const p = progress(s.id);
-      return html`<button class="codex-card ${p?.peaceAt ? "at-peace" : ""}" data-lore="${s.id}"><div class="codex-art">${portrait(s, p?.peaceAt ? "peace" : "idle")}</div><span class="codex-country">${flag(s.originCountry)} ${e(catalog.regions.find((r) => r.id === s.regionId)?.name)}</span><h2>${e(s.name)}</h2><span class="codex-status">${p?.peaceAt ? `${icon("heart")} ${e(s.peaceLabel)}` : msg`${p?.donated || 0} / 100 candies`}</span></button>`;
+      return html`<button class="codex-card ${p?.peaceAt ? "at-peace" : ""}" data-lore="${s.id}"><div class="codex-art">${portrait(s, p?.peaceAt ? "peace" : "idle")}</div><span class="codex-country">${flag(s.originCountry)} ${e(catalog.regions.find((r) => r.id === s.regionId)?.name)}</span><h2>${e(s.name)}</h2><span class="codex-status">${p?.peaceAt ? `${icon("heart")} ${e(s.peaceLabel)}` : e(s.culture)}</span></button>`;
     })
     .join("")}</div>`;
 }
@@ -331,12 +331,12 @@ function requirePlayer(next: () => void | Promise<void>) {
 function openProfile(next?: () => void | Promise<void>) {
   if (player.initialized) {
     modal(
-      html`<div class="modal-heading">${icon("ghost")}<h2>${e(player.name)}'s parade</h2><p>${flag(player.country!)} ${e(country(player.country))}</p></div><div class="personal-stats"><div><strong>${player.wallet}</strong><span>Candies to give</span></div><div><strong>${player.candies}</strong><span>Total collected</span></div><div><strong>${player.peaceCount}</strong><span>Wishes fulfilled</span></div></div><p class="fine-print">Your country stays fixed after your first candy. Your progress belongs to this browser. Clearing its cookies or opening another browser starts a new visit.</p>${button(t("Back to the world"), "close", "primary full")}`,
+      html`<div class="modal-heading">${icon("ghost")}<h2>${e(player.name)}'s parade</h2><p>${flag(player.country!)} ${e(country(player.country))}</p></div>${button(t("Back to the world"), "close", "primary full")}`,
     );
     return;
   }
   modal(
-    html`<div class="modal-heading">${icon("ghost")}<h2>Make yourself<br>at ghost.</h2><p>No account needed. A name, a home, and a little imagination.</p></div><form id="join-form"><label>Your parade name<input name="name" maxlength="24" autocomplete="nickname" value="${e(player.name)}" required></label><label>Your country or region<select name="country" required><option value="">Choose your home</option>${catalog.countries.map((c) => html`<option value="${c.code}">${e(c.name)}</option>`).join("")}</select></label><div class="join-character">${thumb(spirit())}<span>Your first folklore friend<strong>${e(spirit().name)}</strong></span><span class="welcome-candy">${icon("candy")} +30</span></div><p class="form-error" role="alert"></p><button class="button primary full" type="submit">Join the parade ${icon("arrow")}</button><p class="fine-print">Your country is fixed once you receive your welcome candies. You can explore characters from every culture.</p></form>`,
+    html`<div class="modal-heading">${icon("ghost")}<h2>Make yourself<br>at ghost.</h2><p>No account needed. A name, a home, and a little imagination.</p></div><form id="join-form"><label>Your parade name<input name="name" maxlength="24" autocomplete="nickname" value="${e(player.name)}" required></label><label>Your country or region<select name="country" required><option value="">Choose your home</option>${catalog.countries.map((c) => html`<option value="${c.code}">${e(c.name)}</option>`).join("")}</select></label><div class="join-character">${thumb(spirit())}<span>Your first folklore friend<strong>${e(spirit().name)}</strong></span></div><p class="form-error" role="alert"></p><button class="button primary full" type="submit">Join the parade ${icon("arrow")}</button></form>`,
   );
   $("#join-form")!.addEventListener("submit", async (ev) => {
     ev.preventDefault();
@@ -353,7 +353,7 @@ function openProfile(next?: () => void | Promise<void>) {
       player = data.player;
       closeModal();
       render();
-      toast(t("Welcome to the parade! 30 candies are in your bag."));
+
       playTone();
       await next?.();
     } catch (err) {
@@ -388,7 +388,7 @@ async function openStory(id = selected) {
         show();
       });
     else event("story_read", id);
-    burst($(".story-scene"), frame === 2 ? "candy" : "light");
+    burst($(".story-scene"), "light");
   };
   show();
 }
@@ -424,9 +424,7 @@ async function respondInvite() {
       closeModal();
       render();
       toast(
-        data.receiverReward
-          ? msg`Boo received! ${data.receiverReward} candies are in your bag.`
-          : msg`Your Boo is on its way back to ${name}.`,
+        msg`Your Boo is on its way back to ${name}.`,
       );
     } catch (err) {
       toast((err as Error).message);
@@ -438,52 +436,31 @@ function shareChannelIcon(channel: string) {
   return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="/icons/social/${logos[channel]}.svg" alt="" aria-hidden="true" width="24" height="24">`;
 }
 function openShare(id = selected) {
-  const s = spirit(id);
-    modal(
-      html`<button class="icon-button modal-close share-shortcut" aria-label="Choose a sharing app">${icon("shareCurve")}</button><div class="share-preview"><div>${portrait(s, "scare")}<span>Boo from ${e(s.culture)}!</span></div><h2>A little fright.<br>A world of friendship.</h2></div><div class="modal-heading"><h2>Who needs a little Boo?</h2><p>Send ${e(s.name)} on a friendly Halloween visit.</p></div><label>Friend’s name / 朋友备注（可选）<input id="share-friend-name" maxlength="24" placeholder="例如：小明"></label><p class="fine-print">每次分享生成独立链接。备注仅你可见，可用来识别朋友的声音；朋友无需填写名字。</p><div class="share-options">${[
-        ["x", t("Scare X Friends")],
-        ["line", t("Scare Line Friends")],
-        ["facebook", "Facebook"],
-        ["kakao", t("Scare Kakao Friends")],
-        ["wechat", t("Scare Wechat Friends")],
-        ["copy", t("Copy link")],
-      ]
-        .map(([channel, label]) =>
-          button(
-            `${shareChannelIcon(channel)}<span class="share-option-label">${e(label)}</span>`,
-            "send-share",
-            "secondary",
-            `data-channel="${channel}" data-id="${id}"`,
-          ),
-        )
-        .join(
-          "",
-        )}</div><p class="fine-print">${catalog.inviteRewards ? t("X, LINE and eligible direct invitations can earn a first-visit candy bonus. Facebook sharing has no invitation bonus.") : t("Invitation bonuses are currently paused. Every friend can still play and collect candies.")} Rewards follow a friend's in-game response, not opening a share panel.</p><div id="share-link"></div>${s.art ? button(msg`${icon("download")} Save the character card`, "download", "text-button full", `data-id="${id}"`) : ""}`,
-    );
-    overlay.querySelector<HTMLButtonElement>('.share-shortcut')!.onclick = () => {
-      overlay.querySelector<HTMLButtonElement>('[data-action="send-share"]')?.focus();
-      overlay.querySelector('.share-options')?.scrollIntoView({block:'nearest',behavior:'smooth'});
-    };
+  modal(`<h2>${e(t('Choose a sharing app'))}</h2><div class="share-options">${[['x','X'],['line','LINE'],['facebook','Facebook'],['kakao','KakaoTalk'],['wechat','WeChat'],['copy',t('Copy link')]].map(([channel,label])=>button(`${shareChannelIcon(channel)}<span>${e(label)}</span>`,'send-share','secondary',`data-channel="${channel}" data-id="${id}"`)).join('')}</div>`);
+  overlay.querySelector('dialog')!.classList.add('compact-share');
 }
 let shareRequest = 0;
-async function sendShare(id: string, channel: string, btn: HTMLButtonElement) {
-  if(!player.account){sessionStorage.setItem("boo:pending-share",id);await signIn();return;}
-  if(!player.initialized){openProfile(()=>openShare(id));return;}
-  const request = ++shareRequest;
-  btn.disabled = true;
-  const node = $("#share-link");
+async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
+  const pending={id,channel};
+  if(channel==='x') {
+    const status=player.account?await api<{connected:boolean}>('/social/x/status'):{connected:false};
+    if(!status.connected && resumed){modal('<p role="alert">X did not provide media authorization. Please reconnect X with media and posting permissions.</p>');return;}
+    if(!status.connected){sessionStorage.setItem('boo:pending-share',JSON.stringify(pending));const login=await api('/auth/start',{provider:'x'});location.assign(login.url);return;}
+  }
+  const request=++shareRequest;
+  modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel.toUpperCase()}`)}</h2>${!player.initialized?`<div class="share-profile"><label>${e(t('Your parade name'))}<input id="share-name" maxlength="24" value="${e(player.name)}"></label><label>${e(t('Your country or region'))}<select id="share-country"><option value="">${e(t('Choose your home'))}</option>${catalog.countries.map(c=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<div id="share-link"></div>`);
+  overlay.querySelector('dialog')!.classList.add('compact-share');
+  const node=$('#share-link')!;
+  const beforeConfirm=async()=>{
+    if(!player.initialized){const result=await api('/onboard',{name:($('#share-name') as HTMLInputElement).value,country:($('#share-country') as HTMLSelectElement).value,spiritId:id});player=result.player;}
+  };
   try {
-    const friendName = $("#share-friend-name") as HTMLInputElement | null;
-    const data = await api("/invites", { spiritId: id, channel, friendName: friendName?.value.trim() || "" });
-    if (!node?.isConnected || request !== shareRequest) return;
-    if (channel === 'copy') {
-      node.innerHTML = html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(data.url)}"></label>`;
-      await copyLink(data.url);
-    } else {
-      await mountSocialHandoff(node, channel, data.url, msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`, asset(spirit(id).art?.share || '/art/world-map.webp'), id);
-    }
-  } catch (err) { toast((err as Error).message); }
-  finally { btn.disabled = false; }
+    const data=await api('/invites',{spiritId:id,channel});
+    if(!node.isConnected || request!==shareRequest)return;
+    if(channel==='line'){const config=await api('/social/config');if(config.lineLiffId){location.assign(`/line-share.html?invite=${data.id}&lang=${locale}`);return;}}
+    if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await beforeConfirm();await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
+    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`,asset(spirit(id).art?.share || '/art/world-map.webp'),id,beforeConfirm);
+  }catch(err){node.textContent=(err as Error).message;}
 }
 async function copyLink(url: string) {
   try {
@@ -512,7 +489,7 @@ async function downloadCard(id: string) {
 }
 function openAbout() {
   modal(
-    html`<div class="modal-heading">${icon("globe")}<h2>Many cultures.<br>A little shared kindness.</h2></div><p>This parade brings together ghosts, spirits, creatures and figures from folklore and literature. They do not all represent the souls of people who have died.</p><p>Each character's cultural background has its own source links. The warm three-part endings are new Halloween stories written for this game, not claims about the original traditions.</p><p>Countries on the leaderboard are chosen by players. Folklore can belong to several communities, and a map marker never means exclusive ownership.</p><h3>Your visit</h3><p>We store a guest identifier in this browser, your chosen nickname and country, game progress, reward records and aggregate activity counts. Signing in saves your invitation links to your account for access across devices. We do not import contact lists.</p><p>If you enable the microphone, your first character transformation samples your voice on your device for 5 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records five seconds and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.</p><p class="fine-print">No cash prizes or purchases. Sign in before sharing to keep access to your links after changing devices.</p>${hellotalk()}<div class="store-links"><a href="https://apps.apple.com/us/app/hellotalk-language-learning/id557130558" target="_blank" rel="noopener noreferrer" data-ht="store">App Store</a><a href="https://play.google.com/store/apps/details?id=com.hellotalk" target="_blank" rel="noopener noreferrer" data-ht="store">Google Play</a></div>`,
+    html`<div class="modal-heading">${icon("globe")}<h2>Many cultures.<br>A little shared kindness.</h2></div><p>This parade brings together ghosts, spirits, creatures and figures from folklore and literature. They do not all represent the souls of people who have died.</p><p>Each character's cultural background has its own source links. The warm three-part endings are new Halloween stories written for this game, not claims about the original traditions.</p><p>Countries on the leaderboard are chosen by players. Folklore can belong to several communities, and a map marker never means exclusive ownership.</p><h3>Your visit</h3><p>We store a guest identifier in this browser, your chosen nickname and country, game progress and aggregate activity counts. Signing in saves your invitation links to your account for access across devices. We do not import contact lists.</p><p>If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.</p><p class="fine-print">No cash prizes or purchases. Sign in before sharing to keep access to your links after changing devices.</p>${hellotalk()}<div class="store-links"><a href="https://apps.apple.com/us/app/hellotalk-language-learning/id557130558" target="_blank" rel="noopener noreferrer" data-ht="store">App Store</a><a href="https://play.google.com/store/apps/details?id=com.hellotalk" target="_blank" rel="noopener noreferrer" data-ht="store">Google Play</a></div>`,
   );
 }
 function showGate() {
@@ -524,7 +501,7 @@ function showGate() {
 }
 function openUnlockConsent() {
   if (!gate || gateBusy) return;
-  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${t("Recording starts 0.3 seconds before the scare and lasts 5 seconds.")}</li><li>${invite?.recordingFull ? t("This link already has five recordings. You can still play; no recording will be uploaded.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li><li>录音中可随时取消或关闭。</li></ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
+  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${t("Recording starts at 3 seconds into the video and lasts 6 seconds.")}</li><li>${invite?.recordingFull ? t("This link already has five recordings. You can still play; no recording will be uploaded.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li><li>录音中可随时取消或关闭。</li></ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
   const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
   dialog.classList.add('unlock-consent');
   dialog.setAttribute('aria-labelledby', 'unlock-title');
@@ -767,13 +744,13 @@ async function boot() {
     const [content, session, config] = await Promise.all([
       loadCatalog(),
       api("/session", {}),
-      api<{inviteRewards:boolean}>("/config"),
+      api("/config"),
     ]);
-    catalog = localizedContent({...content,inviteRewards:config.inviteRewards});
+    catalog = localizedContent(content);
     player = session.player;
     selected = player.selected || "kappa";
     region = spirit().regionId;
-    const token = location.pathname.match(/^\/i\/([\w-]+)$/)?.[1];
+    const token = location.pathname.match(/^\/i\/([\w-]+)$/)?.[1] || new URL(location.href).searchParams.get('invite');
     if (token) {
       try {
         invite = await api<Invite>(`/invites/${token}`);
@@ -789,10 +766,11 @@ async function boot() {
     if(location.pathname==='/my-links') {
       page='links';render();
       const signInResult=new URL(location.href).searchParams.get('signin');
+      if(new URL(location.href).searchParams.get('shareLogin')==='1' && !player.account)await signIn();
       if(signInResult==='failed')toast(t('Sign-in failed. Please try again.'));
       if(player.account && signInResult==='success') {
         const pending=sessionStorage.getItem('boo:pending-share');sessionStorage.removeItem('boo:pending-share');
-        if(pending && spirit(pending))openShare(pending);
+        if(pending){try{const saved=JSON.parse(pending);if(saved.id && saved.channel)await sendShare(saved.id,saved.channel,undefined,true);}catch{}}
       }
       history.replaceState(null,'','/my-links');
     } else if(location.pathname==='/rankings'){page='boards';render();} else {

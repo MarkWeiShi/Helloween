@@ -1,3 +1,4 @@
+import {createXPublisher} from './x-publish.mjs';
 import {createTelemetry} from './telemetry.mjs';
 import {facebookShareDocument} from './facebook-share.mjs';
 import {createAuth} from "./auth.mjs";
@@ -23,15 +24,17 @@ export function createApp({
   catalog = loadCatalog(),
   now,
   authOptions,
+  xPublisherOptions,
   rateLimits = true,
   publicContent = loadPublicContent(ROOT),
   trustedProxy = process.env.TRUST_PROXY === "true",
 } = {}) {
   const store = new BooStore(databasePath, catalog, {
     now,
-    inviteRewards: process.env.INVITE_REWARDS_ENABLED !== "false",
   });
   const auth = createAuth(authOptions);
+  const publishX=createXPublisher(xPublisherOptions);
+  store.db.exec("CREATE TABLE IF NOT EXISTS x_posts(invite_id TEXT PRIMARY KEY,player_id TEXT NOT NULL,status TEXT NOT NULL,result TEXT)");
   const signWechat = createWechatSigner();
   const windows = new Map();
   const limit = (key, max) => {
@@ -85,7 +88,7 @@ export function createApp({
         });
         return;
       }
-      const facebookShare=url.pathname.match(/^\/api\/share\/facebook\/([\w-]+)$/);
+      const facebookShare=url.pathname.match(/^\/api\/share\/(?:facebook|card)\/([\w-]+)$/) || url.pathname.match(/^\/i\/([\w-]+)$/);
       if (req.method==='GET' && facebookShare) {
         const invite=store.invite(facebookShare[1]);
         const spirit=catalog.spirits.find(s=>s.id===invite.spiritId);
@@ -181,14 +184,14 @@ export function createApp({
           return;
         }
         if (req.method === "GET" && url.pathname === "/api/config") {
-          send(200,{inviteRewards:store.inviteRewards,contentVersion:catalog.version,release:publicContent?.release || null});return;
+          send(200,{contentVersion:catalog.version,release:publicContent?.release || null});return;
         }
         if (req.method === "GET" && url.pathname === "/api/motions") {
           send(200, publicContent?.motions || {motions:{}});return;
         }
         if (req.method === "GET" && url.pathname === "/api/catalog") {
           const arts = {spirits:Object.fromEntries((publicContent?.catalog.spirits || []).map(s=>[s.id,s.art])),worldMap:publicContent?.catalog.worldMap};
-          send(200,{...publicCatalog(catalog,arts),inviteRewards:store.inviteRewards});return;
+          send(200,publicCatalog(catalog,arts));return;
         }
         const inviteGet = url.pathname.match(/^\/api\/invites\/([\w-]+)$/);
         if (req.method === "GET" && inviteGet) {
@@ -200,6 +203,33 @@ export function createApp({
         if(req.method==='GET' && url.pathname==='/api/auth/config') {send(200,auth.config());return;}
         if (!playerId)
           throw new ApiError(401, "Please reload to start your visit.");
+        const subject=store.db.prepare('SELECT subject FROM accounts WHERE player_id=?').get(playerId)?.subject;
+        if(req.method==='GET' && url.pathname==='/api/social/x/status') {send(200,{connected:!!auth.xToken(subject)});return;}
+        if(req.method==='POST' && url.pathname==='/api/social/x/publish') {
+          limit(`x-post:${playerId}`,5);
+          if(body.confirm!==true)throw new ApiError(400,'Confirm before publishing.');
+          const invite=store.invite(body.inviteId);
+          if(invite.expired)throw new ApiError(410,'This invitation has expired.');
+          if(invite.senderId!==playerId)throw new ApiError(403,'This invitation belongs to another account.');
+          const existing=store.db.prepare('SELECT * FROM x_posts WHERE invite_id=?').get(invite.id);
+          if(existing?.status==='complete'){send(200,JSON.parse(existing.result));return;}
+          if(existing)throw new ApiError(409,'Publishing is pending or unconfirmed. Check your X profile before trying again.');
+          const token=auth.xToken(subject);if(!token)throw new ApiError(401,'Sign in to X again to authorize publishing.');
+          const text=String(body.text||'').trim();
+          if(!text || [...text].length>280)throw new ApiError(400,'Use a post of up to 280 characters.');
+          const origin=process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
+          if(!text.includes(`${origin}/api/share/card/${invite.id}`))throw new ApiError(400,'Keep your invitation link in the post.');
+          store.db.prepare('INSERT INTO x_posts VALUES(?,?,?,NULL)').run(invite.id,playerId,'preparing');
+          let posting=false;
+          try {
+            const result=await publishX({token,spiritId:invite.spiritId,language:body.language,text,origin,cardSha:body.cardSha,beforePost:()=>{posting=true;store.db.prepare("UPDATE x_posts SET status='posting' WHERE invite_id=?").run(invite.id);}});
+            store.db.prepare("UPDATE x_posts SET status='complete',result=? WHERE invite_id=?").run(JSON.stringify(result),invite.id);
+            send(200,result);
+          } catch(error) {
+            if(!posting)store.db.prepare('DELETE FROM x_posts WHERE invite_id=?').run(invite.id);
+            throw error;
+          }return;
+        }
         if(req.method==='POST' && url.pathname==='/api/auth/start') {
           limit(`auth:${ip}`,10);
           send(200,await auth.start(token,body,process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`));return;
@@ -210,7 +240,7 @@ export function createApp({
           const login=store.accountLogin(playerId,subject);setSession(login.token);send(200,{player:login.player});return;
         }
         if(req.method==='POST' && url.pathname==='/api/auth/logout') {
-          store.logout(token);const guest=store.createGuest();setSession(guest.token);send(200,{player:guest.player});return;
+          auth.forget(subject);store.logout(token);const guest=store.createGuest();setSession(guest.token);send(200,{player:guest.player});return;
         }
         if(req.method==='GET' && url.pathname==='/api/my-links') {
           const offset=Number(url.searchParams.get('offset') || 0);
@@ -243,7 +273,6 @@ export function createApp({
         else if (req.method === "POST" && url.pathname === "/api/select")
           result = { player: store.select(playerId, body.spiritId) };
         else if (req.method === "POST" && url.pathname === "/api/invites") {
-          if(!store.state(playerId).account) throw new ApiError(401,"Sign in to save your ghost links and friends’ recordings.");
           result = store.createInvite(playerId, body);
           result.url = `${process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`}/i/${result.id}`;
         } else if (

@@ -9,13 +9,13 @@ const skip=!process.env.NGINX_BIN && process.env.REQUIRE_NGINX!=='1' ? 'Set NGIN
 test('split deployment: real NGINX routing, sessions, privacy, HTML and video Range',{skip},async()=>{
  const app=await startBrowserApp();
  try {
-  for(const route of ['/','/i/unknown?lang=ja','/my-links','/rankings']) {
+  for(const route of ['/','/my-links','/rankings']) {
    const response=await fetch(app.origin+route,{headers:{Cookie:'boo_session=ignored'}});
    const text=await response.text();assert.equal(response.status,200);assert.match(text,/<meta property="og:title"/);assert.doesNotMatch(text,/ignored/);
    assert.equal(response.headers.get('Set-Cookie'),null);assert.equal(response.headers.get('Cache-Control'),'no-cache');
    assert.match(response.headers.get('Content-Security-Policy'),/media-src/);
   }
-  for(const route of ['/missing.js','/missing.json','/art/missing.mp4','/api/unknown']) {
+  for(const route of ['/missing.js','/missing.json','/art/missing.mp4','/api/unknown','/i/unknown']) {
    const r=await fetch(app.origin+route);assert.ok(r.status>=400);assert.equal(r.headers.get('Cache-Control'),'no-store');
   }
   const send=(path,body,cookie)=>fetch(app.origin+'/api'+path,{method:body===undefined?'GET':'POST',headers:{...(body===undefined?{}:{'Content-Type':'application/json',Origin:app.origin}),...(cookie?{Cookie:cookie}:{})},body:body===undefined?undefined:JSON.stringify(body)});
@@ -25,6 +25,7 @@ test('split deployment: real NGINX routing, sessions, privacy, HTML and video Ra
   assert.equal((await (await send('/me',undefined,cookie)).json()).player.id,player.id);
   const owner=app.store.accountLogin(player.id,'split-owner');app.store.onboard(player.id,{name:'Owner',country:'JP',spiritId:'kappa'});
   const invite=app.store.createInvite(player.id,{spiritId:'kappa',channel:'copy'});
+  const card=await fetch(app.origin+'/i/'+invite.id+'?lang=ja');assert.equal(card.status,200);assert.match(await card.text(),/kappa.ja.jpg/);assert.equal(card.headers.get('set-cookie'),null);
   const receiver=app.store.createGuest(),audio=Buffer.from([0x1a,0x45,0xdf,0xa3,1,2,3]);
   app.store.recordAudio(receiver.player.id,invite.id,{consent:true,mime:'audio/webm',audio:audio.toString('base64'),durationMs:5000});
   const path=`/invites/${invite.id}/audio/${receiver.player.id}`;

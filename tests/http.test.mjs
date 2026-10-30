@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createApp } from "../server/index.mjs";
-test("HTTP session, CSRF, visitor privacy and atomic gift retries", async () => {
+test("HTTP session, CSRF, visitor privacy and retired gift endpoints", async () => {
   const app = createApp({ databasePath: ":memory:", rateLimits: false });
   await new Promise((resolve) => app.server.listen(0, "127.0.0.1", resolve));
   const base = `http://127.0.0.1:${app.server.address().port}`;
@@ -20,7 +20,7 @@ test("HTTP session, CSRF, visitor privacy and atomic gift retries", async () => 
     let cookie = res.headers.get("set-cookie").split(";")[0];
     assert.match(res.headers.get("set-cookie"), /HttpOnly/);
     const session = await res.json();
-    assert.equal(session.player.wallet, 0);
+    assert.equal(session.player.wallet, undefined);
     cookie = `boo_session=${app.store.accountLogin(session.player.id,"http-test").token}`;
     assert.equal((await send("/api/me")).status, 401);
     assert.equal(
@@ -52,28 +52,9 @@ test("HTTP session, CSRF, visitor privacy and atomic gift retries", async () => 
       ),
     );
     const results = await Promise.all(requests);
-    assert.ok(results.every((r) => r.status === 200));
-    const me = await (await send("/api/me", undefined, cookie)).json();
-    assert.equal(me.player.wallet, 20);
-    assert.equal(me.player.candies, 30);
-    assert.equal(me.player.progress[0].donated, 10);
-    await send(
-      "/api/spirits/kappa/gifts",
-      { amount: 10, requestId: "http-second-gift" },
-      cookie,
-    );
-    const retry = await (
-      await send(
-        "/api/spirits/kappa/gifts",
-        { amount: 10, requestId: "http-repeat-gift" },
-        cookie,
-      )
-    ).json();
-    assert.equal(
-      retry.player.wallet,
-      10,
-      "a retry returns current state, not an older wallet",
-    );
+    assert.ok(results.every((r) => r.status === 410));
+    const me=await (await send('/api/me',undefined,cookie)).json();
+    assert.equal(me.player.wallet,undefined);assert.equal(me.player.candies,undefined);
     assert.equal(
       (await send("/api/spirits/kappa/story", undefined, cookie)).status,
       403,
@@ -100,7 +81,7 @@ test("HTTP session, CSRF, visitor privacy and atomic gift retries", async () => 
         cookie,
       )
     ).json();
-    assert.equal(invite.eligible, false);
+    assert.equal(invite.eligible, undefined);
     const publicInvite = await (await send(`/api/invites/${invite.id}`)).json();
     assert.equal(publicInvite.senderId, undefined);
     assert.equal(

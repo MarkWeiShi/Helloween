@@ -5,14 +5,12 @@ export const client=createGhostClient({baseUrl:'/api'});
 // UI adapter keeps translation and presentation out of the standalone SDK.
 export async function api<T = any>(path:string,body?:unknown):Promise<T> {
  try {
-  const data=await client.request<T>(path,body);
+  const data=await client.request<T>(path,body,path==='/social/x/publish'?{timeoutMs:120000}:undefined);
   return /^\/spirits\/[^/]+\/story$/.test(path)?content(data):data;
  } catch(error) {
   if(error instanceof GhostApiError) {
    if(!error.status){error.message=t('The lanterns flickered. Please try again.');throw error;}
-   const shortage=error.message.match(/^You need (\d+) more candies\. A lantern duel can help\.$/);
-   error.message=shortage?msg`You need ${shortage[1]} more candies. A lantern duel can help.`:t(error.message);
-   throw error;
+   error.message=t(error.message);throw error;
   }
   throw new Error(t('The lanterns flickered. Please try again.'));
  }

@@ -7,8 +7,6 @@ import { dirname } from "node:path";
 import {
   RULES,
   CHANNELS,
-  makeChallenge,
-  scoreMatch,
 } from "../shared/rules.mjs";
 import { COUNTRY_CODES } from "../shared/countries.mjs";
 
@@ -26,29 +24,23 @@ export class BooStore {
   constructor(
     path,
     catalog,
-    { now = () => Date.now(), inviteRewards = true } = {},
+    { now = () => Date.now() } = {},
   ) {
     if (path !== ":memory:") mkdirSync(dirname(path), { recursive: true });
     this.db = new DatabaseSync(path);
     this.catalog = catalog;
     this.now = now;
-    this.inviteRewards = inviteRewards;
     this.spirits = new Map(catalog.spirits.map((s) => [s.id, s]));
     this.db
       .exec(`PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;
-      CREATE TABLE IF NOT EXISTS players(id TEXT PRIMARY KEY,name TEXT NOT NULL,country TEXT,selected TEXT,wallet INTEGER NOT NULL DEFAULT 0 CHECK(wallet>=0),candies INTEGER NOT NULL DEFAULT 0 CHECK(candies>=0),peace_count INTEGER NOT NULL DEFAULT 0,initialized INTEGER NOT NULL DEFAULT 0,created_at INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS players(id TEXT PRIMARY KEY,name TEXT NOT NULL,country TEXT,selected TEXT,peace_count INTEGER NOT NULL DEFAULT 0,initialized INTEGER NOT NULL DEFAULT 0,created_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS accounts(subject TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),created_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS account_members(player_id TEXT PRIMARY KEY REFERENCES players(id),subject TEXT NOT NULL REFERENCES accounts(subject));
       CREATE TABLE IF NOT EXISTS sessions(hash TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),created_at INTEGER NOT NULL);
-      CREATE TABLE IF NOT EXISTS progress(player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,donated INTEGER NOT NULL DEFAULT 0 CHECK(donated>=0 AND donated<=100),peace_at INTEGER,PRIMARY KEY(player_id,spirit_id));
-      CREATE TABLE IF NOT EXISTS ledger(id TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),reason TEXT NOT NULL,delta INTEGER NOT NULL,created_at INTEGER NOT NULL);
-      CREATE TABLE IF NOT EXISTS matches(id TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,opponent_id TEXT NOT NULL,seed INTEGER NOT NULL,started_at INTEGER NOT NULL,result TEXT,cancelled INTEGER NOT NULL DEFAULT 0);
-      CREATE TABLE IF NOT EXISTS invites(id TEXT PRIMARY KEY,sender_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,channel TEXT NOT NULL,eligible INTEGER NOT NULL,created_at INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS progress(player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,peace_at INTEGER,PRIMARY KEY(player_id,spirit_id));
+      CREATE TABLE IF NOT EXISTS invites(id TEXT PRIMARY KEY,sender_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,channel TEXT NOT NULL,created_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS invite_visits(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS responses(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),result TEXT NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
-      CREATE TABLE IF NOT EXISTS first_invites(player_id TEXT PRIMARY KEY REFERENCES players(id),invite_id TEXT NOT NULL REFERENCES invites(id));
-      CREATE TABLE IF NOT EXISTS daily(player_id TEXT NOT NULL REFERENCES players(id),day TEXT NOT NULL,matches INTEGER NOT NULL DEFAULT 0,invites INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(player_id,day));
-      CREATE TABLE IF NOT EXISTS operations(player_id TEXT NOT NULL REFERENCES players(id),kind TEXT NOT NULL,key TEXT NOT NULL,body_hash TEXT NOT NULL,result TEXT NOT NULL,PRIMARY KEY(player_id,kind,key));
       CREATE TABLE IF NOT EXISTS analytics(day TEXT NOT NULL,event TEXT NOT NULL,detail TEXT NOT NULL,count INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(day,event,detail));
       CREATE TABLE IF NOT EXISTS story_reads(player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,read_at INTEGER NOT NULL,PRIMARY KEY(player_id,spirit_id));
       CREATE TABLE IF NOT EXISTS reactions(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mean_hz INTEGER,peak_hz INTEGER,frames INTEGER NOT NULL,created_at INTEGER NOT NULL,seen_at INTEGER,PRIMARY KEY(invite_id,player_id));
@@ -56,12 +48,23 @@ export class BooStore {
       CREATE TABLE IF NOT EXISTS reaction_intensity(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,language TEXT NOT NULL,rms REAL CHECK(rms IS NULL OR (rms>=0 AND rms<=1)),PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS invite_labels(invite_id TEXT PRIMARY KEY REFERENCES invites(id),friend_name TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS reaction_details(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,name TEXT NOT NULL,score INTEGER,duration_ms INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
-      CREATE INDEX IF NOT EXISTS matches_player ON matches(player_id,started_at);
-      CREATE INDEX IF NOT EXISTS players_candies ON players(candies DESC);
       CREATE INDEX IF NOT EXISTS players_peace ON players(peace_count DESC);
       CREATE INDEX IF NOT EXISTS players_country ON players(country);
-      CREATE INDEX IF NOT EXISTS ledger_player ON ledger(player_id,created_at);
-      PRAGMA user_version=1;`);
+      `);
+    if(this.db.prepare('PRAGMA user_version').get().user_version<2)this.retireEconomy();
+  }
+  retireEconomy() {
+    this.transaction(()=>{
+      this.db.exec('DROP INDEX IF EXISTS players_candies; DROP TABLE IF EXISTS ledger; DROP TABLE IF EXISTS daily; DROP TABLE IF EXISTS first_invites; DROP TABLE IF EXISTS matches; DROP TABLE IF EXISTS operations;');
+      for(const [table,column] of [['players','wallet'],['players','candies'],['progress','donated'],['invites','eligible']]) {
+        if(this.db.prepare(`PRAGMA table_info(${table})`).all().some(c=>c.name===column))this.db.exec(`ALTER TABLE ${table} DROP COLUMN ${column}`);
+      }
+      for(const row of this.db.prepare('SELECT rowid,result FROM responses').all()) {
+        const {name,expired}=JSON.parse(row.result);
+        this.db.prepare('UPDATE responses SET result=? WHERE rowid=?').run(JSON.stringify({name,expired}),row.rowid);
+      }
+      this.db.exec('PRAGMA user_version=2');
+    });
   }
   close() {
     this.db.close();
@@ -99,17 +102,12 @@ export class BooStore {
   }
   state(id) {
     const p = this.rawPlayer(id);
-    const daily = this.db
-      .prepare("SELECT * FROM daily WHERE player_id=? AND day=?")
-      .get(id, this.day());
     return {
       id: p.id,
       account: !!this.db.prepare("SELECT 1 FROM accounts WHERE player_id=?").get(id),
       name: p.name,
       country: p.country,
       selected: p.selected,
-      wallet: p.wallet,
-      candies: p.candies,
       peaceCount: p.peace_count,
       friendScreamScore: this.friendScreamScore(id),
       shareCount: this.db.prepare("SELECT COUNT(*) AS count FROM invites WHERE sender_id=?").get(id).count,
@@ -118,14 +116,10 @@ export class BooStore {
       reactions: this.reactionSummary(id),
       progress: this.db
         .prepare(
-          "SELECT spirit_id AS spiritId,donated,peace_at AS peaceAt FROM progress WHERE player_id=?",
+          "SELECT spirit_id AS spiritId,peace_at AS peaceAt FROM progress WHERE player_id=?",
         )
         .all(id),
-      remainingMatches: Math.max(0, RULES.matchDaily - (daily?.matches || 0)),
-      remainingInvites: Math.max(0, RULES.inviteDaily - (daily?.invites || 0)),
-      hasClaimedInvite: !!this.db
-        .prepare("SELECT 1 FROM first_invites WHERE player_id=?")
-        .get(id),
+
     };
   }
   // Each known friend has equal weight, even across links or signed-in devices.
@@ -183,16 +177,8 @@ export class BooStore {
         const guest = this.rawPlayer(guestId), owner = this.rawPlayer(id);
         this.db.prepare('UPDATE invites SET sender_id=? WHERE sender_id=?').run(id,guestId);
         // Keep the more advanced progress, without stacking repeat welcome bonuses.
-        this.db.prepare(`INSERT INTO progress SELECT ?,spirit_id,donated,peace_at FROM progress WHERE player_id=?
-          ON CONFLICT(player_id,spirit_id) DO UPDATE SET donated=MAX(progress.donated,excluded.donated),peace_at=COALESCE(progress.peace_at,excluded.peace_at)`).run(id,guestId);
-        const walletDelta = Math.max(0,guest.wallet-owner.wallet);
-        const earnedDelta = Math.max(walletDelta,guest.candies-owner.candies);
-        if(earnedDelta) this.award(id,`account-import:${guestId}`,'account_import',earnedDelta);
-        const spentDelta=earnedDelta-walletDelta;
-        if(spentDelta) {
-          this.db.prepare('INSERT INTO ledger VALUES(?,?,?,?,?)').run(`account-import-spent:${guestId}`,id,'account_import_spent',-spentDelta,this.now());
-          this.db.prepare('UPDATE players SET wallet=wallet-? WHERE id=?').run(spentDelta,id);
-        }
+        this.db.prepare(`INSERT INTO progress SELECT ?,spirit_id,peace_at FROM progress WHERE player_id=?
+          ON CONFLICT(player_id,spirit_id) DO UPDATE SET peace_at=COALESCE(progress.peace_at,excluded.peace_at)`).run(id,guestId);
         this.db.prepare(`UPDATE players SET peace_count=(SELECT COUNT(*) FROM progress WHERE player_id=? AND peace_at IS NOT NULL) WHERE id=?`).run(id,id);
         if (!owner.initialized && guest.initialized) this.db.prepare('UPDATE players SET name=?,country=?,selected=?,initialized=1 WHERE id=?').run(guest.name,guest.country,guest.selected,id);
       }
@@ -215,21 +201,6 @@ export class BooStore {
       FROM reaction_audio a JOIN players p ON p.id=a.player_id LEFT JOIN reaction_details d ON d.invite_id=a.invite_id AND d.player_id=a.player_id
       WHERE a.invite_id=? ORDER BY a.created_at ASC,a.rowid ASC LIMIT 5`).all(link.inviteId)}))};
   }
-  award(id, key, reason, amount) {
-    const inserted = this.db
-      .prepare(
-        "INSERT OR IGNORE INTO ledger(id,player_id,reason,delta,created_at) VALUES(?,?,?,?,?)",
-      )
-      .run(key, id, reason, amount, this.now());
-    if (inserted.changes) {
-      this.db
-        .prepare(
-          "UPDATE players SET wallet=wallet+?,candies=candies+? WHERE id=?",
-        )
-        .run(amount, amount, id);
-    }
-    return !!inserted.changes;
-  }
   onboard(id, { name, country, spiritId }) {
     this.spirit(spiritId);
     if (!COUNTRY_CODES.includes(country))
@@ -244,7 +215,7 @@ export class BooStore {
       const p = this.rawPlayer(id);
       if (p.initialized) {
         if (p.country !== country)
-          fail(409, "Your country is fixed after your first candy.");
+          fail(409, "Your country is fixed after joining.");
         return this.state(id);
       }
       this.db
@@ -252,7 +223,7 @@ export class BooStore {
           "UPDATE players SET name=?,country=?,selected=?,initialized=1 WHERE id=?",
         )
         .run(name, country, spiritId, id);
-      this.award(id, `welcome:${id}`, "welcome", RULES.welcome);
+
       this.event("character_selected", spiritId);
       return this.state(id);
     });
@@ -265,197 +236,24 @@ export class BooStore {
       .run(spiritId, id);
     return this.state(id);
   }
-  dailyRow(id) {
-    this.db
-      .prepare("INSERT OR IGNORE INTO daily(player_id,day) VALUES(?,?)")
-      .run(id, this.day());
-    return this.db
-      .prepare("SELECT * FROM daily WHERE player_id=? AND day=?")
-      .get(id, this.day());
-  }
-  operation(id, kind, key, body, fn) {
-    if (typeof key !== "string" || !/^[a-zA-Z0-9_-]{8,80}$/.test(key))
-      fail(400, "A valid request ID is required.");
-    return this.transaction(() => {
-      const hash = digest(JSON.stringify(body));
-      const old = this.db
-        .prepare(
-          "SELECT * FROM operations WHERE player_id=? AND kind=? AND key=?",
-        )
-        .get(id, kind, key);
-      if (old) {
-        if (old.body_hash !== hash)
-          fail(409, "That request ID was already used for a different action.");
-        return JSON.parse(old.result);
-      }
-      const result = fn();
-      this.db
-        .prepare("INSERT INTO operations VALUES(?,?,?,?,?)")
-        .run(id, kind, key, hash, JSON.stringify(result));
-      return result;
-    });
-  }
-  gift(id, spiritId, amount, key) {
-    this.ready(id);
-    this.spirit(spiritId);
-    if (amount !== "complete" && amount !== 10)
-      fail(400, "Choose ten candies or complete the wish.");
-    return this.operation(id, "gift", key, { spiritId, amount }, () => {
-      const p = this.rawPlayer(id);
-      this.db
-        .prepare(
-          "INSERT OR IGNORE INTO progress(player_id,spirit_id) VALUES(?,?)",
-        )
-        .run(id, spiritId);
-      const row = this.db
-        .prepare("SELECT * FROM progress WHERE player_id=? AND spirit_id=?")
-        .get(id, spiritId);
-      if (row.peace_at !== null)
-        fail(
-          409,
-          "This wish is already complete. You can replay the story for free.",
-        );
-      const need = RULES.peaceCost - row.donated;
-      const cost = amount === "complete" ? need : Math.min(10, need);
-      if (p.wallet < cost)
-        fail(
-          409,
-          `You need ${cost - p.wallet} more candies. A lantern duel can help.`,
-        );
-      this.db
-        .prepare("UPDATE players SET wallet=wallet-? WHERE id=?")
-        .run(cost, id);
-      this.db
-        .prepare("INSERT INTO ledger VALUES(?,?,?,?,?)")
-        .run(`gift:${id}:${key}`, id, "gift", -cost, this.now());
-      const completed = row.donated + cost === RULES.peaceCost;
-      this.db
-        .prepare(
-          "UPDATE progress SET donated=donated+?,peace_at=? WHERE player_id=? AND spirit_id=?",
-        )
-        .run(cost, completed ? this.now() : null, id, spiritId);
-      if (completed) {
-        this.db
-          .prepare("UPDATE players SET peace_count=peace_count+1 WHERE id=?")
-          .run(id);
-        this.event("wish_completed", spiritId);
-      }
-      return { spent: cost, completed, spiritId, player: this.state(id) };
-    });
-  }
-  startMatch(id, spiritId, opponentId) {
-    this.ready(id);
-    const self = this.spirit(spiritId),
-      other = this.spirit(opponentId);
-    if (self.regionId === other.regionId)
-      fail(400, "Choose an opponent from another culture.");
-    const active = this.db
-      .prepare(
-        "SELECT * FROM matches WHERE player_id=? AND result IS NULL AND cancelled=0 AND started_at>? ORDER BY started_at DESC LIMIT 1",
-      )
-      .get(id, this.now() - 120000);
-    if (active) {
-      if (active.spirit_id !== spiritId || active.opponent_id !== opponentId)
-        fail(409, "Finish or leave your current duel first.");
-      return this.matchView(active);
-    }
-    const match = {
-      id: randomUUID(),
-      player_id: id,
-      spirit_id: spiritId,
-      opponent_id: opponentId,
-      seed: randomBytes(4).readUInt32LE(),
-      started_at: this.now(),
-    };
-    this.db
-      .prepare(
-        "INSERT INTO matches(id,player_id,spirit_id,opponent_id,seed,started_at) VALUES(?,?,?,?,?,?)",
-      )
-      .run(match.id, id, spiritId, opponentId, match.seed, match.started_at);
-    return this.matchView(match);
-  }
-  matchView(m) {
-    return {
-      id: m.id,
-      spiritId: m.spirit_id,
-      opponentId: m.opponent_id,
-      startedAt: m.started_at,
-      elapsedMs: Math.max(0, this.now() - m.started_at),
-      ...makeChallenge(m.seed),
-    };
-  }
-  finishMatch(id, matchId, taps) {
-    this.ready(id);
-    return this.transaction(() => {
-      const match = this.db
-        .prepare("SELECT * FROM matches WHERE id=? AND player_id=?")
-        .get(matchId, id);
-      if (!match) fail(404, "This duel could not be found.");
-      if (match.result)
-        return { ...JSON.parse(match.result), player: this.state(id) };
-      if (match.cancelled)
-        fail(409, "This duel was left without claiming candy.");
-      const elapsed = this.now() - match.started_at;
-      if (elapsed < RULES.matchMs - 1000)
-        fail(409, "The lantern duel is still in progress.");
-      if (elapsed > 120000)
-        fail(410, "This duel expired. Please start a fresh one.");
-      let result;
-      try {
-        result = scoreMatch(taps, makeChallenge(match.seed));
-      } catch {
-        fail(400, "The tap timings were not valid.");
-      }
-      const daily = this.dailyRow(id);
-      const reward =
-        result.active && daily.matches < RULES.matchDaily
-          ? RULES[result.outcome]
-          : 0;
-      if (result.active) {
-        this.db
-          .prepare(
-            "UPDATE daily SET matches=matches+1 WHERE player_id=? AND day=?",
-          )
-          .run(id, this.day());
-      }
-      if (reward) this.award(id, `match:${match.id}`, "battle", reward);
-      const output = {
-        ...result,
-        reward,
-        matchId,
-        spiritId: match.spirit_id,
-        opponentId: match.opponent_id,
-      };
-      this.db
-        .prepare("UPDATE matches SET result=? WHERE id=?")
-        .run(JSON.stringify(output), matchId);
-      this.event("battle_completed", result.outcome);
-      return { ...output, player: this.state(id) };
-    });
-  }
-  cancelMatch(id, matchId) {
-    this.db
-      .prepare(
-        "UPDATE matches SET cancelled=1 WHERE id=? AND player_id=? AND result IS NULL",
-      )
-      .run(matchId, id);
-    return { ok: true };
-  }
+  gift() {fail(410,'This feature has retired.');}
+  startMatch() {fail(410,'This feature has retired.');}
+  finishMatch() {fail(410,'This feature has retired.');}
+  cancelMatch() {fail(410,'This feature has retired.');}
   createInvite(id, { spiritId, channel, friendName = "" }) {
-    this.ready(id);
+    this.rawPlayer(id);
     this.spirit(spiritId);
     if (!CHANNELS.includes(channel))
       fail(400, "Choose a supported sharing option.");
     if (typeof friendName !== 'string' || friendName.trim().length > 24 || /[\u0000-\u001f\u007f]/.test(friendName)) fail(400, 'Use a friend name of up to 24 characters.');
     friendName = friendName.trim();
     const token = randomBytes(16).toString("base64url");
-    const eligible = channel !== "facebook" && this.inviteRewards;
     this.db
-      .prepare("INSERT INTO invites VALUES(?,?,?,?,?,?)")
-      .run(token, id, spiritId, channel, eligible ? 1 : 0, this.now());
+      .prepare("INSERT INTO invites VALUES(?,?,?,?,?)")
+      .run(token, id, spiritId, channel, this.now());
     if (friendName) this.db.prepare('INSERT INTO invite_labels VALUES(?,?)').run(token,friendName);
     this.event("share_started", channel);
-    return { id: token, eligible, spiritId, channel };
+    return { id: token, spiritId, channel };
   }
   invite(token) {
     if (typeof token !== "string" || token.length > 80)
@@ -473,7 +271,6 @@ export class BooStore {
       country: row.country,
       spiritId: row.spirit_id,
       channel: row.channel,
-      eligible: !!row.eligible && this.inviteRewards,
       expired: this.now() - row.created_at > RULES.inviteLifetimeMs,
       recordingFull: this.db.prepare("SELECT COUNT(*) AS n FROM reaction_audio WHERE invite_id=?").get(token).n >= 5,
     };
@@ -515,7 +312,7 @@ export class BooStore {
     if (invite.expired) fail(410, 'This invitation has expired.');
     if (body.consent !== true) fail(400, 'Recording and sending requires consent.');
     if (!['audio/webm', 'audio/ogg', 'audio/mp4'].includes(body.mime)) fail(415, 'Unsupported audio format.');
-    if (![2000,3000,5000].includes(body.durationMs) || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
+    if (![2000,3000,5000,6000].includes(body.durationMs) || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
     const receiver = this.rawPlayer(id);
     const label = this.db.prepare('SELECT friend_name FROM invite_labels WHERE invite_id=?').get(token)?.friend_name;
     // New clients use the unlock notice and do not ask visitors for a name.
@@ -577,44 +374,7 @@ export class BooStore {
         )
         .get(token, id);
       if (old) return { ...JSON.parse(old.result), player: this.state(id) };
-      const claimed = !!this.db
-        .prepare("SELECT 1 FROM first_invites WHERE player_id=?")
-        .get(id);
-      let receiverReward = 0,
-        senderReward = 0;
-      if (invite.eligible && !invite.expired && !claimed) {
-        this.db.prepare("INSERT INTO first_invites VALUES(?,?)").run(id, token);
-        receiverReward = RULES.invite;
-        this.award(
-          id,
-          `invite:receiver:${id}`,
-          "invite_received",
-          receiverReward,
-        );
-        const daily = this.dailyRow(invite.senderId);
-        if (daily.invites < RULES.inviteDaily) {
-          senderReward = RULES.invite;
-          this.award(
-            invite.senderId,
-            `invite:sender:${id}`,
-            "invite_sent",
-            senderReward,
-          );
-          this.db
-            .prepare(
-              "UPDATE daily SET invites=invites+1 WHERE player_id=? AND day=?",
-            )
-            .run(invite.senderId, this.day());
-        }
-      }
-      const result = {
-        receiverReward,
-        senderReward,
-        name: invite.name,
-        eligible: invite.eligible,
-        expired: invite.expired,
-        alreadyClaimed: claimed,
-      };
+      const result = {name:invite.name,expired:invite.expired};
       this.db
         .prepare("INSERT INTO responses VALUES(?,?,?,?)")
         .run(token, id, JSON.stringify(result), this.now());
@@ -639,30 +399,7 @@ export class BooStore {
     return {scope,rows:this.db.prepare(`${ranked} SELECT * FROM ranked ORDER BY score DESC,id LIMIT 100`).all(),
       self:scope==='trick'?this.db.prepare(`${ranked} SELECT * FROM ranked WHERE id=?`).get(id)||null:null,updatedAt:this.now()};
   }
-  leaderboard(id, scope, metric) {
-    if (
-      !["players", "countries"].includes(scope) ||
-      !["candies", "peace"].includes(metric)
-    )
-      fail(400, "Choose a valid leaderboard.");
-    const p = this.rawPlayer(id),
-      col = metric === "peace" ? "peace_count" : "candies";
-    const base =
-      scope === "players"
-        ? `SELECT id,name,country,${col} AS score,1 AS participants FROM players WHERE initialized=1`
-        : `SELECT country AS id,country AS name,country,SUM(${col}) AS score,COUNT(*) AS participants FROM players WHERE initialized=1 GROUP BY country`;
-    const ranked = `WITH scores AS (${base}), ranked AS (SELECT *,RANK() OVER(ORDER BY score DESC) AS rank FROM scores)`;
-    const rows = this.db
-      .prepare(
-        `${ranked} SELECT * FROM ranked ORDER BY score DESC,id LIMIT 100`,
-      )
-      .all();
-    const self =
-      this.db
-        .prepare(`${ranked} SELECT * FROM ranked WHERE id=?`)
-        .get(scope === "players" ? id : p.country || "") || null;
-    return { scope, metric, rows, self, updatedAt: this.now() };
-  }
+  leaderboard() {fail(410,'This feature has retired.');}
   story(id, spiritId) {
     const spirit = this.spirit(spiritId);
     const progress = this.db

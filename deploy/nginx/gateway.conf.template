@@ -15,7 +15,14 @@ server {
         proxy_no_cache 1;
         proxy_cache_bypass 1;
         proxy_next_upstream off;
-        proxy_read_timeout 30s;
+        proxy_read_timeout 120s;
+        proxy_hide_header Cache-Control;
+        add_header Cache-Control "no-store" always;
+    }
+    location ~ ^/i/[\w-]+$ {
+        proxy_pass http://${API_UPSTREAM};
+        proxy_set_header Host $http_host;
+        proxy_set_header Cookie "";
         proxy_hide_header Cache-Control;
         add_header Cache-Control "no-store" always;
     }

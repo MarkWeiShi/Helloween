@@ -29,11 +29,9 @@ test('account upgrade rotates guest credential and cross-device login restores l
  const login=store.accountLogin(guest.player.id,'verified-subject');assert.equal(store.authenticate(guest.token),null);assert.equal(login.player.account,true);
  const other=store.createGuest();store.onboard(other.player.id,{name:'New browser',country:'CN',spiritId:'jiangshi'});
  const second=store.createInvite(other.player.id,{spiritId:'jiangshi',channel:'copy'});
- store.award(other.player.id,'earned-before-login','test',120);store.gift(other.player.id,'jiangshi','complete','account-merge-gift');
  const restored=store.accountLogin(other.player.id,'verified-subject');assert.equal(restored.player.id,login.player.id);assert.equal(store.authenticate(other.token),null);
  assert.deepEqual(new Set(store.ghostLinks(restored.player.id).links.map(l=>l.inviteId)),new Set([link.id,second.id]));
  assert.throws(()=>store.accountLogin(restored.player.id,'different-subject'),{status:409});
- const ledger=store.db.prepare('SELECT SUM(delta) AS balance,SUM(CASE WHEN delta>0 THEN delta ELSE 0 END) AS earned FROM ledger WHERE player_id=?').get(restored.player.id);assert.equal(ledger.balance,restored.player.wallet);assert.equal(ledger.earned,restored.player.candies);
  store.logout(restored.token);assert.equal(store.authenticate(restored.token),null);
  }finally{store.close();}
 });
@@ -45,7 +43,7 @@ test('HTTP account boundary, OTP and PKCE session binding with a simulated ident
  try{
  const session=await call('/api/session',{});let cookie=session.headers.get('set-cookie').split(';')[0];const stale=cookie;
  await call('/api/onboard',{name:'Owner',country:'JP',spiritId:'kappa'},cookie);
- assert.equal((await call('/api/invites',{spiritId:'kappa',channel:'copy'},cookie)).status,401);
+ assert.equal((await call('/api/invites',{spiritId:'kappa',channel:'copy'},cookie)).status,200);
  const start=await(await call('/api/auth/start',{provider:'google'},cookie)).json();const authUrl=new URL(start.url);assert.equal(authUrl.searchParams.get('code_challenge_method'),'s256');
  const callback=new URL(authUrl.searchParams.get('redirect_to'));callback.searchParams.set('code','code-123');
  const attacker=await call(callback.pathname+callback.search,undefined,'');assert.equal(attacker.headers.get('location'),'/my-links?signin=failed');
@@ -54,7 +52,7 @@ test('HTTP account boundary, OTP and PKCE session binding with a simulated ident
  assert.equal((await call(callback.pathname+callback.search,undefined,cookie)).headers.get('location'),'/my-links?signin=failed');
  const next=await call('/api/session',{});const nextCookie=next.headers.get('set-cookie').split(';')[0];
  const email=await(await call('/api/auth/start',{provider:'email',email:'friend@example.com'},nextCookie)).json();
- const verified=await call('/api/auth/verify',{state:email.state,code:'123456'},nextCookie);assert.equal(verified.status,200);const data=await verified.json();assert.equal(data.player.account,true);assert.equal(data.player.shareCount,1);assert.equal(data.access_token,undefined);
+ const verified=await call('/api/auth/verify',{state:email.state,code:'123456'},nextCookie);assert.equal(verified.status,200);const data=await verified.json();assert.equal(data.player.account,true);assert.equal(data.player.shareCount,2);assert.equal(data.access_token,undefined);
  assert.equal(requests.find(r=>r.url.includes('grant_type=pkce')).body.code_verifier.length,64);
  }finally{await new Promise(r=>app.server.close(r));app.close();}
 });
@@ -66,7 +64,7 @@ test('X OAuth 2.0 uses the existing session-bound PKCE account flow and stays op
  const start=await auth.start('owner-session',{provider:'x'},'https://game.example');
  const target=new URL(start.url);
  assert.equal(target.searchParams.get('provider'),'x');
- assert.equal(target.searchParams.get('scopes'),'tweet.write');
+ assert.equal(target.searchParams.get('scopes'),'tweet.read users.read tweet.write media.write');
  assert.equal(target.searchParams.get('code_challenge_method'),'s256');
  const callback=new URL(target.searchParams.get('redirect_to'));
  assert.equal(callback.origin,'https://game.example');

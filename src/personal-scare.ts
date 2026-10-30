@@ -60,9 +60,9 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         try { recording = recordReaction(capture.stream); audio = recording.result; }
         catch { /* Local scoring still works without MediaRecorder. */ }
       }
-      status.textContent = shouldSend && recording ? t("● 5s · record & send") : t("● 5s · local only");
+      status.textContent = shouldSend && recording ? t("● 6s · record & send") : t("● 6s · local only");
       cancel.hidden = !recording;
-      void Promise.all([capture.measure(5000, false), audio]).then(async ([m, blob]) => {
+      void Promise.all([capture.measure(6000, false), audio]).then(async ([m, blob]) => {
         if (dead || ticket !== generation) return;
         capture?.stop();
         const result = {score: personalScareScore(m.meanHz, m.meanRms), meanHz:m.meanHz, meanRms:m.meanRms};
@@ -74,7 +74,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         const bytes = new Uint8Array(await blob.arrayBuffer());
         if (dead || ticket !== generation || !shared) return;
         let binary = ''; for (const byte of bytes) binary += String.fromCharCode(byte);
-        pending = {audio:btoa(binary),mime:blob.type.split(';')[0],durationMs:5000,consent:true,language:locale,amplitudeRms:m.amplitudeRms,score:result.score,meanHz:m.meanHz,peakHz:m.peakHz,frames:m.frames};
+        pending = {audio:btoa(binary),mime:blob.type.split(';')[0],durationMs:6000,consent:true,language:locale,amplitudeRms:m.amplitudeRms,score:result.score,meanHz:m.meanHz,peakHz:m.peakHz,frames:m.frames};
         await upload();
       });
     },

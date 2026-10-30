@@ -13,7 +13,6 @@ kill_timeout = '30s'
   DATABASE_PATH = '/data/boo.sqlite'
   PUBLIC_ORIGIN = 'https://helloween.fly.dev'
   LINE_LIFF_ID = '2012290872-RIK5yg1d'
-  INVITE_REWARDS_ENABLED = 'true'
 
 [[mounts]]
   source = 'boo_data'

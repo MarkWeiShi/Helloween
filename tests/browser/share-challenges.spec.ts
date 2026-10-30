@@ -12,16 +12,15 @@ test('animated X challenge includes the correct GIF and this invitation across f
   });
   const panel=page.locator('.social-handoff');
   const post=await panel.locator('textarea').inputValue();
-  expect(post).toContain('https://example.com/i/current-invite');
+  expect(post).toContain('https://example.com/api/share/card/current-invite');
   expect(post).toContain('#Halloween #HelloTalk');
   expect(post).not.toContain('［本次邀请链接］');
   expect(post).toContain(lang==='zh'?'我派了一只僵尸来找你':'I sent Jiangshi');
-  const target=new URL((await panel.locator('a[href^="https://x.com/"]').getAttribute('href'))!);
-  expect(target.searchParams.get('text')).toBe(post);
+  await expect(panel.getByRole('button')).toHaveCount(1);
+  await expect(panel.locator('a[download]')).toHaveCount(0);
   const gif=panel.locator('img');await expect(gif).toBeVisible();
   await expect(gif).toHaveAttribute('src',new RegExp('jiangshi\\.'+lang+'\\.'));
   await expect.poll(()=>gif.evaluate((img:HTMLImageElement)=>img.naturalWidth)).toBe(960);
-  const downloadEvent=page.waitForEvent('download');await panel.locator('a[download]').click();
-  const download=await downloadEvent;expect(download.suggestedFilename()).toBe('jiangshi-challenge.gif');expect(await download.failure()).toBeNull();
+
  }
 });
