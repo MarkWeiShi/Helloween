@@ -46,6 +46,11 @@ let modalCleanup: (() => void) | undefined,
 let mic: Awaited<ReturnType<typeof prepareMicrophone>> | undefined;
 let gateBusy = false;
 let microphoneUnlocked = false;
+const unlockStorageKey = 'boo:play-unlocked:v1';
+function hasSavedUnlock() {
+  try { return localStorage.getItem(unlockStorageKey) === 'true'; }
+  catch { return false; }
+}
 const notified = new Set<string>();
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 const $ = <T extends Element = HTMLElement>(q: string) =>
@@ -532,6 +537,7 @@ function openUnlockConsent() {
 }
 function finishGate() {
   microphoneUnlocked=true;
+  try { localStorage.setItem(unlockStorageKey, 'true'); } catch {}
   mic?.stop();mic=undefined;gateBusy=false;gate=false;
   app.querySelector('.play-lock')?.remove();
   const shell=app.querySelector<HTMLElement>('.app-shell');if(shell)shell.inert=false;
@@ -792,6 +798,7 @@ async function boot() {
       }
     }
     event("entered");
+    microphoneUnlocked = hasSavedUnlock();
     if(location.pathname==='/my-links') {
       page='links';render();
       const signInResult=new URL(location.href).searchParams.get('signin');
@@ -803,8 +810,14 @@ async function boot() {
       }
       history.replaceState(null,'','/my-links');
     } else if(location.pathname==='/rankings'){page='boards';render();} else {
-      showGate();
-      if(invite && !invite.expired)openUnlockConsent();
+      if (microphoneUnlocked) {
+        render();
+        // Keep invitation playback on a gesture when reopening the browser.
+        if (invite) openInvite();
+      } else {
+        showGate();
+        if(invite && !invite.expired)openUnlockConsent();
+      }
     }
     tryBackgroundMusic();
   } catch (err) {

@@ -31,8 +31,9 @@ test('first real transformation measures locally, stays dismissible, and persist
   await expect(page.locator('.character-close')).toBeEnabled();
   await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
   await page.reload();
-  await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
+  await expect(page.locator('.app-shell')).toBeVisible();
   await expect(page.locator('.play-lock')).toHaveCount(0);
+  await expect(page.locator('.unlock-consent')).toHaveCount(0);
   await page.locator(`.globe-pin[data-spirit="${id}"]`).click();
   await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
   await expect(page.locator('.character-close')).toBeEnabled();
