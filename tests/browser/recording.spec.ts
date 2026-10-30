@@ -91,17 +91,17 @@ test('ordinary exploration stays local and cancelling invitation capture never u
   expect((await(await sender.request.get('/api/me')).json()).player.reactions.recent).toHaveLength(0);
  }finally{await browser.close();}
 });
-test('upload failure preserves score and allows retry with the same recording',async()=>{
+for (const full of [false,true]) test(`${full?'full storage':'upload failure'} preserves score and allows retry with the same recording`,async()=>{
  const {browser,page,sender}=await setup();
  try {
   let attempts=0; const bodies:any[]=[];
   await page.route('**/api/invites/*/audio',async route=>{
    attempts++;bodies.push(route.request().postDataJSON());
-   if(attempts===1)await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Try again'})});else await route.continue();
+   if(attempts===1)await route.fulfill({status:full?200:503,contentType:'application/json',body:JSON.stringify(full?{ok:true,full:true}:{error:'Try again'})});else await route.continue();
   });
   await confirmUnlock(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Sending failed",{timeout:15000});
-  await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/);
+  await expect(page.locator('[data-personal-scare]')).toContainText(full?"Storage full (50 voices)":"Sending failed",{timeout:15000});
+  expect(await page.evaluate(()=>Object.keys(localStorage).some(key=>key.startsWith("boo:personal-scare:")))).toBe(true);
   await page.getByRole('button',{name:"Retry sending recording",exact:true}).click();
   await expect(page.locator('[data-personal-scare]')).toContainText("Your 5-second recording was sent");
   expect(bodies[1]).toEqual(bodies[0]);

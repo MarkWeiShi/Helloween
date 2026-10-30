@@ -10,13 +10,13 @@ test.beforeAll(async()=>{
  app.store.createInvite(guest.player.id,{spiritId:'kappa',channel:'copy'});
 });
 test.afterAll(async()=>{await new Promise<void>(resolve=>app.server.close(()=>resolve()));app.close();});
-test('library opens without microphone, groups five slots, filters and signs out',async({page,context},testInfo)=>{
+test('library opens without microphone, lists voices chronologically, filters and signs out',async({page,context},testInfo)=>{
  await context.addCookies([{name:'boo_session',value:ownerToken,url:origin}]);
  await page.addInitScript(()=>{navigator.mediaDevices.getUserMedia=async()=>{throw Error('Library must not request microphone');};});
  await page.goto(origin+'/my-links?lang=zh');
  await expect(page.getByRole('heading',{name:'朋友尖叫',exact:true})).toBeVisible();
- await expect(page.locator('.ghost-link-card')).toHaveCount(2);await expect(page.locator('.ghost-voice-slots li')).toHaveCount(10);
- await page.locator('[data-ghost-filter]').selectOption('jiangshi');await expect(page.locator('.ghost-link-card')).toHaveCount(1);await expect(page.locator('audio')).toHaveCount(5);
+ await expect(page.locator('.ghost-link-card')).toHaveCount(5);await expect(page.locator('[data-voice-capacity]')).toContainText('5 / 50');
+ await page.locator('[data-ghost-filter]').selectOption('jiangshi');await expect(page.locator('.ghost-link-card')).toHaveCount(5);await expect(page.locator('audio')).toHaveCount(5);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.screenshot({path:`artifacts/my-ghost-links-${testInfo.project.name}.png`,fullPage:true});
  await page.locator('[data-page="boards"]:visible').click();await expect(page.locator('[data-page="boards"]:visible')).toHaveAttribute('aria-current','page');
@@ -37,11 +37,12 @@ test('email sign-in returns to saved library on another browser',async({page})=>
  await page.goto(origin+'/my-links?lang=en');await page.getByRole('button',{name:'Sign in',exact:true}).click();
  await page.getByLabel('Email',{exact:true}).fill('owner@example.com');await page.getByRole('button',{name:'Send sign-in code',exact:true}).click();
  await page.getByLabel('Email code',{exact:true}).fill('123456');await page.getByRole('button',{name:'Verify and continue',exact:true}).click();
- await expect(page.locator('.ghost-link-card')).toHaveCount(2);await expect(page.getByRole('button',{name:'Sign out',exact:true})).toBeVisible();
+ await expect(page.locator('.ghost-link-card')).toHaveCount(5);await expect(page.getByRole('button',{name:'Sign out',exact:true})).toBeVisible();
 });
-test('full invitation explains capacity before experience',async({page})=>{
- await page.goto(origin+'/i/'+inviteId+'?lang=en');await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
- await expect(page.locator('.unlock-points')).toContainText('already has five recordings');
+test('five voices no longer fill an invitation',async({page})=>{
+ await page.goto(origin+'/i/'+inviteId+'?lang=en');
+ await expect(page.locator('.unlock-points')).toBeVisible();
+ await expect(page.locator('.unlock-points')).not.toContainText('storage is full');
  await expect(page.locator('audio')).toHaveCount(0);
 });
 

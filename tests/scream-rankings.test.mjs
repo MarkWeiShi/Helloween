@@ -23,7 +23,7 @@ test('Trick counts saved audio, intensity groups by recording language and weigh
  assert.ok(!JSON.stringify(intensity).includes(a));
  const otherLink=store.createInvite(other,{spiritId:'kappa',channel:'copy'}).id;
  for(let i=0;i<6;i++)store.recordAudio(store.createGuest().player.id,otherLink,{...audio,language:'ja',amplitudeRms:0});
- const trick=store.screamRankings(owner);assert.equal(trick.rows.length,2);assert.deepEqual(trick.rows.map(r=>r.rank),[1,1]);
+ const trick=store.screamRankings(owner);assert.equal(trick.rows.length,2);assert.deepEqual(trick.rows.map(r=>r.rank),[1,2]);
  assert.equal(store.screamRankings(other,'intensity').rows.find(r=>r.id==='ja').score,0);
  for(const patch of [{amplitudeRms:2,language:'zh'},{amplitudeRms:-1,language:'zh'},{amplitudeRms:.3},{language:'xx',amplitudeRms:.3}])assert.throws(()=>store.recordAudio(b,second,{...audio,...patch}),{status:400});
  }finally{store.close();}

@@ -45,8 +45,12 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     status.textContent = msg`${label()} · 正在发送录音…`;
     try {
       const result = await api<{alreadySent?: boolean; full?: boolean}>(`/invites/${shared.inviteId}/audio`, pending);
+      if (result.full) {
+        if (!dead) { status.textContent = t("Storage full (50 voices). Ask your friend to delete a voice, then retry. Keep this page open to retain your recording."); retry.hidden = false; cancel.hidden = false; }
+        return;
+      }
       pending = undefined; sent = true;
-      if (!dead) status.textContent = `${label()} · ${result.full ? t("This link already has five recordings. Your recording was not saved.") : result.alreadySent ? t("此链接已收到你之前发送的声音，无需重复发送。") : t("已将 5 秒声音发送给邀请人。")}`;
+      if (!dead) status.textContent = `${label()} · ${result.alreadySent ? t("此链接已收到你之前发送的声音，无需重复发送。") : t("已将 5 秒声音发送给邀请人。")}`;
     } catch {
       if (!dead) { status.textContent = msg`${label()} · 发送失败，录音暂留本页，可重试或取消。`; retry.hidden = false; cancel.hidden = false; }
     } finally { sending = false; if (!dead) button.disabled = false; }

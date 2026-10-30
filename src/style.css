@@ -3404,3 +3404,5 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .social-video-caption{display:block;box-sizing:border-box;width:100%;min-height:130px;margin:8px 0 12px;padding:12px;resize:vertical}
 .social-handoff ol{padding-inline-start:24px;line-height:1.6}
 .social-handoff li+li{margin-top:10px}
+
+.voice-timeline{grid-template-columns:minmax(0,1fr);max-width:800px;margin-inline:auto}.voice-timeline .voice-detail{padding:0 20px 16px}.voice-timeline .ghost-link-meta{border-bottom:0}.ghost-links-toolbar{flex-wrap:wrap}.voice-timeline .ghost-link-card h2{font-size:19px}
