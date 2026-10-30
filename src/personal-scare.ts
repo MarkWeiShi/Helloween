@@ -32,25 +32,25 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   async function upload() {
     if (!pending || !shared || dead || sending) return;
     sending = true; retry.hidden = true; cancel.hidden = true; button.disabled = true;
-    status.textContent = msg`${label()} · 正在发送录音…`;
+    status.textContent = t("Sending…");
     try {
       const result = await api<{alreadySent?: boolean; full?: boolean}>(`/invites/${shared.inviteId}/audio`, pending);
       pending = undefined; sent = true;
-      if (!dead) status.textContent = `${label()} · ${result.full ? t("This link already has five recordings. Your recording was not saved.") : result.alreadySent ? t("此链接已收到你之前发送的声音，无需重复发送。") : t("已将 5 秒声音发送给邀请人。")}`;
+      if (!dead) status.textContent = result.full ? t("Link full · not sent") : result.alreadySent ? t("Already sent") : t("Voice sent");
     } catch {
-      if (!dead) { status.textContent = msg`${label()} · 发送失败，录音暂留本页，可重试或取消。`; retry.hidden = false; cancel.hidden = false; }
+      if (!dead) { status.textContent = t("Send failed · retry"); retry.hidden = false; cancel.hidden = false; }
     } finally { sending = false; if (!dead) button.disabled = false; }
   }
   retry.onclick = () => { void upload(); };
-  cancel.onclick = () => { release(); pending = undefined; shared = undefined; retry.hidden = true; cancel.hidden = true; status.textContent = t("已取消录音及发送。可重新播放，在本机计算评分。"); };
+  cancel.onclick = () => { release(); pending = undefined; shared = undefined; retry.hidden = true; cancel.hidden = true; status.textContent = t("Recording cancelled"); };
   let microphoneRequest: AbortController | undefined;
   const release = () => { generation++; microphoneRequest?.abort(); microphoneRequest = undefined; recording?.cancel(); recording = undefined; capture?.stop(); capture = undefined; cancel.hidden = true; busy = false; button.disabled = false; };
   const motion = mountTransformation(root.querySelector<HTMLElement>('.character-stage')!, spirit, {
     sound: () => true, fillCharacter: false,
     onIntroEnd: () => { button.hidden = false; if(first && !capture && !readScare(player,spirit)) status.textContent=t("No Voice Detected"); },
-    onStart: () => { markTransformationPlayed(player, spirit); status.textContent = first ? (capture ? t("正在变身，即将采样 5 秒…") : t("麦克风不可用，本次仅播放动画，不录音或上传。")) : `${label()}${sent ? t(" · 录音已发送。") : ''}`; },
-    onPause: () => { release(); button.hidden = false; if (!dead && document.hidden && !sending) { status.textContent = pending ? msg`${label()} · 录音尚未发送，可重试或取消。` : t("播放已暂停；点击播放变身可重新观看。"); if (pending) { retry.hidden = false; cancel.hidden = false; } } },
-    onError: () => { button.hidden = false; status.textContent = t("变身素材暂不可用，请点击播放重试。"); },
+    onStart: () => { markTransformationPlayed(player, spirit); status.textContent = first ? (capture ? t("Get ready…") : t("Mic unavailable")) : label(); },
+    onPause: () => { release(); button.hidden = false; if (!dead && document.hidden && !sending) { status.textContent = pending ? t("Not sent · retry") : t("Paused · replay"); if (pending) { retry.hidden = false; cancel.hidden = false; } } },
+    onError: () => { button.hidden = false; status.textContent = t("Video failed · retry"); },
     onCaptureStart: () => {
       if (!first || !capture) return;
       const ticket = generation;
@@ -60,7 +60,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         try { recording = recordReaction(capture.stream); audio = recording.result; }
         catch { /* Local scoring still works without MediaRecorder. */ }
       }
-      status.textContent = shouldSend && recording ? t("● 正在录音 5 秒，本机评分后发送给邀请人…") : t("● 正在录音 5 秒，仅在本机计算评分…");
+      status.textContent = shouldSend && recording ? t("● 5s · record & send") : t("● 5s · local only");
       cancel.hidden = !recording;
       void Promise.all([capture.measure(5000, false), audio]).then(async ([m, blob]) => {
         if (dead || ticket !== generation) return;
@@ -70,7 +70,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         try { localStorage.setItem(key(player, spirit), JSON.stringify(result)); } catch {}
         status.textContent = scareLabel(result); capture = undefined; recording = undefined; cancel.hidden = true;
         if (!shouldSend || !shared) return;
-        if (!blob?.size || blob.size > 512000) { status.textContent += t(" · 此次未能录音，未发送声音；可重新播放重试。"); return; }
+        if (!blob?.size || blob.size > 512000) { status.textContent = t("No recording · retry"); return; }
         const bytes = new Uint8Array(await blob.arrayBuffer());
         if (dead || ticket !== generation || !shared) return;
         let binary = ''; for (const byte of bytes) binary += String.fromCharCode(byte);
@@ -86,7 +86,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     first = !readScare(player, spirit) || (!!shared && !sent);
     const ticket = generation;
     if (first) {
-      status.textContent = t("正在准备麦克风…");
+      status.textContent = t("Starting mic…");
       let expired = false;
       const request = new AbortController(); microphoneRequest = request;
       const pending = prepareMicrophone(request.signal);
@@ -97,7 +97,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         if (dead || ticket !== generation) { prepared.stop(); return; }
         capture = prepared;
       }
-      catch { status.textContent = t("麦克风不可用，本次仅播放动画。"); }
+      catch { status.textContent = t("Mic unavailable"); }
       finally { clearTimeout(timer); }
     }
     if (dead || ticket !== generation) return;

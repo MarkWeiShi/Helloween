@@ -1289,5 +1289,20 @@
   "麦克风不可用，本次仅播放动画。",
   "麦克风不可用，本次仅播放动画，不录音或上传。",
   "麦克风未获授权或不可用。请允许麦克风后重试，或关闭邀请。",
-  "🎃 Invite a friend to collect sweets"
+  "🎃 Invite a friend to collect sweets",
+  "Sending…",
+  "Link full · not sent",
+  "Already sent",
+  "Voice sent",
+  "Send failed · retry",
+  "Recording cancelled",
+  "Get ready…",
+  "Mic unavailable",
+  "Not sent · retry",
+  "Paused · replay",
+  "Video failed · retry",
+  "● 5s · record & send",
+  "● 5s · local only",
+  "No recording · retry",
+  "Starting mic…"
 ]

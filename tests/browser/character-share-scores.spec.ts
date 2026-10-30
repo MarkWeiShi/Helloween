@@ -9,7 +9,7 @@ for(const width of [320,390])test(`character sharing and paired scores at ${widt
   await page.evaluate(({id})=>localStorage.setItem(`boo:personal-scare:v1:${id}:headless-horseman`,JSON.stringify({score:42,meanHz:400,meanRms:.1})),{id:me.player.id});
   for(const selector of ['.character-share','.scare-action']){
    await page.locator('[data-globe-spirit="headless-horseman"]').dispatchEvent('click');
-   await expect(page.locator('[data-personal-scare]')).toHaveText('My Scariness Score 42 / 100');
+   await expect(page.locator('[data-personal-scare]')).toHaveText('You 42/100');
    await expect(page.locator('[data-world-scariness]')).toHaveText('World Scariness 0 / 100');
    const left=(await page.locator('[data-world-scariness]').boundingBox())!,right=(await page.locator('[data-personal-scare]').boundingBox())!;
    expect(left.x+left.width).toBeLessThanOrEqual(right.x);expect(left.y).toBeCloseTo(right.y,0);
@@ -19,7 +19,7 @@ for(const width of [320,390])test(`character sharing and paired scores at ${widt
   // A measured silent sample is a distinct result, not a numeric zero.
   await page.evaluate(({id})=>localStorage.setItem(`boo:personal-scare:v1:${id}:headless-horseman`,JSON.stringify({score:null,meanHz:null,meanRms:0})),{id:me.player.id});
   await page.locator('[data-globe-spirit="headless-horseman"]').dispatchEvent('click');
-  await expect(page.locator('.scariness-row [data-personal-scare]')).toHaveText('No Voice Detected');
+  await expect(page.locator('.scariness-row [data-personal-scare]')).toHaveText('No voice');
   await page.screenshot({path:`artifacts/character-score-row-${width}.png`});
  }finally{await context.close();}
 });

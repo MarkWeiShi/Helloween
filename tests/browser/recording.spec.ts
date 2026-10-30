@@ -35,9 +35,9 @@ test('five-second local scoring uploads named private audio and replay does not 
  try {
   let uploads=0; page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await confirmUnlock(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("● 5s");
   await expect(page.locator('[data-personal-scare]')).toBeInViewport();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Your 5-second recording was sent",{timeout:15000});
+  await expect(page.locator('[data-personal-scare]')).toContainText("Voice sent",{timeout:15000});
   const timing=await page.evaluate(()=>(window as any).__recordingEvidence);
   expect(timing.videoTime).toBeGreaterThanOrEqual(2); expect(timing.videoTime).toBeLessThan(2.3);
   expect(timing.stop-timing.start).toBeGreaterThanOrEqual(4900); expect(timing.stop-timing.start).toBeLessThan(5600);
@@ -79,13 +79,13 @@ test('ordinary exploration stays local and cancelling invitation capture never u
   await page.goto('/');
   await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
   await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
-  await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
+  await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
   expect(uploads).toBe(0);
   await page.goto('/i/'+invitation.id);
   await confirmUnlock(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("● 5s");
   await page.getByRole('button',{name:"Cancel recording and sending",exact:true}).click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("cancelled");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Cancelled");
   await expect(page.locator('[data-play-transform]')).toBeVisible({timeout:15000});
   expect(uploads).toBe(0);
   expect((await(await sender.request.get('/api/me')).json()).player.reactions.recent).toHaveLength(0);
@@ -100,10 +100,10 @@ test('upload failure preserves score and allows retry with the same recording',a
    if(attempts===1)await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Try again'})});else await route.continue();
   });
   await confirmUnlock(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Sending failed",{timeout:15000});
-  await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/);
+  await expect(page.locator('[data-personal-scare]')).toContainText("Send failed",{timeout:15000});
+  expect(await page.evaluate(()=>Object.keys(localStorage).some(key=>key.startsWith("boo:personal-scare:")))).toBe(true);
   await page.getByRole('button',{name:"Retry sending recording",exact:true}).click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Your 5-second recording was sent");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Voice sent");
   expect(bodies[1]).toEqual(bodies[0]);
   expect((await(await sender.request.get('/api/me')).json()).player.reactions.recent).toHaveLength(1);
  }finally{await browser.close();}
@@ -119,7 +119,7 @@ test('closing during capture releases the microphone and never uploads',async()=
   });
   let uploads=0;page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await confirmUnlock(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("● 5s");
   await page.getByRole('button',{name:'Close character details',exact:true}).click();
   await expect(page.locator('dialog')).toHaveCount(0);
   expect(await page.evaluate(()=>(window as any).__streams.every((s:MediaStream)=>s.getTracks().every(t=>t.readyState==='ended')))).toBe(true);

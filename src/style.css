@@ -3186,6 +3186,12 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
   background:transparent; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none;
 }
 .character-immersive.character-dialog .immersive-controls-layer :is(button,a) { pointer-events:auto; }
+/* Outline small labels without thinning their fill or adding an opaque panel. */
+.character-immersive .character-info :is(.action-caption,[data-world-scariness],.personal-scare,.reaction-capture-controls button) {
+  text-shadow:-1px -1px 0 #000,0 -1px 0 #000,1px -1px 0 #000,
+    -1px 0 0 #000,1px 0 0 #000,-1px 1px 0 #000,0 1px 0 #000,1px 1px 0 #000,
+    0 2px 3px #000;
+}
 .character-immersive .has-immersive-player > .hero-spirit { visibility:hidden; }
 .character-immersive .character-navigation,
 .character-immersive .transformation-replay { z-index:30; }
@@ -3354,9 +3360,9 @@ body:has(.unlock-consent[open]) .play-lock{background:transparent}
 body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 
 /* Keep world and personal scores beside each other below the shared meter. */
-.scariness-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start; width:100%; }
+.scariness-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:start; width:100%; }
 .scariness-row [data-world-scariness] { text-align:start; font-size:11px; line-height:1.4; }
-.character-info .scariness-row .personal-scare { margin:0; min-height:0; text-align:end; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
+.character-info .scariness-row .personal-scare { margin:0; min-height:0; min-width:0; text-align:end; font-size:11px; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .scariness-row .reaction-capture-controls { grid-column:1 / -1; }
 
 .corner-ui-icon{display:block;width:30px;height:30px;object-fit:contain;pointer-events:none}

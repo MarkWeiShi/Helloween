@@ -10,13 +10,13 @@ test('first real transformation measures locally, stays dismissible, and persist
   const pin = page.locator('.globe-pin[data-spirit]:visible').first();
   const id = await pin.getAttribute('data-spirit');
   await pin.click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("● 5s");
   await expect(page.locator('.character-close')).toBeEnabled();
-  await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
+  await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
   await expect(page.locator('.transformation-player video[data-phase=loop]')).toHaveJSProperty('loop',true,{timeout:10000});
   await expect(page.locator('.character-close')).toBeEnabled();
   const result = await page.locator('[data-personal-scare]').textContent();
-  expect(result).toMatch(/My Scariness Score|No Voice Detected/);
+  expect(result).toMatch(/You|No voice/);
   await page.locator('.character-close').click();
   await page.locator(`.globe-pin[data-spirit="${id}"]`).click();
   await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
@@ -27,9 +27,9 @@ test('first real transformation measures locally, stays dismissible, and persist
   await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
   await page.locator('.character-close').click();
   await page.locator(`.globe-pin[data-spirit]:not([data-spirit="${id}"])`).first().dispatchEvent('click');
-  await expect(page.locator('[data-personal-scare]')).toContainText("Recording for 5 seconds");
+  await expect(page.locator('[data-personal-scare]')).toContainText("● 5s");
   await expect(page.locator('.character-close')).toBeEnabled();
-  await expect(page.locator('[data-personal-scare]')).toContainText(/My Scariness Score|No Voice Detected/,{timeout:15000});
+  await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
   await page.reload();
   await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
   await expect(page.locator('.play-lock')).toHaveCount(0);
