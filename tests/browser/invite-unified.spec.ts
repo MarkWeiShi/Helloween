@@ -3,7 +3,7 @@ import {createApp} from '../../server/index.mjs';
 let origin:string,app:ReturnType<typeof createApp>;
 test.beforeAll(async()=>{app=createApp({databasePath:':memory:',rateLimits:false});await new Promise<void>(r=>app.server.listen(0,'127.0.0.1',r));origin=`http://127.0.0.1:${(app.server.address() as any).port}`;});
 test.afterAll(async()=>{await new Promise<void>(r=>app.server.close(()=>r()));app.close();});
-for (const mode of ['valid','expired','denied']) test(`${mode} invitation: opens consent directly and respects confirmation`,async()=>{
+for (const mode of ['valid','full','retry','expired','denied']) test(`${mode} invitation: opens consent directly and respects confirmation`,async()=>{
  const expired=mode==='expired';
  const browser=await chromium.launch({channel:'chrome',args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});
  try {
@@ -20,6 +20,10 @@ for (const mode of ['valid','expired','denied']) test(`${mode} invitation: opens
   const original=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
   navigator.mediaDevices.getUserMedia=async constraints=>{(window as any).__micRequests++;if(deny)throw new DOMException('Denied','NotAllowedError');return original(constraints);};
  },mode==='denied');
+ if(mode==='full')await page.route('**/api/invites/'+invite.id,async route=>{
+  const response=await route.fetch();const data=await response.json();
+  await route.fulfill({response,json:{...data,recordingFull:true}});
+ });
  await page.goto('/i/'+invite.id);
  if(expired)await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
  await expect(page.locator('dialog.unlock-consent')).toBeVisible();
@@ -49,11 +53,32 @@ for (const mode of ['valid','expired','denied']) test(`${mode} invitation: opens
  const dialog=page.locator('dialog.character-immersive');await expect(dialog).toBeVisible({timeout:5000});
  await expect(page.locator('.invitation-consent')).toHaveCount(0);
  await expect.poll(()=>dialog.locator('video[data-phase="intro"]').evaluate((v:HTMLVideoElement)=>v.currentTime)).toBeGreaterThan(0);
+ await expect(dialog).toHaveAttribute('data-playback-locked','');
+ await expect(dialog.locator('.character-navigation')).toHaveAttribute('inert','');
+ await expect(dialog.locator('.character-info')).toHaveAttribute('inert','');
+ await page.keyboard.press('Escape');
+ await expect(dialog).toBeVisible();
+ // Even a synthetic click must not route to sharing while the invitation is locked.
+ await dialog.locator('.character-share').evaluate((button:HTMLButtonElement)=>button.click());
+ await expect(dialog).toBeVisible();
+ if(mode==='retry'){
+  await dialog.locator('video[data-phase="intro"]').dispatchEvent('error');
+  await expect(dialog.locator('[data-personal-scare]')).toContainText(/retry|重试/);
+  await expect(dialog).toHaveAttribute('data-playback-locked','');
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeVisible();
+  await dialog.locator('[data-play-transform]').click();
+  await expect.poll(()=>dialog.locator('video[data-phase="intro"]').evaluate((v:HTMLVideoElement)=>v.currentTime)).toBeGreaterThan(0);
+ }
  await expect(dialog.locator('#character-focus')).toHaveAttribute('aria-label','Jiangshi');
  await expect(dialog.locator(':scope > .immersive-video-layer')).toHaveCount(1);
  await expect(page.locator('.invitation-cinema')).toHaveCount(0);
  await expect(dialog.locator('.character-info')).toBeInViewport();
  await page.screenshot({path:'artifacts/invite-unified-mobile.png'});
+ await expect(dialog).not.toHaveAttribute('data-playback-locked','',{timeout:30000});
+ await expect(dialog.locator('video[data-phase="intro"]')).toHaveJSProperty('ended',true);
+ await expect(dialog.locator('.character-navigation')).not.toHaveAttribute('inert','');
+ await expect(dialog.locator('.character-info')).not.toHaveAttribute('inert','');
  await page.getByRole('button',{name:'Close character details',exact:true}).click();
  await expect(dialog).toHaveCount(0);
  }finally{await browser.close();}
