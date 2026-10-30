@@ -17,7 +17,7 @@ export function readScare(player: string, spirit: string): Result | undefined {
 export function scareLabel(result: Result | undefined) {
   return result?.score != null ? msg`My Scariness Score ${result.score} / 100` : result ? t("No Voice Detected") : t("My Scariness Score — / 100");
 }
-export function mountPersonalScare(root: HTMLElement, player: string, spirit: string, _scareSrc: string, lock: (value: boolean) => void, sound: () => boolean = () => false, toggleSound?: () => void, shared?: SharedReaction) {
+export function mountPersonalScare(root: HTMLElement, player: string, spirit: string, _scareSrc: string, lock: (value: boolean) => void, sound: () => boolean = () => false, toggleSound?: () => void, shared?: SharedReaction, requireComplete = false) {
   const button = root.querySelector<HTMLButtonElement>('[data-play-transform]')!;
   const status = root.querySelector<HTMLElement>('[data-personal-scare]')!;
   let dead = false, busy = false, generation = 0, capture: Awaited<ReturnType<typeof prepareMicrophone>> | undefined;
@@ -28,6 +28,16 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   const cancel = document.createElement('button'); cancel.className = 'button text-button'; cancel.textContent = t("取消录音及发送"); cancel.hidden = true;
   const retry = document.createElement('button'); retry.className = 'button secondary'; retry.textContent = t("重试发送录音"); retry.hidden = true;
   controls.append(cancel, retry); status.after(controls);
+  // Invitation playback stays gated until the entrance video actually ends.
+  // Keep replay available for recovery after a media failure or background pause.
+  let awaitingCompletion = requireComplete;
+  const gatedControls = root.querySelectorAll<HTMLElement>('.character-navigation, .character-info');
+  const setLocked = (value: boolean) => {
+    awaitingCompletion = value;
+    gatedControls.forEach(element => { element.inert = value; });
+    root.toggleAttribute('data-playback-locked', value);
+    lock(value);
+  };
   const label = () => scareLabel(readScare(player, spirit));
   async function upload() {
     if (!pending || !shared || dead || sending) return;
@@ -47,7 +57,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   const release = () => { generation++; microphoneRequest?.abort(); microphoneRequest = undefined; recording?.cancel(); recording = undefined; capture?.stop(); capture = undefined; cancel.hidden = true; busy = false; button.disabled = false; };
   const motion = mountTransformation(root.querySelector<HTMLElement>('.character-stage')!, spirit, {
     sound: () => true, fillCharacter: false,
-    onIntroEnd: () => { button.hidden = false; if(first && !capture && !readScare(player,spirit)) status.textContent=t("No Voice Detected"); },
+    onIntroEnd: () => { setLocked(false); button.hidden = false; if(first && !capture && !readScare(player,spirit)) status.textContent=t("No Voice Detected"); },
     onStart: () => { markTransformationPlayed(player, spirit); status.textContent = first ? (capture ? t("Get ready…") : t("Mic unavailable")) : label(); },
     onPause: () => { release(); button.hidden = false; if (!dead && document.hidden && !sending) { status.textContent = pending ? t("Not sent · retry") : t("Paused · replay"); if (pending) { retry.hidden = false; cancel.hidden = false; } } },
     onError: () => { button.hidden = false; status.textContent = t("Video failed · retry"); },
@@ -80,10 +90,10 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     },
   });
   async function play() {
-    if (busy || dead || sending || pending) return;
+    if (busy || dead || sending || (pending && !awaitingCompletion)) return;
     // Pause the old playback before preparing a new microphone session.
     motion.pause(); busy = true; button.disabled = true; button.hidden = true;
-    first = !readScare(player, spirit) || (!!shared && !sent);
+    first = !pending && (!readScare(player, spirit) || (!!shared && !sent));
     const ticket = generation;
     if (first) {
       status.textContent = t("Starting mic…");
@@ -107,7 +117,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     if (!dead) { busy = false; button.disabled = false; if (!started) button.hidden = false; }
   }
   button.onclick = () => { void play(); };
-  lock(false);
+  setLocked(requireComplete);
   void play();
-  return () => { dead = true; pending = undefined; release(); controls.remove(); motion.dispose(); lock(false); };
+  return () => { dead = true; pending = undefined; release(); controls.remove(); motion.dispose(); setLocked(false); };
 }
