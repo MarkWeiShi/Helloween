@@ -453,6 +453,25 @@ function openShare(id = selected) {
 let shareRequest = 0;
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
   if(btn?.disabled)return;
+  if(channel==='x') {
+    if(!player.account){sessionStorage.setItem('boo:pending-share',JSON.stringify({id,channel}));await signIn();return;}
+    if(btn)btn.disabled=true;
+    // Reserve the window within the click gesture; OAuth resumes use an explicit link.
+    const destination=resumed?null:window.open('about:blank','_blank');
+    if(destination)destination.opener=null;
+    try {
+      const data=await api('/invites',{spiritId:id,channel});
+      const shareUrl=new URL(`/api/share/card/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url).href;
+      const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`,url:shareUrl});
+      if(destination && !destination.closed){watchShareReturn();destination.location.href=target;closeModal();}
+      else {
+        modal(`<h2>X</h2><a class="button primary full" data-open-x href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(t('Continue to {{1}}').replace('{{1}}','X'))}</a>`);
+        overlay.querySelector<HTMLAnchorElement>('[data-open-x]')!.onclick=()=>watchShareReturn();
+      }
+    }catch(error){destination?.close();toast((error as Error).message);}
+    finally{if(btn)btn.disabled=false;}
+    return;
+  }
   if(channel==='line' || (channel==='facebook' && player.initialized)) {
     if(btn)btn.disabled=true;
     const destination=channel==='facebook'?window.open('about:blank','_blank'):null;
@@ -475,12 +494,6 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
       }
     }catch(error){destination?.close();toast((error as Error).message);return;}
     finally{if(btn)btn.disabled=false;}
-  }
-  const pending={id,channel};
-  if(channel==='x') {
-    const status=player.account?await api<{connected:boolean}>('/social/x/status'):{connected:false};
-    if(!status.connected && resumed){modal('<p role="alert">X did not provide media authorization. Please reconnect X with media and posting permissions.</p>');return;}
-    if(!status.connected){sessionStorage.setItem('boo:pending-share',JSON.stringify(pending));const login=await api('/auth/start',{provider:'x'});location.assign(login.url);return;}
   }
   const request=++shareRequest;
   modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel.toUpperCase()}`)}</h2>${!player.initialized?`<div class="share-profile"><label>${e(t('Your parade name'))}<input id="share-name" maxlength="24" value="${e(player.name)}"></label><label>${e(t('Your country or region'))}<select id="share-country"><option value="">${e(t('Choose your home'))}</option>${catalog.countries.map(c=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<div id="share-link"></div>`);

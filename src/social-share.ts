@@ -27,51 +27,6 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    void Promise.resolve(beforeConfirm()).then(()=>{if(popup)popup.location.href=anchor.href;else location.assign(anchor.href);}).catch(error=>{popup?.close();const note=document.createElement('p');note.setAttribute('role','alert');note.textContent=error.message;panel.append(note);});
   });
  };
- if(channel==='x' && spiritId){
-  const cn=locale==='zh';
-  const label=(zh:string,en:string)=>cn?zh:en;
-  try{
-   const response=await fetch('/art/x-cards/manifest.json');
-   if(!response.ok)throw Error('GIF unavailable');
-   const manifest=await response.json();
-   if(!panel.isConnected)return;
-   const baseChallenge=manifest.characters[spiritId];
-   const challenge=baseChallenge?{...baseChallenge,...(baseChallenge.localized?.[locale]||baseChallenge.localized?.en||{})}:null;
-   if(!challenge || challenge.previewOnly)throw Error('GIF unavailable');
-   const inviteId=new URL(url).pathname.split('/').pop()!;
-   const shareUrl=new URL(`/api/share/card/${inviteId}?lang=${locale}`,url).href;
-   const post=(cn?challenge.textZh:challenge.textEn).replace('［本次邀请链接］',shareUrl);
-   panel.innerHTML=`<img class="share-card-preview" src="${e(challenge.gif)}" alt="${e(challenge.name)}" width="960" height="504"><textarea data-x-text aria-label="${e(t('Post text'))}" maxlength="280" rows="3">${e(post)}</textarea><button class="button primary full" data-publish-x>${e(t('Confirm and publish to X'))}</button><p data-x-status role="status"></p><details data-x-manual><summary>${e(label('改用 X App 分享','Share manually with X'))}</summary><p>${e(label('自动附图通过 API 发布，不会打开 X App。手动分享需在 X 中确认；若结果未确认，请先检查已有帖文。','Automatic GIF posting uses the API. For manual sharing, confirm in X. If a result is unconfirmed, check existing posts first.'))}</p><button class="button secondary full" data-native-gif hidden>${e(label('分享 GIF 到其他 App','Share GIF with an app'))}</button><a class="button secondary full" href="${e(challenge.gif)}" download>${e(label('下载 GIF','Download GIF'))}</a><button class="button secondary full" data-copy-caption>${e(label('复制帖文','Copy post text'))}</button><a class="button secondary full" data-open-x target="_blank" rel="noopener noreferrer">${e(label('打开 X 编辑帖文','Open X composer'))}</a><a href="https://x.com/" target="_blank" rel="noopener noreferrer">${e(label('检查我的 X 帖文','Check my X posts'))}</a></details><button class="button text-button full" data-back-game>${e(label('返回游戏','Back to game'))}</button>`;
-   const editor=panel.querySelector<HTMLTextAreaElement>('[data-x-text]')!;
-   const xLink=panel.querySelector<HTMLAnchorElement>('[data-open-x]')!;
-   const updateIntent=()=>{xLink.href='https://x.com/intent/post?text='+encodeURIComponent(editor.value);};updateIntent();editor.oninput=updateIntent;
-   xLink.onclick=()=>watchShareReturn();
-   panel.querySelector<HTMLButtonElement>('[data-back-game]')!.onclick=returnToGame;
-   panel.querySelector<HTMLButtonElement>('[data-copy-caption]')!.onclick=()=>{void navigator.clipboard.writeText(editor.value).catch(()=>{editor.focus();editor.select();});};
-   if(navigator.canShare && navigator.share)void fetch(challenge.gif).then(r=>{if(!r.ok)throw Error('GIF unavailable');return r.blob();}).then(blob=>{
-    if(!panel.isConnected)return;const file=new File([blob],`${spiritId}.gif`,{type:'image/gif'});
-    if(!navigator.canShare({files:[file]}))return;
-    const native=panel.querySelector<HTMLButtonElement>('[data-native-gif]')!;native.hidden=false;
-    native.onclick=()=>{watchShareReturn();void navigator.share({files:[file],text:editor.value,title:'Halloween Tricks by HelloTalk'}).catch(error=>{if(error.name!=='AbortError')panel.querySelector<HTMLElement>('[data-x-status]')!.textContent=label('请下载 GIF 并在 X 中附图。','Download the GIF and attach it in X.');});};
-   }).catch(()=>{});
-   panel.querySelector<HTMLButtonElement>('[data-publish-x]')!.onclick=async()=>{
-    const button=panel.querySelector<HTMLButtonElement>('[data-publish-x]')!,status=panel.querySelector<HTMLElement>('[data-x-status]')!;
-    button.disabled=true;
-    try {
-     await beforeConfirm();
-     status.textContent=t('Uploading and publishing…');
-     const response=await fetch('/api/social/x/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inviteId,cardSha:challenge.sha256,language:locale,text:panel.querySelector<HTMLTextAreaElement>('[data-x-text]')!.value,confirm:true}),signal:AbortSignal.timeout(90000)});
-     const result=await response.json();if(!response.ok)throw Error(result.error||'Publishing failed');
-     status.innerHTML=`<a href="${e(result.url)}" target="_blank" rel="noopener noreferrer">${e(t('View published post'))}</a>`;
-    }catch(error){status.textContent=(error as Error).message;button.disabled=false;panel.querySelector<HTMLDetailsElement>('[data-x-manual]')!.open=true;}
-   };
-   return;
-  }catch{
-   if(!panel.isConnected)return;
-   frame(`<p>${e(label('动态 GIF 暂时无法加载，请重试。','The animated GIF could not load. Please try again.'))}</p>`);
-   return;
-  }
- }
  if(channel==='line' && config.lineLiffId){
   const token=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
   if(token){

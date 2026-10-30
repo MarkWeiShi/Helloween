@@ -178,3 +178,9 @@ On Safari, LINE's official LIFF URL is presented as an actual user-clicked link 
 Kakao defaults to the small localized JPEG card. Its optional GIF uses the existing animated asset, but blocking scrapImage is removed from the picker preparation path. Existing profiles invoke the SDK directly in the click; a first-time asynchronous profile save asks for one subsequent tap. Selecting recipients, native app latency and final delivery remain platform-controlled.
 
 The game watches a real background/foreground transition after an external share action and dismisses the handoff UI when the user returns. This is navigation recovery, not proof of delivery. Websites cannot force Kakao/LINE/X to switch to Safari after sending; explicit return controls and the operating-system Safari return link remain necessary.
+
+### Default X sharing: user-confirmed composer (supersedes API publishing flows above)
+
+The character X button now creates an account-owned invitation and opens `https://x.com/intent/post` with localized text and its invitation URL. Game login is required; new X sign-ins use baseline Supabase login permissions, without additional posting/media scopes. An existing game session needs no additional X authorization. Login resumes and blocked popups show a single Continue to X link. No profile setup or duplicate in-game publishing confirmation is required for X.
+
+The default frontend no longer uploads GIFs or calls `/api/social/x/publish` or `/api/social/x/status`. Link previews are static; publishing occurs only when the user confirms in X. The legacy server API remains for compatibility, but is not used by the default UI. Opening/returning from the composer is not proof of publication. X may open its website rather than its native app.

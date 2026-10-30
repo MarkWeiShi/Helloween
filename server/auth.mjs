@@ -46,9 +46,7 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
       const redirect=new URL('/api/auth/callback',origin);redirect.searchParams.set('state',state);
       const target=new URL(`${url.replace(/\/$/,'')}/auth/v1/authorize`);
       target.search=new URLSearchParams({provider:body.provider,redirect_to:redirect.href,code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'s256'}).toString();
-      // Supabase supplies X's baseline login scopes; request the approved posting scope too.
-      // This prepares user consent only. Publishing still needs a separate server-side flow.
-      if(body.provider==='x')target.searchParams.set('scopes','tweet.read users.read tweet.write media.write offline.access');
+      // Use Supabase's baseline login permissions; composer sharing needs no posting/media scopes.
       return {url:target.href};
     },
     async finish(session,state,code) {

@@ -31,17 +31,6 @@ test('Kakao light card does not wait for GIF scraping before showing the friend 
  await page.evaluate(()=>{Object.defineProperty(document,'visibilityState',{configurable:true,value:'hidden'});document.dispatchEvent(new Event('visibilitychange'));Object.defineProperty(document,'visibilityState',{configurable:true,value:'visible'});document.dispatchEvent(new Event('visibilitychange'));});
  await expect(page.locator('dialog')).toHaveCount(0);
 });
-test('X credits rejection reveals manual app fallback and a working return action without reposting',async({page,context})=>{
- const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,'x-credits');app.store.onboard(login.player.id,{name:'Tester',country:'CN',spiritId:'jiangshi'});
- await context.addCookies([{name:'boo_session',value:login.token,url:app.origin}]);
- await page.addInitScript(()=>sessionStorage.setItem('boo:pending-share',JSON.stringify({id:'jiangshi',channel:'x'})));
- await page.route('**/api/social/x/status',r=>r.fulfill({json:{connected:true}}));let calls=0;
- await page.route('**/api/social/x/publish',r=>{calls++;return r.fulfill({status:402,json:{error:'X API credits are exhausted.',code:'X_CREDITS_DEPLETED'}});});
- await page.goto(app.origin+'/my-links?signin=success');await page.locator('[data-publish-x]').click();
- await expect(page.locator('[data-x-status]')).toContainText('credits');await expect(page.locator('[data-x-manual]')).toHaveAttribute('open');
- await expect(page.locator('[data-open-x]')).toHaveAttribute('href',/^https:\/\/x.com\/intent\/post\?text=/);
- expect(calls).toBe(1);await page.getByRole('button',{name:'Back to game',exact:true}).click();await expect(page.locator('dialog')).toHaveCount(0);
-});
 test('LINE in-app return explicitly opens the game in the external browser',async({page})=>{
  const guest=app.store.createGuest();const invite=app.store.createInvite(guest.player.id,{spiritId:'kappa',channel:'line'});
  await page.route('https://static.line-scdn.net/**',r=>r.fulfill({contentType:'application/javascript',body:'window.liff={init:async()=>{},isInClient:()=>true,isLoggedIn:()=>true,openWindow:options=>window.opened=options,isApiAvailable:()=>true};'}));
