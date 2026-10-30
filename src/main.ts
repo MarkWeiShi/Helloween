@@ -37,6 +37,7 @@ let region = "JP",
   page = "map",
   sound = true,
   gate = false;
+let boardGroup = "players";
 let boardScope = "trick",
   boardTimer: ReturnType<typeof setInterval> | undefined;
 let modalCleanup: (() => void) | undefined,
@@ -195,13 +196,14 @@ function navItems() {
 function render() {
   if (gate) return;
   document.body.classList.toggle("explore-screen", page === "map");
+  document.body.classList.toggle("rankings-screen", page === "boards");
   globeCleanup?.();
   globeCleanup = undefined;
   if (boardTimer) {
     clearInterval(boardTimer);
     boardTimer = undefined;
   }
-  app.innerHTML = html`<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : page === "links" ? linksPage(player) : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer></div><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav>${page === "map" ? html`<button class="stats-help" data-action="stats-help" aria-label="What do these numbers mean?"><img class="corner-ui-icon" src="/art/ui/help-question.webp" width="30" height="30" alt="" aria-hidden="true"></button>` : ""}`;
+  app.innerHTML = html`<div class="app-shell">${header()}<main id="main-content">${page === "map" ? mapPage() : page === "codex" ? codexPage() : page === "links" ? linksPage(player) : boardsPage()}</main><footer class="site-footer">${hellotalk()}<button class="text-button" data-action="about">About the folklore</button></footer></div><nav class="mobile-nav" aria-label="Main navigation">${navItems()}</nav>${page === "map" || page === "boards" ? html`<button class="stats-help" data-action="${page === "boards" ? "rankings-help" : "stats-help"}" aria-label="What do these numbers mean?"><img class="corner-ui-icon" src="/art/ui/help-question.webp" width="30" height="30" alt="" aria-hidden="true"></button>` : ""}`;
   app.insertAdjacentHTML("beforeend", languageSelector());
   if(page === 'map') app.insertAdjacentHTML('beforeend',html`<button class="home-sound-toggle icon-button" data-action="sound" aria-label="${sound ? t('Mute sound') : t('Enable sound')}" aria-pressed="${sound}">${icon(sound ? 'sound' : 'mute')}</button>`);
   if (page === "map") {
@@ -302,19 +304,19 @@ function codexPage() {
     .join("")}</div>`;
 }
 function boardsPage() {
-  return html`<section class="scream-rankings"><div class="board-controls"><div class="segmented">${['trick','intensity'].map(scope=>html`<button data-scope="${scope}" class="${boardScope===scope?'active':''}" aria-pressed="${boardScope===scope}">${scope==='trick'?t('Trick rankings'):t('Scream rankings')}</button>`).join('')}</div></div><p class="board-note">${boardScope==='trick'?t('Ranked by recordings received through your shared ghost links.'):t('Average scream intensity by interface language. Each participant has equal weight.')} ${t('Ties share a rank.')}</p>${boardScope==='intensity'?html`<p class="board-note">Relative microphone volume, 0–100. Devices and microphone distance affect the result.</p>`:''}<div id="board-content" aria-live="polite"><div class="skeleton-row"></div></div></section>`;
+  return html`<section class="scream-rankings"><div class="board-controls"><div class="segmented">${['trick','intensity'].map(scope=>html`<button data-scope="${scope}" class="${boardScope===scope?'active':''}" aria-pressed="${boardScope===scope}">${scope==='trick'?t('Trick rankings'):t('Scream rankings')}</button>`).join('')}</div><div class="segmented board-groups">${['players','countries'].map(group=>html`<button data-board-group="${group}" class="${boardGroup===group?'active':''}" aria-pressed="${boardGroup===group}">${group==='players'?t('Individuals'):t('Countries')}</button>`).join('')}</div></div><p class="board-note">${boardScope==='trick'?t('Ranked by recordings received through shared links.'):t('Ranked by friends’ combined volume and pitch scores.')} ${t('Countries are grouped by the sharer’s country.')} ${t('Ties share a rank.')}</p><div id="board-content" aria-live="polite"><div class="skeleton-row"></div></div></section>`;
 }
 async function loadBoard() {
-  const scope=boardScope;
+  const scope=boardScope, group=boardGroup;
   try {
-    const data=await api(`/scream-rankings?scope=${scope}`);
+    const data=await api(`/scream-rankings?scope=${scope}&group=${group}`);
     const node=$('#board-content');
-    if(!node || scope!==boardScope)return;
-    const names=new Intl.DisplayNames([locale],{type:'language'});
-    const row=(r:any,self=false)=>html`<div class="board-row ${self?'is-you':''}"><span class="rank">${r.rank}</span><span class="board-avatar" aria-hidden="true">${scope==='trick'?'🎃':'👻'}</span><span class="board-name"><strong>${e(scope==='trick'?r.name:names.of(r.id)||r.id)}${self?html` <small>You</small>`:''}</strong><span>${r.recordings} ${t('recordings')}${scope==='intensity'?` · ${r.participants} ${t('participants')}`:''}</span></span><strong class="board-score">${Number(r.score).toLocaleString(locale,{maximumFractionDigits:2})}${scope==='intensity'?' / 100':''}</strong></div>`;
-    node.innerHTML=data.rows.length?`${data.self?`<div class="your-rank">${row(data.self,true)}</div>`:''}<div class="board-list">${data.rows.map((r:any)=>row(r)).join('')}</div>`:html`<p class="rank-empty">${scope==='trick'?t('No recordings received yet.'):t('No scream intensity measurements yet.')}</p>`;
+    if(!node || scope!==boardScope || group!==boardGroup)return;
+    const names=new Intl.DisplayNames([locale],{type:'region'});
+    const row=(r:any,self=false)=>html`<div class="board-row ${self?'is-you':''}"><span class="rank">${r.rank}</span><span class="board-avatar" aria-hidden="true">${group==='countries'?flag(r.id):scope==='trick'?'🎃':'👻'}</span><span class="board-name"><strong>${e(group==='countries'?names.of(r.id)||r.id:r.name)}${self?html` <small>${group==='countries'?t('Your country'):t('You')}</small>`:''}</strong><span>${r.recordings} ${t('recordings')} · ${r.participants} ${t('participants')}</span></span><strong class="board-score">${Number(r.score).toLocaleString(locale,{maximumFractionDigits:2})}${scope==='intensity'?' / 100':''}</strong></div>`;
+    node.innerHTML=data.rows.length?`${data.self?`<div class="your-rank">${row(data.self,true)}</div>`:''}<div class="board-list">${data.rows.map((r:any)=>row(r)).join('')}</div>`:html`<p class="rank-empty">${scope==='trick'?t('No recordings received yet.'):t('No eligible scream scores yet.')}</p>`;
   } catch(err) {
-    const node=$('#board-content');if(node && scope===boardScope)node.innerHTML=html`<p>${e((err as Error).message)}</p>${button(t('Try again'),'reload-board','secondary')}`;
+    const node=$('#board-content');if(node && scope===boardScope && group===boardGroup)node.innerHTML=html`<p>${e((err as Error).message)}</p>${button(t('Try again'),'reload-board','secondary')}`;
   }
 }
 function openLore(id = selected) {
@@ -627,6 +629,11 @@ document.addEventListener("click", async (ev) => {
       openLore(target.dataset.lore);
       return;
     }
+    if (target.dataset.boardGroup) {
+      boardGroup = target.dataset.boardGroup;
+      render();
+      return;
+    }
     if (target.dataset.scope) {
       boardScope = target.dataset.scope;
       render();
@@ -695,6 +702,11 @@ document.addEventListener("click", async (ev) => {
         break;
       case "respond":
         await respondInvite();
+        break;
+      case "rankings-help":
+        modal(html`<div class="sheet-handle" aria-hidden="true"></div><div class="stats-sheet-heading"><span aria-hidden="true">✦ 🏆 ✦</span><h2 id="rankings-sheet-title">How rankings work</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Trick rankings</h3><p>Count recordings successfully received after friends open shared links. Opening a link alone does not count. Repeat uploads by the same friend to the same link count once.</p></div></section><section><span aria-hidden="true">👻</span><div><h3>Scream rankings</h3><p>We request echo cancellation and noise suppression to reduce video sound in the microphone. Valid voice samples produce a 0–100 game score: 50% pitch and 50% logarithmic volume. Pitch maps 70–1200 Hz and volume maps −40–0 dB to the score range.</p><p>Average each friend’s valid scores first, then average across friends within each individual or country. This ranks who gives friends the biggest fright, not who records the most.</p></div></section><section><span aria-hidden="true">🌍</span><div><h3>Individuals and countries</h3><p>Individuals are the people sharing links. Countries use the sharer’s chosen country, not the visitor’s country or interface language. Country Trick scores add all received recordings; country Scream scores average friends’ scores across that country’s sharers.</p></div></section></div><p class="stats-sheet-note">All-time rankings, top 100. Ties share a rank. Self-feedback is excluded. Historical recordings without the new measurements, undetected voices, and samples without confirmed echo cancellation do not enter Scream rankings. Echo reduction is imperfect and devices affect scores; this is a playful reaction score, not a psychological measurement.</p>`);
+        overlay.querySelector('dialog')!.classList.add('stats-sheet');
+        overlay.querySelector('dialog')!.setAttribute('aria-labelledby','rankings-sheet-title');
         break;
       case "stats-help":
         modal(html`<div class="sheet-handle" aria-hidden="true"></div><div class="stats-sheet-heading"><span aria-hidden="true">✦ 🎃 ✦</span><h2 id="stats-sheet-title">Your Halloween magic</h2></div><div class="stats-guide"><section><span aria-hidden="true">🎃</span><div><h3>Friend opens / Shares</h3><p>Unique friend visits / share links created.</p></div></section><section><span aria-hidden="true">👻</span><div><h3>Friends’ scream score</h3><p>Overall scream score after friends watch your videos (0–100). Average each friend’s valid recordings, then average across friends. No valid scores yet: 0.</p></div></section></div><p class="stats-sheet-note">Repeat visits to the same link count once. A share link is not a confirmed send.</p>`);

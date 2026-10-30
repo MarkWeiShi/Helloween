@@ -1,5 +1,5 @@
 import {languages} from '../shared/i18n.mjs';
-import { pitchLevel } from "../shared/reactions.mjs";
+import { pitchLevel, personalScareScore } from "../shared/reactions.mjs";
 import { DatabaseSync } from "node:sqlite";
 import { randomBytes, randomUUID, createHash } from "node:crypto";
 import { mkdirSync } from "node:fs";
@@ -54,6 +54,7 @@ export class BooStore {
       CREATE TABLE IF NOT EXISTS reactions(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mean_hz INTEGER,peak_hz INTEGER,frames INTEGER NOT NULL,created_at INTEGER NOT NULL,seen_at INTEGER,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS reaction_audio(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mime TEXT NOT NULL,audio BLOB NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS reaction_intensity(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,language TEXT NOT NULL,rms REAL CHECK(rms IS NULL OR (rms>=0 AND rms<=1)),PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
+      CREATE TABLE IF NOT EXISTS reaction_scores_v2(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,score INTEGER NOT NULL CHECK(score BETWEEN 0 AND 100),PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS invite_labels(invite_id TEXT PRIMARY KEY REFERENCES invites(id),friend_name TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS reaction_details(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,name TEXT NOT NULL,score INTEGER,duration_ms INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
       CREATE INDEX IF NOT EXISTS matches_player ON matches(player_id,started_at);
@@ -535,6 +536,11 @@ export class BooStore {
     const language=body.language ?? null, rms=body.amplitudeRms ?? null;
     if(language!==null && !languages.some(([code])=>code===language))fail(400,'Invalid recording language.');
     if(rms!==null && (typeof rms!=='number' || !Number.isFinite(rms) || rms<0 || rms>1 || language===null))fail(400,'Invalid recording intensity.');
+    let rankingScore = null;
+    if (body.scoringVersion === 2 && body.echoCancellation === true) {
+      if (!hasMeasurement || typeof body.meanRms !== 'number' || !Number.isFinite(body.meanRms) || body.meanRms < 0 || body.meanRms > 1) fail(400, 'Invalid recording intensity.');
+      rankingScore = personalScareScore(body.meanHz, body.meanRms);
+    }
     const audio = Buffer.from(body.audio, 'base64');
     if (!audio.length || audio.length > 512000) fail(413, 'Recording too large.');
     const valid = body.mime === 'audio/webm' ? audio.subarray(0,4).equals(Buffer.from([0x1a,0x45,0xdf,0xa3])) : body.mime === 'audio/ogg' ? audio.toString('ascii',0,4) === 'OggS' : audio.toString('ascii',4,8) === 'ftyp';
@@ -548,6 +554,7 @@ export class BooStore {
       if (count >= 20) fail(429, 'Daily recording limit reached.');
       this.db.prepare('INSERT INTO reaction_audio VALUES(?,?,?,?,?)').run(token,id,body.mime,audio,this.now());
       this.db.prepare('INSERT INTO reaction_details VALUES(?,?,?,?,?)').run(token,id,name.trim(),score,body.durationMs);
+      if(rankingScore !== null)this.db.prepare('INSERT INTO reaction_scores_v2 VALUES(?,?,?)').run(token,id,rankingScore);
       if(language!==null)this.db.prepare('INSERT INTO reaction_intensity VALUES(?,?,?,?)').run(token,id,language,rms);
       if (hasMeasurement) this.db.prepare(`INSERT INTO reactions(invite_id,player_id,mean_hz,peak_hz,frames,created_at) VALUES(?,?,?,?,?,?)
         ON CONFLICT(invite_id,player_id) DO UPDATE SET mean_hz=excluded.mean_hz,peak_hz=excluded.peak_hz,frames=excluded.frames`).run(token,id,body.meanHz,body.peakHz,body.frames,this.now());
@@ -622,22 +629,28 @@ export class BooStore {
       return { ...result, player: this.state(id) };
     });
   }
-  screamRankings(id, scope='trick') {
-    if(!['trick','intensity'].includes(scope))fail(400,'Choose a valid leaderboard.');
-    // Only saved audio contributes. Retries and full-link submissions add no rows.
-    // Each participant has equal weight within a language, across all their recordings.
-    const scores=scope==='trick' ? `SELECT p.id,p.name,COUNT(*) AS score,COUNT(*) AS recordings
+  screamRankings(id, scope='trick', group='players') {
+    if(!['trick','intensity'].includes(scope) || !['players','countries'].includes(group))fail(400,'Choose a valid leaderboard.');
+    const country = group === 'countries';
+    const key = country ? 'p.country' : 'p.id';
+    // Attribution belongs to the sharer. Exclude self-feedback across linked accounts.
+    const eligible = `SELECT ${key} AS id,${country ? 'p.country' : 'p.name'} AS name,
+      CASE WHEN m.subject IS NULL THEN 'guest:' || a.player_id ELSE 'account:' || m.subject END AS participant,
+      v.score
       FROM reaction_audio a JOIN invites i ON i.id=a.invite_id JOIN players p ON p.id=i.sender_id
-      WHERE a.player_id<>i.sender_id GROUP BY p.id` :
-      `WITH participant_scores AS (
-        SELECT r.language,COALESCE(m.subject,r.player_id) AS participant,AVG(r.rms) AS intensity,COUNT(*) AS recordings
-        FROM reaction_intensity r LEFT JOIN account_members m ON m.player_id=r.player_id
-        WHERE r.rms IS NOT NULL GROUP BY r.language,participant)
-      SELECT language AS id,language AS name,ROUND(AVG(intensity)*100,2) AS score,COUNT(*) AS participants,SUM(recordings) AS recordings
-      FROM participant_scores GROUP BY language`;
-    const ranked=`WITH scores AS (${scores}),ranked AS (SELECT *,RANK() OVER(ORDER BY score DESC) AS rank FROM scores)`;
-    return {scope,rows:this.db.prepare(`${ranked} SELECT * FROM ranked ORDER BY score DESC,id LIMIT 100`).all(),
-      self:scope==='trick'?this.db.prepare(`${ranked} SELECT * FROM ranked WHERE id=?`).get(id)||null:null,updatedAt:this.now()};
+      LEFT JOIN account_members m ON m.player_id=a.player_id
+      LEFT JOIN account_members owner ON owner.player_id=p.id
+      LEFT JOIN reaction_scores_v2 v ON v.invite_id=a.invite_id AND v.player_id=a.player_id
+      WHERE a.player_id<>p.id AND (m.subject IS NULL OR owner.subject IS NULL OR m.subject<>owner.subject)
+      ${country ? 'AND p.country IS NOT NULL' : ''}`;
+    const scores = scope === 'trick'
+      ? `SELECT id,name,COUNT(*) AS score,COUNT(*) AS recordings,COUNT(DISTINCT participant) AS participants FROM eligible GROUP BY id`
+      : `SELECT id,name,ROUND(AVG(score),2) AS score,SUM(recordings) AS recordings,COUNT(*) AS participants FROM (
+          SELECT id,name,participant,AVG(score) AS score,COUNT(*) AS recordings FROM eligible WHERE score IS NOT NULL GROUP BY id,participant
+        ) GROUP BY id`;
+    const ranked = `WITH eligible AS (${eligible}),scores AS (${scores}),ranked AS (SELECT *,RANK() OVER(ORDER BY score DESC) AS rank FROM scores)`;
+    return {scope,group,rows:this.db.prepare(`${ranked} SELECT * FROM ranked ORDER BY score DESC,id LIMIT 100`).all(),
+      self:this.db.prepare(`${ranked} SELECT * FROM ranked WHERE id=?`).get(country ? this.rawPlayer(id).country || '' : id)||null,updatedAt:this.now()};
   }
   leaderboard(id, scope, metric) {
     if (

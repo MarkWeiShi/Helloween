@@ -3404,3 +3404,12 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .social-video-caption{display:block;box-sizing:border-box;width:100%;min-height:130px;margin:8px 0 12px;padding:12px;resize:vertical}
 .social-handoff ol{padding-inline-start:24px;line-height:1.6}
 .social-handoff li+li{margin-top:10px}
+
+/* Ranking controls share the Explore help button and sheet styles. */
+.scream-rankings .board-controls{display:flex;flex-direction:column;align-items:center;gap:12px}
+.scream-rankings .board-groups{width:min(100%,320px)}
+.scream-rankings .board-groups button{flex:1}
+
+.rankings-screen{--campaign-row:clamp(60px,9vw,113px);--campaign-top:max(8px,env(safe-area-inset-top))}
+.rankings-screen #app > .stats-help{top:calc(var(--campaign-top) + var(--campaign-row)/2 - 22px)}
+.rankings-screen .screams-header{padding-inline-start:54px}

@@ -23,7 +23,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   let dead = false, busy = false, generation = 0, capture: Awaited<ReturnType<typeof prepareMicrophone>> | undefined;
   let first = false, sent = false, sending = false;
   let recording: ReturnType<typeof recordReaction> | undefined;
-  let pending: {audio:string;mime:string;durationMs:number;consent:boolean;language:string;amplitudeRms:number|null;score:number|null;meanHz:number|null;peakHz:number|null;frames:number} | undefined;
+  let pending: {scoringVersion:number;echoCancellation:boolean;meanRms:number|null;audio:string;mime:string;durationMs:number;consent:boolean;language:string;amplitudeRms:number|null;score:number|null;meanHz:number|null;peakHz:number|null;frames:number} | undefined;
   const controls = document.createElement('div'); controls.className = 'reaction-capture-controls';
   const cancel = document.createElement('button'); cancel.className = 'button text-button'; cancel.textContent = t("取消录音及发送"); cancel.hidden = true;
   const retry = document.createElement('button'); retry.className = 'button secondary'; retry.textContent = t("重试发送录音"); retry.hidden = true;
@@ -64,6 +64,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     onCaptureStart: () => {
       if (!first || !capture) return;
       const ticket = generation;
+      const echoCancellation = capture.echoCancellation;
       const shouldSend = !!shared && !sent && !pending;
       let audio: Promise<Blob | null> = Promise.resolve(null);
       if (shouldSend) {
@@ -84,7 +85,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         const bytes = new Uint8Array(await blob.arrayBuffer());
         if (dead || ticket !== generation || !shared) return;
         let binary = ''; for (const byte of bytes) binary += String.fromCharCode(byte);
-        pending = {audio:btoa(binary),mime:blob.type.split(';')[0],durationMs:5000,consent:true,language:locale,amplitudeRms:m.amplitudeRms,score:result.score,meanHz:m.meanHz,peakHz:m.peakHz,frames:m.frames};
+        pending = {scoringVersion:2,echoCancellation:echoCancellation && m.meanRms !== null,meanRms:m.meanRms,audio:btoa(binary),mime:blob.type.split(';')[0],durationMs:5000,consent:true,language:locale,amplitudeRms:m.amplitudeRms,score:result.score,meanHz:m.meanHz,peakHz:m.peakHz,frames:m.frames};
         await upload();
       });
     },

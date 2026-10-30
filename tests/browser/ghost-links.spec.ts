@@ -45,15 +45,30 @@ test('full invitation explains capacity before experience',async({page})=>{
  await expect(page.locator('audio')).toHaveCount(0);
 });
 
-test('scream rankings replace the old candy board and aggregate by language',async({page},testInfo)=>{
+test('rankings switch individuals and sharer countries and explain score eligibility',async({page},testInfo)=>{
  await page.goto(origin+'/rankings?lang=zh');
  await expect(page.getByRole('heading',{name:'尖叫排名',exact:true})).toBeVisible();
- await expect(page.locator('.brand')).toHaveCount(0);await expect(page.locator('[data-metric]')).toHaveCount(0);
- await expect(page.locator('[data-scope="trick"]')).toHaveText('Trick排名');
+ await expect(page.locator('[data-board-group="players"]')).toHaveText('个人');
+ await expect(page.locator('[data-board-group="countries"]')).toHaveText('国家');
+ await expect(page.locator('.board-score').first()).toHaveText('5');
+ await page.locator('[data-board-group="countries"]').click();
+ await expect(page.locator('.board-name strong').first()).toContainText('中国');
  await expect(page.locator('.board-score').first()).toHaveText('5');
  await page.locator('[data-scope="intensity"]').click();
- await expect(page.locator('.board-name strong').first()).toHaveText('中文');
- await expect(page.locator('.board-score').first()).toHaveText('40 / 100');
+ await expect(page.locator('.rank-empty')).toHaveText('暂无符合条件的惊恐评分。');
+ app.store.recordAudio(app.store.createGuest().player.id,app.store.createInvite(app.store.invite(inviteId).senderId,{spiritId:'jiangshi',channel:'copy'}).id,{consent:true,mime:'audio/webm',audio:Buffer.from([0x1a,0x45,0xdf,0xa3,1,2,3]).toString('base64'),durationMs:5000,scoringVersion:2,echoCancellation:true,meanRms:.1,score:50,meanHz:635,peakHz:635,frames:10});
+ await page.locator('[data-board-group="players"]').click();
+ await expect(page.locator('.board-name strong').first()).toHaveText('Owner');
+ await expect(page.locator('.board-score').first()).toHaveText('50 / 100');
+ await page.locator('[data-board-group="countries"]').click();
+ await expect(page.locator('.board-name strong').first()).toContainText('中国');
+ await expect(page.locator('.board-score').first()).toHaveText('50 / 100');
+ const help=page.locator('[data-action="rankings-help"]');await expect(help).toBeVisible();
+ const box=(await help.boundingBox())!;expect(box.x).toBeLessThan(20);expect(box.width).toBe(44);
+ await help.click();await expect(page.getByRole('dialog')).toContainText('音高占 50%');
+ await expect(page.getByRole('dialog')).toContainText('分享者所选国家');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.screenshot({path:`artifacts/scream-rankings-help-${testInfo.project.name}.png`,fullPage:true});
+ await page.locator('.modal-close').click();
  await page.screenshot({path:`artifacts/scream-rankings-${testInfo.project.name}.png`,fullPage:true});
 });

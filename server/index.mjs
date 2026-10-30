@@ -311,7 +311,7 @@ export function createApp({
             body.requestId,
           );
         else if (req.method === "GET" && url.pathname === "/api/scream-rankings")
-          result = store.screamRankings(playerId,url.searchParams.get('scope') || 'trick');
+          result = store.screamRankings(playerId,url.searchParams.get('scope') || 'trick',url.searchParams.get('group') || 'players');
         else if (req.method === "GET" && url.pathname === "/api/leaderboards")
           result = store.leaderboard(
             playerId,
