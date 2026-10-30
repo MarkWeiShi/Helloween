@@ -75,3 +75,67 @@ these LINE changes; X was supplied through a persistent `/app/server/auth.mjs`
 machine file override. This source now includes the same X patch. On the next
 image deployment, reconcile/remove that override so it cannot mask future auth
 changes. Committing this source does not itself change the running machine.
+
+## KakaoTalk ghost-card sharing
+
+The game uses Kakao JavaScript SDK 2.8.4 with `KAKAO_JAVASCRIPT_KEY` supplied by
+`/api/social/config`. Use the JavaScript platform key, not a REST or Admin key.
+Application 1629099 (Scary Halloween by HelloTalk) registers
+`https://helloween.fly.dev` in both JavaScript SDK domains and Product Link web
+domains. This share flow does not require Kakao Login.
+
+The share panel prepares a public 1024×538 JPEG from `/line-cards/<spirit>.jpg`
+using `Kakao.Share.scrapImage`, then opens `sendDefault` synchronously from a
+player click. The feed card includes editable text and retains the exact invite
+URL in both its image/content link and button. Preparation failures retain the
+copyable invitation. Opening the picker never counts as confirmed delivery.
+
+Kakao first scrapes the approved character GIF (up to 5 MB), falling back to
+the static JPEG if that request fails. A successful scrape does not establish
+animation playback in the recipient chat; the UI explicitly states that Kakao
+may show a still cover. The original GIF can also be downloaded.
+Reference: https://developers.kakao.com/docs/en/kakaotalk-share/js-link
+
+For local SDK-mocked validation, run Vite on port 5174 and then:
+`PLAYWRIGHT_CHROME_CHANNEL=chrome npx playwright test tests/browser/kakao-share.spec.ts --project=chromium-desktop --project=chromium-mobile --workers=1`.
+Real KakaoTalk receipt and card-click behavior still require a device test.
+
+## Animated sharing artwork
+
+Run `python3 scripts/prepare-share-apng.py` (Pillow required) after updating the
+approved GIF manifest. It validates source hashes and generates 56 APNGs under
+`public/art/share-animations`, with one shared palette per animation, 16 frames,
+retained source duration, and file sizes below 300 KB. The manifest records
+source/output hashes and dimensions. Preview-only GIFs are excluded.
+
+LINE automatically includes the APNG as the Flex hero with `animated: true`,
+keeping the exact invitation URI on the image and button. Missing or invalid
+APNGs fall back to the JPEG. Recipient autoplay settings can suppress animation.
+X continues to offer the original GIF download and prefilled invitation text;
+its Web Intent does not attach the media automatically.
+
+`/review/social-share.html?invite=<existing-token>` previews X and Kakao using
+the same handoff component as the game, and links to the LINE page. It does not
+create invitations or send messages automatically. Only existing, unexpired
+invites are accepted. Real recipient rendering must be checked on the platforms.
+
+Validation on 2026-10-30: 56 deployed APNG files matched their hashes and size
+limits; browser screenshots confirmed LINE preview animation. X accepted the
+Jiangshi GIF in the compose window (not posted). Kakao's real SDK accepted the
+GIF and returned a 320×320 image/gif retaining all 36 frames. Kakao returned an
+HTTP CDN URL, so approved Kakao/Daum CDN URLs are upgraded to HTTPS; image CSP
+permits only these CDN hosts. Chat-recipient rendering remains a user phone test.
+
+### X landscape animated cards
+
+Run `node scripts/prepare-x-cards.mjs` to build 56 landscape GIF attachments from the existing cute-only sprite sheets. These have fixed `Halloween Tricks by HelloTalk` branding, the catalog's native name and English display name, and motion only in the left portrait. English names use existing catalog names (including transliterations), not newly invented translations. Assets and their checksums live in `public/art/x-cards/manifest.json`; X handoff uses this manifest while LINE and Kakao retain their existing assets. The GIF is an X media attachment: users open the invitation from the post's text link, not by tapping the GIF. This change does not publish posts or make native URL preview cards animate.
+
+### Localized cultural context on X cards
+
+After the base generator, run `node scripts/localize-x-cards.mjs`. Each of the 56 cards has variants for the game's 15 locales. The native and English display names remain fixed; the cultural note uses the first sentence of the existing translated folklore. If that sentence cannot fit in two lines, use the existing shorter cultural-origin description instead. Text is measured with the renderer and never silently clipped. Arabic notes are right-aligned. The X handoff selects the sender's current game locale, with English fallback; text baked into a GIF cannot switch to the recipient's language after sending.
+
+LINE can reproduce the composition using Flex layout, APNG portrait and native text. This is preferable to shrinking the complete card into an APNG under 300 KB: text stays legible and can be localized at composition time. A URI action can open the invitation from the card. Kakao feed can use the landscape image and invitation URI; however, preserving GIF bytes on Kakao's image host is not proof that the receiving chat animates its feed image. Receiver-side animation remains unverified. This update changes X assets only; it does not replace LINE or Kakao payloads.
+
+LINE now composes a horizontal Flex body: APNG portrait on the left, native name, English name and localized culture on the right, plus the invitation button. The static fallback is a portrait PNG, not a duplicate landscape card. The preview uses the same two-column layout. The original language parameter survives LINE login redirects.
+
+Kakao now selects the localized landscape GIF from the X-card manifest and falls back to its matching JPEG if GIF scraping is rejected. The JPEG contains the same names and cultural note. The old two-line friendship slogan is removed from all new localized GIFs and JPEGs. Both LINE and Kakao still require recipient selection and confirmation; no test message is sent by this change.
