@@ -22,6 +22,7 @@ export async function prepareMicrophone(signal?: AbortSignal) {
   return {
     stop,
     stream,
+    echoCancellation: stream.getAudioTracks()[0]?.getSettings?.().echoCancellation === true,
     measure: (duration = 3500, releaseStream = true) => new Promise<{meanHz:number|null;peakHz:number|null;frames:number;meanRms:number|null;amplitudeRms:number|null}>(resolve => {
       cancel=()=>resolve({meanHz:null,peakHz:null,frames:0,meanRms:null,amplitudeRms:null});
       const values:number[] = [], levels:number[] = [], amplitudes:number[] = [], data = new Float32Array(analyser.fftSize);
