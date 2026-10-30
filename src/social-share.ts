@@ -1,7 +1,7 @@
 import {t, msg, html} from "../shared/i18n.mjs";
 import {api,escape as e} from './api';
 import {locale} from './i18n';
-type Config={origin:string;kakaoKey:string;wechatReady:boolean;facebookAppId:string};
+type Config={lineLiffId?:string;origin:string;kakaoKey:string;wechatReady:boolean;facebookAppId:string};
 type KakaoSDK={isInitialized():boolean;init(key:string):void;Share:{sendDefault(data:unknown):void}};
 type WechatSDK={config(data:unknown):void;ready(cb:()=>void):void;error(cb:()=>void):void;updateAppMessageShareData(data:unknown):void;updateTimelineShareData(data:unknown):void};
 declare global {interface Window {Kakao?:KakaoSDK;wx?:WechatSDK}}
@@ -43,6 +43,13 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    if(!panel.isConnected)return;
    frame(`<p>${e(label('动态 GIF 暂时无法加载，请重试。','The animated GIF could not load. Please try again.'))}</p>`);
    return;
+  }
+ }
+ if(channel==='line' && config.lineLiffId){
+  const token=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
+  if(token){
+   const target=`/line-share.html?invite=${encodeURIComponent(token)}&lang=${encodeURIComponent(locale)}`;
+   frame(html`<img src="${e(image)}" alt="" width="320" style="max-width:100%;height:auto;border-radius:16px"><p>${e(locale==='zh'?'预览鬼卡片，登录 LINE 后选择好友并确认发送。':'Preview your ghost card, sign in to LINE, then choose friends and confirm.')}</p><a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(locale==='zh'?'预览 LINE 卡片':'Preview LINE card')}</a>`);return;
   }
  }
  const targets:Record<string,string>={x:`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,line:`https://line.me/R/share?text=${encodeURIComponent(text+' '+url)}`};

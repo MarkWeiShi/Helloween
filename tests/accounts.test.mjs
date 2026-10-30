@@ -58,3 +58,25 @@ test('HTTP account boundary, OTP and PKCE session binding with a simulated ident
  assert.equal(requests.find(r=>r.url.includes('grant_type=pkce')).body.code_verifier.length,64);
  }finally{await new Promise(r=>app.server.close(r));app.close();}
 });
+
+test('X OAuth 2.0 uses the existing session-bound PKCE account flow and stays opt-in',async()=>{
+ const {createAuth}=await import('../server/auth.mjs');
+ const auth=createAuth({url:'https://identity.example',key:'test-public-key',providers:['x'],fetcher:async()=>Response.json({access_token:'server-only',user:{id:'verified-x-user'}})});
+ assert.deepEqual(auth.config(),{enabled:true,providers:['x']});
+ const start=await auth.start('owner-session',{provider:'x'},'https://game.example');
+ const target=new URL(start.url);
+ assert.equal(target.searchParams.get('provider'),'x');
+ assert.equal(target.searchParams.get('scopes'),'tweet.write');
+ assert.equal(target.searchParams.get('code_challenge_method'),'s256');
+ const callback=new URL(target.searchParams.get('redirect_to'));
+ assert.equal(callback.origin,'https://game.example');
+ const state=callback.searchParams.get('state');
+ await assert.rejects(auth.finish('different-session',state,'oauth-code'),{status:400});
+ assert.equal(await auth.finish('owner-session',state,'oauth-code'),'verified-x-user');
+ await assert.rejects(auth.finish('owner-session',state,'oauth-code'),{status:400});
+ const withoutX=createAuth({url:'https://identity.example',key:'test-public-key',providers:['google']});
+ const google=await withoutX.start('owner-session',{provider:'google'},'https://game.example');
+ assert.equal(new URL(google.url).searchParams.has('scopes'),false);
+ await assert.rejects(withoutX.start('owner-session',{provider:'x'},'https://game.example'),{status:400});
+ await assert.rejects(auth.start('owner-session',{provider:'twitter'},'https://game.example'),{status:400});
+});

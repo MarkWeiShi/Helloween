@@ -5,7 +5,7 @@ Implemented locally; production identity-provider configuration and real SNS acc
 ## Configure authentication
 
 1. Create/select the intended Supabase project. Set `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` on the application server. Use a publishable key or legacy anon key, never a service-role key. No Supabase token is exposed to the browser or stored in the game database.
-2. Enable Google in Supabase Auth and configure its Google OAuth client. Register the Supabase callback shown by its dashboard in Google. `AUTH_PROVIDERS=google` controls the visible login choices; only enable providers actually configured in Supabase. Supported initial choices are Google, Apple, Facebook and Kakao. LINE is not implemented in this first release.
+2. Enable Google in Supabase Auth and configure its Google OAuth client. Register the Supabase callback shown by its dashboard in Google. `AUTH_PROVIDERS=google` controls the visible login choices; only enable providers actually configured in Supabase. Supported choices are Google, Apple, Facebook, Kakao and X. For X use `AUTH_PROVIDERS=x` and Supabase's X / Twitter (OAuth 2.0) provider. LINE sharing uses the separate LIFF flow below; it does not provide game-account login.
 3. Set `PUBLIC_ORIGIN` to the exact HTTPS deployment origin. In Supabase Auth URL configuration allow `https://YOUR_HOST/api/auth/callback` with its `state` query (use an appropriate wildcard for query parameters) and set the site URL. Configure an additional local callback for development. Test success, rejection, and returning from the actual SNS in-app browser.
 4. Enable email OTP, configure a production SMTP sender, and change the Magic Link email template to show `{{ .Token }}`. The app accepts a 6–8 digit code rather than an emailed callback link. Configure provider abuse controls. Local application endpoints also rate-limit requests.
 5. Open `/my-links`, sign in, share, then sign in from a second browser and verify the same links and private playback. Verify logout revokes the current cookie.
@@ -37,3 +37,41 @@ The server accepts legacy 3/5-second payloads for existing clients. Duration met
 `scope=intensity` uses the resolved interface language captured with each new recording, not a country or a later language choice. The browser samples RMS amplitude across all analyser frames (including unpitched sound/silence), separately from pitch/game scoring. Index = mean RMS × 100. First average per participant per language, then average these participant means so frequent contributors do not dominate. Account membership identifies linked participants; unlinked guests remain browser identities. The server validates language and finite 0–1 amplitude and stores the metadata atomically with the recording. Missing historical measurements are excluded, genuine zero measurements are included. Scores rounded to two decimals share competition ranks on ties. Only aggregate language results are returned.
 
 This is relative microphone volume, not calibrated sound pressure or fear. Device gain, distance, audio processing and client-reported measurements affect comparisons; it is a casual game ranking, not a tamper-proof competition. No historical intensity or language is fabricated.
+
+
+## LINE ghost-card sharing (LIFF)
+
+Set the public `LINE_LIFF_ID` on the game server. Production channel 2012290872
+uses LIFF ID `2012290872-RIK5yg1d`, Endpoint URL `https://helloween.fly.dev/line-share.html`,
+Full size, `openid`, Add friend Off, and shareTargetPicker enabled.
+No Channel secret or `chat_message.write` is needed for this flow.
+
+The game creates its usual account-owned invitation, then opens
+`/line-share.html?invite=<token>`. This page initializes LIFF, loads the existing
+invitation and character artwork, and shows editable text. LINE login returns to
+that same invitation. Sending requires a separate user click and confirmation
+inside the friend picker; cancellation is not reported as success. The Flex
+card image and button both open the original `/i/<token>` receiver flow.
+LINE identity is used only for sharing; it does not replace the game's Supabase
+account or transfer ownership of invitations/recordings.
+
+Channel Developing status restricts testing to permitted developers/testers.
+Publish the channel for general availability after a real-device check. Test
+login, cancellation, sending to a consenting test recipient, and receiver video
+playback. SDK mocks do not establish real LINE acceptance.
+
+
+## X OAuth deployment parity
+
+`server/auth.mjs` includes X OAuth 2.0 (`x`) in the opt-in provider list and
+requests `tweet.write` alongside Supabase's baseline scopes. The session-bound,
+single-use PKCE callback remains unchanged. This scope does not implement API
+posting: provider tokens are discarded and users still confirm in the X composer.
+
+For the existing Fly app preserve its Supabase URL, publishable key and
+`AUTH_PROVIDERS=x` runtime settings. No client secret belongs in the repository.
+The running `e40972e-line-liff-v3-20261030` image was built from CDNSolution plus
+these LINE changes; X was supplied through a persistent `/app/server/auth.mjs`
+machine file override. This source now includes the same X patch. On the next
+image deployment, reconcile/remove that override so it cannot mask future auth
+changes. Committing this source does not itself change the running machine.

@@ -17,3 +17,14 @@ test('static installation atomically switches HTML, retains old media and rolls 
   assert.equal(readFileSync(join(target,'current/index.html'),'utf8'),'one');assert.notEqual(a.deployment,b.deployment);
  }finally{rmSync(root,{recursive:true,force:true});}
 });
+test('a LINE page-only update activates its new HTML and can roll back',()=>{
+ const root=mkdtempSync(join(tmpdir(),'ghost-line-release-')),source=join(root,'source'),target=join(root,'target');
+ try{
+  mkdirSync(join(source,'assets'),{recursive:true});mkdirSync(join(source,'releases'));
+  writeFileSync(join(source,'index.html'),'unchanged game');writeFileSync(join(source,'release.json'),'{}');
+  writeFileSync(join(source,'line-share.html'),'first card');const a=installWeb(source,target);
+  writeFileSync(join(source,'line-share.html'),'updated card');const b=installWeb(source,target);
+  assert.notEqual(a.deployment,b.deployment);assert.equal(readFileSync(join(target,'current/line-share.html'),'utf8'),'updated card');
+  installWeb(source,target,{rollback:a.deployment});assert.equal(readFileSync(join(target,'current/line-share.html'),'utf8'),'first card');
+ }finally{rmSync(root,{recursive:true,force:true});}
+});

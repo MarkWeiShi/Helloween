@@ -5,7 +5,7 @@ import {ApiError} from './store.mjs';
 export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABASE_PUBLISHABLE_KEY,providers=(process.env.AUTH_PROVIDERS || 'google').split(','),fetcher=fetch}={}) {
   const enabled=!!(url && key);
   const pending=new Map();
-  const config=()=>({enabled,providers:enabled?providers.filter(p=>['google','facebook','apple','kakao'].includes(p)):[]});
+  const config=()=>({enabled,providers:enabled?providers.filter(p=>['google','facebook','apple','kakao','x'].includes(p)):[]});
   async function request(path,body) {
     if(!enabled) throw new ApiError(503,'Sign-in is temporarily unavailable. Please try again later.');
     let response;
@@ -42,6 +42,9 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
       const redirect=new URL('/api/auth/callback',origin);redirect.searchParams.set('state',state);
       const target=new URL(`${url.replace(/\/$/,'')}/auth/v1/authorize`);
       target.search=new URLSearchParams({provider:body.provider,redirect_to:redirect.href,code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'s256'}).toString();
+      // Supabase supplies X's baseline login scopes; request the approved posting scope too.
+      // This prepares user consent only. Publishing still needs a separate server-side flow.
+      if(body.provider==='x')target.searchParams.set('scopes','tweet.write');
       return {url:target.href};
     },
     async finish(session,state,code) {

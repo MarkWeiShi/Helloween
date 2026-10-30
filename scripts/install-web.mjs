@@ -17,6 +17,7 @@ export function installWeb(source,target,{rollback}={}) {
  if(!existsSync(join(source,'release.json')))throw Error('A completed static build is required');
  const hash=createHash('sha256').update(readFileSync(join(source,'index.html'))).update(readFileSync(join(source,'release.json')));
  if(existsSync(join(source,'review/jiangshi-name.html')))hash.update(readFileSync(join(source,'review/jiangshi-name.html')));
+ if(existsSync(join(source,'line-share.html')))hash.update(readFileSync(join(source,'line-share.html')));
  const id=hash.digest('hex').slice(0,20);
  function immutable(src,dst) {
   mkdirSync(dst,{recursive:true});

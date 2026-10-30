@@ -1,5 +1,5 @@
 import {createHash,randomBytes} from 'node:crypto';
-export function socialConfig(env=process.env){return {origin:env.PUBLIC_ORIGIN||'',kakaoKey:env.KAKAO_JAVASCRIPT_KEY||'',wechatReady:!!(env.WECHAT_APP_ID&&env.WECHAT_APP_SECRET),facebookAppId:env.FACEBOOK_APP_ID||''};}
+export function socialConfig(env=process.env){return {lineLiffId:env.LINE_LIFF_ID||'',origin:env.PUBLIC_ORIGIN||'',kakaoKey:env.KAKAO_JAVASCRIPT_KEY||'',wechatReady:!!(env.WECHAT_APP_ID&&env.WECHAT_APP_SECRET),facebookAppId:env.FACEBOOK_APP_ID||''};}
 export function createWechatSigner(env=process.env,request=fetch){
  let cached, pending;
  async function ticket(){
