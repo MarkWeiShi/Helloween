@@ -3041,6 +3041,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 
 .globe-title .halloween-title { color:#ffad60; }
 .globe-title .halloween-title .hello-accent { color:#81c9ff; }
+.globe-title .halloween-byline { display:inline-block; font-family:"DM Sans Variable",sans-serif; font-size:clamp(11px,.45em,16px); font-weight:500; line-height:1.4; letter-spacing:.02em; color:var(--cream); white-space:nowrap; vertical-align:baseline; }
 
 /* Center the headline independently of the aligned stats column. */
 .explore-screen .globe-title { position:relative; display:block; text-align:center; padding-bottom:112px; }
