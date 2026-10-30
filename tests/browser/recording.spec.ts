@@ -89,7 +89,8 @@ test('ordinary exploration stays local and leaving invitation capture never uplo
   await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
   expect(uploads).toBe(0);
   await page.goto('/i/'+invitation.id);
-  await confirmUnlock(page);
+  await expect(page.locator('.play-lock, .unlock-consent')).toHaveCount(0);
+  await page.locator('[data-invite-play]').click();
   await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
   await expect(page.locator('.character-info')).toHaveAttribute('inert','');
   await page.goto('about:blank');
