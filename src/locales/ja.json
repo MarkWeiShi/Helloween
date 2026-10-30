@@ -469,7 +469,7 @@
   "Jersey Devil": "Jersey Devil",
   "Jiangshi": "Jiangshi",
   "Jiangshi are reanimated bodies in Chinese supernatural storytelling, rather than ordinary invisible ghosts. Stiff movement is a familiar feature of their later popular image. Their stories have changed across literature, local beliefs and film; this festival visitor uses a gentle hopping silhouette, without borrowing a modern movie character.": "ジアンシーは、普通の目に見えない幽霊ではなく、中国の超自然物語で再生された遺体です。 スティフ運動は、その後の人気のイメージのよく知られている特徴です。 彼らの物語は文学、地元の信念、映画を通じて変化し、このフェスティバルの訪問者は、現代の映画キャラクターを借りることなく、柔らかいハッピングシルエットを使用しています。",
-  "Join HelloTalk to Hear Friends Scream": "HelloTalk で友達の叫び声を聞く",
+  "Join HelloTalk to Hear Friends Scream": "HelloTalkで友達の驚く声を聞こう",
   "Join the gathering without leaving the old tree behind.": "古い木を残さずに集会に参加してください。",
   "Join the parade": "パレードに参加",
   "Join the parade {{6}}": "パレードに参加する {{6}}",
@@ -1310,5 +1310,7 @@
   "● 正在录音 5 秒，本机评分后发送给邀请人…": "● 5秒録音し、端末内で採点後に招待者へ送信…",
   "● 正在录音 5 秒，仅在本机计算评分…": "●レコーディング5秒。 このデバイスだけを狙うのは、",
   "If you enable the microphone, your first character transformation samples your voice on your device for 5 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records five seconds and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.": "If you enable the microphone, your first character transformation samples your voice on your device for 5 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records two seconds and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
-  "Recording starts 0.3 seconds before the scare and lasts 5 seconds.": "驚かす場面の0.3秒前から5秒間録音します。"
+  "Recording starts 0.3 seconds before the scare and lasts 5 seconds.": "驚かす場面の0.3秒前から5秒間録音します。",
+  "Scary Halloween": "ドキドキのハロウィン",
+  "Halloween": "ハロウィン"
 }
