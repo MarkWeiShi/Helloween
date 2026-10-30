@@ -3,7 +3,7 @@ import {startBrowserApp} from '../helpers/nginx.mjs';
 let app:any,origin:string;
 test.beforeAll(async()=>{app=await startBrowserApp();origin=app.origin;});
 test.afterAll(async()=>{await app.stop();});
-for(const channel of ['line','facebook','kakao','wechat','copy','x'])test(`guest ${channel} sharing uses only the selected provider`,async({page})=>{
+for(const channel of ['line','facebook','kakao','wechat','copy','x'])test(`guest ${channel} sharing uses only the selected provider`,async({page,context})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.addInitScript(()=>{
   Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>({getTracks:()=>[{stop(){}}]})}});
@@ -19,7 +19,7 @@ for(const channel of ['line','facebook','kakao','wechat','copy','x'])test(`guest
 
  const authRequests:any[]=[];page.on('request',r=>{if(r.method()==='POST' && r.url().includes('/api/auth/start'))authRequests.push(r.postDataJSON());});
  await page.route('https://liff.line.me/**',r=>r.fulfill({body:'LIFF official entry'}));
- await page.route('https://www.facebook.com/sharer/**',r=>r.fulfill({body:'Facebook share window'}));
+ await context.route('https://www.facebook.com/sharer/**',r=>r.fulfill({body:'Facebook share window'}));
  await page.route('**/api/auth/start',r=>r.fulfill({json:{url:origin+'/test-x-auth'}}));
  await page.route('**/test-x-auth',r=>r.fulfill({body:'X authentication test'}));
  await page.route('https://static.line-scdn.net/**',r=>r.fulfill({contentType:'application/javascript',body:'window.liff={init:async()=>{},isLoggedIn:()=>false,login:x=>window.lineAuth=x.redirectUri}'}));
@@ -36,11 +36,12 @@ for(const channel of ['line','facebook','kakao','wechat','copy','x'])test(`guest
   const b=await page.locator(`.character-sns [data-channel=${channel}]`).boundingBox();expect(b!.x).toBeGreaterThanOrEqual(0);expect(b!.x+b!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
   if(channel==='line')await page.screenshot({path:`artifacts/social-share/${test.info().project.name}-direct-sns.png`});
  }
+ const facebookPopup=channel==='facebook'?page.waitForEvent('popup'):null;
  await page.locator(`[data-action="send-share"][data-channel="${channel}"]`).click();
+ if(channel==='line'){await expect(page.locator('[data-line-app]')).toHaveAttribute('href',/^https:\/\/liff.line.me\/test-liff\?invite=/);await expect(page.locator('[data-line-app]')).toHaveAttribute('target','_blank');expect(authRequests).toEqual([]);return;}
+ if(facebookPopup){const target=await facebookPopup;await expect(target).toHaveURL(/^https:\/\/www.facebook.com\/sharer/);await target.close();expect(authRequests).toEqual([]);return;}
  if(channel==='x'){await expect(page).toHaveURL(origin+'/test-x-auth');expect(authRequests).toEqual([{provider:'x'}]);return;}
- if(channel==='line'){await expect(page).toHaveURL(/^https:\/\/liff.line.me\/test-liff\?invite=/);expect(new URL(page.url()).searchParams.get('lang')).toBe('en');}
- else if(channel==='facebook'){await expect(page).toHaveURL(/^https:\/\/www.facebook.com\/sharer\/sharer.php/);expect(new URL(page.url()).searchParams.get('u')).toContain('/api/share/facebook/');}
- else if(channel==='copy')await expect(page.locator('[data-copy-confirm]')).toBeVisible();
+ if(channel==='copy')await expect(page.locator('[data-copy-confirm]')).toBeVisible();
  else await expect(page.getByLabel('Invitation link')).toBeVisible();
  await expect(page.locator('.account-panel')).toHaveCount(0);
  expect(authRequests).toEqual([]);

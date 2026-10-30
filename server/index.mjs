@@ -213,7 +213,7 @@ export function createApp({
           if(invite.senderId!==playerId)throw new ApiError(403,'This invitation belongs to another account.');
           const existing=store.db.prepare('SELECT * FROM x_posts WHERE invite_id=?').get(invite.id);
           if(existing?.status==='complete'){send(200,JSON.parse(existing.result));return;}
-          if(existing)throw new ApiError(409,'Publishing is pending or unconfirmed. Check your X profile before trying again.');
+          if(existing){const error=new ApiError(409,'Publishing is pending or unconfirmed. Check your X profile before trying again.');error.code='X_UNCONFIRMED';throw error;}
           const token=await auth.xToken(subject);if(!token)throw new ApiError(401,'Sign in to X again to authorize publishing.');
           const text=String(body.text||'').trim();
           if(!text || [...text].length>280)throw new ApiError(400,'Use a post of up to 280 characters.');
@@ -226,7 +226,8 @@ export function createApp({
             store.db.prepare("UPDATE x_posts SET status='complete',result=? WHERE invite_id=?").run(JSON.stringify(result),invite.id);
             send(200,result);
           } catch(error) {
-            if(!posting)store.db.prepare('DELETE FROM x_posts WHERE invite_id=?').run(invite.id);
+            console.warn('x_publish_failed',JSON.stringify({stage:posting?'post':'prepare',code:error.code||'X_UNCONFIRMED',status:error.status||502,retryable:!posting||!!error.postRejected}));
+            if(!posting || error.postRejected)store.db.prepare('DELETE FROM x_posts WHERE invite_id=?').run(invite.id);
             if(error.status===401)auth.forget(subject);
             throw error;
           }return;
@@ -331,7 +332,7 @@ export function createApp({
     } catch (error) {
       if (error instanceof ApiError) {
         if (error.status === 429) res.setHeader("Retry-After", "60");
-        send(error.status, { error: error.message });
+        send(error.status, { error: error.message, ...(error.code?.startsWith('X_')?{code:error.code}:{}) });
       } else {
         console.error("request_failed", error.message);
         send(500, { error: "The lanterns flickered. Please try again." });

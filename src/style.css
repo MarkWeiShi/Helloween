@@ -3465,3 +3465,7 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
  .character-sns .icon-button { width:36px; min-width:36px; height:40px; padding:7px; }
  .character-navigation .character-top-actions { gap:3px; }
 }
+.social-handoff [data-kakao-animated]{width:auto;min-height:0;margin-inline-end:8px}
+.social-handoff [data-back-game]{min-height:38px;margin-top:8px}
+.social-handoff [data-x-manual]{font-size:13px;margin-top:10px}
+.social-handoff [data-x-manual] summary{cursor:pointer;padding:8px 0}

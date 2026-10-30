@@ -1,0 +1,50 @@
+import {test,expect} from '@playwright/test';
+import {startBrowserApp} from '../helpers/nginx.mjs';
+let app:Awaited<ReturnType<typeof startBrowserApp>>;
+test.beforeAll(async()=>{process.env.LINE_LIFF_ID='test-liff';app=await startBrowserApp({databasePath:':memory:',rateLimits:false});});
+test.afterAll(async()=>{await app.stop();delete process.env.LINE_LIFF_ID;});
+test('external LINE visitor chooses app or web explicitly and can always return to game',async({page,context})=>{
+ const guest=app.store.createGuest();app.store.onboard(guest.player.id,{name:'Tester',country:'CN',spiritId:'jiangshi'});
+ const invite=app.store.createInvite(guest.player.id,{spiritId:'jiangshi',channel:'line'});
+ await context.addCookies([{name:'boo_session',value:guest.token,url:app.origin}]);
+ await page.route('https://static.line-scdn.net/**',r=>r.fulfill({contentType:'application/javascript',body:'window.liff={init:async()=>{},isInClient:()=>false,isLoggedIn:()=>false,login:()=>window.webLogin=true};'}));
+ await page.goto(app.origin+'/line-share.html?invite='+invite.id+'&lang=en');
+ await expect(page.getByRole('link',{name:'Open in LINE',exact:true})).toBeVisible();
+ expect(await page.evaluate(()=>(window as any).webLogin)).toBeUndefined();
+ await expect(page.getByRole('link',{name:'Back to game',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Continue in browser',exact:true}).click();
+ expect(await page.evaluate(()=>(window as any).webLogin)).toBe(true);
+});
+test('Kakao light card does not wait for GIF scraping before showing the friend action',async({page,context})=>{
+ const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,'fast-kakao');app.store.onboard(login.player.id,{name:'Tester',country:'CN',spiritId:'jiangshi'});
+ await context.addCookies([{name:'boo_session',value:login.token,url:app.origin}]);
+ await page.addInitScript(()=>sessionStorage.setItem('boo:pending-share',JSON.stringify({id:'jiangshi',channel:'kakao'})));
+ await page.route('**/api/social/config',r=>r.fulfill({json:{origin:app.origin,kakaoKey:'test'}}));
+ await page.route('https://t1.kakaocdn.net/**',r=>r.fulfill({contentType:'application/javascript',body:'window.Kakao={isInitialized:()=>true,Share:{scrapImage:()=>new Promise(()=>{}),sendDefault:d=>window.sent=d}};'}));
+ await page.goto(app.origin+'/my-links?signin=success');
+ await expect(page.locator('[data-open-kakao]')).toBeEnabled({timeout:3000});
+ await page.locator('[data-open-kakao]').click();
+ expect(await page.evaluate(()=>(window as any).sent.content.imageUrl)).toContain('/art/x-cards/jiangshi.en.jpg');
+ await expect(page.locator('[data-kakao-animated]')).toBeEnabled();await page.locator('[data-kakao-animated]').check();await page.locator('[data-open-kakao]').click();
+ expect(await page.evaluate(()=>(window as any).sent.content.imageUrl)).toMatch(/jiangshi\.en\.[a-f0-9]+\.gif$/);
+ await expect(page.getByRole('button',{name:'Back to game',exact:true})).toBeVisible();
+ await page.evaluate(()=>{Object.defineProperty(document,'visibilityState',{configurable:true,value:'hidden'});document.dispatchEvent(new Event('visibilitychange'));Object.defineProperty(document,'visibilityState',{configurable:true,value:'visible'});document.dispatchEvent(new Event('visibilitychange'));});
+ await expect(page.locator('dialog')).toHaveCount(0);
+});
+test('X credits rejection reveals manual app fallback and a working return action without reposting',async({page,context})=>{
+ const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,'x-credits');app.store.onboard(login.player.id,{name:'Tester',country:'CN',spiritId:'jiangshi'});
+ await context.addCookies([{name:'boo_session',value:login.token,url:app.origin}]);
+ await page.addInitScript(()=>sessionStorage.setItem('boo:pending-share',JSON.stringify({id:'jiangshi',channel:'x'})));
+ await page.route('**/api/social/x/status',r=>r.fulfill({json:{connected:true}}));let calls=0;
+ await page.route('**/api/social/x/publish',r=>{calls++;return r.fulfill({status:402,json:{error:'X API credits are exhausted.',code:'X_CREDITS_DEPLETED'}});});
+ await page.goto(app.origin+'/my-links?signin=success');await page.locator('[data-publish-x]').click();
+ await expect(page.locator('[data-x-status]')).toContainText('credits');await expect(page.locator('[data-x-manual]')).toHaveAttribute('open');
+ await expect(page.locator('[data-open-x]')).toHaveAttribute('href',/^https:\/\/x.com\/intent\/post\?text=/);
+ expect(calls).toBe(1);await page.getByRole('button',{name:'Back to game',exact:true}).click();await expect(page.locator('dialog')).toHaveCount(0);
+});
+test('LINE in-app return explicitly opens the game in the external browser',async({page})=>{
+ const guest=app.store.createGuest();const invite=app.store.createInvite(guest.player.id,{spiritId:'kappa',channel:'line'});
+ await page.route('https://static.line-scdn.net/**',r=>r.fulfill({contentType:'application/javascript',body:'window.liff={init:async()=>{},isInClient:()=>true,isLoggedIn:()=>true,openWindow:options=>window.opened=options,isApiAvailable:()=>true};'}));
+ await page.goto(app.origin+'/line-share.html?invite='+invite.id+'&lang=en');await page.locator('#return-game').click();
+ expect(await page.evaluate(()=>(window as any).opened)).toEqual({url:app.origin+'/?lang=en',external:true});
+});

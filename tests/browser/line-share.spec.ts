@@ -15,7 +15,7 @@ test.afterAll(async()=>{await app.stop();delete process.env.LINE_LIFF_ID;});
 for(const mode of ['success','cancel','error','unavailable','login'])test(`LINE card: ${mode}`,async({page})=>{
  await page.route('https://static.line-scdn.net/**',route=>route.fulfill({contentType:'application/javascript',body:`window.calls=[];window.liff={init:async()=>{},isLoggedIn:()=>${mode!=='login'},login:x=>window.redirect=x.redirectUri,isApiAvailable:()=>${mode!=='unavailable'},shareTargetPicker:async(m)=>{window.calls.push(m);${mode==='error'?'throw Error("provider failed")':mode==='cancel'?'return undefined':'return {status:"success"}'}}};`}));
  await page.goto(origin+'/line-share.html?invite='+token);
- if(mode==='login'){await expect.poll(()=>page.evaluate(()=>(window as any).redirect)).toBe(origin+'/line-share.html?invite='+token+'&lang=en');return;}
+ if(mode==='login'){await page.getByRole('button',{name:'Continue in browser',exact:true}).click();await expect.poll(()=>page.evaluate(()=>(window as any).redirect)).toBe(origin+'/line-share.html?invite='+token+'&lang=en');return;}
  const button=page.locator('#choose');await expect(button).toBeEnabled();
  expect(await page.evaluate(()=>(window as any).calls.length)).toBe(0);
  await page.locator('#message').fill('Custom spooky greeting');await button.click();

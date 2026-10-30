@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {createXPublisher} from '../server/x-publish.mjs';
 import {createApp} from '../server/index.mjs';
 
-function mockX({failPost=false,failMedia=false}={}) {
+function mockX({failPost=false,failMedia=false,postStatus=200}={}) {
  const calls=[];
  const fetcher=async(url,options={})=>{
   url=String(url);calls.push({url,...options});
@@ -13,7 +13,7 @@ function mockX({failPost=false,failMedia=false}={}) {
   if(url.endsWith('.gif'))return new Response('GIF89a-test');
   if(url.includes('/media/upload?'))return Response.json({data:{id:'123',processing_info:{state:'succeeded'}}});
   if(url.endsWith('/media/upload'))return failMedia?new Response('{}',{status:403}):Response.json({data:{id:'123',processing_info:{state:'pending',check_after_secs:1}}});
-  if(url.endsWith('/tweets')){if(failPost)throw Error('network lost after send');return Response.json({data:{id:'456'}});}
+  if(url.endsWith('/tweets')){if(postStatus!==200)return Response.json({title:'Forbidden',detail:'Denied'},{status:postStatus});if(failPost)throw Error('network lost after send');return Response.json({data:{id:'456'}});}
   throw Error('Unexpected URL');
  };return {calls,fetcher,sleep:async()=>{}};
 }
@@ -27,8 +27,8 @@ test('X publishes only after media processing and attaches the uploaded GIF',asy
  const failed=mockX({failMedia:true});await assert.rejects(createXPublisher(failed)({cardSha,token:'token',spiritId:'kappa',text:'hello',origin:'https://game.example',beforePost:()=>assert.fail()}));
  assert.ok(!failed.calls.some(c=>c.url.endsWith('/tweets')));
 });
-for(const failPost of [false,true])test(`X HTTP confirmation, ownership and retry safety: ambiguous=${failPost}`,async()=>{
- const mock=mockX({failPost});
+for(const [failPost,postStatus] of [[false,200],[true,200],[false,402],[false,403],[false,429]])test(`X HTTP confirmation, ownership and retry safety: ambiguous=${failPost} status=${postStatus}`,async()=>{
+ const mock=mockX({failPost,postStatus});
  const app=createApp({databasePath:':memory:',rateLimits:false,xPublisherOptions:mock,authOptions:{url:'https://identity.example',key:'public',providers:['x'],fetcher:async()=>Response.json({access_token:'supabase-private',provider_token:'x-private',user:{id:'verified'}})}});
  await new Promise(r=>app.server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${app.server.address().port}`;
  const call=(path,body,cookie)=>fetch(base+path,{method:body?'POST':'GET',redirect:'manual',headers:{Cookie:cookie||'',...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
@@ -44,9 +44,9 @@ for(const failPost of [false,true])test(`X HTTP confirmation, ownership and retr
   assert.equal((await call('/api/social/x/publish',{...body,confirm:false},cookie)).status,400);assert.equal(mock.calls.length,0);
   const stranger=await call('/api/session',{});const strangerCookie=stranger.headers.get('set-cookie').split(';')[0];
   assert.equal((await call('/api/social/x/publish',body,strangerCookie)).status,403);
-  r=await call('/api/social/x/publish',body,cookie);assert.equal(r.status,failPost?500:200);
-  const retried=await call('/api/social/x/publish',body,cookie);assert.equal(retried.status,failPost?409:200);
-  assert.equal(mock.calls.filter(c=>c.url.endsWith('/tweets')).length,1);
+  r=await call('/api/social/x/publish',body,cookie);assert.equal(r.status,failPost?502:postStatus);if(postStatus===402)assert.equal((await r.json()).code,'X_CREDITS_DEPLETED');
+  const retried=await call('/api/social/x/publish',body,cookie);assert.equal(retried.status,failPost?409:postStatus);
+  assert.equal(mock.calls.filter(c=>c.url.endsWith('/tweets')).length,postStatus!==200?2:1);
   await call('/api/auth/logout',{},cookie);
  }finally{await new Promise(r=>app.server.close(r));app.close();}
 });
