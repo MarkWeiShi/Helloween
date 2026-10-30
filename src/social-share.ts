@@ -1,3 +1,4 @@
+import {openXAuthorization} from './x-authorization';
 import {t, msg, html} from "../shared/i18n.mjs";
 import {api,escape as e} from './api';
 import {locale} from './i18n';
@@ -40,17 +41,26 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    const inviteId=new URL(url).pathname.split('/').pop()!;
    const shareUrl=new URL(`/api/share/card/${inviteId}?lang=${locale}`,url).href;
    const post=(cn?challenge.textZh:challenge.textEn).replace('［本次邀请链接］',shareUrl);
-   panel.innerHTML=`<img class="share-card-preview" src="${e(challenge.gif)}" alt="${e(challenge.name)}" width="960" height="504"><textarea data-x-text aria-label="${e(t('Post text'))}" maxlength="280" rows="3">${e(post)}</textarea><button class="button primary full" data-publish-x>${e(t('Confirm and publish to X'))}</button><p data-x-status role="status"></p>`;
+   let needsAuthorization=!(await api<{connected:boolean}>('/social/x/status')).connected;
+   if(!panel.isConnected)return;
+   const authorizeLabel=label('授权 X 并发布','Authorize X and publish');
+   panel.innerHTML=`<img class="share-card-preview" src="${e(challenge.gif)}" alt="${e(challenge.name)}" width="960" height="504"><textarea data-x-text aria-label="${e(t('Post text'))}" maxlength="280" rows="3">${e(post)}</textarea><button class="button primary full" data-publish-x>${e(needsAuthorization?authorizeLabel:t('Confirm and publish to X'))}</button><p data-x-status role="status"></p>`;
    panel.querySelector<HTMLButtonElement>('[data-publish-x]')!.onclick=async()=>{
     const button=panel.querySelector<HTMLButtonElement>('[data-publish-x]')!,status=panel.querySelector<HTMLElement>('[data-x-status]')!;
-    button.disabled=true;
+    const editor=panel.querySelector<HTMLTextAreaElement>('[data-x-text]')!;
+    const reviewedText=editor.value;
+    button.disabled=true;editor.disabled=true;
+    let authorization:ReturnType<typeof openXAuthorization>|undefined;
     try {
+     if(needsAuthorization)authorization=openXAuthorization();
      await beforeConfirm();
+     if(authorization){status.textContent=label('请在 X 窗口完成授权；取消不会发布。','Complete authorization in X. Cancelling will not publish.');await authorization.authorize(()=>panel.isConnected);needsAuthorization=false;}
+     if(!panel.isConnected)throw Error('Sharing was closed. Nothing was published.');
      status.textContent=t('Uploading and publishing…');
-     const response=await fetch('/api/social/x/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inviteId,cardSha:challenge.sha256,language:locale,text:panel.querySelector<HTMLTextAreaElement>('[data-x-text]')!.value,confirm:true}),signal:AbortSignal.timeout(90000)});
-     const result=await response.json();if(!response.ok)throw Error(result.error||'Publishing failed');
+     const response=await fetch('/api/social/x/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({inviteId,cardSha:challenge.sha256,language:locale,text:reviewedText,confirm:true}),signal:AbortSignal.timeout(90000)});
+     const result=await response.json();if(!response.ok){if(response.status===401)needsAuthorization=true;throw Error(result.error||'Publishing failed');}
      status.innerHTML=`<a href="${e(result.url)}" target="_blank" rel="noopener noreferrer">${e(t('View published post'))}</a>`;
-    }catch(error){status.textContent=(error as Error).message;button.disabled=false;}
+    }catch(error){authorization?.close();status.textContent=(error as Error).message;button.disabled=false;editor.disabled=false;button.textContent=needsAuthorization?authorizeLabel:t('Confirm and publish to X');}
    };
    return;
   }catch{
@@ -62,7 +72,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
  if(channel==='line' && config.lineLiffId){
   const token=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
   if(token){
-   const target=`/line-share.html?invite=${encodeURIComponent(token)}&lang=${encodeURIComponent(locale)}`;
+   const target=`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(token)}&lang=${encodeURIComponent(locale)}`;
    frame(html`<img src="${e(image)}" alt="" width="320" style="max-width:100%;height:auto;border-radius:16px"><p>${e(locale==='zh'?'预览鬼卡片，登录 LINE 后选择好友并确认发送。':'Preview your ghost card, sign in to LINE, then choose friends and confirm.')}</p><a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(locale==='zh'?'预览 LINE 卡片':'Preview LINE card')}</a>`);return;
   }
  }

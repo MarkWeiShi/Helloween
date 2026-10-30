@@ -441,11 +441,11 @@ function openShare(id = selected) {
 }
 let shareRequest = 0;
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
-  const pending={id,channel};
-  if(channel==='x') {
-    const status=player.account?await api<{connected:boolean}>('/social/x/status'):{connected:false};
-    if(!status.connected && resumed){modal('<p role="alert">X did not provide media authorization. Please reconnect X with media and posting permissions.</p>');return;}
-    if(!status.connected){sessionStorage.setItem('boo:pending-share',JSON.stringify(pending));const login=await api('/auth/start',{provider:'x'});location.assign(login.url);return;}
+  if(channel==='line') {
+    try {
+      const config=await api('/social/config');
+      if(config.lineLiffId){const data=await api('/invites',{spiritId:id,channel});location.assign(`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(data.id)}&lang=${locale}`);return;}
+    }catch(error){modal(`<p role="alert">${e((error as Error).message)}</p>`);return;}
   }
   const request=++shareRequest;
   modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel.toUpperCase()}`)}</h2>${!player.initialized?`<div class="share-profile"><label>${e(t('Your parade name'))}<input id="share-name" maxlength="24" value="${e(player.name)}"></label><label>${e(t('Your country or region'))}<select id="share-country"><option value="">${e(t('Choose your home'))}</option>${catalog.countries.map(c=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<div id="share-link"></div>`);
@@ -457,7 +457,6 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   try {
     const data=await api('/invites',{spiritId:id,channel});
     if(!node.isConnected || request!==shareRequest)return;
-    if(channel==='line'){const config=await api('/social/config');if(config.lineLiffId){location.assign(`/line-share.html?invite=${data.id}&lang=${locale}`);return;}}
     if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await beforeConfirm();await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
     else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`,asset(spirit(id).art?.share || '/art/world-map.webp'),id,beforeConfirm);
   }catch(err){node.textContent=(err as Error).message;}
@@ -738,6 +737,12 @@ document.addEventListener('visibilitychange',()=>{
 });
 scheduleRefresh();
 async function boot() {
+  const completion=new URL(location.href).searchParams;
+  if(completion.get('sharePopup')==='1') {
+    if(window.opener){window.opener.postMessage({type:'boo:x-authorized',success:completion.get('signin')==='success'},location.origin);window.close();}
+    app.textContent='Return to your original sharing window to continue.';
+    return;
+  }
   try {
     await initLanguage();
     Object.assign(regionPreviews, localizedContent(regionPreviews));
