@@ -14,7 +14,7 @@ export function recordReaction(stream: MediaStream) {
   recorder.onstop = () => { clearTimeout(timer); settle(cancelled || !complete ? null : new Blob(chunks, {type:recorder.mimeType})); };
   recorder.start();
   // The caller releases the stream only after both recording and scoring finish.
-  timer = setTimeout(() => { if (recorder.state !== 'inactive') { complete = true; recorder.stop(); } }, 5000);
+  timer = setTimeout(() => { if (recorder.state !== 'inactive') { complete = true; recorder.stop(); } }, 6000);
   return {
     result,
     cancel() {

@@ -515,7 +515,7 @@ export class BooStore {
     if (invite.expired) fail(410, 'This invitation has expired.');
     if (body.consent !== true) fail(400, 'Recording and sending requires consent.');
     if (!['audio/webm', 'audio/ogg', 'audio/mp4'].includes(body.mime)) fail(415, 'Unsupported audio format.');
-    if (![2000,3000,5000].includes(body.durationMs) || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
+    if (![2000,3000,5000,6000].includes(body.durationMs) || typeof body.audio !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(body.audio)) fail(400, 'Invalid recording.');
     const receiver = this.rawPlayer(id);
     const label = this.db.prepare('SELECT friend_name FROM invite_labels WHERE invite_id=?').get(token)?.friend_name;
     // New clients use the unlock notice and do not ask visitors for a name.

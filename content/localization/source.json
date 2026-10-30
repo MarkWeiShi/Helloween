@@ -1310,5 +1310,9 @@
   "麦克风不可用，本次仅播放动画。",
   "麦克风不可用，本次仅播放动画，不录音或上传。",
   "麦克风未获授权或不可用。请允许麦克风后重试，或关闭邀请。",
-  "🎃 Invite a friend to collect sweets"
+  "🎃 Invite a friend to collect sweets",
+  "If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.",
+  "Recording starts at 3 seconds into the video and lasts 6 seconds.",
+  "● 6s · local only",
+  "● 6s · record & send"
 ]

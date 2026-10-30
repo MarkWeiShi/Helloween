@@ -57,8 +57,8 @@ for (const renderer of ['webgl','2d']) test(`${renderer}: video changes from ent
  assert.equal(loop.src,entry.loop); assert.equal(loop.preload,'auto'); assert.equal(loop.loads,1); assert.equal(loop.paused,true);
  const tick=()=>{const [key,cb]=[...callbacks.entries()].at(-1);callbacks.delete(key);cb();};
  video.currentTime=1.99;tick();assert.equal(captures,0);assert.equal(reveals,0);
- video.currentTime=2.0;tick();tick();assert.equal(captures,1);assert.equal(reveals,0);
- video.currentTime=2.4;tick();assert.equal(captures,1);assert.equal(reveals,1);
+ video.currentTime=2.99;tick();assert.equal(captures,0);assert.equal(reveals,1);
+ video.currentTime=3;tick();tick();assert.equal(captures,1);assert.equal(reveals,1);
  video.onended(); await Promise.resolve(); await Promise.resolve();
  assert.equal(video.src,entry.entrance); assert.equal(loop.src,entry.loop); assert.equal(loop.loop,true); assert.equal(loop.paused,false); assert.equal(loop.loads,1);
  document.hidden=true; document.dispatchEvent(new Event('visibilitychange')); assert.equal(video.paused,true); assert.ok(pauses);

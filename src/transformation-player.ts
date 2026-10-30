@@ -120,7 +120,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   }
   function draw() {
     if (dead || video.paused || video.ended) return;
-    if (phase === 'intro' && !captureStarted && entry && video.currentTime >= Math.max(0, entry.revealAt - 0.3)) { captureStarted = true; options.onCaptureStart?.(); }
+    if (phase === 'intro' && !captureStarted && entry && video.currentTime >= 3) { captureStarted = true; options.onCaptureStart?.(); }
     if (phase === 'intro' && !revealed && entry && video.currentTime >= entry.revealAt) { revealed = true; options.onReveal?.(); }
     if (ready && video.readyState >= 2) try {
       const crop = framing();
