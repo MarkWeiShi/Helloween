@@ -1,15 +1,13 @@
 import {test, expect, chromium} from '@playwright/test';
-import {createApp} from '../../server/index.mjs';
+import {startBrowserApp} from '../helpers/nginx.mjs';
 
-let app: ReturnType<typeof createApp>, origin: string;
+let app: Awaited<ReturnType<typeof startBrowserApp>>, origin: string;
 test.beforeAll(async () => {
-  app = createApp({databasePath: ':memory:', rateLimits: false});
-  await new Promise<void>(resolve => app.server.listen(0, '127.0.0.1', resolve));
-  origin = `http://127.0.0.1:${(app.server.address() as {port: number}).port}`;
+  app = await startBrowserApp({databasePath: ':memory:', rateLimits: false});
+  origin = app.origin;
 });
 test.afterAll(async () => {
-  await new Promise<void>(resolve => app.server.close(() => resolve()));
-  app.close();
+  await app.stop();
 });
 
 test('successful first unlock survives reload, new tabs and a restored browser session', async () => {
