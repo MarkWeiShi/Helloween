@@ -1,3 +1,4 @@
+const hasOwn=Object.hasOwn || ((object,key)=>Object.prototype.hasOwnProperty.call(object,key));
 // Pure localization primitives shared by the browser, catalog audit and tests.
 export const languages = [
  ['en','English'],['zh','中文'],['es','Español'],['pt','Português'],['fr','Français'],
@@ -45,7 +46,7 @@ export const decode = text => text.replace(/&(amp|lt|gt|quot|#39|nbsp);/g,(_,key
 export const escapeHTML = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 export function translate(text, dictionary) {
  const trimmed=text.trim();
- return Object.hasOwn(dictionary,trimmed) ? text.replace(trimmed,()=>dictionary[trimmed]) : text;
+ return hasOwn(dictionary,trimmed) ? text.replace(trimmed,()=>dictionary[trimmed]) : text;
 }
 // Translate authored text only, before dynamic data is interpolated. Never walk or
 // rewrite the rendered DOM: names, input values, URLs and event bindings stay intact.

@@ -1,3 +1,4 @@
+import {audioContext} from './browser-compat';
 import {t} from "../shared/i18n.mjs";
 import { detectPitch } from '../shared/reactions.mjs';
 export async function prepareMicrophone(signal?: AbortSignal) {
@@ -9,7 +10,7 @@ export async function prepareMicrophone(signal?: AbortSignal) {
   signal?.addEventListener('abort', abort, {once:true});
   try {
     if (signal?.aborted) throw new DOMException('Microphone cancelled', 'AbortError');
-    context = new AudioContext(); await context.resume();
+    context = audioContext(); await context.resume();
     if (signal?.aborted) throw new DOMException('Microphone cancelled', 'AbortError');
   } catch (err) { abort(); throw err; }
   finally { signal?.removeEventListener('abort', abort); }

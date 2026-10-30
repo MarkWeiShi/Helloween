@@ -8,5 +8,5 @@ export default defineConfig(({command})=>({
     port: 5173,
     proxy: { "/api": "http://127.0.0.1:8787" },
   },
-  build: { manifest: true, target: "es2022", assetsInlineLimit: 0, rollupOptions: { input: { app:'index.html', sharePreview:'review/social-share.html', lineShare:'line-share.html', jiangshiReview:'review/jiangshi-name.html' } } },
+  build: { manifest: true, target: ["safari14.5", "chrome88"], assetsInlineLimit: 0, rollupOptions: { input: { app:'index.html', sharePreview:'review/social-share.html', lineShare:'line-share.html', jiangshiReview:'review/jiangshi-name.html' } } },
 }));

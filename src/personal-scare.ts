@@ -1,3 +1,4 @@
+import {setInert} from './browser-compat';
 import {t, msg} from "../shared/i18n.mjs";
 import {locale} from './i18n';
 import { api } from './api';
@@ -34,7 +35,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   const gatedControls = root.querySelectorAll<HTMLElement>('.character-navigation, .character-info');
   const setLocked = (value: boolean) => {
     awaitingCompletion = value;
-    gatedControls.forEach(element => { element.inert = value; });
+    gatedControls.forEach(element => { setInert(element,value); });
     root.toggleAttribute('data-playback-locked', value);
     lock(value);
   };

@@ -1,5 +1,6 @@
 import {t} from "../shared/i18n.mjs";
 export function recordReaction(stream: MediaStream) {
+  if(typeof MediaRecorder==='undefined' || typeof MediaRecorder.isTypeSupported!=='function')throw Error(t('Recording is not supported'));
   const mimeType = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/ogg;codecs=opus']
     .find(type => MediaRecorder.isTypeSupported(type));
   if (!mimeType) throw Error(t("Recording is not supported"));

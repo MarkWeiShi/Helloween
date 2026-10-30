@@ -1,3 +1,4 @@
+import {openDialog,closeDialog,regionNames,audioContext,setInert,firstSentence} from './browser-compat';
 import {showShareLoading,startShareButtonLoading} from './share-loading';
 import {prepareSocialShare,loadShareConfig} from './social-share';
 import {watchShareReturn} from './share-return';
@@ -96,7 +97,7 @@ function toast(text: string) {
 const bgm = createBgm(() => sound && page === 'map' && !gateBusy);
 let playbackContext: AudioContext | undefined;
 function enablePlayback() {
-  playbackContext ??= new AudioContext();
+  playbackContext ??= audioContext();
   bgm.start(playbackContext);
   return playbackContext.resume();
 }
@@ -150,7 +151,7 @@ function closeModal() {
   if (characterLocked) return;
   modalCleanup?.();
   modalCleanup = undefined;
-  overlay.querySelector("dialog")?.close();
+  closeDialog(overlay.querySelector("dialog"));
   overlay.innerHTML = "";
   document.body.classList.remove("modal-open");
 }
@@ -160,7 +161,7 @@ function modal(content: string, wide = false, onClose?: () => void) {
   overlay.innerHTML = html`<dialog class="modal ${wide ? "wide" : ""}"><button class="icon-button modal-close" data-action="close" aria-label="Close">${icon("close")}</button>${content}</dialog>`;
   const dialog = overlay.querySelector("dialog")!;
   document.body.classList.add("modal-open");
-  dialog.showModal();
+  openDialog(dialog);
   dialog.addEventListener("cancel", (ev) => {
     ev.preventDefault();
     closeModal();
@@ -258,8 +259,8 @@ function counterNumber(current: number) {
 }
 function folklorePreview(s: Spirit) {
   // Use the already localized, source-informed folklore rather than the playful tagline.
-  const sentence = [...new Intl.Segmenter(locale, {granularity:'sentence'}).segment(s.folklore)][0]?.segment.trim() || s.shortDescription;
-  const origin = new Intl.DisplayNames([locale], {type:'region'}).of(s.originCountry) || s.culture;
+  const sentence = firstSentence(s.folklore,locale,s.shortDescription);
+  const origin = regionNames(locale).of(s.originCountry) || s.culture;
   return sentence.toLocaleLowerCase(locale).includes(origin.toLocaleLowerCase(locale)) ? sentence : `${origin} · ${sentence}`;
 }
 function mapPage() {
@@ -317,7 +318,7 @@ async function loadBoard() {
     const data=await api(`/scream-rankings?scope=${scope}&group=${group}`);
     const node=$('#board-content');
     if(!node || scope!==boardScope || group!==boardGroup)return;
-    const names=new Intl.DisplayNames([locale],{type:'region'});
+    const names=regionNames(locale);
     const row=(r:any,self=false)=>html`<div class="board-row ${self?'is-you':''}"><span class="rank">${r.rank}</span><span class="board-avatar" aria-hidden="true">${group==='countries'?flag(r.id):scope==='trick'?'🎃':'👻'}</span><span class="board-name"><strong>${e(group==='countries'?names.of(r.id)||r.id:r.name)}${self?html` <small>${group==='countries'?t('Your country'):t('You')}</small>`:''}</strong><span>${r.recordings} ${t('recordings')} · ${r.participants} ${t('participants')}</span></span><strong class="board-score">${Number(r.score).toLocaleString(locale,{maximumFractionDigits:2})}${scope==='intensity'?' / 100':''}</strong></div>`;
     node.innerHTML=data.rows.length?`${data.self?`<div class="your-rank">${row(data.self,true)}</div>`:''}<div class="board-list">${data.rows.map((r:any)=>row(r)).join('')}</div>`:html`<p class="rank-empty">${scope==='trick'?t('No recordings received yet.'):t('No eligible scream scores yet.')}</p>`;
   } catch(err) {
@@ -547,7 +548,7 @@ function openAbout() {
 function showGate() {
   // Render the actual live world once, then lock its interaction with an inert shell.
   gate=false;page='map';render();gate=true;
-  app.querySelector<HTMLElement>('.app-shell')!.inert=true;
+  setInert(app.querySelector<HTMLElement>('.app-shell')!,true);
   app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
   app.querySelector<HTMLButtonElement>('.play-unlock')!.focus({preventScroll:true});
 }
@@ -568,7 +569,7 @@ function finishGate() {
   try { localStorage.setItem(unlockStorageKey, 'true'); } catch {}
   mic?.stop();mic=undefined;gateBusy=false;gate=false;
   app.querySelector('.play-lock')?.remove();
-  const shell=app.querySelector<HTMLElement>('.app-shell');if(shell)shell.inert=false;
+  const shell=app.querySelector<HTMLElement>('.app-shell');if(shell)setInert(shell,false);
   if(invite)openInvite(true);
   if(playbackContext)bgm.start(playbackContext);
 }

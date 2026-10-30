@@ -1,3 +1,4 @@
+import {fetchJson} from '../packages/ghost-sdk/request-signal';
 import {t} from "../shared/i18n.mjs";
 export type Transformation = { entrance: string; loop: string; entranceAlpha?: string; loopAlpha?: string; poster: string; duration: number; loopDuration: number; revealAt: number };
 export function validTransformation(value: unknown): value is Transformation {
@@ -6,9 +7,7 @@ export function validTransformation(value: unknown): value is Transformation {
 }
 let manifest: Promise<Record<string, Transformation>> | undefined;
 export async function loadTransformation(id: string) {
-  if (!manifest) manifest = fetch('/art/transformations/manifest.json', {cache:'no-cache', signal:AbortSignal.timeout(10000)}).then(async response => {
-    if (!response.ok) throw Error('Transformation manifest unavailable');
-    const data = await response.json();
+  if (!manifest) manifest = fetchJson<{version:number;characters:Record<string,Transformation>}>('/art/transformations/manifest.json', {cache:'no-cache'},10000).then(data => {
     if (data.version !== 1 || !data.characters) throw Error('Invalid transformation manifest');
     return data.characters as Record<string, Transformation>;
   }).catch(error => { manifest = undefined; throw error; });
@@ -65,7 +64,9 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
       }
     }
   }
-  poster.onerror = () => { poster.hidden = true; if (canvas.hidden) host.classList.remove('has-media'); };
+  const needsMediaClass=typeof CSS==='undefined' || !CSS.supports('selector(:has(*))');
+  const setMedia=(value:boolean)=>{host.classList.toggle('has-media',value);if(needsMediaClass)stage.classList.toggle('compat-has-media',value);};
+  poster.onerror = () => { poster.hidden = true; if (canvas.hidden) setMedia(false); };
   const gl = canvas.getContext('webgl', {alpha:true, premultipliedAlpha:false});
   let dead = false, ticket = 0, frame = 0, revealed = false, captureStarted = false, entry: Transformation | undefined, phase: 'idle'|'intro'|'loop' = 'idle';
   let program: WebGLProgram | null = null, buffer: WebGLBuffer | null = null, texture: WebGLTexture | null = null;
@@ -95,7 +96,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   const software = !gl ? canvas.getContext('2d', {willReadFrequently:true}) : null;
   if (software) { canvas.width = 360; canvas.height = 640; ready = true; }
   function pause() { clearTimeout(stallTimer); phase = 'idle'; ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); options.onPause?.(); }
-  function fail() { pause(); phase = 'idle'; canvas.hidden = true; poster.hidden = !entry; host.classList.toggle('has-media', !!entry); options.onError?.(); }
+  function fail() { pause(); phase = 'idle'; canvas.hidden = true; poster.hidden = !entry; setMedia(!!entry); options.onError?.(); }
   const sample = document.createElement('canvas'); sample.width=96;sample.height=170;
   const sampleContext=options.fillCharacter?sample.getContext('2d',{willReadFrequently:true}):null;
   function framing() {
@@ -139,7 +140,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
         }
         software.putImageData(image,0,0);
       }
-      host.classList.add('has-media'); poster.hidden = true;
+      setMedia(true); poster.hidden = true;
     } catch { fail(); return; }
     frame = requestAnimationFrame(draw);
   }
@@ -194,7 +195,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   audio();
   document.addEventListener('visibilitychange', hidden); window.addEventListener('pagehide', pause); window.addEventListener('boo:sound', audio);
   return {play, pause, dispose() {
-    if (dead) return; dead = true; pause(); for (const media of videos) { media.onended = null; media.onerror = null; media.onwaiting = null; media.onplaying = null; media.removeAttribute('src'); media.load(); }
+    if (dead) return; dead = true; setMedia(false); pause(); for (const media of videos) { media.onended = null; media.onerror = null; media.onwaiting = null; media.onplaying = null; media.removeAttribute('src'); media.load(); }
     document.removeEventListener('visibilitychange', hidden); window.removeEventListener('pagehide', pause); window.removeEventListener('boo:sound', audio);
     if (gl) { gl.deleteTexture(texture); gl.deleteBuffer(buffer); gl.deleteProgram(program); shaders.forEach(s => gl.deleteShader(s)); gl.getExtension('WEBGL_lose_context')?.loseContext(); }
     if (immersive) stage.classList.remove('has-immersive-player');

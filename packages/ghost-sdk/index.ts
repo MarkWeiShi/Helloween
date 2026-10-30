@@ -1,3 +1,4 @@
+import {requestSignal} from './request-signal.js';
 import type {Player, Invite, Spirit} from './types.js';
 export type * from './types.js';
 export class GhostApiError extends Error {
@@ -12,9 +13,11 @@ export function createGhostClient({baseUrl='/api',timeoutMs=15000,fetch:fetcher=
   const url=(path:string)=>{if(!path.startsWith('/') || path.startsWith('//'))throw new TypeError('API path must start with one slash');return base+path;};
   async function request<T>(path:string,body?:unknown,{signal,timeoutMs:requestTimeoutMs=timeoutMs}:RequestOptions={}):Promise<T> {
     for(let attempt=0;;attempt++) {
+      let scope:ReturnType<typeof requestSignal>|undefined;
       try {
+        scope=requestSignal(requestTimeoutMs,signal);
         const response=await fetcher(url(path),{method:body===undefined?'GET':'POST',credentials:'same-origin',
-          signal:AbortSignal.any([AbortSignal.timeout(requestTimeoutMs),...(signal?[signal]:[])]),
+          signal:scope.signal,
           headers:body===undefined?{}:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
         const retry=response.headers.get('Retry-After');
         const wait=retry===null?0:/^\d+$/.test(retry)?Number(retry)*1000:Math.max(0,Date.parse(retry)-Date.now());
@@ -24,12 +27,13 @@ export function createGhostClient({baseUrl='/api',timeoutMs=15000,fetch:fetcher=
         if(!response.ok)throw new GhostApiError(data?.error || 'Request failed',response.status,retryAfterMs);
         return data as T;
       } catch(error) {
-        if(signal?.aborted)throw signal.reason;
+        if(signal?.aborted)throw signal.reason ?? new DOMException('Request cancelled','AbortError');
         // HTTP failures (including 429) are returned to callers, never retried here.
         if(error instanceof GhostApiError)throw error;
         if(body!==undefined || attempt>0)throw new GhostApiError('Network request failed');
+        scope?.dispose();
         await new Promise(r=>setTimeout(r,250+Math.random()*250));
-      }
+      } finally {scope?.dispose();}
     }
   }
   const id=(v:string)=>encodeURIComponent(v);

@@ -1,9 +1,9 @@
+import {fetchJson} from '../packages/ghost-sdk/request-signal';
 import {catalogUrl,motionsUrl} from 'virtual:ghost-content';
 import type {Catalog} from './types';
 export type Motion = {sheet:string;frames:number;fps:number};
 async function read<T>(url:string):Promise<T> {
- const response=await fetch(url,{credentials:'omit',signal:AbortSignal.timeout(15000)});
- if(!response.ok)throw new Error('Public content unavailable');return response.json();
+ return fetchJson<T>(url,{credentials:'omit'});
 }
 export const loadCatalog=()=>read<Catalog>(catalogUrl);
 let motions:Promise<{motions:Record<string,Motion>}>|undefined;

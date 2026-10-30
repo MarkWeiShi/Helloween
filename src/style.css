@@ -919,7 +919,7 @@ strong {
   background: #1b2740;
   color: #f7f0df;
   width: min(470px, calc(100% - 28px));
-  max-height: calc(100dvh - 40px);
+  max-height: calc(100vh - 40px);max-height: calc(100dvh - 40px);
   overflow: auto;
   box-shadow: 0 24px 100px #0007;
   scrollbar-width: thin;
@@ -1639,7 +1639,7 @@ select {
   transform: translate(-50%, 0);
 }
 .boot {
-  min-height: 100dvh;
+  min-height: 100vh;min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1660,7 +1660,7 @@ select {
   margin-bottom: 25px;
 }
 .gate {
-  min-height: 100dvh;
+  min-height: 100vh;min-height: 100dvh;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -2364,7 +2364,7 @@ select {
   .modal {
     padding: 26px 22px;
     border-radius: 24px;
-    max-height: calc(100dvh - 28px);
+    max-height: calc(100vh - 28px);max-height: calc(100dvh - 28px);
     width: calc(100% - 24px);
   }
   .modal-heading h2 {
@@ -2794,7 +2794,7 @@ select {
 .globe-empty > .character-close { z-index: 10; background: #152238; width: 44px; height: 44px; }
 
 /* Explore is one fixed viewport. Character details live in the native dialog layer. */
-body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: none; }
+body.explore-screen { height: 100vh;height: 100dvh; overflow: hidden; overscroll-behavior: none; }
 .explore-screen #app { height: 100%; }
 .explore-screen .app-shell { height: 100%; max-width: 1100px; padding: 0 22px; margin: auto; display: flex; flex-direction: column; }
 .explore-screen .site-header, .explore-screen .site-footer { display: none; }
@@ -2804,7 +2804,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .explore-screen .globe-title p { margin: 8px 0 0; font-size: 13px; }
 .explore-screen .globe-layout { display: flex; flex: 1; min-height: 0; justify-content: center; gap: 0; }
 .explore-screen .globe-explorer { height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 0; }
-.explore-screen .globe-viewport { flex: 0 1 auto; width: min(100%, calc(100dvh - 185px)); max-height: calc(100dvh - 185px); aspect-ratio: 1; touch-action: none; }
+.explore-screen .globe-viewport { flex: 0 1 auto; width: min(100%, calc(100vh - 185px));width: min(100%, calc(100dvh - 185px)); max-height: calc(100vh - 185px);max-height: calc(100dvh - 185px); aspect-ratio: 1; touch-action: none; }
 .explore-screen .globe-controls { flex: 0 0 50px; margin: 0; padding-bottom: 6px; }
 .globe-pin { justify-content: center; }
 .globe-pin img { width: 78px; height: 78px; transform-origin: center 65%; }
@@ -2812,10 +2812,10 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .globe-pin.touched { z-index: 20; }
 .globe-pin.touched img { transform: scale(1.85); filter: drop-shadow(0 0 12px #ffd38d99); }
 @media (hover: hover) and (pointer: fine) { .globe-pin:hover { z-index: 20; }.globe-pin:hover img { transform: scale(1.85); filter: drop-shadow(0 0 12px #ffd38d99); } }
-.character-dialog.modal { padding: 0; width: min(480px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); border: 0; background: #18243b; border-radius: 26px; overflow-y: auto; overscroll-behavior: contain; }
+.character-dialog.modal { padding: 0; width: min(480px, calc(100vw - 24px)); max-width: none; max-height: calc(100vh - 24px);max-height: calc(100dvh - 24px); border: 0; background: #18243b; border-radius: 26px; overflow-y: auto; overscroll-behavior: contain; }
 .character-dialog .globe-character { border: 0; border-radius: 0; }
 .character-dialog .character-navigation { position: sticky; top: 0; z-index: 12; background: #1b273ee8; padding-top: 10px; padding-bottom: 6px; }
-.character-dialog .character-stage { height: clamp(180px, 34dvh, 320px); }
+.character-dialog .character-stage { height: clamp(180px, 34vh, 320px);height: clamp(180px, 34dvh, 320px); }
 .character-dialog .hero-spirit { height: 100%; width: auto; max-width: 85%; }
 .character-dialog .culture-note { display: none; }
 :is(.character-dialog, .invitation-result) .action-orb { width: 80px; height: 74px; font-size: 58px; background: transparent; border: 0; box-shadow: none; border-radius: 0; }
@@ -2833,10 +2833,10 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
  .explore-screen .globe-title .collection-count { padding-top: 5px; }
  .explore-screen .globe-title p { max-width: 300px; font-size: 12px; }
  .globe-pin img { width: 61px; height: 61px; }
- .character-dialog .globe-character .character-stage { height: clamp(180px, 33dvh, 300px); }
+ .character-dialog .globe-character .character-stage { height: clamp(180px, 33vh, 300px);height: clamp(180px, 33dvh, 300px); }
  .character-dialog .globe-character .hero-spirit { height: 100%; width: auto; }
 }
-@media (max-height: 500px) { .explore-screen .globe-title { padding-top: 6px; }.explore-screen .globe-title h1 { font-size: 22px; }.explore-screen .globe-title p { display: none; }.explore-screen .globe-viewport { width: min(100%, calc(100dvh - 105px)); max-height: calc(100dvh - 105px); } }
+@media (max-height: 500px) { .explore-screen .globe-title { padding-top: 6px; }.explore-screen .globe-title h1 { font-size: 22px; }.explore-screen .globe-title p { display: none; }.explore-screen .globe-viewport { width: min(100%, calc(100vh - 105px));width: min(100%, calc(100dvh - 105px)); max-height: calc(100vh - 105px);max-height: calc(100dvh - 105px); } }
 .globe-title button.collection-count { background: transparent; border: 0; color: var(--muted); cursor: pointer; }
 .explore-screen #app { overflow: clip; }
 
@@ -2867,7 +2867,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 
 /* Two-action character viewer, shared by playable and preview characters. */
 .character-dialog .character-stage,
-.character-dialog .globe-character .character-stage { height: clamp(250px, 43dvh, 430px); display:flex; align-items:center; justify-content:center; }
+.character-dialog .globe-character .character-stage { height: clamp(250px, 43vh, 430px);height: clamp(250px, 43dvh, 430px); display:flex; align-items:center; justify-content:center; }
 .character-dialog .globe-character .hero-spirit { width: 100%; height:100%; max-width:100%; object-fit:contain; margin:0; position:relative; inset:auto; }
 .character-dialog .character-info { padding-top:0; }
 .character-dialog .description { margin:8px 0; font-size:14px; }
@@ -2912,7 +2912,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 /* Each frame occupies the same square as every other globe portrait. */
 .globe-pin img.cute-sprite { object-fit: cover; object-position: 0% 50%; }
 
-.invitation-cinema.modal { padding:0; width:min(480px,calc(100vw - 20px)); max-height:calc(100dvh - 20px); overflow-y:auto; background:#0c111d; }
+.invitation-cinema.modal { padding:0; width:min(480px,calc(100vw - 20px)); max-height:calc(100vh - 20px);max-height:calc(100dvh - 20px); overflow-y:auto; background:#0c111d; }
 .invitation-cinema .modal-close,.invitation-cinema .invitation-share { z-index:5; background:#18243bcc; }
 .invitation-stage { position:relative; width:100%; aspect-ratio:9/16; isolation:isolate; overflow:hidden; border-radius:26px; background:#0c111d; }
 .invitation-background,.invitation-stage canvas { position:absolute; inset:0; width:100%; height:100%; }
@@ -2925,7 +2925,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .invitation-film.finished .invitation-still,.invitation-film.finished .invitation-replay,.invitation-film.finished .invitation-controls { display:block; }
 .invitation-film.finished canvas { visibility:hidden; }
 /* Keep the final portrait and both actions together on a phone screen. */
-.invitation-cinema .invitation-stage { height:clamp(260px,60dvh,680px); aspect-ratio:auto; }
+.invitation-cinema .invitation-stage { height:clamp(260px,60vh,680px);height:clamp(260px,60dvh,680px); aspect-ratio:auto; }
 .invitation-cinema .invitation-stage canvas { object-fit:contain; }
 .invitation-cinema .invitation-still { inset:0; width:100%; height:100%; object-fit:contain; }
 .invitation-cinema .invitation-replay { bottom:10px; padding:10px 18px; }
@@ -2958,7 +2958,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 /* Static pumpkin offering, separate from the invitation scare video. */
 .invitation-consent { padding:18px 28px; gap:12px; }
 .pumpkin-greeting { width:min(100%,350px); margin:0 auto; flex-shrink:1; min-height:0; }
-.invitation-stage .pumpkin-greeting img { display:block; width:100%; height:min(34dvh,320px); object-fit:contain; }
+.invitation-stage .pumpkin-greeting img { display:block; width:100%; height:min(34vh,320px);height:min(34dvh,320px); object-fit:contain; }
 .invitation-consent h2 { margin:0 0 8px; font-size:23px; }
 .invitation-consent .recording-notice { font-size:12px; line-height:1.5; color:#b8c4d8; }
 
@@ -3019,12 +3019,12 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .invitation-film.finished .invitation-controls { display:block; }
 
 .transformation-sound { position:absolute; top:12px; left:12px; z-index:6; pointer-events:auto; padding:8px 12px; font-size:12px; background:#152238e8; }
-.name-review { min-height:100dvh; overflow:auto; background:#10192d; color:#f7eedc; }
+.name-review { min-height:100vh;min-height:100dvh; overflow:auto; background:#10192d; color:#f7eedc; }
 .name-review main { width:min(100% - 32px,440px); margin:0 auto; padding:24px 0 36px; }
 .name-review header { text-align:center; }
 .name-review h1 { font-family:inherit; font-size:32px; margin:8px 0; }
 .name-review header p,.name-review #review-status { font-size:13px; line-height:1.7; color:#b7c6da; }
-.name-review .review-stage { position:relative; width:100%; height:min(58dvh,600px); min-height:280px; margin:16px 0; overflow:hidden; border-radius:24px; background:radial-gradient(ellipse at center,#2a394e,#172238 75%); }
+.name-review .review-stage { position:relative; width:100%; height:min(58vh,600px);height:min(58dvh,600px); min-height:280px; margin:16px 0; overflow:hidden; border-radius:24px; background:radial-gradient(ellipse at center,#2a394e,#172238 75%); }
 .name-review .review-stage > .hero-spirit { width:100%; height:100%; object-fit:contain; }
 .name-review .review-controls { display:flex; gap:12px; }
 .name-review .review-controls .primary { flex:1; }
@@ -3055,7 +3055,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .stats-guide p { margin:0; color:var(--muted); line-height:1.6; }
 .stats-guide small { display:block; margin-top:8px; color:var(--muted); line-height:1.5; }
 
-.character-dialog .globe-character .character-stage { height:clamp(320px,62dvh,660px); overflow:hidden; }
+.character-dialog .globe-character .character-stage { height:clamp(320px,62vh,660px);height:clamp(320px,62dvh,660px); overflow:hidden; }
 .character-dialog .transformation-player.fill-character canvas { object-fit:fill; }
 .character-dialog .character-info { padding-top:10px; }
 .transformation-replay { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:7; width:64px; height:64px; display:grid; place-items:center; border-radius:50%; border:1px solid #ffffff88; background:#14213888; color:#fff5df; font:46px/1 system-ui; cursor:pointer; backdrop-filter:blur(5px); }
@@ -3092,7 +3092,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .globe-title .counter-value { font-size:17px; }
 .explore-screen .globe-title { padding-bottom:64px; }
 .globe-caption { top:0; }
-.modal.stats-sheet { position:fixed; inset:auto 0 0; margin:0 auto; width:min(100%,560px); max-width:100vw; height:auto; min-height:0; max-height:85dvh; box-sizing:border-box; overflow-y:auto; padding:12px 26px max(20px,env(safe-area-inset-bottom)); border:1px solid #ffad6044; border-bottom:0; border-radius:28px 28px 0 0; background:radial-gradient(ellipse at 50% 0,#683b343d,transparent 60%),#18243b; color:var(--cream); box-shadow:0 -12px 60px #080e2799; animation:stats-sheet-rise .28s cubic-bezier(.22,.8,.25,1) both; }
+.modal.stats-sheet { position:fixed; inset:auto 0 0; margin:0 auto; width:min(100%,560px); max-width:100vw; height:auto; min-height:0; max-height:85vh;max-height:85dvh; box-sizing:border-box; overflow-y:auto; padding:12px 26px max(20px,env(safe-area-inset-bottom)); border:1px solid #ffad6044; border-bottom:0; border-radius:28px 28px 0 0; background:radial-gradient(ellipse at 50% 0,#683b343d,transparent 60%),#18243b; color:var(--cream); box-shadow:0 -12px 60px #080e2799; animation:stats-sheet-rise .28s cubic-bezier(.22,.8,.25,1) both; }
 .stats-sheet::backdrop { background:#070c18a6; backdrop-filter:blur(4px); }
 .sheet-handle { width:38px; height:4px; margin:0 auto 12px; border-radius:8px; background:#ffad6077; }
 .stats-sheet-heading { text-align:center; }
@@ -3108,7 +3108,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 /* Edge-to-edge character stage: preserve the entire source frame. */
 .character-immersive.character-dialog.modal {
   position:fixed; inset:0; margin:0; width:100vw; max-width:none;
-  height:100dvh; max-height:none; padding:0; border:0; border-radius:0;
+  height:100vh;height:100dvh; max-height:none; padding:0; border:0; border-radius:0;
   background:var(--bg); overflow-x:hidden; overflow-y:auto; box-shadow:none;
 }
 .character-immersive .globe-character { width:100%; max-width:none; margin:0; padding:0; background:transparent; overflow:visible; }
@@ -3119,7 +3119,7 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 }
 .character-immersive .character-navigation button { pointer-events:auto; background:#101a2cb3; }
 .character-immersive.character-dialog .globe-character .character-stage {
-  height:100dvh; min-height:100dvh; width:100%; margin:0; padding:0;
+  height:100vh;height:100dvh; min-height:100vh;min-height:100dvh; width:100%; margin:0; padding:0;
   border:0; border-radius:0; overflow:visible; background:transparent;
 }
 .character-immersive .stage-orbit { display:none; }
@@ -3168,13 +3168,13 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .character-immersive.character-dialog .globe-character,
 .character-immersive.character-dialog .globe-character .character-stage { overflow:visible; background:transparent; }
 .character-immersive > .immersive-video-layer {
-  position:fixed; inset:0; width:100vw; height:100dvh; z-index:40; overflow:visible;
+  position:fixed; inset:0; width:100vw; height:100vh;height:100dvh; z-index:40; overflow:visible;
   margin:0; padding:0; max-width:none; max-height:none;
   border:0; border-radius:0; pointer-events:none; background:transparent;
 }
 .immersive-video-layer::backdrop { background:transparent; pointer-events:none; backdrop-filter:none; }
 .character-immersive.character-dialog .immersive-controls-layer {
-  position:fixed; inset:0; width:100vw; height:100dvh; max-width:none; max-height:none;
+  position:fixed; inset:0; width:100vw; height:100vh;height:100dvh; max-width:none; max-height:none;
   margin:0; padding:0; border:0; border-radius:0; background:transparent; color:inherit;
   box-shadow:none; overflow:visible; z-index:50; pointer-events:none;
 }
@@ -3214,10 +3214,10 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .reaction-capture-controls:has(button:not([hidden])) { margin-bottom: 8px; }
 .reaction-capture-controls [hidden] { display: none; }
 .invitation-cinema .invitation-stage:has(.invitation-consent) { min-height: 0; height: auto; }
-.invitation-cinema .invitation-consent { position: relative; overflow-y: auto; max-height: 85dvh; justify-content: flex-start; }
+.invitation-cinema .invitation-consent { position: relative; overflow-y: auto; max-height: 85vh;max-height: 85dvh; justify-content: flex-start; }
 .invitation-consent .pumpkin-greeting { flex-shrink: 0; }
 .reaction-report a { overflow-wrap: anywhere; }
-.invitation-consent .pumpkin-greeting img { height: min(22dvh, 200px); }
+.invitation-consent .pumpkin-greeting img { height: min(22vh, 200px);height: min(22dvh, 200px); }
 .invitation-cinema .invitation-consent { gap: 10px; }
 .invitation-consent p { margin: 4px 0; }
 .invitation-consent > button { flex-shrink: 0; }
@@ -3237,8 +3237,8 @@ body.explore-screen { height: 100dvh; overflow: hidden; overscroll-behavior: non
 .language-trigger span{font-size:21px;line-height:28px}
 .language-trigger:hover,.language-trigger[aria-expanded="true"]{background:#ffffff12}
 .language-trigger:focus-visible,.language-menu button:focus-visible{outline:2px solid #a2dcf0;outline-offset:2px}
-.language-menu{position:fixed;inset:auto;top:max(62px,calc(env(safe-area-inset-top) + 50px));right:max(12px,env(safe-area-inset-right));margin:0;width:max-content;max-width:calc(100vw - 24px);max-height:calc(100dvh - 76px);overflow-y:auto;overscroll-behavior:contain;padding:6px;border:1px solid #aab5ca55;border-radius:16px;background:rgb(27 40 64 / 40%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;box-shadow:0 16px 42px #0005}
-.language-menu button{display:flex;align-items:center;gap:8px;width:100%;height:clamp(26px,calc((100dvh - 92px) / 16),40px);min-height:0;padding:2px 8px;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;font-size:12px;text-align:start;white-space:nowrap;cursor:pointer}
+.language-menu{position:fixed;inset:auto;top:max(62px,calc(env(safe-area-inset-top) + 50px));right:max(12px,env(safe-area-inset-right));margin:0;width:max-content;max-width:calc(100vw - 24px);max-height:calc(100vh - 76px);max-height:calc(100dvh - 76px);overflow-y:auto;overscroll-behavior:contain;padding:6px;border:1px solid #aab5ca55;border-radius:16px;background:rgb(27 40 64 / 40%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;box-shadow:0 16px 42px #0005}
+.language-menu button{display:flex;align-items:center;gap:8px;width:100%;height:clamp(26px,calc((100vh - 92px) / 16),40px);height:clamp(26px,calc((100dvh - 92px) / 16),40px);min-height:0;padding:2px 8px;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;font-size:12px;text-align:start;white-space:nowrap;cursor:pointer}
 .language-menu button:hover,.language-menu button[aria-checked="true"]{background:#ffffff12}
 .language-flag{font-size:20px;line-height:22px;flex:none}
 .language-check{margin-inline-start:auto;width:10px;flex:none;color:#b7eadc}
@@ -3342,7 +3342,7 @@ html:is([lang="ar"],[lang="hi"],[lang="th"]) :is(h1,h2,h3,.ghost-eyebrow) { lett
 .explore-screen .mobile-nav{position:relative;inset:auto;flex-shrink:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:8px 18px calc(8px + env(safe-area-inset-bottom));background:#121b32f5;border-top:1px solid #ffffff1a;z-index:81}
 .explore-screen .mobile-nav .nav-item{flex-direction:column;gap:4px;padding:9px 4px;font-size:12px;border-radius:13px;min-width:0;white-space:normal;line-height:1.25}
 .explore-screen .mobile-nav .icon{width:21px;height:21px}
-.explore-screen .globe-viewport{width:min(100%,calc(100dvh - 275px));max-height:calc(100dvh - 275px)}
+.explore-screen .globe-viewport{width:min(100%,calc(100vh - 275px));width:min(100%,calc(100dvh - 275px));max-height:calc(100vh - 275px);max-height:calc(100dvh - 275px)}
 
 .stats-sheet .stats-guide section > div{min-width:0;overflow-wrap:anywhere}
 
@@ -3436,7 +3436,7 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .explore-screen .globe-title .parade-counter + .parade-counter{min-height:30px;margin-top:-6px}
 
 /* One compact confirmation sheet after provider authentication. */
-.compact-share {width:min(560px,calc(100vw - 24px));padding:24px;max-height:calc(100dvh - 24px);overflow:auto;}
+.compact-share {width:min(560px,calc(100vw - 24px));padding:24px;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow:auto;}
 .compact-share > h2 {font-size:24px;margin:8px 48px 12px 0;}
 .share-profile {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 .share-profile label {font-size:13px;min-width:0;}
@@ -3491,3 +3491,21 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 button .share-loading { padding: 0; font-size: 11px; min-width: 32px; }
 .icon-button .share-loading > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 button .share-loading-track { margin-top: 4px; min-width: 28px; }
+
+/* Only activated when the matching native UI API is absent. */
+.compat-menu[hidden]{display:none!important}
+.compat-menu:not([hidden]){display:block;z-index:1000}
+.compat-modal-layer{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:#070d1dcb}
+.compat-modal-layer .modal[open]{display:block;position:relative;margin:auto;inset:auto}
+@media(max-height:600px) and (min-width:500px){.compat-menu:not([hidden]){display:grid;grid-template-columns:repeat(2,max-content)}}
+
+.compat-inert{pointer-events:none;user-select:none;-webkit-user-select:none}
+/* The globe must keep a square drawing area before aspect-ratio support. */
+@supports not (aspect-ratio: 1) {
+  .globe-viewport::before{content:"";display:block;padding-top:100%}
+  .world-map{min-height:240px}
+}
+
+@supports not selector(:has(*)) {
+ .character-stage.compat-has-media > .hero-spirit,.invitation-stage.compat-has-media > .invitation-still{visibility:hidden}
+}

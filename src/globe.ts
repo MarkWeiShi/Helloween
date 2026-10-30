@@ -1,3 +1,4 @@
+import {scopedListener,focusedPinSelector} from './browser-compat';
 import {t} from "../shared/i18n.mjs";
 import { geoOrthographic, geoPath, geoDistance, geoGraticule10, geoContains, geoRotation, geoArea } from 'd3-geo';
 import type { GeoPermissibleObjects } from 'd3-geo';
@@ -300,7 +301,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
     host.dataset.zoom=String(zoomLevel+1);schedule();
   };
   for(const [button,delta] of [[zoomIn,1],[zoomOut,-1]] as const)
-    button.addEventListener('click',()=>{zoomLevel=Math.max(0,Math.min(2,zoomLevel+delta));restUntil=performance.now()+4000;updateZoom();},{signal:signal.signal});
+    scopedListener(button,'click',()=>{zoomLevel=Math.max(0,Math.min(2,zoomLevel+delta));restUntil=performance.now()+4000;updateZoom();},{signal:signal.signal});
   updateZoom();
   const caption=host.parentElement?.querySelector<HTMLElement>('.globe-caption');
   const showCaption=(pin:HTMLButtonElement)=>{
@@ -313,15 +314,15 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   for(const pin of pins){
     // Keep the last introduction visible after touch, without moving the globe.
     for(const event of ['pointerenter','pointerdown','focus'] as const)
-      pin.addEventListener(event,()=>showCaption(pin),{signal:signal.signal});
+      scopedListener(pin,event,()=>showCaption(pin),{signal:signal.signal});
   }
-  viewport.addEventListener('pointerdown',ev=>{
+  scopedListener(viewport,'pointerdown',ev=>{
     restUntil=performance.now()+4000;
     (ev.target as Element).closest('.globe-pin')?.classList.add('touched');
     if(ev.button!==0)return;
     start={x:ev.clientX,y:ev.clientY,lon:orientation[0],lat:orientation[1],id:ev.pointerId};dragged=false;
   },{signal:signal.signal});
-  viewport.addEventListener('pointermove',ev=>{
+  scopedListener(viewport,'pointermove',ev=>{
     if(!start||ev.pointerId!==start.id)return;
     const dx=ev.clientX-start.x,dy=ev.clientY-start.y;
     if(!dragged&&Math.abs(dx)>7){dragged=true;viewport.setPointerCapture(ev.pointerId);viewport.classList.add('dragging');}
@@ -329,26 +330,26 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
     orientation=[start.lon-dx*180/(size*zoomScales[zoomLevel]),Math.max(-40,Math.min(55,start.lat+dy*65/(size*zoomScales[zoomLevel])))];schedule();
   },{signal:signal.signal});
   const end=()=>{restUntil=performance.now()+4000;start=null;viewport.classList.remove('dragging');pins.forEach(p=>p.classList.remove('touched'));};
-  viewport.addEventListener('pointerup',end,{signal:signal.signal});viewport.addEventListener('pointercancel',()=>{end();dragged=false;},{signal:signal.signal});
-  viewport.addEventListener('click',ev=>{if(dragged){ev.preventDefault();ev.stopPropagation();dragged=false;}},{capture:true,signal:signal.signal});
-  viewport.addEventListener('keydown',ev=>{
+  scopedListener(viewport,'pointerup',end,{signal:signal.signal});scopedListener(viewport,'pointercancel',()=>{end();dragged=false;},{signal:signal.signal});
+  scopedListener(viewport,'click',ev=>{if(dragged){ev.preventDefault();ev.stopPropagation();dragged=false;}},{capture:true,signal:signal.signal});
+  scopedListener(viewport,'keydown',ev=>{
     if(ev.target!==viewport)return;
     if(ev.key==='ArrowLeft'||ev.key==='ArrowRight'){ev.preventDefault();rotate(ev.key==='ArrowLeft'?-35:35);}
   },{signal:signal.signal});
-  picker?.addEventListener('change',()=>{
+  scopedListener(picker,'change',()=>{
     const pin=pins.find(p=>p.dataset.region===picker.value);if(!pin)return;
     orientation=[anchors[picker.value][0],Math.max(-15,Math.min(40,anchors[picker.value][1]-8))];schedule();pin.click();
   },{signal:signal.signal});
   const observer=new ResizeObserver(schedule);observer.observe(viewport);
-  document.addEventListener('visibilitychange',schedule,{signal:signal.signal});
+  scopedListener(document,'visibilitychange',schedule,{signal:signal.signal});
   landPromise ??= fetch('/geo/land.json').then(r=>{if(!r.ok)throw new Error('Land unavailable');return r.json();}).catch(err=>{landPromise=undefined;throw err;});
   landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead){const caption=host.parentElement?.querySelector('.globe-caption');if(caption){caption.querySelector('p')!.textContent=t("Globe details unavailable. You can still choose a region.");caption.classList.add('visible');}}});
-  viewport.addEventListener('pointerenter',ev=>{if(ev.pointerType==='mouse')hovering=true;},{signal:signal.signal});
-  viewport.addEventListener('pointerleave',()=>{hovering=false;},{signal:signal.signal});
+  scopedListener(viewport,'pointerenter',ev=>{if(ev.pointerType==='mouse')hovering=true;},{signal:signal.signal});
+  scopedListener(viewport,'pointerleave',()=>{hovering=false;},{signal:signal.signal});
   let lastTick=performance.now();
   const spin=setInterval(()=>{
     const now=performance.now(),elapsed=Math.min(now-lastTick,150);lastTick=now;
-    if(dead||document.hidden||reduced.matches||start||hovering||now<restUntil||document.querySelector('dialog[open], .play-lock')||viewport.querySelector('.globe-pin:focus-visible'))return;
+    if(dead||document.hidden||reduced.matches||start||hovering||now<restUntil||document.querySelector('dialog[open], .play-lock')||viewport.querySelector(focusedPinSelector))return;
     orientation=[orientation[0]+elapsed*.002,orientation[1]];schedule();
   },80);
   schedule();
