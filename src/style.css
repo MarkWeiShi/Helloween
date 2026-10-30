@@ -3480,3 +3480,14 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .social-handoff [data-back-game]{min-height:38px;margin-top:8px}
 .social-handoff [data-x-manual]{font-size:13px;margin-top:10px}
 .social-handoff [data-x-manual] summary{cursor:pointer;padding:8px 0}
+
+/* Indeterminate: network completion cannot be expressed as an honest percentage. */
+.share-loading { padding: 16px 0; font-size: 13px; line-height: 1.5; }
+.share-loading-track { height: 4px; margin-top: 9px; overflow: hidden; border-radius: 999px; background: rgba(128,128,128,.2); }
+.share-loading-track > span { display: block; width: 35%; height: 100%; border-radius: inherit; background: currentColor; animation: share-loading-slide 1.2s ease-in-out infinite; }
+@keyframes share-loading-slide { from { transform: translateX(-100%); } to { transform: translateX(386%); } }
+@media (prefers-reduced-motion: reduce) { .share-loading-track > span { animation: none; transform: translateX(90%); } }
+
+button .share-loading { padding: 0; font-size: 11px; min-width: 32px; }
+.icon-button .share-loading > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+button .share-loading-track { margin-top: 4px; min-width: 28px; }

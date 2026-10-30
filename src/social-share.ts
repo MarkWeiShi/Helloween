@@ -1,8 +1,22 @@
+import {showShareLoading} from './share-loading';
 import {watchShareReturn,returnToGame} from './share-return';
 import {t, msg, html} from "../shared/i18n.mjs";
 import {api,escape as e} from './api';
 import {locale} from './i18n';
 type Config={lineLiffId?:string;origin:string;kakaoKey:string;wechatReady:boolean;facebookAppId:string};
+let configRequest:Promise<Config>|undefined;
+let configExpires=0;
+export function loadShareConfig(){
+ if(!configRequest||Date.now()>=configExpires){
+  configExpires=Date.now()+300_000;
+  configRequest=api<Config>('/social/config').catch(error=>{configRequest=undefined;throw error;});
+ }
+ return configRequest;
+}
+export function prepareSocialShare(spiritId:string){
+ void loadShareConfig().catch(()=>{});
+ const poster=new Image();poster.src=`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`;
+}
 type KakaoSDK={isInitialized():boolean;init(key:string):void;Share:{sendDefault(data:unknown):void;scrapImage(data:{imageUrl:string}):Promise<{infos:{original:{url:string}}}>}};
 type WechatSDK={config(data:unknown):void;ready(cb:()=>void):void;error(cb:()=>void):void;updateAppMessageShareData(data:unknown):void;updateTimelineShareData(data:unknown):void};
 declare global {interface Window {Kakao?:KakaoSDK;wx?:WechatSDK}}
@@ -15,8 +29,8 @@ function load(src:string){
 export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string,beforeConfirm:()=>Promise<void>|void=()=>{}){
  const panel=document.createElement('section');panel.className='social-handoff';panel.setAttribute('aria-live','polite');node.replaceChildren(panel);
  const name=names[channel];if(!name)return;
- panel.textContent=msg`Preparing ${name} sharing…`;
- const config=await api<Config>('/social/config');if(!panel.isConnected)return;
+ showShareLoading(panel);
+ const config=await loadShareConfig();if(!panel.isConnected)return;
  const local=['localhost','127.0.0.1','[::1]'].includes(new URL(url).hostname);
  const notice=local?html`<p>This is a local preview link. Open the game on <a href="https://helloween.fly.dev" target="_blank" rel="noopener noreferrer">helloween.fly.dev</a> to create an invitation friends can open.</p>`:'';
  const link=html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(url)}"></label>`;
