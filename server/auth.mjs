@@ -1,11 +1,12 @@
 import {randomBytes,createHash} from 'node:crypto';
+import {createXTokens} from './x-tokens.mjs';
 import {ApiError} from './store.mjs';
 
 // Supabase is the identity authority; game sessions stay in HttpOnly first-party cookies.
-export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABASE_PUBLISHABLE_KEY,providers=(process.env.AUTH_PROVIDERS || 'google').split(','),fetcher=fetch}={}) {
+export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABASE_PUBLISHABLE_KEY,providers=(process.env.AUTH_PROVIDERS || 'google').split(','),fetcher=fetch,db,xTokenOptions}={}) {
   const enabled=!!(url && key);
   const pending=new Map();
-  const xTokens=new Map();
+  const xTokens=createXTokens({db,fetcher,...xTokenOptions});
   const config=()=>({enabled,providers:enabled?providers.filter(p=>['google','facebook','apple','kakao','x'].includes(p)):[]});
   async function request(path,body) {
     if(!enabled) throw new ApiError(503,'Sign-in is temporarily unavailable. Please try again later.');
@@ -29,8 +30,8 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
     return value;
   }
   return {config,
-    xToken(subject) {const entry=xTokens.get(subject);return entry && entry.expires>Date.now()?entry.token:null;},
-    forget(subject) {xTokens.delete(subject);},
+    xToken(subject) {return xTokens.token(subject);},
+    forget(subject) {xTokens.forget(subject);},
     async start(session,body,origin) {
       if(!enabled) throw new ApiError(503,'Sign-in is temporarily unavailable. Please try again later.');
       if(body.provider==='email') {
@@ -47,7 +48,7 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
       target.search=new URLSearchParams({provider:body.provider,redirect_to:redirect.href,code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'s256'}).toString();
       // Supabase supplies X's baseline login scopes; request the approved posting scope too.
       // This prepares user consent only. Publishing still needs a separate server-side flow.
-      if(body.provider==='x')target.searchParams.set('scopes','tweet.read users.read tweet.write media.write');
+      if(body.provider==='x')target.searchParams.set('scopes','tweet.read users.read tweet.write media.write offline.access');
       return {url:target.href};
     },
     async finish(session,state,code) {
@@ -55,7 +56,7 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
       if(typeof code!=='string' || !code || code.length>2048)throw new ApiError(400,'Invalid sign-in code.');
       const data=flow.email?await request('verify',{email:flow.email,token:code,type:'email'}):await request('token?grant_type=pkce',{auth_code:code,code_verifier:flow.verifier});
       if(!data.access_token || !data.user?.id || data.user.is_anonymous)throw new ApiError(401,'Account verification failed.');
-      if(flow.provider==='x' && data.provider_token)xTokens.set(data.user.id,{token:data.provider_token,expires:Date.now()+Math.min(Number(data.expires_in)||3600,3600)*1000});
+      if(flow.provider==='x' && data.provider_token)xTokens.save(data.user.id,data.provider_token,data.provider_refresh_token);
       return data.user.id;
     },
   };

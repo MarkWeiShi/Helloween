@@ -32,7 +32,7 @@ export function createApp({
   const store = new BooStore(databasePath, catalog, {
     now,
   });
-  const auth = createAuth(authOptions);
+  const auth = createAuth({db:store.db,...authOptions});
   const publishX=createXPublisher(xPublisherOptions);
   store.db.exec("CREATE TABLE IF NOT EXISTS x_posts(invite_id TEXT PRIMARY KEY,player_id TEXT NOT NULL,status TEXT NOT NULL,result TEXT)");
   const signWechat = createWechatSigner();
@@ -204,7 +204,7 @@ export function createApp({
         if (!playerId)
           throw new ApiError(401, "Please reload to start your visit.");
         const subject=store.db.prepare('SELECT subject FROM accounts WHERE player_id=?').get(playerId)?.subject;
-        if(req.method==='GET' && url.pathname==='/api/social/x/status') {send(200,{connected:!!auth.xToken(subject)});return;}
+        if(req.method==='GET' && url.pathname==='/api/social/x/status') {send(200,{connected:!!(await auth.xToken(subject))});return;}
         if(req.method==='POST' && url.pathname==='/api/social/x/publish') {
           limit(`x-post:${playerId}`,5);
           if(body.confirm!==true)throw new ApiError(400,'Confirm before publishing.');
@@ -214,7 +214,7 @@ export function createApp({
           const existing=store.db.prepare('SELECT * FROM x_posts WHERE invite_id=?').get(invite.id);
           if(existing?.status==='complete'){send(200,JSON.parse(existing.result));return;}
           if(existing)throw new ApiError(409,'Publishing is pending or unconfirmed. Check your X profile before trying again.');
-          const token=auth.xToken(subject);if(!token)throw new ApiError(401,'Sign in to X again to authorize publishing.');
+          const token=await auth.xToken(subject);if(!token)throw new ApiError(401,'Sign in to X again to authorize publishing.');
           const text=String(body.text||'').trim();
           if(!text || [...text].length>280)throw new ApiError(400,'Use a post of up to 280 characters.');
           const origin=process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
@@ -227,6 +227,7 @@ export function createApp({
             send(200,result);
           } catch(error) {
             if(!posting)store.db.prepare('DELETE FROM x_posts WHERE invite_id=?').run(invite.id);
+            if(error.status===401)auth.forget(subject);
             throw error;
           }return;
         }

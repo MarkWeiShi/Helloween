@@ -280,7 +280,7 @@ function characterPanel() {
   const preview = regionPreviews[region];
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasTransformation = !!(friends.length ? s.art : previewId);
-  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
+  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? directShareButtons(s.id) : ''}${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
 }
 async function openReactions() {
   player=(await api('/me')).player;
@@ -435,12 +435,30 @@ function shareChannelIcon(channel: string) {
   const logos: Record<string,string> = {x:'x',line:'line',facebook:'facebook',kakao:'kakaotalk',wechat:'wechat'};
   return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="/icons/social/${logos[channel]}.svg" alt="" aria-hidden="true" width="24" height="24">`;
 }
+function directShareButtons(id:string) {
+  return `<div class="character-sns" role="group" aria-label="${e(t('Choose a sharing app'))}">${[['x','X'],['line','LINE'],['facebook','Facebook'],['kakao','KakaoTalk']].map(([channel,name])=>`<button class="icon-button" data-action="send-share" data-channel="${channel}" data-id="${e(id)}" aria-label="${e(name)}" title="${e(name)}">${shareChannelIcon(channel)}</button>`).join('')}</div>`;
+}
 function openShare(id = selected) {
   modal(`<h2>${e(t('Choose a sharing app'))}</h2><div class="share-options">${[['x','X'],['line','LINE'],['facebook','Facebook'],['kakao','KakaoTalk'],['wechat','WeChat'],['copy',t('Copy link')]].map(([channel,label])=>button(`${shareChannelIcon(channel)}<span>${e(label)}</span>`,'send-share','secondary',`data-channel="${channel}" data-id="${id}"`)).join('')}</div>`);
   overlay.querySelector('dialog')!.classList.add('compact-share');
 }
 let shareRequest = 0;
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
+  if(btn?.disabled)return;
+  if(channel==='line' || (channel==='facebook' && player.initialized)) {
+    if(btn)btn.disabled=true;
+    try {
+      if(channel==='line') {
+        const config=await api('/social/config');
+        if(config.lineLiffId){const data=await api('/invites',{spiritId:id,channel});location.assign(`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(data.id)}&lang=${encodeURIComponent(locale)}`);return;}
+      } else {
+        const data=await api('/invites',{spiritId:id,channel});
+        const card=new URL(`/api/share/facebook/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url);
+        location.assign(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`);return;
+      }
+    }catch(error){toast((error as Error).message);return;}
+    finally{if(btn)btn.disabled=false;}
+  }
   const pending={id,channel};
   if(channel==='x') {
     const status=player.account?await api<{connected:boolean}>('/social/x/status'):{connected:false};
@@ -457,7 +475,6 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   try {
     const data=await api('/invites',{spiritId:id,channel});
     if(!node.isConnected || request!==shareRequest)return;
-    if(channel==='line'){const config=await api('/social/config');if(config.lineLiffId){location.assign(`/line-share.html?invite=${data.id}&lang=${locale}`);return;}}
     if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await beforeConfirm();await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
     else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`,asset(spirit(id).art?.share || '/art/world-map.webp'),id,beforeConfirm);
   }catch(err){node.textContent=(err as Error).message;}

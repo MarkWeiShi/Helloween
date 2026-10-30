@@ -3454,3 +3454,14 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .share-more summary{cursor:pointer;min-height:28px;padding:5px 0}
 .compact-share .share-more .share-link-label{display:block}
 .compact-share .social-handoff label{font-size:13px}
+
+/* Direct SNS actions share the existing top toolbar, leaving video and tabs fixed. */
+.character-sns { display:flex; align-items:center; gap:4px; }
+.character-sns .icon-button { width:40px; height:40px; min-width:40px; padding:9px; }
+.character-sns .social-logo { width:22px; height:22px; display:block; object-fit:contain; filter:brightness(0) invert(1); }
+.character-top-actions { flex-wrap:nowrap; }
+@media(max-width:400px) {
+ .character-sns { gap:2px; }
+ .character-sns .icon-button { width:36px; min-width:36px; height:40px; padding:7px; }
+ .character-navigation .character-top-actions { gap:3px; }
+}

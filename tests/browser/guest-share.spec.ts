@@ -18,6 +18,8 @@ for(const channel of ['line','facebook','kakao','wechat','copy','x'])test(`guest
  });
 
  const authRequests:any[]=[];page.on('request',r=>{if(r.method()==='POST' && r.url().includes('/api/auth/start'))authRequests.push(r.postDataJSON());});
+ await page.route('https://liff.line.me/**',r=>r.fulfill({body:'LIFF official entry'}));
+ await page.route('https://www.facebook.com/sharer/**',r=>r.fulfill({body:'Facebook share window'}));
  await page.route('**/api/auth/start',r=>r.fulfill({json:{url:origin+'/test-x-auth'}}));
  await page.route('**/test-x-auth',r=>r.fulfill({body:'X authentication test'}));
  await page.route('https://static.line-scdn.net/**',r=>r.fulfill({contentType:'application/javascript',body:'window.liff={init:async()=>{},isLoggedIn:()=>false,login:x=>window.lineAuth=x.redirectUri}'}));
@@ -28,11 +30,16 @@ for(const channel of ['line','facebook','kakao','wechat','copy','x'])test(`guest
  await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
  await page.getByRole('button',{name:'Confirm and enable microphone',exact:true}).click();
  await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
- await page.getByRole('button',{name:'Share this character',exact:true}).click();
+ if(['wechat','copy'].includes(channel))await page.getByRole('button',{name:'Share this character',exact:true}).click();
+ else {
+  await expect(page.locator('.character-sns [data-action=send-share]')).toHaveCount(4);
+  const b=await page.locator(`.character-sns [data-channel=${channel}]`).boundingBox();expect(b!.x).toBeGreaterThanOrEqual(0);expect(b!.x+b!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+  if(channel==='line')await page.screenshot({path:`artifacts/social-share/${test.info().project.name}-direct-sns.png`});
+ }
  await page.locator(`[data-action="send-share"][data-channel="${channel}"]`).click();
  if(channel==='x'){await expect(page).toHaveURL(origin+'/test-x-auth');expect(authRequests).toEqual([{provider:'x'}]);return;}
- if(channel==='line'){await expect(page).toHaveURL(/\/line-share\.html\?invite=/);await expect.poll(()=>page.evaluate(()=>(window as any).lineAuth)).toContain('/line-share.html?invite=');}
- else if(channel==='facebook')await expect(page.getByRole('link',{name:'Continue to Facebook',exact:true})).toBeVisible();
+ if(channel==='line'){await expect(page).toHaveURL(/^https:\/\/liff.line.me\/test-liff\?invite=/);expect(new URL(page.url()).searchParams.get('lang')).toBe('en');}
+ else if(channel==='facebook'){await expect(page).toHaveURL(/^https:\/\/www.facebook.com\/sharer\/sharer.php/);expect(new URL(page.url()).searchParams.get('u')).toContain('/api/share/facebook/');}
  else if(channel==='copy')await expect(page.locator('[data-copy-confirm]')).toBeVisible();
  else await expect(page.getByLabel('Invitation link')).toBeVisible();
  await expect(page.locator('.account-panel')).toHaveCount(0);
