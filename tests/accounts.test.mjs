@@ -93,3 +93,29 @@ test('X OAuth 2.0 uses the existing session-bound PKCE account flow and stays op
  await assert.rejects(withoutX.start('owner-session',{provider:'x'},'https://game.example'),{status:400});
  await assert.rejects(auth.start('owner-session',{provider:'twitter'},'https://game.example'),{status:400});
 });
+
+
+test('LINE maps to the configured custom provider and keeps session-bound PKCE',async()=>{
+ const {createAuth}=await import('../server/auth.mjs');
+ const requests=[];
+ const auth=createAuth({url:'https://identity.example',key:'test-public-key',providers:['x','facebook','kakao','line'],fetcher:async(url,options)=>{
+  requests.push({url,body:JSON.parse(options.body)});
+  return Response.json({access_token:'server-only',user:{id:'verified-line-user'}});
+ }});
+ assert.deepEqual(auth.config().providers,['x','facebook','kakao','line']);
+ for(const provider of ['facebook','kakao']){
+  const result=await auth.start('owner-session',{provider},'https://game.example');
+  assert.equal(new URL(result.url).searchParams.get('provider'),provider==='kakao'?'custom:kakao':provider);
+ }
+ const target=new URL((await auth.start('owner-session',{provider:'line'},'https://game.example')).url);
+ assert.equal(target.searchParams.get('provider'),'custom:line');
+ assert.equal(target.searchParams.get('code_challenge_method'),'s256');
+ const state=new URL(target.searchParams.get('redirect_to')).searchParams.get('state');
+ await assert.rejects(auth.finish('other-session',state,'code'),{status:400});
+ assert.equal(await auth.finish('owner-session',state,'code'),'verified-line-user');
+ assert.equal(requests[0].body.code_verifier.length,64);
+ await assert.rejects(auth.finish('owner-session',state,'code'),{status:400});
+ await assert.rejects(auth.start('owner-session',{provider:'custom:untrusted'},'https://game.example'),{status:400});
+ const disabled=createAuth({url:'https://identity.example',key:'test-public-key',providers:['x']});
+ await assert.rejects(disabled.start('owner-session',{provider:'line'},'https://game.example'),{status:400});
+});

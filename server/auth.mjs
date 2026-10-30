@@ -7,7 +7,7 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
   const enabled=!!(url && key);
   const pending=new Map();
   const xTokens=createXTokens({db,fetcher,...xTokenOptions});
-  const config=()=>({enabled,providers:enabled?providers.filter(p=>['google','facebook','apple','kakao','x'].includes(p)):[]});
+  const config=()=>({enabled,providers:enabled?providers.filter(p=>['google','facebook','apple','kakao','x','line'].includes(p)):[]});
   async function request(path,body) {
     if(!enabled) throw new ApiError(503,'Sign-in is temporarily unavailable. Please try again later.');
     let response;
@@ -45,7 +45,7 @@ export function createAuth({url=process.env.SUPABASE_URL,key=process.env.SUPABAS
       const state=begin(session,{verifier,provider:body.provider});
       const redirect=new URL('/api/auth/callback',origin);redirect.searchParams.set('state',state);
       const target=new URL(`${url.replace(/\/$/,'')}/auth/v1/authorize`);
-      target.search=new URLSearchParams({provider:body.provider,redirect_to:redirect.href,code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'s256'}).toString();
+      target.search=new URLSearchParams({provider:['line','kakao'].includes(body.provider)?`custom:${body.provider}`:body.provider,redirect_to:redirect.href,code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'s256'}).toString();
       // Use Supabase's baseline login permissions; composer sharing needs no posting/media scopes.
       return {url:target.href};
     },
