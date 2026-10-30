@@ -111,6 +111,7 @@ export class BooStore {
       wallet: p.wallet,
       candies: p.candies,
       peaceCount: p.peace_count,
+      friendScreamScore: this.friendScreamScore(id),
       shareCount: this.db.prepare("SELECT COUNT(*) AS count FROM invites WHERE sender_id=?").get(id).count,
       shareVisits: this.db.prepare("SELECT COUNT(*) AS count FROM invite_visits v JOIN invites i ON i.id=v.invite_id WHERE i.sender_id=?").get(id).count,
       initialized: !!p.initialized,
@@ -126,6 +127,21 @@ export class BooStore {
         .prepare("SELECT 1 FROM first_invites WHERE player_id=?")
         .get(id),
     };
+  }
+  // Each known friend has equal weight, even across links or signed-in devices.
+  // Missing measurements are not zero; only saved, scored recordings count.
+  friendScreamScore(id) {
+    return this.db.prepare(`SELECT ROUND(AVG(score)) AS score FROM (
+      SELECT AVG(d.score) AS score
+      FROM reaction_audio a
+      JOIN reaction_details d ON d.invite_id=a.invite_id AND d.player_id=a.player_id
+      JOIN invites i ON i.id=a.invite_id
+      LEFT JOIN account_members m ON m.player_id=a.player_id
+      LEFT JOIN account_members owner ON owner.player_id=i.sender_id
+      WHERE i.sender_id=? AND a.player_id<>i.sender_id AND d.score IS NOT NULL
+        AND (m.subject IS NULL OR owner.subject IS NULL OR m.subject<>owner.subject)
+      GROUP BY CASE WHEN m.subject IS NULL THEN 'guest:' || a.player_id ELSE 'account:' || m.subject END
+    )`).get(id).score;
   }
   createGuest() {
     const id = randomUUID(),
