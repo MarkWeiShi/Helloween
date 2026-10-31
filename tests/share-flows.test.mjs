@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {BooStore} from '../server/store.mjs';import {loadCatalog} from '../server/content.mjs';import {createEngagement} from '../server/engagement.mjs';import {engagementSummary} from '../server/engagement-report.mjs';import {installCountryAnalytics,withCountry} from '../server/country-analytics.mjs';import {countryReport} from '../server/country-report.mjs';import {analyticsReport} from '../server/analytics-report.mjs';
-function fixture(){let now=Date.now(),n=0;const store=new BooStore(':memory:',loadCatalog(),{now:()=>now});const record=createEngagement(store);installCountryAnalytics(store.db);return {store,record,next:()=> (++n).toString(16).padStart(32,'0'),tick:()=>{now+=1000},report:()=>engagementSummary(store.db).shareFlows};}
+function fixture(){let now=Math.floor(Date.now()/60000)*60000+1000,n=0;const store=new BooStore(':memory:',loadCatalog(),{now:()=>now});const record=createEngagement(store);installCountryAnalytics(store.db);return {store,record,next:()=> (++n).toString(16).padStart(32,'0'),tick:()=>{now+=1000},report:()=>engagementSummary(store.db).shareFlows};}
 test('separate attempts, idempotency, late events and failures preserve furthest completed step and rates',()=>{
  const f=fixture();try{
  const p=f.store.createGuest().player.id,flow=f.next();
@@ -51,5 +51,28 @@ test('account linking keeps the original flow and permits its new account sessio
  f.store.accountLogin(guest,'flow-owner');
  f.record(owner,{kind:'funnel',eventId:f.next(),step:'share_send_confirmed',flowId:flow,inviteId:invite.id});
  assert.equal(f.report().rows[0].furthest,'share_send_confirmed');assert.equal(f.report().rows[0].flows,1);
+ }finally{f.store.close()}
+});
+
+test('SNS-specific paths separate confirmed, copy fallback, handoff, cancellation and inactivity',()=>{
+ const f=fixture();try{
+ const player=f.store.createGuest().player.id;
+ function flow(channel,steps,old=false){const flowId=f.next(),invite=f.store.createInvite(player,{channel,spiritId:'jiangshi'});for(const step of steps)f.record(player,{kind:'funnel',eventId:f.next(),flowId,inviteId:invite.id,channel,step});if(old){f.store.db.prepare('UPDATE share_flows SET created_at=created_at-1860000 WHERE id=?').run(flowId);f.store.db.prepare('UPDATE funnel_events SET created_at=created_at-1860000 WHERE (player_id,event_id) IN(SELECT player_id,event_id FROM share_flow_events WHERE flow_id=?)').run(flowId)}return flowId;}
+ flow('x',['share_clicked','share_invite_created','share_handoff']);
+ flow('line',['share_clicked','share_invite_created','share_ready','share_handoff','share_cancelled'],true);
+ flow('line',['share_clicked','share_invite_created','share_ready','share_copied'],true);
+ flow('line',['share_clicked','share_invite_created','share_ready','share_handoff','share_send_confirmed']);
+ flow('copy',['share_clicked','share_invite_created','share_ready','share_copied','share_copy_failed']);
+ flow('copy',['share_clicked','share_invite_created'],true);
+ flow('copy',['share_clicked','share_invite_created']);
+ const a=f.report().analysis,sum=(channel,key)=>a.summary.filter(r=>r.channel===channel).reduce((n,r)=>n+r[key],0);
+ assert.equal(a.channels.find(c=>c.channel==='x').steps.length,3);assert.equal(a.channels.find(c=>c.channel==='copy').steps.length,5);
+ assert.equal(sum('x','confirmed'),0);assert.equal(sum('x','handoff'),1);assert.equal(sum('x','goalReached'),1);
+ assert.equal(sum('line','cancelled'),1);assert.equal(sum('line','confirmed'),1);assert.equal(sum('line','copied'),1);assert.equal(sum('line','inactive'),0);
+ assert.equal(sum('copy','failed'),1);assert.equal(sum('copy','goalReached'),1);assert.equal(sum('copy','inactive'),1);assert.equal(sum('copy','pending'),1);
+ const lineEnd=a.steps.filter(r=>r.channel==='line'&&r.order===4);assert.equal(lineEnd.reduce((n,r)=>n+r.alternativeExit,0),1);
+ for(const row of a.summary)assert.equal(['confirmed','copied','handoff','cancelled','failed','pending','inactive'].reduce((n,k)=>n+row[k],0),row.flows);
+ for(const row of a.steps){assert.equal(row.continued+row.notContinued,row.previous);assert.ok(row.continued<=row.reached);}
+ assert.equal(a.endings.find(r=>r.channel==='line'&&r.status==='cancelled').lastStep,'发起平台跳转或复制成功');
  }finally{f.store.close()}
 });

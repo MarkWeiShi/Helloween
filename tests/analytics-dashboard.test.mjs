@@ -13,3 +13,15 @@ test('local dashboard starts with country and funnel controls and rejects invali
   const invalid=await fetch(`http://127.0.0.1:${port}/metrics?country=invalid`);assert.equal(invalid.status,400);
  }finally{child.kill();await once(child,'exit')}
 });
+
+test('production aggregate reader compresses the expanded report before invoking Fly',async()=>{
+ const{mkdtempSync,writeFileSync,rmSync}=await import('node:fs');const{tmpdir}=await import('node:os');const{join}=await import('node:path');
+ const directory=mkdtempSync(join(tmpdir(),'sns-reader-')),binary=join(directory,'fly-probe.mjs');
+ writeFileSync(binary,`#!/usr/bin/env node\nconst command=process.argv[7];if(!command.includes('inflateSync')||Buffer.byteLength(command)>10000)process.exit(2);console.log(JSON.stringify({compressedTransport:true,bytes:Buffer.byteLength(command)}));`,{mode:0o755});
+ const reservation=createServer();await new Promise(resolve=>reservation.listen(0,'127.0.0.1',resolve));const port=reservation.address().port;await new Promise(resolve=>reservation.close(resolve));
+ const child=spawn(process.execPath,['scripts/analytics-dashboard.mjs'],{env:{...process.env,ANALYTICS_PORT:String(port),ANALYTICS_DATABASE_PATH:'',FLY_BIN:binary},stdio:['ignore','pipe','pipe']});
+ try{
+  await Promise.race([once(child.stdout,'data'),once(child,'exit').then(()=>{throw Error('Dashboard failed to start')})]);
+  const response=await fetch(`http://127.0.0.1:${port}/metrics?country=all`);assert.equal(response.status,200);const report=await response.json();assert.equal(report.compressedTransport,true);assert.ok(report.bytes<10000);
+ }finally{child.kill();await once(child,'exit');rmSync(directory,{recursive:true,force:true})}
+});
