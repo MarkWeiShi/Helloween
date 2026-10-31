@@ -78,9 +78,17 @@ const zoomScales = [1, 1.35, 1.75];
 // A stable global terrain field: every landmass receives relief, including
 // islands and the far hemisphere. Sample once, then project while rotating.
 type TerrainPoint = [number, number, number];
-function terrainField(land: GeoPermissibleObjects): TerrainPoint[] {
+const terrainCache = new WeakMap<GeoPermissibleObjects, Promise<TerrainPoint[]>>();
+function terrainField(land: GeoPermissibleObjects): Promise<TerrainPoint[]> {
+  let cached=terrainCache.get(land);
+  if(!cached){cached=buildTerrainField(land);terrainCache.set(land,cached);}
+  return cached;
+}
+async function buildTerrainField(land: GeoPermissibleObjects): Promise<TerrainPoint[]> {
   const result: TerrainPoint[] = [];
   for (let lat = -87; lat <= 85; lat += 4) {
+    // Yield each latitude band; first visit must not block navigation/paint.
+    await new Promise<void>(resolve=>setTimeout(resolve,0));
     const step = 4 / Math.max(.22, Math.cos(lat * Math.PI / 180));
     for (let lon = -180; lon < 180; lon += step) {
       if (!geoContains(land, [lon, lat])) continue;
@@ -344,7 +352,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   const observer=new ResizeObserver(schedule);observer.observe(viewport);
   scopedListener(document,'visibilitychange',schedule,{signal:signal.signal});
   landPromise ??= fetch('/geo/land.json').then(r=>{if(!r.ok)throw new Error('Land unavailable');return r.json();}).catch(err=>{landPromise=undefined;throw err;});
-  landPromise.then(value=>{if(dead)return;land=value;relief=terrainField(value);schedule();}).catch(()=>{if(!dead){const caption=host.parentElement?.querySelector('.globe-caption');if(caption){caption.querySelector('p')!.textContent=t("Globe details unavailable. You can still choose a region.");caption.classList.add('visible');}}});
+  landPromise.then(async value=>{if(dead)return;land=value;schedule();const points=await terrainField(value);if(dead)return;relief=points;schedule();}).catch(()=>{if(!dead){const caption=host.parentElement?.querySelector('.globe-caption');if(caption){caption.querySelector('p')!.textContent=t("Globe details unavailable. You can still choose a region.");caption.classList.add('visible');}}});
   scopedListener(viewport,'pointerenter',ev=>{if(ev.pointerType==='mouse')hovering=true;},{signal:signal.signal});
   scopedListener(viewport,'pointerleave',()=>{hovering=false;},{signal:signal.signal});
   let lastTick=performance.now();

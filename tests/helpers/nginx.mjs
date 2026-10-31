@@ -9,7 +9,7 @@ async function port() {
  const server=createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const value=server.address().port;await new Promise(r=>server.close(r));return value;
 }
-export async function startNginx(apiOrigin,{staticRoot=join(root,'dist'),port:chosenPort}={}) {
+export async function startNginx(apiOrigin,{staticRoot=join(root,'dist'),port:chosenPort,flyAdapter=false}={}) {
  const binary=process.env.NGINX_BIN || 'nginx';
  const directory=mkdtempSync(join(tmpdir(),'ghost-nginx-'));
  const webPort=await port(),gatewayPort=chosenPort || await port();
@@ -17,7 +17,10 @@ export async function startNginx(apiOrigin,{staticRoot=join(root,'dist'),port:ch
  const staticConfig=readFileSync(join(root,'deploy/nginx/static.conf'),'utf8')
    .replace('listen 80;',`listen 127.0.0.1:${webPort};`).replace('root /usr/share/nginx/html;',`root ${quote(resolve(staticRoot))};`)
    .replace('/etc/nginx/ghost-security.conf',quote(join(root,'deploy/nginx/security.conf')));
- const gateway=readFileSync(join(root,'deploy/nginx/gateway.conf.template'),'utf8')
+ const gateway=flyAdapter ? readFileSync(join(root,'deploy/fly/nginx.conf'),'utf8')
+   .replace('listen 8080;',`listen 127.0.0.1:${gatewayPort};`).replace('root /data/web/current;',`root ${quote(resolve(staticRoot))};`)
+   .replaceAll('http://127.0.0.1:8787',apiOrigin).replace('/etc/nginx/ghost-security.conf',quote(join(root,'deploy/nginx/security.conf')))
+   : readFileSync(join(root,'deploy/nginx/gateway.conf.template'),'utf8')
    .replace('listen 8080;',`listen 127.0.0.1:${gatewayPort};`)
    .replaceAll('${API_UPSTREAM}',new URL(apiOrigin).host).replaceAll('${WEB_UPSTREAM}',`127.0.0.1:${webPort}`);
  const config=join(directory,'nginx.conf');
@@ -49,9 +52,10 @@ export async function startNginx(apiOrigin,{staticRoot=join(root,'dist'),port:ch
  }catch(error){await close();throw error;}
 }
 export async function startBrowserApp(options={}) {
- const app=createApp({databasePath:':memory:',rateLimits:false,...options});
+ const {flyAdapter=false,...appOptions}=options;
+ const app=createApp({databasePath:':memory:',rateLimits:false,...appOptions});
  await new Promise(r=>app.server.listen(0,'127.0.0.1',r));
  const apiOrigin=`http://127.0.0.1:${app.server.address().port}`;
- let web;try{web=await startNginx(apiOrigin);}catch(error){app.close();throw error;}
+ let web;try{web=await startNginx(apiOrigin,{flyAdapter});}catch(error){app.close();throw error;}
  return {...app,...web,apiOrigin,stop:async()=>{await web.close();await new Promise(r=>app.server.close(r));app.close();}};
 }

@@ -23,7 +23,8 @@ export function staticContentPlugin() {
       if(building && (!origin || !/^https?:\/\//.test(origin)))throw new Error('PUBLIC_ORIGIN is required for the static share card (use http://localhost:5173 locally).');
       const image=new URL(building?assetOrigin+data.assetPaths['/art/x-cards/jiangshi.en.jpg']:'/art/x-cards/jiangshi.en.jpg',origin || 'http://localhost:5173').href;
       const escape=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-      return html.replace('</head>',`<meta property="og:title" content="Halloween Tricks by HelloTalk"><meta property="og:description" content="Meet folklore friends from around the world."><meta property="og:type" content="website"><meta property="og:image" content="${escape(image)}"><meta name="twitter:card" content="summary_large_image"></head>`);
+      const connections=building && assetOrigin ? `<link rel="preconnect" href="${escape(assetOrigin)}" crossorigin><link rel="dns-prefetch" href="${escape(assetOrigin)}">` : '';
+      return html.replace('</head>',`${connections}<meta property="og:title" content="Halloween Tricks by HelloTalk"><meta property="og:description" content="Meet folklore friends from around the world."><meta property="og:type" content="website"><meta property="og:image" content="${escape(image)}"><meta name="twitter:card" content="summary_large_image"></head>`);
     },
     configureServer(server) {
       server.middlewares.use((req,res,next)=>{

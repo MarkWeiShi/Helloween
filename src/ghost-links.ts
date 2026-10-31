@@ -1,6 +1,6 @@
 import {findShareCharacter} from './share-characters';
 import {mountHelloTalkUnlock} from './hellotalk-unlock';
-import {api,client,escape as e} from './api';
+import {api,client,GhostApiError,escape as e} from './api';
 import {t,locale} from './i18n';
 import type {Catalog,Player} from './types';
 export type GhostLink={inviteId:string;spiritId:string;createdAt:number;friendName:string|null;visits:number;recordings:{receiverId:string;name:string;durationMs:number;createdAt:number}[]};
@@ -8,8 +8,25 @@ export function linksPage(player:Player) {
  return `<section class="ghost-links-page"><header class="ghost-links-heading"><div><p class="ghost-eyebrow">${e(t('A little fright, saved for you'))}</p><p>${e(t('All your friends’ voices, in one timeline. Save up to 50 voices.'))}</p></div><a class="button secondary" href="/">${e(t('Explore'))}</a></header><div class="ghost-account"><span>${e(player.account?t('Your links are saved to your account.'):t('These links belong to this browser. Sign in to keep them across devices.'))}</span><button class="button secondary" data-action="${player.account?'signout':'signin'}">${e(t(player.account?'Sign out':'Sign in'))}</button></div><div class="ghost-links-toolbar"><label>${e(t('Filter by ghost'))}<select data-ghost-filter><option value="">${e(t('All ghosts'))}</option></select></label><label>${e(t('Filter by country'))}<select data-country-filter><option value="">${e(t('All countries'))}</option></select></label><button class="button text-button" data-links-refresh>${e(t('Refresh'))}</button></div><p data-voice-capacity role="status"></p><p data-links-status role="status"></p><div class="ghost-links-grid voice-timeline" data-links-grid></div></section>`;
 }
 type Voice={inviteId:string;receiverId:string;spiritId:string;name:string;country:string|null;durationMs:number;createdAt:number};
-export function mountLinks(root:HTMLElement,catalog:Catalog) {
+// Only metadata, scoped to one player in this tab. Never persist private voices.
+type VoiceCache={ownerId:string;records?:Voice[];updatedAt:number;pending?:Promise<Voice[]>};
+let voiceCache:VoiceCache|undefined;
+export function clearVoiceCache(){voiceCache=undefined;}
+function cacheFor(ownerId:string) {
+ if(voiceCache?.ownerId!==ownerId)voiceCache={ownerId,updatedAt:0};
+ return voiceCache!;
+}
+function readVoices(entry:VoiceCache):Promise<Voice[]> {
+ return entry.pending??=api<{recordings:Voice[]}>('/friend-voices').then(data=>{
+  entry.records=data.recordings;entry.updatedAt=Date.now();return data.recordings;
+ }).catch(error=>{
+  if(error instanceof GhostApiError && [401,403].includes(error.status))entry.records=undefined;
+  throw error;
+ }).finally(()=>{entry.pending=undefined;});
+}
+export function mountLinks(root:HTMLElement,catalog:Catalog,ownerId:string) {
  const playback=mountHelloTalkUnlock(root);
+ const entry=cacheFor(ownerId);
  let recordings:Voice[]=[],busy=false,dead=false;
  const grid=root.querySelector<HTMLElement>('[data-links-grid]')!,status=root.querySelector<HTMLElement>('[data-links-status]')!,filter=root.querySelector<HTMLSelectElement>('[data-ghost-filter]')!,country=root.querySelector<HTMLSelectElement>('[data-country-filter]')!,capacity=root.querySelector<HTMLElement>('[data-voice-capacity]')!;
  const date=(value:number)=>new Date(value).toLocaleString(locale,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -25,7 +42,7 @@ export function mountLinks(root:HTMLElement,catalog:Catalog) {
   grid.querySelectorAll<HTMLButtonElement>('[data-delete-invite]').forEach(button=>button.onclick=async()=>{
    if(busy||!window.confirm(t('Delete this voice permanently? This frees space for a new recording.')))return;
    busy=true;button.disabled=true;
-   try{await api(`/invites/${button.dataset.deleteInvite}/audio/${button.dataset.receiver}/delete`,{});recordings=recordings.filter(r=>r.inviteId!==button.dataset.deleteInvite||r.receiverId!==button.dataset.receiver);if(!dead)draw();}
+   try{await api(`/invites/${button.dataset.deleteInvite}/audio/${button.dataset.receiver}/delete`,{});recordings=recordings.filter(r=>r.inviteId!==button.dataset.deleteInvite||r.receiverId!==button.dataset.receiver);entry.records=recordings;entry.updatedAt=Date.now();if(!dead)draw();}
    catch(error){if(!dead)status.textContent=(error as Error).message;}
    finally{busy=false;if(!dead)button.disabled=false;}
   });
@@ -34,10 +51,11 @@ export function mountLinks(root:HTMLElement,catalog:Catalog) {
  }
  async function load() {
   if(busy||dead)return;busy=true;status.textContent=t('Loading your ghost links…');
-  try {const data=await api<{recordings:Voice[]}>('/friend-voices');if(dead)return;recordings=data.recordings;draw();status.textContent='';}
-  catch(error){if(!dead)status.textContent=(error as Error).message;}
+  try {const data=await readVoices(entry);if(dead)return;recordings=data;draw();status.textContent='';}
+  catch(error){if(!dead){if(error instanceof GhostApiError && [401,403].includes(error.status)){recordings=[];grid.innerHTML='';capacity.textContent='';}status.textContent=(error as Error).message;}}
   finally{busy=false;}
  }
+ if(entry.records && Date.now()-entry.updatedAt<30000){recordings=entry.records;draw();}
  filter.onchange=draw;country.onchange=draw;root.querySelector<HTMLButtonElement>('[data-links-refresh]')!.onclick=()=>void load();void load();
  return ()=>{dead=true;playback.destroy();grid.querySelectorAll('audio').forEach(audio=>audio.pause());};
 }

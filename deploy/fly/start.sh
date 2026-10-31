@@ -2,7 +2,7 @@
 set -euo pipefail
 node /app/scripts/install-web.mjs /opt/ghost-web /data/web "${STATIC_DEPLOYMENT_ID:-}"
 nginx -t
-HOST=127.0.0.1 PORT=8787 node /app/server/index.mjs &
+TRUST_PROXY=true HOST=127.0.0.1 PORT=8787 node /app/server/index.mjs &
 api_pid=$!
 nginx -g 'daemon off;' &
 web_pid=$!

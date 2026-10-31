@@ -9,7 +9,7 @@ import {watchShareReturn} from './share-return';
 import {loadCatalog} from './static-content';
 import {previewTransformations} from '../shared/preview-transformations.mjs';
 import {showAccount} from "./account";
-import {linksPage,mountLinks} from "./ghost-links";
+import {linksPage,mountLinks,clearVoiceCache} from "./ghost-links";
 import {t, msg, html, initLanguage, languageSelector, content as localizedContent, locale} from "./i18n";
 import { mountSocialHandoff } from "./social-share";
 import { createBgm } from "./bgm";
@@ -246,7 +246,7 @@ function render() {
     globeCleanup=()=>{stopMotions();stopGlobe();};
 
   }
-  if (page === "links") globeCleanup=mountLinks(app,catalog);
+  if (page === "links") globeCleanup=mountLinks(app,catalog,player.id);
   if (page === "boards") {
     void loadBoard();
     boardTimer = setInterval(() => {
@@ -312,11 +312,12 @@ function characterPanel() {
   return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation"><span></span><div class="character-top-actions"><button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
 }
 async function openReactions() {
-  player=(await api('/me')).player;
   closeModal();gate=false;page='links';history.replaceState(null,'','/my-links');render();
-  await api('/reactions/read',{});
+  // Reading acknowledgement must not hold navigation or report errors on another tab.
+  void api('/reactions/read',{}).catch(()=>{});
 }
 async function signIn() {
+  clearVoiceCache();
   await showAccount(modal,()=>{location.assign('/my-links?signin=success');});
 }
 function codexPage() {
@@ -622,7 +623,7 @@ document.addEventListener("click", async (ev) => {
   if (target.hasAttribute("disabled")) return;
   try {
     if(target.dataset.action==='signin'){await signIn();return;}
-    if(target.dataset.action==='signout'){await api("/auth/logout",{});location.assign("/my-links");return;}
+    if(target.dataset.action==='signout'){clearVoiceCache();await api("/auth/logout",{});location.assign("/my-links");return;}
     if (target.dataset.page) {
       if(target.dataset.page==='links'){await openReactions();return;}
       history.replaceState(null,'',target.dataset.page==='boards'?'/rankings':'/');
