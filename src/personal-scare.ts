@@ -23,6 +23,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   const status = root.querySelector<HTMLElement>('[data-personal-scare]')!;
   let dead = false, busy = false, generation = 0, capture: Awaited<ReturnType<typeof prepareMicrophone>> | undefined;
   let first = false, sent = false, sending = false;
+  let retryTimer: ReturnType<typeof setTimeout> | undefined, retryAttempts = 0;
   let recording: ReturnType<typeof recordReaction> | undefined;
   let pending: {scoringVersion:number;echoCancellation:boolean;meanRms:number|null;audio:string;mime:string;durationMs:number;consent:boolean;language:string;amplitudeRms:number|null;score:number|null;meanHz:number|null;peakHz:number|null;frames:number} | undefined;
   const controls = document.createElement('div'); controls.className = 'reaction-capture-controls';
@@ -59,13 +60,19 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   retry.onclick = () => { void upload(); };
   cancel.onclick = () => { release(); pending = undefined; shared = undefined; retry.hidden = true; cancel.hidden = true; status.textContent = t("Recording cancelled"); };
   let microphoneRequest: AbortController | undefined;
-  const release = () => { generation++; microphoneRequest?.abort(); microphoneRequest = undefined; recording?.cancel(); recording = undefined; capture?.stop(); capture = undefined; cancel.hidden = true; busy = false; button.disabled = false; };
+  const release = () => { clearTimeout(retryTimer); retryTimer = undefined; generation++; microphoneRequest?.abort(); microphoneRequest = undefined; recording?.cancel(); recording = undefined; capture?.stop(); capture = undefined; cancel.hidden = true; busy = false; button.disabled = false; };
   const motion = mountTransformation(root.querySelector<HTMLElement>('.character-stage')!, spirit, {
     sound: () => true, fillCharacter: false,
-    onIntroEnd: () => { setLocked(false); button.hidden = false; if(first && !capture && !readScare(player,spirit)) status.textContent=t("No Voice Detected"); },
+    onIntroEnd: () => { retryAttempts = 0; setLocked(false); button.hidden = false; if(first && !capture && !readScare(player,spirit)) status.textContent=t("No Voice Detected"); },
     onStart: () => { markTransformationPlayed(player, spirit); status.textContent = first ? (capture ? t("Get ready…") : t("Mic unavailable")) : label(); },
     onPause: () => { release(); button.hidden = false; if (!dead && document.hidden && !sending) { status.textContent = pending ? t("Not sent · retry") : t("Paused · replay"); if (pending) { retry.hidden = false; cancel.hidden = false; } } },
-    onError: () => { button.hidden = false; status.textContent = t("Video failed · retry"); },
+    onError: () => {
+      button.hidden = false; status.textContent = 'Loading…';
+      // Keep retrying with a bounded backoff while this card remains open.
+      // play() reacquires microphone capture so recovered invitations still record.
+      clearTimeout(retryTimer);
+      retryTimer = setTimeout(() => { if (!dead && !document.hidden) void play(); }, Math.min(15000,1500 * 2 ** Math.min(retryAttempts++,4)));
+    },
     onCaptureStart: () => {
       if (!first || !capture) return;
       const ticket = generation;

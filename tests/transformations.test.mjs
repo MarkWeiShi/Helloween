@@ -36,7 +36,7 @@ for (const renderer of ['webgl','2d']) test(`${renderer}: video changes from ent
  let composited;
  const software={clearRect(){},drawImage(){},getImageData(){return {data:new Uint8ClampedArray([0,255,0,255,200,20,20,255])};},putImageData(image){composited=image.data;}};
  class Element extends EventTarget {
-  children=[]; dataset={}; attributes={}; hidden=false; paused=true; ended=false; readyState=2; currentTime=0; loop=false;
+  children=[]; dataset={}; attributes={}; hidden=false; paused=true; ended=false; readyState=3; currentTime=0; loop=false;
   classList={add(){},toggle(){}};
   append(...nodes){this.children.push(...nodes);}
   getContext(kind){return renderer==='webgl'?gl:kind==='2d'?software:null;}
@@ -52,11 +52,19 @@ for (const renderer of ['webgl','2d']) test(`${renderer}: video changes from ent
  let reveals=0, captures=0, pauses=0, audible=false;
  const stage = new Element(); const motion=runtime.mountTransformation(stage,'jiangshi',{sound:()=>audible,toggleSound:()=>{audible=!audible;},onCaptureStart:()=>captures++,onReveal:()=>reveals++,onPause:()=>pauses++});
  const host=stage.children[0], video=host.children[2], loop=host.children[3];
+ assert.equal(host.children[5].hidden,false);
  assert.equal(await motion.play(),true);
+ assert.equal(host.children[5].hidden,true);
  if(renderer==='2d') { assert.equal(composited[3],0); assert.equal(composited[7],255); }
  assert.equal(video.src,entry.entrance); assert.equal(video.muted,true); assert.equal(video.loop,false);
  host.children[4].onclick(); assert.equal(video.muted,false); assert.equal(loop.muted,false); assert.equal(host.children[4].getAttribute('aria-pressed'),'true');
  assert.equal(loop.src,entry.loop); assert.equal(loop.preload,'auto'); assert.equal(loop.loads,1); assert.equal(loop.paused,true);
+ // A failed entrance must not reveal the final transformation poster.
+ video.onerror();
+ assert.equal(host.children[5].hidden,false);
+ assert.equal(host.children[0].hidden,true);
+ assert.equal(await motion.play(),true);
+ assert.equal(host.children[0].hidden,true);
  const tick=()=>{const [key,cb]=[...callbacks.entries()].at(-1);callbacks.delete(key);cb();};
  video.currentTime=1.99;tick();assert.equal(captures,0);assert.equal(reveals,0);
  video.currentTime=2.99;tick();assert.equal(captures,0);assert.equal(reveals,1);

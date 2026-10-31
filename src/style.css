@@ -3561,3 +3561,19 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
 .unlock-policy-links{font-size:12px;line-height:1.6;margin:8px 0 16px;text-align:center}
 .unlock-policy-links a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .unlock-policy-links a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+/* Centered media-loading feedback stays above the video and below its controls. */
+.transformation-loading {
+ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+ flex-direction:column; gap:14px; color:#fff; font:600 16px/1.4 system-ui;
+ text-shadow:0 2px 5px #000; pointer-events:none;
+}
+.transformation-loading[hidden] { display:none; }
+.transformation-spinner {
+ display:block; width:48px; height:48px; border:4px solid #ffffff40;
+ border-top-color:#fff; border-radius:50%; box-shadow:0 0 12px #0004;
+ animation:transformation-loading-spin 1s linear infinite;
+}
+@keyframes transformation-loading-spin { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion:reduce) {
+ .transformation-spinner { animation:none; }
+}

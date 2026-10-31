@@ -1,4 +1,5 @@
 import {toast} from './toast';
+import {findShareCharacter,profileSpiritId} from './share-characters';
 import {openDialog,closeDialog,regionNames,audioContext,setInert,firstSentence} from './browser-compat';
 import {showShareLoading,startShareButtonLoading} from './share-loading';
 import {prepareSocialShare,loadShareConfig} from './social-share';
@@ -155,12 +156,12 @@ function setShareCard(id?: string) {
 }
 function dismissModal() {
   if (characterLocked) return;
-  const source = shareCardId && catalog.spirits.find(s => s.id === shareCardId);
+  const source = shareCardId && findShareCharacter(catalog,shareCardId);
   setShareCard();
   if (!source) { closeModal(); return; }
   if (overlay.querySelector('.character-dialog')) { closeModal(); return; }
   closeModal();
-  selected = source.id;
+  if (catalog.spirits.some(s=>s.id===source.id)) selected = source.id;
   region = source.regionId;
   if (page !== 'map') {
     page = 'map';
@@ -302,7 +303,7 @@ function reactionMeter(id: string) {
   return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${score}" aria-label="Scariness game score"></progress><div class="scariness-row"><strong data-world-scariness>${e(msg`World Scariness ${score} / 100`)}</strong><p data-personal-scare role="status" aria-live="polite" class="personal-scare">${e(scareLabel(readScare(player.id,id)))}</p></div></div>`;
 }
 function actionPair(id:string, preview=false) {
-  return html`<div class="reaction-actions"><div><div class="character-share-row"><button type="button" class="character-pumpkin" aria-label="${e("Trick or Treat Your Friend！")}" ${preview ? 'disabled' : ''}>🎃</button><span class="action-caption">${e("Trick or Treat Your Friend！")}</span>${preview ? '' : directShareButtons(id)}</div>${reactionMeter(id)}</div></div>`;
+  return html`<div class="reaction-actions"><div><div class="character-share-row"><button type="button" class="character-pumpkin" aria-label="${e("Trick or Treat Your Friend！")}" ${preview ? 'disabled' : ''}>🎃</button><span class="action-caption">${e("Trick or Treat Your Friend！")}</span>${directShareButtons(id)}</div>${reactionMeter(id)}</div></div>`;
 }
 function characterPanel() {
   const s = spirit();
@@ -424,11 +425,11 @@ async function openStory(id = selected) {
 }
 function openInvite(accepted = false) {
   if (!invite) return;
-  const s = spirit(invite.spiritId);
+  const s = findShareCharacter(catalog,invite.spiritId)!;
   const invitation = invite;
   const play = () => {
     if (invitation.expired) return;
-    selected = s.id;
+    if (catalog.spirits.some(character=>character.id===s.id)) selected = s.id;
     region = s.regionId;
     revealCharacter(false, {inviteId:invitation.id}, true);
   };
@@ -486,7 +487,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     try {
       const data=await api('/invites',{spiritId:id,channel});
       const shareUrl=new URL(`/api/share/card/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url).href;
-      const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`,url:shareUrl});
+      const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,url:shareUrl});
       if(destination && !destination.closed){watchShareReturn();destination.location.href=target;}
       else {
         modal(`<h2>X</h2><a class="button primary full" data-open-x href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(t('Continue to {{1}}').replace('{{1}}','X'))}</a>`);
@@ -526,13 +527,13 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   showShareLoading(node,'invite');
   prepareSocialShare(id);
   const beforeConfirm=()=>{
-    if(!player.initialized)return api('/onboard',{name:($('#share-name') as HTMLInputElement).value,country:($('#share-country') as HTMLSelectElement).value,spiritId:id}).then(result=>{player=result.player;});
+    if(!player.initialized)return api('/onboard',{name:($('#share-name') as HTMLInputElement).value,country:($('#share-country') as HTMLSelectElement).value,spiritId:profileSpiritId(catalog,id)}).then(result=>{player=result.player;});
   };
   try {
     const data=await api('/invites',{spiritId:id,channel});
     if(!node.isConnected || request!==shareRequest)return;
     if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await beforeConfirm();await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
-    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`,asset(spirit(id).art?.share || '/art/world-map.webp'),id,beforeConfirm);
+    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id,beforeConfirm);
   }catch(err){node.textContent=(err as Error).message;}
 }
 async function copyLink(url: string) {
@@ -839,7 +840,7 @@ async function boot() {
     if (token) {
       try {
         invite = await api<Invite>(`/invites/${token}`);
-        document.title=msg`${invite.name} sent ${spirit(invite.spiritId).name} to say Boo!`;
+        document.title=msg`${invite.name} sent ${findShareCharacter(catalog,invite.spiritId)!.name} to say Boo!`;
         if(!invite.expired)void api(`/invites/${token}/visit`, {}).catch(()=>{});
       } catch {
         toast(

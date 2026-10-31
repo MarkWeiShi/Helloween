@@ -1,3 +1,4 @@
+import {findShareCharacter} from '../shared/preview-characters.mjs';
 import {createBranchUnlock} from "./branch-unlock.mjs";
 import {createXPublisher} from './x-publish.mjs';
 import {createTelemetry} from './telemetry.mjs';
@@ -94,7 +95,7 @@ export function createApp({
       const facebookShare=url.pathname.match(/^\/api\/share\/(?:facebook|card)\/([\w-]+)$/) || url.pathname.match(/^\/i\/([\w-]+)$/);
       if (req.method==='GET' && facebookShare) {
         const invite=store.invite(facebookShare[1]);
-        const spirit=catalog.spirits.find(s=>s.id===invite.spiritId);
+        const spirit=findShareCharacter(catalog,invite.spiritId);
         if(!spirit)throw new ApiError(404,'This invitation could not be found.');
         const origin=process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
         res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});

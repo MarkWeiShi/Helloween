@@ -40,7 +40,12 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   const soundButton = document.createElement('button'); soundButton.type = 'button'; soundButton.className = 'transformation-sound button secondary';
   soundButton.onclick = () => { options.toggleSound?.(); audio(); };
   soundButton.hidden = !options.toggleSound;
-  host.append(poster, canvas, ...videos, soundButton); stage.append(host);
+  const loading = document.createElement('div'); loading.className = 'transformation-loading';
+  loading.setAttribute('role','status');
+  const spinner = document.createElement('span'); spinner.className = 'transformation-spinner'; spinner.setAttribute('aria-hidden','true');
+  const loadingLabel = document.createElement('span'); loadingLabel.textContent = 'Loading…';
+  loading.append(spinner,loadingLabel);
+  host.append(poster, canvas, ...videos, soundButton, loading); stage.append(host);
   // Place immersive playback directly in the dialog's top layer, outside stage clipping.
   const immersive = stage.closest?.<HTMLDialogElement>('dialog.character-immersive');
   const controls = immersive ? stage.closest<HTMLElement>('.globe-character') : null;
@@ -97,7 +102,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   const software = !gl ? canvas.getContext('2d', {willReadFrequently:true}) : null;
   if (software) { canvas.width = 360; canvas.height = 640; ready = true; }
   function pause() { clearTimeout(stallTimer); phase = 'idle'; ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); options.onPause?.(); }
-  function fail() { pause(); phase = 'idle'; canvas.hidden = true; poster.hidden = !entry; setMedia(!!entry); options.onError?.(); }
+  function fail() { pause(); phase = 'idle'; canvas.hidden = true; loading.hidden = false; poster.hidden = !entry || !revealed; setMedia(!!entry && revealed); options.onError?.(); }
   const sample = document.createElement('canvas'); sample.width=96;sample.height=170;
   const sampleContext=options.fillCharacter?sample.getContext('2d',{willReadFrequently:true}):null;
   function framing() {
@@ -141,7 +146,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
         }
         software.putImageData(image,0,0);
       }
-      setMedia(true); poster.hidden = true;
+      canvas.hidden = false; if(video.readyState >= 3) loading.hidden = true; setMedia(true); poster.hidden = true;
     } catch { fail(); return; }
     frame = requestAnimationFrame(draw);
   }
@@ -160,12 +165,13 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   }
   async function play() {
     clearTimeout(stallTimer); ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); const generation = ticket; phase = 'intro'; revealed = false; captureStarted = false;
+    // Hide the previous result while a replay or retry waits for its first frame.
+    poster.hidden = true; canvas.hidden = true; loading.hidden = false; setMedia(false);
     try {
       entry = await loadTransformation(id);
       if (dead || generation !== ticket || document.hidden) return false;
       poster.src = entry.poster;
       if (!ready) { fail(); return false; }
-      canvas.hidden = false;
       // Fetch both sources at the beginning, keeping the final intro frame while the loop becomes ready.
       if (intro.getAttribute('src') !== entry.entrance || intro.error) { intro.src = entry.entrance; intro.load(); }
       if (loop.getAttribute('src') !== entry.loop || loop.error) { loop.src = entry.loop; loop.load(); }
@@ -183,7 +189,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   };
   for (const media of videos) {
     media.onerror = () => { if (!dead && media === video) fail(); };
-    media.onwaiting = () => { if (media !== video) return; clearTimeout(stallTimer); stallTimer = setTimeout(() => { if (!dead) fail(); }, 10000); };
+    media.onwaiting = () => { if (media !== video) return; loading.hidden = false; clearTimeout(stallTimer); stallTimer = setTimeout(() => { if (!dead) fail(); }, 10000); };
     media.onplaying = () => { if (media === video) clearTimeout(stallTimer); };
   }
   const hidden = () => { if (document.hidden) pause(); };

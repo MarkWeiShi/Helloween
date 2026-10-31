@@ -1,3 +1,4 @@
+import {findShareCharacter,profileSpiritId} from './share-characters';
 import {publicAssetData} from './public-assets';
 import './line-share.css';
 import {resolveLanguage,resolveBrowserLanguage} from '../shared/i18n.mjs';
@@ -30,7 +31,7 @@ async function start(){
  if(!/^[\w-]{1,80}$/.test(token))throw Error(label('请从游戏中的 LINE 分享按钮打开此页。','Open this page using the LINE share button in the game.'));
  const [invite,catalog]=await Promise.all([read('/api/invites/'+token),loadCatalog()]);
  if(invite.expired)throw Error(label('此邀请已过期，请返回游戏生成新链接。','This invitation has expired. Create a new one in the game.'));
- const spirit=catalog.spirits.find((s:{id:string})=>s.id===invite.spiritId);
+ const spirit=findShareCharacter(catalog,invite.spiritId);
  if(!spirit)throw Error('Character unavailable');
 
  const session=await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});if(!session.ok)throw Error('Could not start your session.');const me=await session.json();
@@ -69,7 +70,7 @@ async function start(){
   if(!liff.isApiAvailable('shareTargetPicker')){root.querySelector<HTMLDetailsElement>('#share-options')!.open=true;status.textContent=label('当前环境无法使用好友选择器，请使用下方普通链接分享。','The friend picker is unavailable here. Use plain-link sharing below.');return;}
   button.disabled=true;status.textContent=label('请在 LINE 窗口中选择好友。若未弹窗，请展开“链接与其他选项”并在 LINE 中打开。','Choose friends in the LINE window. If no window appears, expand Link and other options to open in LINE.');
   try{
-   if(!me.player.initialized){const r=await fetch('/api/onboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:root.querySelector<HTMLInputElement>('#profile-name')!.value,country:root.querySelector<HTMLSelectElement>('#profile-country')!.value,spiritId:spirit.id})});const result=await r.json();if(!r.ok)throw Error(result.error);me.player=result.player;}
+   if(!me.player.initialized){const r=await fetch('/api/onboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:root.querySelector<HTMLInputElement>('#profile-name')!.value,country:root.querySelector<HTMLSelectElement>('#profile-country')!.value,spiritId:profileSpiritId(catalog,spirit.id)})});const result=await r.json();if(!r.ok)throw Error(result.error);me.player=result.player;}
    const caption=message.value.trim().slice(0,400)||text;
    const result=await liff.shareTargetPicker([{type:'flex',altText:caption,contents:{type:'bubble',size:'mega',body:{type:'box',layout:'vertical',backgroundColor:'#121b32',contents:[{type:'text',text:'Halloween Tricks by HelloTalk',color:'#A8DAC8',size:'sm',wrap:true},{type:'box',layout:'horizontal',margin:'md',alignItems:'center',contents:[{type:'image',url:image,size:'full',flex:4,aspectRatio:ratio,aspectMode:'fit',...(animated?{animated:true}:{}),action:{type:'uri',uri:url}},{type:'box',layout:'vertical',flex:5,spacing:'sm',contents:[{type:'text',text:nativeName,color:'#FFB66D',weight:'bold',wrap:true},{type:'text',text:englishName,color:'#F7F0DF',size:'sm',wrap:true},{type:'text',text:culture,color:'#C3CBD9',size:'xs',wrap:true,maxLines:2,align:language==='ar'?'end':'start'}]}]},{type:'text',text:caption,color:'#F7F0DF',wrap:true,margin:'md',size:'sm'}]},footer:{type:'box',layout:'vertical',contents:[{type:'button',style:'primary',color:'#067D46',action:{type:'uri',label:label('观看变身','Watch the transformation'),uri:url}}]}}}],{isMultiple:true});
    status.textContent=result?.status==='success'?label('卡片已发送。','Card sent.'):label('已取消，未发送。','Cancelled. Nothing was sent.');

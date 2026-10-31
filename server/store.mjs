@@ -1,3 +1,4 @@
+import {findShareCharacter} from '../shared/preview-characters.mjs';
 import {languages} from '../shared/i18n.mjs';
 import { pitchLevel, personalScareScore } from "../shared/reactions.mjs";
 import { DatabaseSync } from "node:sqlite";
@@ -264,7 +265,7 @@ export class BooStore {
   cancelMatch() {fail(410,'This feature has retired.');}
   createInvite(id, { spiritId, channel, friendName = "" }) {
     this.rawPlayer(id);
-    this.spirit(spiritId);
+    if (!findShareCharacter(this.catalog,spiritId)) fail(400, 'That character is not available.');
     if (!CHANNELS.includes(channel))
       fail(400, "Choose a supported sharing option.");
     if (typeof friendName !== 'string' || friendName.trim().length > 24 || /[\u0000-\u001f\u007f]/.test(friendName)) fail(400, 'Use a friend name of up to 24 characters.');
