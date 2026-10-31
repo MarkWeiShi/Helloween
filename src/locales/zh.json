@@ -1359,5 +1359,6 @@
   "Invalid event.": "Invalid event.",
   "Send JSON.": "Send JSON.",
   "Use POST.": "Use POST.",
-  "Webhook too large.": "Webhook too large."
+  "Webhook too large.": "Webhook too large.",
+  "You’ll be redirected to the app store. Download HelloTalk to hear your friends’ screams.": "即将跳转应用商场，下载HelloTalk后即可收听朋友尖叫声"
 }

@@ -1,17 +1,19 @@
 import {api} from './api';
-import {locale} from './i18n';
+import {locale,t} from './i18n';
+import {toast} from './toast';
 
 type UnlockState = {enabled:boolean; available:boolean; signedIn:boolean; unlocked:boolean; pending:boolean; expiresAt:number|null; url?:string};
 // The first play click grants playback and takes the visitor to HelloTalk once.
 export function mountHelloTalkUnlock(root:HTMLElement) {
   const status=root.querySelector<HTMLElement>('[data-links-status]')!;
   let dead=false,checking=false,requesting=false,state:UnlockState|undefined;
+  let cancelRedirect: (()=>void) | undefined;
   const copy=(zh:string,en:string)=>locale==='zh'?zh:en;
   function refresh() {
     const allowed=!!state&&(!state.enabled||state.unlocked);
     root.querySelectorAll<HTMLButtonElement>('[data-unlock-play]').forEach(button=>{
       button.hidden=allowed;button.disabled=!state||requesting;
-      button.textContent=copy('▶ 播放声音','▶ Play voice');
+      button.textContent='▶ '+t('Play voice');
     });
     root.querySelectorAll<HTMLAudioElement>('[data-voice-audio]').forEach(audio=>{
       audio.hidden=!allowed;
@@ -42,6 +44,14 @@ export function mountHelloTalkUnlock(root:HTMLElement) {
       if(result.unlocked&&!result.url){refresh();status.textContent=copy('已解锁，请点击播放。','Unlocked. Tap play.');return;}
       const link=new URL(result.url||'');
       if(link.protocol!=='https:'||link.hostname!=='brc.hellotalk.com')throw new Error('Invalid HelloTalk link.');
+      // Keep the explanation visible for four seconds before leaving the game.
+      const dismiss=toast(t('You’ll be redirected to the app store. Download HelloTalk to hear your friends’ screams.'),4000);
+      await new Promise<void>(resolve=>{
+        const timer=setTimeout(resolve,4000);
+        cancelRedirect=()=>{clearTimeout(timer);dismiss();resolve();};
+      });
+      cancelRedirect=undefined;
+      if(dead)return;
       // Keep a return entry pointing directly to the recordings tab, including locale.
       const back=new URL(location.href);back.pathname='/my-links';
       history.replaceState(null,'',back);
@@ -53,5 +63,5 @@ export function mountHelloTalkUnlock(root:HTMLElement) {
   const resume=()=>void check();
   window.addEventListener('focus',resume);window.addEventListener('pageshow',resume);document.addEventListener('visibilitychange',resume);
   void check();
-  return {refresh, destroy(){dead=true;root.removeEventListener('click',play);window.removeEventListener('focus',resume);window.removeEventListener('pageshow',resume);document.removeEventListener('visibilitychange',resume);}};
+  return {refresh, destroy(){dead=true;cancelRedirect?.();root.removeEventListener('click',play);window.removeEventListener('focus',resume);window.removeEventListener('pageshow',resume);document.removeEventListener('visibilitychange',resume);}};
 }

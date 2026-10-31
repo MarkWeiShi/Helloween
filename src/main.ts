@@ -1,3 +1,4 @@
+import {toast} from './toast';
 import {openDialog,closeDialog,regionNames,audioContext,setInert,firstSentence} from './browser-compat';
 import {showShareLoading,startShareButtonLoading} from './share-loading';
 import {prepareSocialShare,loadShareConfig} from './social-share';
@@ -45,8 +46,7 @@ let region = "JP",
 let boardGroup = "players";
 let boardScope = "trick",
   boardTimer: ReturnType<typeof setInterval> | undefined;
-let modalCleanup: (() => void) | undefined,
-  toastTimer: ReturnType<typeof setTimeout>;
+let modalCleanup: (() => void) | undefined;
 let mic: Awaited<ReturnType<typeof prepareMicrophone>> | undefined;
 let gateBusy = false;
 let microphoneUnlocked = false;
@@ -87,13 +87,7 @@ function thumb(s: Spirit) {
 function button(label: string, action: string, cls = "primary", extra = "") {
   return html`<button class="button ${cls}" data-action="${action}" ${extra}>${label}</button>`;
 }
-function toast(text: string) {
-  const t = $("#toast")!;
-  t.textContent = text;
-  t.classList.add("visible");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove("visible"), 4200);
-}
+
 const bgm = createBgm(() => sound && page === 'map' && !gateBusy);
 let playbackContext: AudioContext | undefined;
 function enablePlayback() {
