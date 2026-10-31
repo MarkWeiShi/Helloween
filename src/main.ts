@@ -309,7 +309,7 @@ function characterPanel() {
   const preview = regionPreviews[region];
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasTransformation = !!(friends.length ? s.art : previewId);
-  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation"><span></span><div class="character-top-actions"><button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
+  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation"><span></span><div class="character-top-actions">${friends.length || previewId ? html`<button type="button" class="icon-button character-share" data-action="send-share" data-channel="copy" data-id="${e(friends.length?s.id:previewId!)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
 }
 async function openReactions() {
   closeModal();gate=false;page='links';history.replaceState(null,'','/my-links');render();
@@ -517,16 +517,29 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   try {
     const data=await createShareInvitation(id,channel);
     if(!node.isConnected || request!==shareRequest)return;
-    if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
+    if(channel==='copy'){
+      const guidance=locale==='zh'?'复制你的专属分享链接，然后前往其他社交平台，粘贴到动态或聊天中分享给朋友。':'Copy your personal invitation link, then open another social app and paste it into a post or chat to share with friends.';
+      node.innerHTML=`<p>${e(guidance)}</p><label class="share-link-label">${e(t('Your invitation link'))}<input readonly aria-label="${e(t('Invitation link'))}" value="${e(data.url)}"></label><button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button><p role="status" aria-live="polite" data-copy-status></p>`;
+      const input=node.querySelector<HTMLInputElement>('input')!;
+      input.onclick=()=>input.select();
+      node.querySelector<HTMLButtonElement>('[data-copy-confirm]')!.onclick=async()=>{
+        const copied=await copyLink(data.url);
+        if(!node.isConnected)return;
+        node.querySelector('[data-copy-status]')!.textContent=copied
+          ? (locale==='zh'?'链接已复制！现在打开其他社交平台，粘贴到动态或聊天中即可分享。':'Link copied! Open another social app and paste it into a post or chat to share.')
+          : t('Your invitation is ready. Select and copy the link below.');
+        if(!copied){input.focus();input.select();}
+      };
+    }
     else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id);
   }catch(err){node.textContent=(err as Error).message;}
 }
 async function copyLink(url: string) {
   try {
     await navigator.clipboard.writeText(url);
-    toast(t("Invitation link copied. Send it to someone who needs a smile."));
+    return true;
   } catch {
-    toast(t("Your invitation is ready. Select and copy the link below."));
+    return false;
   }
 }
 async function downloadCard(id: string) {
