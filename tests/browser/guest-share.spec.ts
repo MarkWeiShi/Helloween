@@ -26,10 +26,8 @@ for(const selectedChannel of ['line','facebook','kakao','wechat','copy','x','sig
  await page.route('https://static.line-scdn.net/**',r=>r.fulfill({contentType:'application/javascript',body:'window.liff={init:async()=>{},isLoggedIn:()=>false,login:x=>window.lineAuth=x.redirectUri}'}));
  await page.route('**/api/social/config',r=>r.fulfill({json:{origin,lineLiffId:'test-liff',kakaoKey:'',wechatReady:false,facebookAppId:''}}));
  await page.request.post(origin+'/api/session',{data:{}});
- await page.request.post(origin+'/api/onboard',{data:{name:'Guest',country:'CN',spiritId:'jiangshi'}});
  if(signedX){
   const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,'direct-x-'+test.info().project.name);
-  app.store.onboard(login.player.id,{name:'Tester',country:'CN',spiritId:'jiangshi'});
   await context.clearCookies();
   await context.addCookies([{name:'boo_session',value:login.token,url:origin}]);
   await context.route('https://x.com/**',r=>r.fulfill({body:'X composer fixture'}));
@@ -47,6 +45,10 @@ for(const selectedChannel of ['line','facebook','kakao','wechat','copy','x','sig
  const xPopup=signedX?context.waitForEvent('page'):null;
  const facebookPopup=channel==='facebook'?page.waitForEvent('popup'):null;
  await page.locator(`[data-action="send-share"][data-channel="${channel}"]`).click();
+ await expect(page.locator('#share-name,#share-country,#join-form')).toHaveCount(0);
+ const state=await (await page.request.get(origin+'/api/me')).json();
+ expect(state.player.country).toBe('001');expect(state.player.initialized).toBe(false);
+ if(channel==='copy'){await page.locator('[data-copy-confirm]').click();await expect(page.locator('#join-form')).toHaveCount(0);}
  if(channel==='line'){await expect(page.locator('[data-line-app]')).toHaveAttribute('href',/^https:\/\/liff.line.me\/test-liff\?invite=/);await expect(page.locator('[data-line-app]')).toHaveAttribute('target','_blank');expect(authRequests).toEqual([]);return;}
  if(facebookPopup){const target=await facebookPopup;await expect(target).toHaveURL(/^https:\/\/www.facebook.com\/sharer/);await target.close();expect(authRequests).toEqual([]);return;}
  if(xPopup){const target=await xPopup;await expect(target).toHaveURL(/^https:\/\/x.com\/intent\/post/);const url=new URL(target.url());expect(url.searchParams.get('text')).toContain('Jiangshi');expect(url.searchParams.get('url')).toContain('/api/share/card/');expect(authRequests).toEqual([]);await expect(page.locator('[data-publish-x],.account-panel')).toHaveCount(0);await target.close();return;}

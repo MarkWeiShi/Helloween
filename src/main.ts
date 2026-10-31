@@ -1,6 +1,6 @@
 import {publicAssetUrl} from './public-assets';
 import {toast} from './toast';
-import {findShareCharacter,profileSpiritId} from './share-characters';
+import {findShareCharacter} from './share-characters';
 import {openDialog,closeDialog,regionNames,audioContext,setInert} from './browser-compat';
 import {showShareLoading,startShareButtonLoading} from './share-loading';
 import {prepareSocialShare,loadShareConfig} from './social-share';
@@ -68,7 +68,7 @@ const progress = (id = selected) =>
   player.progress.find((p) => p.spiritId === id);
 const asset = (path: string) => `${catalog.assetOrigin}${path}`;
 const flag = (code: string) =>
-  code
+  code === "001" ? "🌍" : code
     .toUpperCase()
     .replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
 function portrait(
@@ -335,7 +335,7 @@ async function loadBoard() {
     const node=$('#board-content');
     if(!node || scope!==boardScope || group!==boardGroup)return;
     const names=regionNames(locale);
-    const row=(r:any,self=false)=>html`<div class="board-row ${self?'is-you':''}"><span class="rank">${r.rank}</span><span class="board-avatar" aria-hidden="true">${group==='countries'?flag(r.id):scope==='trick'?'🎃':'👻'}</span><span class="board-name"><strong>${e(group==='countries'?names.of(r.id)||r.id:r.name)}${self?html` <small>${group==='countries'?t('Your country'):t('You')}</small>`:''}</strong><span>${r.recordings} ${t('recordings')} · ${r.participants} ${t('participants')}</span></span><strong class="board-score">${Number(r.score).toLocaleString(locale,{maximumFractionDigits:2})}${scope==='intensity'?' / 100':''}</strong></div>`;
+    const row=(r:any,self=false)=>html`<div class="board-row ${self?'is-you':''}"><span class="rank">${r.rank}</span><span class="board-avatar" aria-hidden="true">${group==='countries'?flag(r.id):scope==='trick'?'🎃':'👻'}</span><span class="board-name"><strong>${e(group==='countries'?(r.id==='001'?t('Earthling'):names.of(r.id)||r.id):r.name)}${self?html` <small>${group==='countries'?t('Your country'):t('You')}</small>`:''}</strong><span>${r.recordings} ${t('recordings')} · ${r.participants} ${t('participants')}</span></span><strong class="board-score">${Number(r.score).toLocaleString(locale,{maximumFractionDigits:2})}${scope==='intensity'?' / 100':''}</strong></div>`;
     node.innerHTML=data.rows.length?`${data.self?`<div class="your-rank">${row(data.self,true)}</div>`:''}<div class="board-list">${data.rows.map((r:any)=>row(r)).join('')}</div>`:html`<p class="rank-empty">${scope==='trick'?t('No recordings received yet.'):t('No eligible scream scores yet.')}</p>`;
   } catch(err) {
     const node=$('#board-content');if(node && scope===boardScope && group===boardGroup)node.innerHTML=html`<p>${e((err as Error).message)}</p>${button(t('Try again'),'reload-board','secondary')}`;
@@ -357,7 +357,7 @@ function openProfile(next?: () => void | Promise<void>) {
     return;
   }
   modal(
-    html`<div class="modal-heading">${icon("ghost")}<h2>Make yourself<br>at ghost.</h2><p>No account needed. A name, a home, and a little imagination.</p></div><form id="join-form"><label>Your parade name<input name="name" maxlength="24" autocomplete="nickname" value="${e(player.name)}" required></label><label>Your country or region<select name="country" required><option value="">Choose your home</option>${catalog.countries.map((c) => html`<option value="${c.code}">${e(c.name)}</option>`).join("")}</select></label><div class="join-character">${thumb(spirit())}<span>Your first folklore friend<strong>${e(spirit().name)}</strong></span></div><p class="form-error" role="alert"></p><button class="button primary full" type="submit">Join the parade ${icon("arrow")}</button></form>`,
+    html`<div class="modal-heading">${icon("ghost")}<h2>Make yourself<br>at ghost.</h2><p>No account needed. A name, a home, and a little imagination.</p></div><form id="join-form"><label>Your parade name<input name="name" maxlength="24" autocomplete="nickname" value="${e(player.name)}" required></label><label>Your country or region<select name="country" required>${catalog.countries.map((c) => html`<option value="${c.code}" ${c.code===(player.country||"001")?"selected":""}>${e(c.name)}</option>`).join("")}</select></label><div class="join-character">${thumb(spirit())}<span>Your first folklore friend<strong>${e(spirit().name)}</strong></span></div><p class="form-error" role="alert"></p><button class="button primary full" type="submit">Join the parade ${icon("arrow")}</button></form>`,
   );
   $("#join-form")!.addEventListener("submit", async (ev) => {
     ev.preventDefault();
@@ -487,7 +487,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     finally{finishLoading();}
     return;
   }
-  if(channel==='line' || (channel==='facebook' && player.initialized)) {
+  if(channel==='line' || channel==='facebook') {
     const finishLoading=startShareButtonLoading(btn);
     const destination=channel==='facebook'?window.open('about:blank','_blank'):null;
     if(destination)destination.opener=null;
@@ -511,19 +511,16 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     finally{finishLoading();}
   }
   const request=++shareRequest;
-  modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel==='messenger'?'Messenger':channel==='whatsapp'?'WhatsApp':channel.toUpperCase()}`)}</h2>${!player.initialized?`<div class="share-profile"><label>${e(t('Your parade name'))}<input id="share-name" maxlength="24" value="${e(player.name)}"></label><label>${e(t('Your country or region'))}<select id="share-country"><option value="">${e(t('Choose your home'))}</option>${catalog.countries.map(c=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<div id="share-link"></div>`);
+  modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel==='messenger'?'Messenger':channel==='whatsapp'?'WhatsApp':channel.toUpperCase()}`)}</h2><div id="share-link"></div>`);
   overlay.querySelector('dialog')!.classList.add('compact-share');
   const node=$('#share-link')!;
   showShareLoading(node,'invite');
   prepareSocialShare(id);
-  const beforeConfirm=()=>{
-    if(!player.initialized)return api('/onboard',{name:($('#share-name') as HTMLInputElement).value,country:($('#share-country') as HTMLSelectElement).value,spiritId:profileSpiritId(catalog,id)}).then(result=>{player=result.player;});
-  };
   try {
     const data=await api('/invites',{spiritId:id,channel});
     if(!node.isConnected || request!==shareRequest)return;
-    if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await beforeConfirm();await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
-    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id,beforeConfirm);
+    if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
+    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id);
   }catch(err){node.textContent=(err as Error).message;}
 }
 async function copyLink(url: string) {

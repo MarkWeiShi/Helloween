@@ -71,7 +71,7 @@ test("HTTP session, CSRF, visitor privacy and retired gift endpoints", async () 
     );
     const catalog = await (await send("/api/catalog")).json();
     assert.equal(catalog.spirits.length, 56);
-    assert.equal(catalog.countries.length, 249);
+    assert.equal(catalog.countries.length, 250);
     assert.equal(catalog.spirits[0].story, undefined, "endings load on demand");
     assert.equal(catalog.spirits[0].reviewNotes, undefined);
     const invite = await (

@@ -9,7 +9,7 @@ import {
   RULES,
   CHANNELS,
 } from "../shared/rules.mjs";
-import { COUNTRY_CODES } from "../shared/countries.mjs";
+import { COUNTRY_CODES, EARTH_COUNTRY } from "../shared/countries.mjs";
 
 export class ApiError extends Error {
   constructor(status, message) {
@@ -144,10 +144,11 @@ export class BooStore {
       token = randomBytes(32).toString("base64url");
     this.transaction(() => {
       this.db
-        .prepare("INSERT INTO players(id,name,created_at) VALUES(?,?,?)")
+        .prepare("INSERT INTO players(id,name,country,created_at) VALUES(?,?,?,?)")
         .run(
           id,
           `Little Boo ${randomBytes(2).toString("hex").toUpperCase()}`,
+          EARTH_COUNTRY,
           this.now(),
         );
       this.db
@@ -270,6 +271,8 @@ export class BooStore {
       fail(400, "Choose a supported sharing option.");
     if (typeof friendName !== 'string' || friendName.trim().length > 24 || /[\u0000-\u001f\u007f]/.test(friendName)) fail(400, 'Use a friend name of up to 24 characters.');
     friendName = friendName.trim();
+    // Existing guests keep their nickname and explicit affiliation.
+    this.db.prepare("UPDATE players SET country=? WHERE id=? AND (country IS NULL OR country='')").run(EARTH_COUNTRY,id);
     const token = randomBytes(16).toString("base64url");
     this.db
       .prepare("INSERT INTO invites VALUES(?,?,?,?,?)")

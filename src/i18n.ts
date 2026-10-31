@@ -23,7 +23,7 @@ export async function initLanguage() {
 }
 export function content<T>(value:T):T {const result=localizeCatalog(value,dictionary) as T;
  const countries=(result as {countries?:{code:string;name:string}[]})?.countries;
- if(countries){const names=regionNames(locale);for(const country of countries)country.name=names.of(country.code)||country.name;}
+ if(countries){const names=regionNames(locale);for(const country of countries)country.name=country.code==='001'?t('Earthling'):names.of(country.code)||country.name;}
  return result;}
 const languageFlags: Record<string,string> = {en:'🇬🇧',zh:'🇨🇳',es:'🇪🇸',pt:'🇧🇷',fr:'🇫🇷',de:'🇩🇪',it:'🇮🇹',ru:'🇷🇺',ar:'🇸🇦',hi:'🇮🇳',ja:'🇯🇵',ko:'🇰🇷',id:'🇮🇩',th:'🇹🇭',vi:'🇻🇳'};
 export function languageSelector() {
