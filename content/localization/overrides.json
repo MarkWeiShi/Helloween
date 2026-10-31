@@ -307,8 +307,8 @@
     "Invalid analytics sample.": "Invalid analytics sample.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Your inviter’s recording storage is full. You can still watch and share.",
     "Agree and unlock": "Agree and unlock",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Mic: auto-measure, scores only.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Invites: 6s audio, inviter only. Cancel before send.",
     "Unlock once on the homepage to enable automatic voice capture.": "Unlock once on the homepage to enable automatic voice capture."
   },
   "zh": {
@@ -808,8 +808,8 @@
     "Invalid analytics sample.": "统计数据格式无效。",
     "Your inviter’s recording storage is full. You can still watch and share.": "邀请人的录音空间已满，你仍可观看和分享。",
     "Agree and unlock": "同意并解锁",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "开启麦克风，变身时自动测量声音；普通探索仅上传分数。",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "好友邀请会上传 6 秒录音，仅邀请人可听，发送前可取消。",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "开启麦克风，自动测声、仅传分数",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "邀请录音6秒，仅邀请人可听，可取消",
     "Unlock once on the homepage to enable automatic voice capture.": "在主页解锁授权一次，之后自动采集声音。"
   },
   "es": {
@@ -1143,8 +1143,8 @@
     "Invalid analytics sample.": "Muestra estadística no válida.",
     "Your inviter’s recording storage is full. You can still watch and share.": "El almacenamiento de grabaciones de quien te invitó está lleno. Puedes seguir mirando y compartiendo.",
     "Agree and unlock": "Aceptar y desbloquear",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Permite el micrófono. Las transformaciones miden tu voz automáticamente; el juego normal solo envía puntuaciones.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Las invitaciones envían una grabación de seis segundos solo a quien te invitó. Puedes cancelar antes del envío.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Micrófono: medición, solo puntos.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Invitación: audio de 6 s solo a quien invita. Cancelable.",
     "Unlock once on the homepage to enable automatic voice capture.": "Autoriza una vez en el inicio para capturar la voz automáticamente."
   },
   "pt": {
@@ -1478,8 +1478,8 @@
     "Invalid analytics sample.": "Amostra estatística inválida.",
     "Your inviter’s recording storage is full. You can still watch and share.": "O armazenamento de gravações de quem convidou você está cheio. Você ainda pode assistir e compartilhar.",
     "Agree and unlock": "Concordar e desbloquear",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Permita o microfone. As transformações medem sua voz automaticamente; o jogo normal envia apenas pontuações.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Convites enviam uma gravação de seis segundos apenas a quem convidou. Você pode cancelar antes do envio.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Microfone: medição, só pontuação.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Convite: áudio de 6 s só para quem convida. Pode cancelar.",
     "Unlock once on the homepage to enable automatic voice capture.": "Autorize uma vez na página inicial para captar a voz automaticamente."
   },
   "fr": {
@@ -1813,8 +1813,8 @@
     "Invalid analytics sample.": "Échantillon statistique invalide.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Le stockage des enregistrements de la personne qui vous a invité est plein. Vous pouvez toujours regarder et partager.",
     "Agree and unlock": "Accepter et déverrouiller",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Autorisez le micro. Les transformations mesurent votre voix automatiquement ; le jeu ordinaire envoie uniquement des scores.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Les invitations envoient six secondes d’enregistrement uniquement à la personne qui vous invite. Annulez avant l’envoi si besoin.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Micro : mesure auto, scores seuls.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Invitation : audio de 6 s pour l’invitant. Annulable.",
     "Unlock once on the homepage to enable automatic voice capture.": "Autorisez une fois depuis l’accueil pour activer la capture vocale automatique."
   },
   "de": {
@@ -2148,8 +2148,8 @@
     "Invalid analytics sample.": "Ungültige Statistikdaten.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Der Aufnahmespeicher der einladenden Person ist voll. Du kannst weiterhin ansehen und teilen.",
     "Agree and unlock": "Zustimmen und entsperren",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Erlaube das Mikrofon. Verwandlungen messen deine Stimme automatisch; im normalen Spiel werden nur Werte übertragen.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Bei Einladungen gehen sechs Sekunden Aufnahme nur an die einladende Person. Vor dem Senden kannst du abbrechen.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Mikro an: messen, nur Werte.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Einladung: 6 s Ton nur für Einladende. Abbrechen möglich.",
     "Unlock once on the homepage to enable automatic voice capture.": "Erlaube den Zugriff einmal auf der Startseite für automatische Sprachaufnahme."
   },
   "it": {
@@ -2483,8 +2483,8 @@
     "Invalid analytics sample.": "Campione statistico non valido.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Lo spazio delle registrazioni di chi ti ha invitato è pieno. Puoi comunque guardare e condividere.",
     "Agree and unlock": "Accetta e sblocca",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Consenti il microfono. Le trasformazioni misurano la voce automaticamente; il gioco normale invia solo punteggi.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Gli inviti inviano sei secondi di registrazione solo a chi ti ha invitato. Puoi annullare prima dell’invio.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Microfono: misura, solo punteggi.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Inviti: audio di 6 s solo a chi invita. Puoi annullare.",
     "Unlock once on the homepage to enable automatic voice capture.": "Autorizza una volta nella home per attivare la rilevazione vocale automatica."
   },
   "ru": {
@@ -2818,8 +2818,8 @@
     "Invalid analytics sample.": "Неверные статистические данные.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Хранилище записей пригласившего вас человека заполнено. Можно смотреть и делиться.",
     "Agree and unlock": "Согласиться и открыть",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Разрешите микрофон. Превращения автоматически измеряют голос; в обычной игре отправляются только баллы.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "По приглашению шесть секунд записи отправляются только пригласившему. До отправки можно отменить.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Микрофон: автозамер, только баллы.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "По приглашению: 6 с аудио лишь пригласившему. Можно отменить.",
     "Unlock once on the homepage to enable automatic voice capture.": "Один раз разрешите доступ на главной странице для автоматической записи голоса."
   },
   "ar": {
@@ -3153,8 +3153,8 @@
     "Invalid analytics sample.": "بيانات إحصائية غير صالحة.",
     "Your inviter’s recording storage is full. You can still watch and share.": "مساحة تسجيلات من دعاك ممتلئة. لا يزال بإمكانك المشاهدة والمشاركة.",
     "Agree and unlock": "الموافقة وفتح اللعبة",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "اسمح بالميكروفون. تقيس التحولات صوتك تلقائيًا؛ اللعب العادي يرسل الدرجات فقط.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "ترسل الدعوات تسجيلًا مدته ست ثوانٍ إلى صاحب الدعوة فقط. يمكنك الإلغاء قبل الإرسال.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "الميكروفون: قياس تلقائي، درجات فقط.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "الدعوة: تسجيل 6 ثوانٍ لصاحبها فقط. يمكن الإلغاء قبل الإرسال.",
     "Unlock once on the homepage to enable automatic voice capture.": "اسمح مرة واحدة من الصفحة الرئيسية لالتقاط الصوت تلقائيًا."
   },
   "hi": {
@@ -3488,8 +3488,8 @@
     "Invalid analytics sample.": "अमान्य सांख्यिकी डेटा।",
     "Your inviter’s recording storage is full. You can still watch and share.": "आमंत्रित करने वाले का रिकॉर्डिंग स्थान भर गया है। आप फिर भी देख और साझा कर सकते हैं।",
     "Agree and unlock": "सहमत होकर अनलॉक करें",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "माइक्रोफ़ोन की अनुमति दें। रूपांतरण में आवाज़ अपने आप मापी जाती है; सामान्य खेल में केवल स्कोर भेजे जाते हैं।",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "दोस्त के निमंत्रण में छह सेकंड की रिकॉर्डिंग केवल आमंत्रित करने वाले को भेजी जाती है। भेजने से पहले रद्द कर सकते हैं।",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "माइक: अपने आप मापन, केवल स्कोर।",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "निमंत्रण: 6 सेकंड की आवाज़ सिर्फ भेजने वाले को। भेजने से पहले रद्द करें।",
     "Unlock once on the homepage to enable automatic voice capture.": "होम पेज पर एक बार अनुमति दें, फिर आवाज़ अपने आप रिकॉर्ड होगी।"
   },
   "ja": {
@@ -3825,8 +3825,8 @@
     "Invalid analytics sample.": "統計データが無効です。",
     "Your inviter’s recording storage is full. You can still watch and share.": "招待者の録音保存容量がいっぱいです。視聴・共有はできます。",
     "Agree and unlock": "同意して解除",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "マイクを許可すると変身中に音声を自動測定します。通常の探索ではスコアのみ送信します。",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "友達の招待では6秒の録音を招待者だけに送信します。送信前にキャンセルできます。",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "マイクで自動測定、スコアのみ送信",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "招待は6秒録音、招待者のみ再生。送信前に取消可",
     "Unlock once on the homepage to enable automatic voice capture.": "ホームで一度許可すると、以後は自動で音声を取得します。"
   },
   "ko": {
@@ -4161,8 +4161,8 @@
     "Invalid analytics sample.": "잘못된 통계 데이터입니다.",
     "Your inviter’s recording storage is full. You can still watch and share.": "초대한 사람의 녹음 저장 공간이 가득 찼습니다. 시청과 공유는 계속할 수 있습니다.",
     "Agree and unlock": "동의하고 잠금 해제",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "마이크를 허용하면 변신 중 음성을 자동 측정합니다. 일반 탐색은 점수만 전송합니다.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "친구 초대에서는 6초 녹음을 초대한 사람에게만 보냅니다. 전송 전에 취소할 수 있습니다.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "마이크 자동 측정, 점수만 전송",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "초대 시 6초 녹음은 초대한 사람만 청취. 전송 전 취소 가능",
     "Unlock once on the homepage to enable automatic voice capture.": "홈에서 한 번 허용하면 이후 음성을 자동 수집합니다."
   },
   "id": {
@@ -4496,8 +4496,8 @@
     "Invalid analytics sample.": "Data statistik tidak valid.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Penyimpanan rekaman pengundang penuh. Anda tetap dapat menonton dan berbagi.",
     "Agree and unlock": "Setuju dan buka",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Izinkan mikrofon. Transformasi mengukur suara otomatis; permainan biasa hanya mengirim skor.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Undangan mengirim rekaman enam detik hanya kepada pengundang. Anda dapat membatalkan sebelum dikirim.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Mikrofon: ukur otomatis, hanya skor.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Undangan: audio 6 dtk hanya untuk pengundang. Bisa dibatalkan.",
     "Unlock once on the homepage to enable automatic voice capture.": "Izinkan sekali di beranda untuk pengambilan suara otomatis."
   },
   "th": {
@@ -4831,8 +4831,8 @@
     "Invalid analytics sample.": "ข้อมูลสถิติไม่ถูกต้อง",
     "Your inviter’s recording storage is full. You can still watch and share.": "พื้นที่บันทึกเสียงของผู้เชิญเต็มแล้ว คุณยังดูและแชร์ได้",
     "Agree and unlock": "ยอมรับและปลดล็อก",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "อนุญาตไมโครโฟน การแปลงร่างจะวัดเสียงอัตโนมัติ การเล่นทั่วไปส่งเฉพาะคะแนน",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "คำเชิญจะส่งเสียงบันทึก 6 วินาทีให้ผู้เชิญเท่านั้น ยกเลิกได้ก่อนส่ง",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "ไมค์วัดเสียงอัตโนมัติ ส่งเฉพาะคะแนน",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "คำเชิญ: เสียง 6 วิ ให้ผู้เชิญเท่านั้น ยกเลิกก่อนส่งได้",
     "Unlock once on the homepage to enable automatic voice capture.": "อนุญาตครั้งเดียวที่หน้าแรกเพื่อเก็บเสียงอัตโนมัติ"
   },
   "vi": {
@@ -5166,8 +5166,8 @@
     "Invalid analytics sample.": "Dữ liệu thống kê không hợp lệ.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Bộ nhớ ghi âm của người mời đã đầy. Bạn vẫn có thể xem và chia sẻ.",
     "Agree and unlock": "Đồng ý và mở khóa",
-    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Cho phép micrô. Biến hình tự động đo giọng nói; chơi thông thường chỉ gửi điểm số.",
-    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Lời mời gửi sáu giây ghi âm chỉ cho người mời. Bạn có thể hủy trước khi gửi.",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Mic tự đo, chỉ gửi điểm.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Lời mời: âm thanh 6 giây chỉ cho người mời. Hủy trước khi gửi.",
     "Unlock once on the homepage to enable automatic voice capture.": "Cho phép một lần ở trang chủ để tự động thu giọng nói."
   }
 }

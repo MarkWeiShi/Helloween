@@ -1448,7 +1448,7 @@
   "Invalid analytics sample.": "Muestra estadística no válida.",
   "Your inviter’s recording storage is full. You can still watch and share.": "El almacenamiento de grabaciones de quien te invitó está lleno. Puedes seguir mirando y compartiendo.",
   "Agree and unlock": "Aceptar y desbloquear",
-  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Permite el micrófono. Las transformaciones miden tu voz automáticamente; el juego normal solo envía puntuaciones.",
-  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Las invitaciones envían una grabación de seis segundos solo a quien te invitó. Puedes cancelar antes del envío.",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Micrófono: medición, solo puntos.",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Invitación: audio de 6 s solo a quien invita. Cancelable.",
   "Unlock once on the homepage to enable automatic voice capture.": "Autoriza una vez en el inicio para capturar la voz automáticamente."
 }

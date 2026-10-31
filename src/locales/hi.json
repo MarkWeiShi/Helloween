@@ -1448,7 +1448,7 @@
   "Invalid analytics sample.": "अमान्य सांख्यिकी डेटा।",
   "Your inviter’s recording storage is full. You can still watch and share.": "आमंत्रित करने वाले का रिकॉर्डिंग स्थान भर गया है। आप फिर भी देख और साझा कर सकते हैं।",
   "Agree and unlock": "सहमत होकर अनलॉक करें",
-  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "माइक्रोफ़ोन की अनुमति दें। रूपांतरण में आवाज़ अपने आप मापी जाती है; सामान्य खेल में केवल स्कोर भेजे जाते हैं।",
-  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "दोस्त के निमंत्रण में छह सेकंड की रिकॉर्डिंग केवल आमंत्रित करने वाले को भेजी जाती है। भेजने से पहले रद्द कर सकते हैं।",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "माइक: अपने आप मापन, केवल स्कोर।",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "निमंत्रण: 6 सेकंड की आवाज़ सिर्फ भेजने वाले को। भेजने से पहले रद्द करें।",
   "Unlock once on the homepage to enable automatic voice capture.": "होम पेज पर एक बार अनुमति दें, फिर आवाज़ अपने आप रिकॉर्ड होगी।"
 }

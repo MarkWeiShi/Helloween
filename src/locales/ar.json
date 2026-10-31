@@ -1448,7 +1448,7 @@
   "Invalid analytics sample.": "بيانات إحصائية غير صالحة.",
   "Your inviter’s recording storage is full. You can still watch and share.": "مساحة تسجيلات من دعاك ممتلئة. لا يزال بإمكانك المشاهدة والمشاركة.",
   "Agree and unlock": "الموافقة وفتح اللعبة",
-  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "اسمح بالميكروفون. تقيس التحولات صوتك تلقائيًا؛ اللعب العادي يرسل الدرجات فقط.",
-  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "ترسل الدعوات تسجيلًا مدته ست ثوانٍ إلى صاحب الدعوة فقط. يمكنك الإلغاء قبل الإرسال.",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "الميكروفون: قياس تلقائي، درجات فقط.",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "الدعوة: تسجيل 6 ثوانٍ لصاحبها فقط. يمكن الإلغاء قبل الإرسال.",
   "Unlock once on the homepage to enable automatic voice capture.": "اسمح مرة واحدة من الصفحة الرئيسية لالتقاط الصوت تلقائيًا."
 }

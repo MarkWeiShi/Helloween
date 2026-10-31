@@ -1448,7 +1448,7 @@
   "Invalid analytics sample.": "Invalid analytics sample.",
   "Your inviter’s recording storage is full. You can still watch and share.": "Your inviter’s recording storage is full. You can still watch and share.",
   "Agree and unlock": "Agree and unlock",
-  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.",
-  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Mic: auto-measure, scores only.",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Invites: 6s audio, inviter only. Cancel before send.",
   "Unlock once on the homepage to enable automatic voice capture.": "Unlock once on the homepage to enable automatic voice capture."
 }

@@ -1448,7 +1448,7 @@
   "Invalid analytics sample.": "잘못된 통계 데이터입니다.",
   "Your inviter’s recording storage is full. You can still watch and share.": "초대한 사람의 녹음 저장 공간이 가득 찼습니다. 시청과 공유는 계속할 수 있습니다.",
   "Agree and unlock": "동의하고 잠금 해제",
-  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "마이크를 허용하면 변신 중 음성을 자동 측정합니다. 일반 탐색은 점수만 전송합니다.",
-  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "친구 초대에서는 6초 녹음을 초대한 사람에게만 보냅니다. 전송 전에 취소할 수 있습니다.",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "마이크 자동 측정, 점수만 전송",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "초대 시 6초 녹음은 초대한 사람만 청취. 전송 전 취소 가능",
   "Unlock once on the homepage to enable automatic voice capture.": "홈에서 한 번 허용하면 이후 음성을 자동 수집합니다."
 }

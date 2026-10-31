@@ -5,8 +5,8 @@ for(const denied of [false,true])test(`one homepage click confirms terms and req
  await page.addInitScript(denied=>{(window as any).__micRequests=0;const original=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=async c=>{(window as any).__micRequests++;if(denied)throw new DOMException('Denied','NotAllowedError');return original(c);};},denied);
  await page.goto('/?lang=en');await expect(page.locator('.app-shell')).toHaveAttribute('inert','');
  const unlock=page.getByRole('button',{name:'Agree and unlock',exact:true});
- await expect(unlock).toContainText('ordinary play uploads scores only');
- await expect(unlock).toContainText('six-second recording');
+ await expect(unlock).toContainText('scores only');
+ await expect(unlock).toContainText('6s audio');
  await expect(page.locator('.unlock-consent,[data-confirm-unlock]')).toHaveCount(0);
  expect(await page.evaluate(()=>(window as any).__micRequests)).toBe(0);
  await unlock.click();await expect.poll(()=>page.evaluate(()=>(window as any).__micRequests)).toBe(1);

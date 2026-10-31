@@ -1448,7 +1448,7 @@
   "Invalid analytics sample.": "统计数据格式无效。",
   "Your inviter’s recording storage is full. You can still watch and share.": "邀请人的录音空间已满，你仍可观看和分享。",
   "Agree and unlock": "同意并解锁",
-  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "开启麦克风，变身时自动测量声音；普通探索仅上传分数。",
-  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "好友邀请会上传 6 秒录音，仅邀请人可听，发送前可取消。",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "开启麦克风，自动测声、仅传分数",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "邀请录音6秒，仅邀请人可听，可取消",
   "Unlock once on the homepage to enable automatic voice capture.": "在主页解锁授权一次，之后自动采集声音。"
 }
