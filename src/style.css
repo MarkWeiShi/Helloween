@@ -3598,10 +3598,10 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
 .reaction-capture-progress{display:block;width:100%;height:6px;margin:8px 0;accent-color:#67d6bc}.reaction-capture-progress[hidden]{display:none}
 
 /* One confirmation surface contains the unlock action and essential voice terms. */
-.play-unlock{background:rgba(28,41,65,.4);width:100%;max-width:390px;flex-direction:column;gap:18px;padding:26px 24px;border-radius:28px;white-space:normal;text-align:center}
+.play-unlock{background:rgba(28,41,65,.4);width:100%;max-width:390px;flex-direction:column;gap:14px;padding:20px 24px;border-radius:28px;white-space:normal;text-align:center}
 .unlock-heading{display:flex;align-items:center;justify-content:center;gap:12px;font-size:22px;font-weight:750}
 .unlock-terms{display:block;font-size:13px;line-height:1.65;font-weight:400;text-wrap:pretty}
 .play-lock-content .unlock-policy-links{margin:10px 0 0;color:#f7f0df;font-size:11px}
-@media(max-width:360px){.play-unlock{padding:22px 18px}.unlock-heading{font-size:20px}.unlock-terms{font-size:12px}}
+@media(max-width:360px){.play-unlock{padding:17px 18px}.unlock-heading{font-size:20px}.unlock-terms{font-size:12px}}
 
 html[lang="zh"] .unlock-terms > span{display:block;white-space:nowrap}
