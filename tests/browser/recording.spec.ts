@@ -108,7 +108,7 @@ for (const full of [false,true]) test(`${full?'full storage':'upload failure'} p
   await confirmUnlock(page);
   await expect(page.locator('[data-personal-scare]')).toContainText(full?"Storage full (50 voices)":"Send failed",{timeout:15000});
   expect(await page.evaluate(()=>Object.keys(localStorage).some(key=>key.startsWith("boo:personal-scare:")))).toBe(true);
-  await page.getByRole('button',{name:"Retry sending recording",exact:true}).click();
+  await page.locator('[data-play-transform]').click();
   await expect(page.locator('[data-personal-scare]')).toContainText("Voice sent");
   expect(bodies[1]).toEqual(bodies[0]);
   expect((await(await sender.request.get('/api/me')).json()).player.reactions.recent).toHaveLength(1);

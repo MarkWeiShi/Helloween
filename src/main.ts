@@ -300,7 +300,7 @@ function mapPage() {
 }
 function reactionMeter(id: string) {
   queueMicrotask(()=>void refreshGlobalScares());
-  return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="0" hidden aria-label="Scariness game score"></progress><div class="scariness-row"><strong data-world-scariness>${e(worldScareLabel(id))}</strong><p data-personal-scare role="status" aria-live="polite" class="personal-scare">${e(scareLabel(readScare(player.id,id)))}</p></div><small data-world-samples aria-live="polite"></small></div>`;
+  return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="0" hidden aria-label="Scariness game score"></progress><div class="scariness-row"><strong data-world-scariness>${e(worldScareLabel(id))}</strong><p data-personal-scare role="status" aria-live="polite" class="personal-scare">${e(scareLabel(readScare(player.id,id)))}</p></div></div>`;
 }
 function actionPair(id:string, preview=false) {
   return html`<div class="reaction-actions"><div><div class="character-share-row"><button type="button" class="character-pumpkin" data-action="share" data-id="${e(id)}" aria-label="${e("Trick or Treat Friends！")}" ${preview ? 'disabled' : ''}>🎃</button><span class="action-caption">${e("Trick or Treat Friends！")}</span>${directShareButtons(id)}</div>${reactionMeter(id)}</div></div>`;

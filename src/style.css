@@ -3187,7 +3187,7 @@ body.explore-screen { height: 100vh;height: 100dvh; overflow: hidden; overscroll
 }
 .character-immersive.character-dialog .immersive-controls-layer :is(button,a) { pointer-events:auto; }
 /* Outline small labels without thinning their fill or adding an opaque panel. */
-.character-immersive .character-info :is(.action-caption,[data-world-scariness],.personal-scare,.reaction-capture-controls button) {
+.character-immersive .character-info :is(.action-caption,[data-world-scariness],.personal-scare) {
   text-shadow:-1px -1px 0 #000,0 -1px 0 #000,1px -1px 0 #000,
     -1px 0 0 #000,1px 0 0 #000,-1px 1px 0 #000,0 1px 0 #000,1px 1px 0 #000,
     0 2px 3px #000;
@@ -3215,9 +3215,6 @@ body.explore-screen { height: 100vh;height: 100dvh; overflow: hidden; overscroll
 
 /* Keep the score and recording controls readable below the transformation. */
 .character-info .personal-scare { margin: 4px 12px; text-align: center; min-height: 1.5em; }
-.reaction-capture-controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-.reaction-capture-controls:has(button:not([hidden])) { margin-bottom: 8px; }
-.reaction-capture-controls [hidden] { display: none; }
 .invitation-cinema .invitation-stage:has(.invitation-consent) { min-height: 0; height: auto; }
 .invitation-cinema .invitation-consent { position: relative; overflow-y: auto; max-height: 85vh;max-height: 85dvh; justify-content: flex-start; }
 .invitation-consent .pumpkin-greeting { flex-shrink: 0; }
@@ -3368,7 +3365,6 @@ body:has(.unlock-consent[open]) .play-lock-content{visibility:hidden}
 .scariness-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:start; width:100%; }
 .scariness-row [data-world-scariness] { text-align:start; font-size:11px; line-height:1.4; }
 .character-info .scariness-row .personal-scare { margin:0; min-height:0; min-width:0; text-align:end; font-size:11px; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.scariness-row .reaction-capture-controls { grid-column:1 / -1; }
 
 .corner-ui-icon{display:block;width:30px;height:30px;object-fit:contain;pointer-events:none}
 .home-sound-toggle{position:fixed;top:max(68px,calc(env(safe-area-inset-top) + 56px));right:max(12px,env(safe-area-inset-right));width:44px;height:44px;z-index:81;border:1.5px solid #b8c9df61;border-radius:50%;background:#0f192c33;color:var(--cream)}
@@ -3595,7 +3591,6 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
 }
 .transformation-percentage { position:relative; }
 
-.reaction-capture-progress{display:block;width:100%;height:6px;margin:8px 0;accent-color:#67d6bc}.reaction-capture-progress[hidden]{display:none}
 
 /* One confirmation surface contains the unlock action and essential voice terms. */
 .play-unlock{background:rgba(28,41,65,.4);width:100%;max-width:390px;flex-direction:column;gap:14px;padding:20px 24px;border-radius:28px;white-space:normal;text-align:center}

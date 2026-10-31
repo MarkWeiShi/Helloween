@@ -13,14 +13,13 @@ function paint() {
     if(label)label.textContent=worldScareLabel(id);
     const progress=meter.querySelector('progress');
     if(progress){progress.hidden=!stat;if(stat)progress.value=stat.score;}
-    const detail=meter.querySelector<HTMLElement>('[data-world-samples]');
-    if(detail)detail.textContent=stat ? `${msg`Participants: ${stat.samples}`} · ${stat.samples<5?t('Small sample · preliminary score'):t('Average score')}` : '';
+
   });
 }
 export function refreshGlobalScares() {
   if(pending)return pending;
   pending=api<{stats:Stat[]}>('/character-scares').then(data=>{stats=data.stats;loaded=true;paint();}).catch(()=>{
-    document.querySelectorAll<HTMLElement>('[data-world-samples]').forEach(el=>{el.textContent=t('Global score unavailable · retrying');});
+    // Preserve the last score; retry on the next refresh without adding card rows.
   }).finally(()=>{pending=undefined;});
   return pending;
 }

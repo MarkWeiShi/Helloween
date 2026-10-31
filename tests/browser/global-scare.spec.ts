@@ -22,13 +22,13 @@ test('global scores are shared across users and ordinary playback submits numeri
  for(const page of pages){
   await page.locator('[data-globe-spirit="jiangshi"]').dispatchEvent('click');
   await expect(page.locator('[data-world-scariness]')).toHaveText('World Scariness 48 / 100');
-  await expect(page.locator('[data-world-samples]')).toContainText('Participants: 1');
+  await expect(page.locator('[data-world-samples], .reaction-capture-controls, .reaction-capture-progress')).toHaveCount(0);
  }
  const request=await awaitingSample;
  const payload=request.postDataJSON();
  expect(payload.scoringVersion).toBe(2);expect(payload.consent).toBe(true);
  expect(payload).not.toHaveProperty('audio');expect(payload).toHaveProperty('meanHz');
- await expect(pages[1].locator('.reaction-capture-controls')).toContainText(/Global score updated|No valid sample/,{timeout:15000});
+
  const global=await(await b.request.get(base+'/api/character-scares')).json();
  expect(global.stats.find((s:any)=>s.spiritId==='jiangshi').samples).toBeGreaterThanOrEqual(1);
  }finally{await browser.close();}

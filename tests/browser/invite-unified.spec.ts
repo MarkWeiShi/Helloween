@@ -11,7 +11,7 @@ for(const mode of ['valid','full','expired'])test(`${mode} invitation uses one h
  if(mode==='expired'){await expect(page.locator('[data-invite-play]')).toBeDisabled();return;}
  const dialog=page.locator('dialog.character-immersive');await expect(dialog).toBeVisible();await expect(dialog.locator('.character-info')).not.toHaveAttribute('inert','');
  await expect.poll(()=>page.evaluate(()=>(window as any).__micRequests)).toBe(mode==='full'?1:2);expect(app.store.db.prepare('SELECT COUNT(*) n FROM reaction_audio').get().n).toBe(0);
- if(mode==='full'){await expect(dialog.locator('[data-record-reaction]')).toBeHidden();await expect(dialog.locator('.reaction-capture-controls')).toContainText('storage is full');}
+ if(mode==='full'){await expect(dialog.locator('[data-record-reaction]')).toBeHidden();await expect(dialog.locator('.reaction-capture-controls')).toHaveCount(0);}
  else {await expect.poll(()=>page.evaluate(()=>(window as any).__micRequests)).toBe(2);await expect(dialog).toBeVisible();}
  await dialog.locator('.character-close').click();await expect(dialog).toHaveCount(0);
 });
