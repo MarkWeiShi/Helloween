@@ -1,3 +1,4 @@
+import {publicAssetUrl} from './public-assets';
 import {scopedListener,focusedPinSelector} from './browser-compat';
 import {t} from "../shared/i18n.mjs";
 import { geoOrthographic, geoPath, geoDistance, geoGraticule10, geoContains, geoRotation, geoArea } from 'd3-geo';
@@ -129,7 +130,7 @@ export function mountGlobe(host: HTMLElement, selectedRegion: string) {
   }
   const projection = geoOrthographic().clipAngle(90).precision(0.6);
   const graticule = geoGraticule10();
-  const terrain = Array.from({length:6},(_,i)=>{const img=new Image();img.onload=()=>schedule();img.src=`/art/terrain/${i}.webp`;return img;});
+  const terrain = Array.from({length:6},(_,i)=>{const img=new Image();img.onload=()=>schedule();img.src=publicAssetUrl(`/art/terrain/${i}.webp`);return img;});
   const tintedTerrain = new WeakMap<HTMLImageElement, HTMLCanvasElement>();
 
   const visible = (p: [number, number]) => geoDistance(p, orientation) < Math.PI / 2 - 0.06;

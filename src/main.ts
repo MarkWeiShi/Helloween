@@ -1,3 +1,4 @@
+import {publicAssetUrl} from './public-assets';
 import {toast} from './toast';
 import {findShareCharacter,profileSpiritId} from './share-characters';
 import {openDialog,closeDialog,regionNames,audioContext,setInert} from './browser-compat';
@@ -279,7 +280,7 @@ function counterNumber(current: number) {
 }
 
 function mapPage() {
-  return '<div class="language-space" aria-hidden="true"></div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title halloween-image-title" translate="no" lang="en"><img class="halloween-title-image" src="/art/ui/halloween-tricks-title.webp" width="2126" height="403" alt="${"Halloween Tricks by HelloTalk"}" fetchpriority="high"></h1><p class="campaign-subtitle"><img class="campaign-subtitle-image" src="/art/ui/subtitles/${e(locale)}.webp" alt="${e(t("Join HelloTalk to Hear Friends Scream"))}" fetchpriority="high"></p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend visits"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterNumber(player.shareVisits || 0)}</span></button><button class="parade-counter" data-action="reactions" aria-label="Friends’ scream score"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="friend-scream-score">${counterNumber(player.friendScreamScore ?? 0)}</span></button></div></div>
+  return '<div class="language-space" aria-hidden="true"></div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title halloween-image-title" translate="no" lang="en"><img class="halloween-title-image" src="/art/ui/halloween-tricks-title.webp" width="2126" height="403" alt="${"Halloween Tricks by HelloTalk"}" fetchpriority="high"></h1><p class="campaign-subtitle"><img class="campaign-subtitle-image" src="${e(publicAssetUrl(`/art/ui/subtitles/${locale}.webp`))}" alt="${e(t("Join HelloTalk to Hear Friends Scream"))}" fetchpriority="high"></p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend visits"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterNumber(player.shareVisits || 0)}</span></button><button class="parade-counter" data-action="reactions" aria-label="Friends’ scream score"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="friend-scream-score">${counterNumber(player.friendScreamScore ?? 0)}</span></button></div></div>
   ${invite ? html`<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
   <div class="explore-layout globe-layout"><div class="globe-caption" role="status" aria-live="polite" aria-atomic="true"><strong></strong><p></p></div><section class="globe-explorer" aria-label="Explore cultures on the globe">
     <div class="globe-viewport" tabindex="0" role="group" aria-label="Interactive globe. Drag to rotate, or use left and right arrow keys."><span class="globe-spark spark-one">✦</span><span class="globe-spark spark-two">✧</span><span class="globe-spark spark-three">✦</span><canvas aria-hidden="true"></canvas>
@@ -453,7 +454,7 @@ async function respondInvite() {
 }
 function shareChannelIcon(channel: string) {
   const logos: Record<string,string> = {x:'x',line:'line',facebook:'facebook',whatsapp:'whatsapp',messenger:'messenger',kakao:'kakaotalk',wechat:'wechat'};
-  return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="/icons/social/${logos[channel]}.svg" alt="" aria-hidden="true" width="24" height="24">`;
+  return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="${e(publicAssetUrl(`/icons/social/${logos[channel]}.svg`))}" alt="" aria-hidden="true" width="24" height="24">`;
 }
 function directShareButtons(id:string) {
   return `<div class="character-sns" role="group" aria-label="${e(t('Choose a sharing app'))}">${[['x','X'],['line','LINE'],['facebook','Facebook'],['whatsapp','WhatsApp'],['messenger','FB Messenger'],['kakao','KakaoTalk']].map(([channel,name])=>`<button class="icon-button" data-action="send-share" data-channel="${channel}" data-id="${e(id)}" aria-label="${e(name)}" title="${e(name)}">${shareChannelIcon(channel)}</button>`).join('')}</div>`;

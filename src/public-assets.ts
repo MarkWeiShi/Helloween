@@ -1,9 +1,9 @@
-import {assetOrigin,releasePrefix} from 'virtual:ghost-content';
+import {assetOrigin,releasePrefix,mediaPrefix,changedAssets} from 'virtual:ghost-content';
 // Only public art is eligible. API, account and private recording URLs stay same-origin.
 export function publicAssetUrl(path:string):string {
  if(!assetOrigin)return path;
  if(/^\/releases\/[a-f0-9]{20}\/(?:art|geo|audio|icons)\//.test(path))return assetOrigin+path;
- if(/^\/(?:art|geo|audio|icons)\//.test(path))return assetOrigin+releasePrefix+path;
+ if(/^\/(?:art|geo|audio|icons)\//.test(path))return assetOrigin+(changedAssets[path] || mediaPrefix+path);
  return path;
 }
 export function publicAssetData<T>(value:T):T {

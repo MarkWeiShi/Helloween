@@ -1,4 +1,4 @@
-import {publicAssetData} from './public-assets';
+import {publicAssetData,publicAssetUrl} from './public-assets';
 import {showShareLoading} from './share-loading';
 import {watchShareReturn,returnToGame} from './share-return';
 import {t, msg, html} from "../shared/i18n.mjs";
@@ -16,7 +16,7 @@ export function loadShareConfig(){
 }
 export function prepareSocialShare(spiritId:string){
  void loadShareConfig().catch(()=>{});
- const poster=new Image();poster.src=`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`;
+ const poster=new Image();poster.src=publicAssetUrl(`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`);
 }
 type KakaoSDK={isInitialized():boolean;init(key:string):void;Share:{sendDefault(data:unknown):void;scrapImage(data:{imageUrl:string}):Promise<{infos:{original:{url:string}}}>}};
 type WechatSDK={config(data:unknown):void;ready(cb:()=>void):void;error(cb:()=>void):void;updateAppMessageShareData(data:unknown):void;updateTimelineShareData(data:unknown):void};
@@ -78,7 +78,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
   const token=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
   const shareUrl=token?new URL(`/api/share/facebook/${encodeURIComponent(token)}?lang=${encodeURIComponent(locale)}`,url).href:url;
   const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-  const poster=spiritId?`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`:image;
+  const poster=spiritId?publicAssetUrl(`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`):image;
   const guidance=html`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Continue to ${e(name)}</a>`;
   frame(`<img class="share-card-preview" src="${e(poster)}" alt="" width="960" height="504">${guidance}`,true);return;
  }
@@ -92,7 +92,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    const kakao=window.Kakao;if(!kakao)throw Error(t("KakaoTalk sharing could not load."));if(!kakao.isInitialized())kakao.init(config.kakaoKey);
    // The default card is a small, already-published image. Do not put a blocking
    // GIF scrape/upload in front of Kakao's native recipient picker.
-   const hostedImage=spiritId?new URL('/art/x-cards/'+encodeURIComponent(spiritId)+'.'+locale+'.jpg',config.origin||location.origin).href:new URL(image,location.origin).href;
+   const hostedImage=spiritId?new URL(publicAssetUrl(`/art/x-cards/${encodeURIComponent(spiritId)}.${locale}.jpg`),config.origin||location.origin).href:new URL(image,location.origin).href;
    let gifImage:string|undefined;
    const label=(zh:string,en:string)=>locale==='zh'?zh:en;
    frame(`<img class="share-card-preview" src="${e(hostedImage)}" alt="${e(label('鬼卡片预览','Ghost card preview'))}" width="960" height="504"><label>${e(label('分享文案','Your message'))}<textarea data-kakao-caption maxlength="200" style="width:100%;min-height:90px">${e(text)}</textarea></label><label class="fine-print"><input type="checkbox" data-kakao-animated disabled> ${e(label('使用动图（可能较慢）','Use animated card (may be slower)'))}</label><button type="button" class="button primary full" data-open-kakao>${e(label('选择 KakaoTalk 好友','Continue to KakaoTalk'))}</button><p data-kakao-status role="status"></p>`,true);

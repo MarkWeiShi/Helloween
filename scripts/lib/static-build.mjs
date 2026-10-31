@@ -11,17 +11,17 @@ export function staticContentPlugin() {
     configResolved(config) {building=config.command==='build';outDir=resolve(config.root,config.build.outDir);data=prepareContent(config.root);assetPrefix=assetOrigin+data.prefix;},
     resolveId(id) {if(id==='virtual:ghost-content')return '\0ghost-content';},
     load(id) {
-      if(id==='\0ghost-content')return `export const assetOrigin=${JSON.stringify(building?assetOrigin:'')};export const releasePrefix=${JSON.stringify(data.prefix)};export const catalogUrl=${JSON.stringify(building?assetPrefix+'/content/catalog.json':'/content/catalog.json')};export const motionsUrl=${JSON.stringify(building?assetPrefix+'/content/motions.json':'/content/motions.json')};`;
+      if(id==='\0ghost-content')return `export const assetOrigin=${JSON.stringify(building?assetOrigin:'')};export const releasePrefix=${JSON.stringify(data.prefix)};export const mediaPrefix=${JSON.stringify(data.mediaPrefix)};export const changedAssets=${JSON.stringify(Object.fromEntries(data.files.filter(f=>!data.reused.has(f)).map(f=>['/'+f,data.prefix+'/'+f])))};export const catalogUrl=${JSON.stringify(building?assetPrefix+'/content/catalog.json':'/content/catalog.json')};export const motionsUrl=${JSON.stringify(building?assetPrefix+'/content/motions.json':'/content/motions.json')};`;
     },
     transform(code,id) {
       if(!building || !/\/src\/.*\.(ts|css)$/.test(id))return;
       // Only literal URL starts; leave regex validators and external URLs intact.
-      return {code:code.replace(/(["'`(])\/(art|geo|audio|icons)\//g,`$1${assetPrefix}/$2/`),map:null};
+      return {code:code.replace(/(["'`(])(\/(?:art|geo|audio|icons)\/[^"'`(){}$\s<>]+)(?=["'`)])/g,(_,q,path)=>q+assetOrigin+(data.assetPaths[path] || data.mediaPrefix+path)),map:null};
     },
     transformIndexHtml(html) {
       const origin=process.env.PUBLIC_ORIGIN;
       if(building && (!origin || !/^https?:\/\//.test(origin)))throw new Error('PUBLIC_ORIGIN is required for the static share card (use http://localhost:5173 locally).');
-      const image=new URL((building?assetPrefix:'')+'/art/x-cards/jiangshi.en.jpg',origin || 'http://localhost:5173').href;
+      const image=new URL(building?assetOrigin+data.assetPaths['/art/x-cards/jiangshi.en.jpg']:'/art/x-cards/jiangshi.en.jpg',origin || 'http://localhost:5173').href;
       const escape=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       return html.replace('</head>',`<meta property="og:title" content="Halloween Tricks by HelloTalk"><meta property="og:description" content="Meet folklore friends from around the world."><meta property="og:type" content="website"><meta property="og:image" content="${escape(image)}"><meta name="twitter:card" content="summary_large_image"></head>`);
     },
@@ -36,8 +36,8 @@ export function staticContentPlugin() {
       if(!building)return;
       const target=join(outDir,'releases',data.release);
       for(const file of data.files) {
-        const destination=join(target,file);mkdirSync(dirname(destination),{recursive:true});
-        if(file.endsWith('.json'))writeFileSync(destination,JSON.stringify(rewritePublicPaths(JSON.parse(readFileSync(join(data.source,file),'utf8')),data.prefix)));
+        const destination=join(outDir,data.assetPaths['/'+file].slice(1));mkdirSync(dirname(destination),{recursive:true});
+        if(file.endsWith('.json'))writeFileSync(destination,JSON.stringify(rewritePublicPaths(JSON.parse(readFileSync(join(data.source,file),'utf8')),data.prefix,data.assetPaths)));
         else copyFileSync(join(data.source,file),destination,constants.COPYFILE_FICLONE);
       }
       mkdirSync(join(target,'content'),{recursive:true});
@@ -47,7 +47,7 @@ export function staticContentPlugin() {
       for(const file of data.files) {
         const legacy=join(outDir,file);mkdirSync(dirname(legacy),{recursive:true});
         if(file.endsWith('.json'))copyFileSync(join(data.source,file),legacy);
-        else symlinkSync(relative(dirname(legacy),join(target,file)),legacy);
+        else symlinkSync(relative(dirname(legacy),join(outDir,data.assetPaths['/'+file].slice(1))),legacy);
       }
       // Stable, unauthenticated URLs required by Meta and the unlock notice.
       for(const file of ['privacy.html','data-deletion.html','legal-policy.css','legal-entry.js'])copyFileSync(join(data.source,file),join(outDir,file));

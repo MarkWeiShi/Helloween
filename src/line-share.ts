@@ -1,5 +1,5 @@
 import {findShareCharacter,profileSpiritId} from './share-characters';
-import {publicAssetData} from './public-assets';
+import {publicAssetData,publicAssetUrl} from './public-assets';
 import './line-share.css';
 import {resolveLanguage,resolveBrowserLanguage} from '../shared/i18n.mjs';
 import {loadCatalog} from './static-content';
@@ -42,7 +42,7 @@ async function start(){
   root.querySelector<HTMLButtonElement>('#web-login')!.onclick=()=>liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language,location.origin).href});return;
  }
  const url=new URL('/i/'+token,config.origin||location.origin).href;
- let image=new URL('/art/x-cards/'+encodeURIComponent(spirit.id)+'.portrait.png',config.origin||location.origin).href;
+ let image=new URL(publicAssetUrl(`/art/x-cards/${encodeURIComponent(spirit.id)}.portrait.png`),config.origin||location.origin).href;
  let animated=false,ratio='1:1';
  try{
   const animations=await read('/art/share-animations/manifest.json');
