@@ -1417,5 +1417,21 @@
   "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "태국 숲속 설화의 작은 정령. 뛰어다니며 같은 울음소리를 반복한다고 해요.",
   "A headless rider from Irish folklore, associated with death and nighttime journeys.": "아일랜드 민간 설화 속 머리 없는 기수. 죽음과 밤길 이야기에 등장해요.",
   "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "멕시코 전설 속 여성. 직접 그린 배를 타고 감금에서 벗어난다고 해요.",
-  "Earthling": "지구인"
+  "Earthling": "지구인",
+  "Average score": "Average score",
+  "Global score not sent · replay to retry": "Global score not sent · replay to retry",
+  "Global score unavailable · retrying": "Global score unavailable · retrying",
+  "Global score updated": "Global score updated",
+  "Invalid measurement.": "Invalid measurement.",
+  "Loading global score…": "Loading global score…",
+  "Measurement consent and scoring version required.": "Measurement consent and scoring version required.",
+  "No valid global samples yet": "No valid global samples yet",
+  "No valid sample · replay to try again": "No valid sample · replay to try again",
+  "Participants: {{0}}": "Participants: {{0}}",
+  "Small sample · preliminary score": "Small sample · preliminary score",
+  "Unknown character.": "Unknown character.",
+  "Updating global score…": "Updating global score…",
+  "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.": "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.",
+  "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.": "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.",
+  "● 6s · measuring global score": "● 6s · measuring global score"
 }

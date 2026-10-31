@@ -1417,5 +1417,21 @@
   "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Tinh linh nhỏ trong chuyện rừng Thái Lan, nổi tiếng với bước nhảy và tiếng gọi lặp lại.",
   "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Kỵ sĩ không đầu trong dân gian Ireland, gắn với cái chết và những chuyến đi đêm.",
   "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Người phụ nữ trong truyền thuyết Mexico thoát khỏi cảnh giam cầm bằng con thuyền do mình vẽ.",
-  "Earthling": "Người Trái Đất"
+  "Earthling": "Người Trái Đất",
+  "Average score": "Average score",
+  "Global score not sent · replay to retry": "Global score not sent · replay to retry",
+  "Global score unavailable · retrying": "Global score unavailable · retrying",
+  "Global score updated": "Global score updated",
+  "Invalid measurement.": "Invalid measurement.",
+  "Loading global score…": "Loading global score…",
+  "Measurement consent and scoring version required.": "Measurement consent and scoring version required.",
+  "No valid global samples yet": "No valid global samples yet",
+  "No valid sample · replay to try again": "No valid sample · replay to try again",
+  "Participants: {{0}}": "Participants: {{0}}",
+  "Small sample · preliminary score": "Small sample · preliminary score",
+  "Unknown character.": "Unknown character.",
+  "Updating global score…": "Updating global score…",
+  "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.": "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.",
+  "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.": "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.",
+  "● 6s · measuring global score": "● 6s · measuring global score"
 }

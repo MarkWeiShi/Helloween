@@ -180,6 +180,7 @@ export function createApp({
             throw new ApiError(400, "The request could not be read.");
           }
         }
+        if (req.method === "GET" && url.pathname === "/api/character-scares") { send(200,store.globalScares()); return; }
         if (req.method === "GET" && url.pathname === "/api/social/config") { send(200,socialConfig()); return; }
         if (req.method === "POST" && url.pathname === "/api/social/wechat-signature") {
           if (!playerId) throw new ApiError(401,"Open the game before sharing.");
@@ -294,6 +295,11 @@ export function createApp({
         if (req.method === 'POST' && /^\/api\/invites\/[\w-]+\/audio$/.test(url.pathname)) {
           limit(`audio:${playerId}`, 6);
           send(200, store.recordAudio(playerId,url.pathname.split('/')[3],body));
+          return;
+        }
+        if (req.method === 'POST' && /^\/api\/spirits\/[\w-]+\/scare$/.test(url.pathname)) {
+          limit(`scare:${playerId}`, 30);
+          send(200,store.recordScare(playerId,url.pathname.split('/')[3],body));
           return;
         }
         let result;

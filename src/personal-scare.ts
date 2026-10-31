@@ -1,3 +1,4 @@
+import {submitGlobalScare} from './global-scare';
 import {setInert} from './browser-compat';
 import {t, msg} from "../shared/i18n.mjs";
 import {locale} from './i18n';
@@ -7,7 +8,7 @@ import { mountTransformation, markTransformationPlayed } from './transformation-
 import { prepareMicrophone } from './microphone';
 import { personalScareScore } from '../shared/reactions.mjs';
 export type SharedReaction = {inviteId: string};
-type Result = { score: number | null; meanHz: number | null; meanRms: number | null };
+type Result = { score: number | null; meanHz: number | null; meanRms: number | null; globalSubmitted?: boolean };
 const memory = new Map<string, Result>();
 const key = (player: string, spirit: string) => `boo:personal-scare:v1:${player}:${spirit}`;
 export function readScare(player: string, spirit: string): Result | undefined {
@@ -29,6 +30,9 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   const controls = document.createElement('div'); controls.className = 'reaction-capture-controls';
   const cancel = document.createElement('button'); cancel.className = 'button text-button'; cancel.textContent = t("取消录音及发送"); cancel.hidden = true;
   const retry = document.createElement('button'); retry.className = 'button secondary'; retry.textContent = t("重试发送录音"); retry.hidden = true;
+  const globalStatus=document.createElement('small');
+  globalStatus.textContent=t('Valid voice measurements contribute to global scores; ordinary play uploads numbers only.');
+  controls.append(globalStatus);
   controls.append(cancel, retry); status.after(controls);
   // Invitation playback stays gated until the entrance video actually ends.
   // Keep replay available for recovery after a media failure or background pause.
@@ -83,15 +87,21 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
         try { recording = recordReaction(capture.stream); audio = recording.result; }
         catch { /* Local scoring still works without MediaRecorder. */ }
       }
-      status.textContent = shouldSend && recording ? t("● 6s · record & send") : t("● 6s · local only");
+      status.textContent = shouldSend && recording ? t("● 6s · record & send") : t("● 6s · measuring global score");
       cancel.hidden = !recording;
       void Promise.all([capture.measure(6000, false), audio]).then(async ([m, blob]) => {
         if (dead || ticket !== generation) return;
         capture?.stop();
-        const result = {score: personalScareScore(m.meanHz, m.meanRms), meanHz:m.meanHz, meanRms:m.meanRms};
+        const result: Result = {score: personalScareScore(m.meanHz, m.meanRms), meanHz:m.meanHz, meanRms:m.meanRms};
         memory.set(key(player, spirit), result);
         try { localStorage.setItem(key(player, spirit), JSON.stringify(result)); } catch {}
         status.textContent = scareLabel(result); capture = undefined; recording = undefined; cancel.hidden = true;
+        globalStatus.textContent=t('Updating global score…');
+        void submitGlobalScare(spirit,{consent:true,scoringVersion:2,echoCancellation,meanHz:m.meanHz,meanRms:m.meanRms,frames:m.frames}).then(counted=>{
+          result.globalSubmitted=counted;
+          try { localStorage.setItem(key(player,spirit),JSON.stringify(result)); } catch {}
+          if(!dead)globalStatus.textContent=result.score!==null && echoCancellation && m.frames>=5 ? t('Global score updated') : t('No valid sample · replay to try again');
+        }).catch(()=>{if(!dead)globalStatus.textContent=t('Global score not sent · replay to retry');});
         if (!shouldSend || !shared) return;
         if (!blob?.size || blob.size > 512000) { status.textContent = t("No recording · retry"); return; }
         const bytes = new Uint8Array(await blob.arrayBuffer());
@@ -106,7 +116,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
     if (busy || dead || sending || (pending && !awaitingCompletion)) return;
     // Pause the old playback before preparing a new microphone session.
     motion.pause(); busy = true; button.disabled = true; button.hidden = true;
-    first = !pending && (!readScare(player, spirit) || (!!shared && !sent));
+    first = !pending && (!readScare(player, spirit)?.globalSubmitted || readScare(player, spirit)?.score === null || (!!shared && !sent));
     const ticket = generation;
     if (first) {
       status.textContent = t("Starting mic…");

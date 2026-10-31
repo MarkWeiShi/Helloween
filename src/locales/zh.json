@@ -1417,5 +1417,21 @@
   "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "泰国森林传说中的小精怪，以跳跃的步伐和反复的呼声为人熟知。",
   "A headless rider from Irish folklore, associated with death and nighttime journeys.": "爱尔兰民间传说中的无头骑士，常与死亡和夜行故事相连。",
   "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "墨西哥科尔多瓦传说中的女子，乘上自己画出的船逃离囚禁。",
-  "Earthling": "地球人"
+  "Earthling": "地球人",
+  "No valid global samples yet": "暂无有效全球数据",
+  "Loading global score…": "全球惊吓值加载中…",
+  "Participants: {{0}}": "参与人数：{{0}}",
+  "Small sample · preliminary score": "样本较少 · 暂定评分",
+  "Average score": "平均分",
+  "Global score unavailable · retrying": "全球惊吓值暂不可用 · 正在重试",
+  "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.": "有效声音测量将计入角色的全球惊吓值。普通试玩只上传数值，不上传音频。",
+  "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.": "有效声音测量计入全球惊吓值；普通试玩只上传数值。",
+  "● 6s · measuring global score": "● 6秒 · 测量惊吓值",
+  "Updating global score…": "正在更新全球惊吓值…",
+  "Global score updated": "已计入全球惊吓值",
+  "No valid sample · replay to try again": "暂无有效测量 · 重播可重试",
+  "Global score not sent · replay to retry": "惊吓值未上传 · 重播可重试",
+  "Invalid measurement.": "无效的声音测量。",
+  "Measurement consent and scoring version required.": "需要测量授权和正确的评分版本。",
+  "Unknown character.": "未知角色。"
 }

@@ -47,6 +47,7 @@ export class BooStore {
       CREATE TABLE IF NOT EXISTS reactions(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mean_hz INTEGER,peak_hz INTEGER,frames INTEGER NOT NULL,created_at INTEGER NOT NULL,seen_at INTEGER,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS reaction_audio(invite_id TEXT NOT NULL REFERENCES invites(id),player_id TEXT NOT NULL REFERENCES players(id),mime TEXT NOT NULL,audio BLOB NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS reaction_intensity(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,language TEXT NOT NULL,rms REAL CHECK(rms IS NULL OR (rms>=0 AND rms<=1)),PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
+      CREATE TABLE IF NOT EXISTS character_scares(player_id TEXT NOT NULL REFERENCES players(id),spirit_id TEXT NOT NULL,score INTEGER NOT NULL CHECK(score BETWEEN 0 AND 100),created_at INTEGER NOT NULL,PRIMARY KEY(player_id,spirit_id));
       CREATE TABLE IF NOT EXISTS reaction_scores_v2(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,score INTEGER NOT NULL CHECK(score BETWEEN 0 AND 100),PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
       CREATE TABLE IF NOT EXISTS invite_labels(invite_id TEXT PRIMARY KEY REFERENCES invites(id),friend_name TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS reaction_details(invite_id TEXT NOT NULL,player_id TEXT NOT NULL,name TEXT NOT NULL,score INTEGER,duration_ms INTEGER NOT NULL,PRIMARY KEY(invite_id,player_id),FOREIGN KEY(invite_id,player_id) REFERENCES reaction_audio(invite_id,player_id));
@@ -307,6 +308,38 @@ export class BooStore {
     if (invite.senderId === id || invite.expired) return { counted: false };
     const result = this.db.prepare("INSERT OR IGNORE INTO invite_visits VALUES(?,?,?)").run(token,id,this.now());
     return { counted: result.changes > 0 };
+  }
+  recordScare(id, spiritId, body) {
+    this.rawPlayer(id);
+    if (!findShareCharacter(this.catalog, spiritId)) fail(404, 'Unknown character.');
+    if (body.consent !== true || body.scoringVersion !== 2) fail(400, 'Measurement consent and scoring version required.');
+    const {meanHz, meanRms, frames} = body;
+    if (!Number.isInteger(frames) || frames < 0 || frames > 120 ||
+        (meanHz !== null && (!Number.isInteger(meanHz) || meanHz < 70 || meanHz > 1200)) ||
+        (meanRms !== null && (typeof meanRms !== 'number' || !Number.isFinite(meanRms) || meanRms < 0 || meanRms > 1))) fail(400, 'Invalid measurement.');
+    const score = personalScareScore(meanHz, meanRms);
+    if (score === null || frames < 5 || body.echoCancellation !== true) return {ok:true, counted:false};
+    const result = this.db.prepare('INSERT OR IGNORE INTO character_scares VALUES(?,?,?,?)').run(id,spiritId,score,this.now());
+    return {ok:true, counted:true, alreadySent:result.changes === 0};
+  }
+  globalScares() {
+    const changes = this.db.prepare('SELECT total_changes() AS n').get().n;
+    if (this.globalScareCache?.changes === changes && this.globalScareCache.until > this.now()) return this.globalScareCache.data;
+    // One earliest valid observation per account/guest and character, across both sources.
+    const stats = this.db.prepare(`WITH observations AS (
+      SELECT player_id,spirit_id,score,created_at,0 AS source FROM character_scares
+      UNION ALL
+      SELECT r.player_id,i.spirit_id,r.score,a.created_at,1 AS source FROM reaction_scores_v2 r
+      JOIN invites i ON i.id=r.invite_id JOIN reaction_audio a ON a.invite_id=r.invite_id AND a.player_id=r.player_id
+    ), ranked AS (
+      SELECT o.*, ROW_NUMBER() OVER (PARTITION BY o.spirit_id,COALESCE('account:'||m.subject,'guest:'||o.player_id)
+        ORDER BY o.created_at,o.source,o.score) AS position
+      FROM observations o LEFT JOIN account_members m ON m.player_id=o.player_id
+    ) SELECT spirit_id AS spiritId,ROUND(AVG(score)) AS score,COUNT(*) AS samples,MAX(created_at) AS updatedAt
+      FROM ranked WHERE position=1 GROUP BY spirit_id ORDER BY spirit_id`).all();
+    const data = {stats};
+    this.globalScareCache = {changes,until:this.now()+5000,data};
+    return data;
   }
   reactionSummary(id) {
     const stats = this.db.prepare(`SELECT i.spirit_id AS spiritId, ROUND(AVG(r.mean_hz)) AS meanHz, COUNT(r.mean_hz) AS measured, COUNT(*) AS views FROM reactions r JOIN invites i ON i.id=r.invite_id WHERE i.sender_id=? GROUP BY i.spirit_id`).all(id);
