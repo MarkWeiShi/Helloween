@@ -9,13 +9,13 @@ test('loading waits for a presented frame; close has no circle and WhatsApp uses
    if((window as any).holdVideoFrames)(window as any).heldFrames.push(()=>callback(now,meta));else callback(now,meta);
   });};
  });
- await page.goto('/?lang=en');await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();
+ await page.goto('/?lang=en');await page.locator('.play-unlock').click();
  await expect(page.locator('.play-lock')).toHaveCount(0);
  await page.locator('[data-globe-spirit="jiangshi"]').dispatchEvent('click');
  await page.waitForFunction(()=>(window as any).heldFrames.length>0);
  const loading=page.locator('.transformation-loading');
  await expect(loading).toBeVisible();
- await expect(page.getByRole('progressbar')).not.toHaveAttribute('aria-valuenow','100');
+ await expect(loading.getByRole('progressbar')).not.toHaveAttribute('aria-valuenow','100');
  await expect(page.locator('.character-close')).toHaveCSS('border-top-width','0px');
  await expect(page.locator('.character-close')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
  const whatsapp=page.locator('.character-sns [data-channel=whatsapp]');

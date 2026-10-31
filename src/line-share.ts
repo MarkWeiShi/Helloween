@@ -1,4 +1,5 @@
-import {findShareCharacter,profileSpiritId} from './share-characters';
+import {trackFunnel} from "./engagement";
+import {findShareCharacter} from './share-characters';
 import {publicAssetData,publicAssetUrl} from './public-assets';
 import './line-share.css';
 import {resolveLanguage,resolveBrowserLanguage} from '../shared/i18n.mjs';
@@ -31,11 +32,12 @@ async function start(){
  language=resolveLanguage([new URL(location.href).searchParams.get('lang'),resolveBrowserLanguage(navigator)]);cn=language==='zh';
  const token=new URL(location.href).searchParams.get('invite')||'';
  if(!/^[\w-]{1,80}$/.test(token))throw Error(label('请从游戏中的 LINE 分享按钮打开此页。','Open this page using the LINE share button in the game.'));
- const [invite,catalog,me]=await Promise.all([read('/api/invites/'+token),loadCatalog(),(async()=>{
+ const [invite,catalog]=await Promise.all([read('/api/invites/'+token),loadCatalog(),(async()=>{
   const response=await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
   if(!response.ok)throw Error('Could not start your session.');return response.json();
  })()]);
  if(invite.expired)throw Error(label('此邀请已过期，请返回游戏生成新链接。','This invitation has expired. Create a new one in the game.'));
+ const metric=(step:string)=>trackFunnel(step,{channel:'line',inviteId:token});
  const spirit=findShareCharacter(catalog,invite.spiritId);
  if(!spirit)throw Error('Character unavailable');
 
@@ -43,7 +45,7 @@ async function start(){
  const appUrl='https://liff.line.me/'+encodeURIComponent(config.lineLiffId)+'?invite='+encodeURIComponent(token)+'&lang='+encodeURIComponent(language);
  if(!liff.isLoggedIn()){
   root.innerHTML=`<h1>LINE</h1><a class="button" href="${e(appUrl)}" target="_blank" rel="noopener noreferrer">${label('在 LINE 中打开','Open in LINE')}</a><p>${label('已安装 LINE？请点上方按钮。Safari 若仍打开网页，可在浏览器中继续。','Already have LINE? Tap above. If Safari keeps opening this page, you can continue in the browser.')}</p><button id="web-login">${label('继续网页版','Continue in browser')}</button><p><a href="${e(gameUrl)}">${label('返回游戏','Back to game')}</a></p>`;
-  root.querySelector<HTMLButtonElement>('#web-login')!.onclick=()=>liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language,location.origin).href});return;
+  root.querySelector<HTMLButtonElement>('#web-login')!.onclick=()=>{metric('share_handoff');liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language,location.origin).href});};return;
  }
  const url=new URL('/i/'+token,config.origin||location.origin).href;
  let image=new URL(publicAssetUrl(`/art/x-cards/${encodeURIComponent(spirit.id)}.portrait.png`),config.origin||location.origin).href;
@@ -52,7 +54,7 @@ async function start(){
  const text=label(`Boo！${spirit.name} 给你准备了一个万圣节惊喜。`,`Boo! ${spirit.name} has a little Halloween surprise for you.`);
  const draftKey='boo:line-draft:'+token;
  let draft=text;try{draft=sessionStorage.getItem(draftKey)||text;}catch{}
- root.innerHTML=`<h1>${label('分享到 LINE','Share with LINE')}</h1><section class="card"><header>Halloween Tricks by HelloTalk</header><img src="${e(image)}" alt="${e(spirit.name)}"><div><h2>${e(nativeName)}</h2><h3>${e(englishName)}</h3><p dir="${language==='ar'?'rtl':'auto'}">${e(culture)}</p></div></section>${!me.player.initialized?`<div class="line-profile"><label>${label('名字','Name')}<input id="profile-name" maxlength="24" value="${e(me.player.name)}"></label><label>${label('国家或地区','Country or region')}<select id="profile-country"><option value="">${label('请选择','Choose')}</option>${catalog.countries.map((c:{code:string;name:string})=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<label for="message">${label('分享文案','Your message')}</label><textarea id="message" maxlength="400">${e(draft)}</textarea><button id="choose">${liff.isLoggedIn()?label('选择 LINE 好友','Choose LINE friends'):label('登录 LINE 并继续','Sign in to LINE')}</button><p role="status"></p><a class="button" id="return-game" href="${e(gameUrl)}">${label('返回游戏','Back to game')}</a><small>${label('在 LINE 中选择好友并确认发送。','Choose friends and confirm in LINE.')}</small><details id="share-options"><summary>${label('链接与其他选项','Link and other options')}</summary>${!liff.isInClient?.()?`<a class="button" href="${e('https://liff.line.me/'+config.lineLiffId+'?invite='+encodeURIComponent(token)+'&lang='+language)}">${label('在 LINE 中打开','Open in LINE')}</a>`:''}<label for="invite">${label('本次专属链接','Your invitation link')}</label><input id="invite" readonly value="${e(url)}"><p><a href="${e('https://line.me/R/share?text='+encodeURIComponent(text+' '+url))}" target="_blank" rel="noopener noreferrer">${label('改用普通链接分享','Share a plain link instead')}</a></p></details>`;
+ root.innerHTML=`<h1>${label('分享到 LINE','Share with LINE')}</h1><section class="card"><header>Halloween Tricks by HelloTalk</header><img src="${e(image)}" alt="${e(spirit.name)}"><div><h2>${e(nativeName)}</h2><h3>${e(englishName)}</h3><p dir="${language==='ar'?'rtl':'auto'}">${e(culture)}</p></div></section><label for="message">${label('分享文案','Your message')}</label><textarea id="message" maxlength="400">${e(draft)}</textarea><button id="choose">${liff.isLoggedIn()?label('选择 LINE 好友','Choose LINE friends'):label('登录 LINE 并继续','Sign in to LINE')}</button><p role="status"></p><a class="button" id="return-game" href="${e(gameUrl)}">${label('返回游戏','Back to game')}</a><small>${label('在 LINE 中选择好友并确认发送。','Choose friends and confirm in LINE.')}</small><details id="share-options"><summary>${label('链接与其他选项','Link and other options')}</summary>${!liff.isInClient?.()?`<a class="button" href="${e('https://liff.line.me/'+config.lineLiffId+'?invite='+encodeURIComponent(token)+'&lang='+language)}">${label('在 LINE 中打开','Open in LINE')}</a>`:''}<label for="invite">${label('本次专属链接','Your invitation link')}</label><input id="invite" readonly value="${e(url)}"><p><a href="${e('https://line.me/R/share?text='+encodeURIComponent(text+' '+url))}" target="_blank" rel="noopener noreferrer">${label('改用普通链接分享','Share a plain link instead')}</a></p></details>`;
  // Optional artwork and localized labels must not gate the editable card.
  // Keep the user's draft and controls intact when these enhancements arrive.
  const card=root.querySelector<HTMLElement>('.card')!;
@@ -78,18 +80,19 @@ async function start(){
   if(!liff.isLoggedIn()){
    try{sessionStorage.setItem(draftKey,message.value);}catch{}
    // Use an explicit, same-origin redirect; never forward OAuth parameters or tokens.
-   liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language,location.origin).href});return;
+   metric('share_handoff');liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language,location.origin).href});return;
   }
-  if(!liff.isApiAvailable('shareTargetPicker')){root.querySelector<HTMLDetailsElement>('#share-options')!.open=true;status.textContent=label('当前环境无法使用好友选择器，请使用下方普通链接分享。','The friend picker is unavailable here. Use plain-link sharing below.');return;}
+  if(!liff.isApiAvailable('shareTargetPicker')){metric('share_failed');root.querySelector<HTMLDetailsElement>('#share-options')!.open=true;status.textContent=label('当前环境无法使用好友选择器，请使用下方普通链接分享。','The friend picker is unavailable here. Use plain-link sharing below.');return;}
   button.disabled=true;status.textContent=label('请在 LINE 窗口中选择好友。若未弹窗，请展开“链接与其他选项”并在 LINE 中打开。','Choose friends in the LINE window. If no window appears, expand Link and other options to open in LINE.');
   try{
-   if(!me.player.initialized){const r=await fetch('/api/onboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:root.querySelector<HTMLInputElement>('#profile-name')!.value,country:root.querySelector<HTMLSelectElement>('#profile-country')!.value,spiritId:profileSpiritId(catalog,spirit.id)})});const result=await r.json();if(!r.ok)throw Error(result.error);me.player=result.player;}
    const caption=message.value.trim().slice(0,400)||text;
+   metric('share_handoff');
    const result=await liff.shareTargetPicker([{type:'flex',altText:caption,contents:{type:'bubble',size:'mega',body:{type:'box',layout:'vertical',backgroundColor:'#121b32',contents:[{type:'text',text:'Halloween Tricks by HelloTalk',color:'#A8DAC8',size:'sm',wrap:true},{type:'box',layout:'horizontal',margin:'md',alignItems:'center',contents:[{type:'image',url:image,size:'full',flex:4,aspectRatio:ratio,aspectMode:'fit',...(animated?{animated:true}:{}),action:{type:'uri',uri:url}},{type:'box',layout:'vertical',flex:5,spacing:'sm',contents:[{type:'text',text:nativeName,color:'#FFB66D',weight:'bold',wrap:true},{type:'text',text:englishName,color:'#F7F0DF',size:'sm',wrap:true},{type:'text',text:culture,color:'#C3CBD9',size:'xs',wrap:true,maxLines:2,align:language==='ar'?'end':'start'}]}]},{type:'text',text:caption,color:'#F7F0DF',wrap:true,margin:'md',size:'sm'}]},footer:{type:'box',layout:'vertical',contents:[{type:'button',style:'primary',color:'#067D46',action:{type:'uri',label:label('观看变身','Watch the transformation'),uri:url}}]}}}],{isMultiple:true});
+   metric(result?.status==='success'?'share_send_confirmed':'share_cancelled');
    status.textContent=result?.status==='success'?label('卡片已发送。','Card sent.'):label('已取消，未发送。','Cancelled. Nothing was sent.');
-  }catch(error){status.textContent=(error as Error).message || label('LINE 未能确认发送，请重试。','LINE could not confirm sending. Try again.');}
+  }catch(error){metric('share_failed');status.textContent=(error as Error).message || label('LINE 未能确认发送，请重试。','LINE could not confirm sending. Try again.');}
   finally{button.disabled=false;}
  };
- editorReady();
+ metric('share_ready');editorReady();
 }
 void start().catch(error=>{root.innerHTML=`<h1>Scary Helloween</h1><p role="status">${e(error.message)}</p><p><a href="${e('/line-share.html?invite='+encodeURIComponent(new URL(location.href).searchParams.get('invite')||'')+'&lang='+language)}">${label('重试','Try again')}</a> · <a href="/">${label('返回游戏','Back to game')}</a></p>`;});

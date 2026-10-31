@@ -28,7 +28,7 @@ test('a preview invitation opens its own transformation for the recipient',async
  const invitation=await (await page.request.post('/api/invites',{data:{spiritId:'vetala',channel:'line'}})).json();
  expect(invitation.id).toBeTruthy();
  await page.goto('/?invite='+invitation.id+'&lang=en');
- await page.locator('[data-confirm-unlock]').click();
+
  await expect(page.locator('.character-sns [data-channel=line]')).toHaveAttribute('data-id','vetala');
  await page.waitForFunction(()=>{const video=document.querySelector<HTMLVideoElement>('video[data-phase=intro]');return video&&!video.paused&&video.currentTime>.1&&video.src.includes('/vetala/');});
 });

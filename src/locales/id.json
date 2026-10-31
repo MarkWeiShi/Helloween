@@ -1437,5 +1437,15 @@
   "Video buffer progress": "Progres buffer video",
   "Preparing video…": "Menyiapkan video…",
   "Buffering video…": "Memuat buffer video…",
-  "Load failed · retrying…": "Gagal memuat · mencoba lagi…"
+  "Load failed · retrying…": "Gagal memuat · mencoba lagi…",
+  "Start exploring": "Mulai menjelajah",
+  "Watch transformation": "Lihat transformasi",
+  "Record and replay": "Rekam dan putar ulang",
+  "Measure and replay": "Ukur dan putar ulang",
+  "Recording progress": "Progres rekaman",
+  "Recording… {{0}}s": "Merekam… {{0}} dtk",
+  "Measuring… {{0}}s": "Mengukur… {{0}} dtk",
+  "Invalid analytics sample.": "Data statistik tidak valid.",
+  "Your inviter’s recording storage is full. You can still watch and share.": "Penyimpanan rekaman pengundang penuh. Anda tetap dapat menonton dan berbagi.",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Izin mikrofon diminta saat pertama membuka transformasi. Setelah diizinkan, perekaman dimulai otomatis pada kunjungan berikutnya."
 }

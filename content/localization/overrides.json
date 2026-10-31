@@ -296,7 +296,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "A small forest spirit from Thai tales, known for hopping and its repeated cry.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "A headless rider from Irish folklore, associated with death and nighttime journeys.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "A woman in a Mexican legend who escapes captivity aboard a boat she draws.",
-    "Earthling": "Earthling"
+    "Earthling": "Earthling",
+    "Start exploring": "Start exploring",
+    "Watch transformation": "Watch transformation",
+    "Record and replay": "Record and replay",
+    "Measure and replay": "Measure and replay",
+    "Recording progress": "Recording progress",
+    "Recording… {{0}}s": "Recording… {{0}}s",
+    "Measuring… {{0}}s": "Measuring… {{0}}s",
+    "Invalid analytics sample.": "Invalid analytics sample.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "Your inviter’s recording storage is full. You can still watch and share.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits."
   },
   "zh": {
     "Language": "语言",
@@ -784,7 +794,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "泰国森林传说中的小精怪，以跳跃的步伐和反复的呼声为人熟知。",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "爱尔兰民间传说中的无头骑士，常与死亡和夜行故事相连。",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "墨西哥科尔多瓦传说中的女子，乘上自己画出的船逃离囚禁。",
-    "Earthling": "地球人"
+    "Earthling": "地球人",
+    "Start exploring": "开始探索",
+    "Watch transformation": "观看变身",
+    "Record and replay": "录音并重播",
+    "Measure and replay": "测量并重播",
+    "Recording progress": "录音进度",
+    "Recording… {{0}}s": "录音中… {{0}}秒",
+    "Measuring… {{0}}s": "测量中… {{0}}秒",
+    "Invalid analytics sample.": "统计数据格式无效。",
+    "Your inviter’s recording storage is full. You can still watch and share.": "邀请人的录音空间已满，你仍可观看和分享。",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "首次进入变身卡片时申请麦克风权限。允许后，再次进入将自动录音。"
   },
   "es": {
     "Language": "Idioma",
@@ -1106,7 +1126,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Un pequeño espíritu de los bosques tailandeses, conocido por sus saltos y su grito repetido.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Un jinete sin cabeza del folclore irlandés, vinculado a la muerte y los viajes nocturnos.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Una mujer de una leyenda mexicana que escapa de su encierro en un barco que ella misma dibuja.",
-    "Earthling": "Terrícola"
+    "Earthling": "Terrícola",
+    "Start exploring": "Empezar a explorar",
+    "Watch transformation": "Ver transformación",
+    "Record and replay": "Grabar y repetir",
+    "Measure and replay": "Medir y repetir",
+    "Recording progress": "Progreso de grabación",
+    "Recording… {{0}}s": "Grabando… {{0}} s",
+    "Measuring… {{0}}s": "Midiendo… {{0}} s",
+    "Invalid analytics sample.": "Muestra estadística no válida.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "El almacenamiento de grabaciones de quien te invitó está lleno. Puedes seguir mirando y compartiendo.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Al abrir una transformación por primera vez se solicita permiso para el micrófono. Una vez permitido, la grabación comienza automáticamente en las siguientes visitas."
   },
   "pt": {
     "Language": "Idioma",
@@ -1428,7 +1458,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Um pequeno espírito das florestas tailandesas, conhecido por seus saltos e seu grito repetido.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Um cavaleiro sem cabeça do folclore irlandês, associado à morte e às jornadas noturnas.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Uma mulher de uma lenda mexicana que foge do cativeiro em um barco que ela mesma desenha.",
-    "Earthling": "Terráqueo"
+    "Earthling": "Terráqueo",
+    "Start exploring": "Começar a explorar",
+    "Watch transformation": "Ver transformação",
+    "Record and replay": "Gravar e repetir",
+    "Measure and replay": "Medir e repetir",
+    "Recording progress": "Progresso da gravação",
+    "Recording… {{0}}s": "Gravando… {{0}} s",
+    "Measuring… {{0}}s": "Medindo… {{0}} s",
+    "Invalid analytics sample.": "Amostra estatística inválida.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "O armazenamento de gravações de quem convidou você está cheio. Você ainda pode assistir e compartilhar.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Ao abrir uma transformação pela primeira vez, pedimos acesso ao microfone. Após permitir, a gravação começa automaticamente nas próximas visitas."
   },
   "fr": {
     "Language": "Langue",
@@ -1750,7 +1790,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Un petit esprit des forêts thaïlandaises, connu pour ses bonds et son cri répété.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Un cavalier sans tête du folklore irlandais, associé à la mort et aux voyages nocturnes.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Une femme d’une légende mexicaine qui échappe à la captivité à bord d’un bateau qu’elle dessine.",
-    "Earthling": "Terrien"
+    "Earthling": "Terrien",
+    "Start exploring": "Commencer l’exploration",
+    "Watch transformation": "Voir la transformation",
+    "Record and replay": "Enregistrer et revoir",
+    "Measure and replay": "Mesurer et revoir",
+    "Recording progress": "Progression de l’enregistrement",
+    "Recording… {{0}}s": "Enregistrement… {{0}} s",
+    "Measuring… {{0}}s": "Mesure… {{0}} s",
+    "Invalid analytics sample.": "Échantillon statistique invalide.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "Le stockage des enregistrements de la personne qui vous a invité est plein. Vous pouvez toujours regarder et partager.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Le micro est demandé à la première ouverture d’une transformation. Une fois autorisé, l’enregistrement démarre automatiquement lors des visites suivantes."
   },
   "de": {
     "Language": "Sprache",
@@ -2072,7 +2122,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Ein kleiner Geist aus thailändischen Walderzählungen, bekannt für sein Hüpfen und seinen wiederholten Ruf.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Ein kopfloser Reiter aus irischen Volkserzählungen, verbunden mit Tod und nächtlichen Reisen.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Eine Frau aus einer mexikanischen Legende, die auf einem selbst gezeichneten Boot aus der Gefangenschaft flieht.",
-    "Earthling": "Erdenmensch"
+    "Earthling": "Erdenmensch",
+    "Start exploring": "Erkundung starten",
+    "Watch transformation": "Verwandlung ansehen",
+    "Record and replay": "Aufnehmen und wiederholen",
+    "Measure and replay": "Messen und wiederholen",
+    "Recording progress": "Aufnahmefortschritt",
+    "Recording… {{0}}s": "Aufnahme… {{0}} s",
+    "Measuring… {{0}}s": "Messung… {{0}} s",
+    "Invalid analytics sample.": "Ungültige Statistikdaten.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "Der Aufnahmespeicher der einladenden Person ist voll. Du kannst weiterhin ansehen und teilen.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Beim ersten Öffnen einer Verwandlung wird der Mikrofonzugriff angefragt. Nach der Erlaubnis startet die Aufnahme bei späteren Besuchen automatisch."
   },
   "it": {
     "Language": "Lingua",
@@ -2394,7 +2454,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Un piccolo spirito delle foreste thailandesi, noto per i suoi saltelli e il richiamo ripetuto.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Un cavaliere senza testa del folclore irlandese, legato alla morte e ai viaggi notturni.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Una donna di una leggenda messicana che fugge dalla prigionia su una barca disegnata da lei stessa.",
-    "Earthling": "Terrestre"
+    "Earthling": "Terrestre",
+    "Start exploring": "Inizia a esplorare",
+    "Watch transformation": "Guarda la trasformazione",
+    "Record and replay": "Registra e riproduci",
+    "Measure and replay": "Misura e riproduci",
+    "Recording progress": "Avanzamento registrazione",
+    "Recording… {{0}}s": "Registrazione… {{0}} s",
+    "Measuring… {{0}}s": "Misurazione… {{0}} s",
+    "Invalid analytics sample.": "Campione statistico non valido.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "Lo spazio delle registrazioni di chi ti ha invitato è pieno. Puoi comunque guardare e condividere.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Alla prima apertura di una trasformazione viene richiesto l’accesso al microfono. Dopo il consenso, la registrazione parte automaticamente nelle visite successive."
   },
   "ru": {
     "Language": "Язык",
@@ -2716,7 +2786,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Маленький дух из тайских лесных преданий, известный прыжками и повторяющимся криком.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Всадник без головы из ирландского фольклора, связанный со смертью и ночными странствиями.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Женщина из мексиканской легенды, которая бежит из заточения на нарисованной ею лодке.",
-    "Earthling": "Землянин"
+    "Earthling": "Землянин",
+    "Start exploring": "Начать исследование",
+    "Watch transformation": "Смотреть превращение",
+    "Record and replay": "Записать и повторить",
+    "Measure and replay": "Измерить и повторить",
+    "Recording progress": "Ход записи",
+    "Recording… {{0}}s": "Запись… {{0}} с",
+    "Measuring… {{0}}s": "Измерение… {{0}} с",
+    "Invalid analytics sample.": "Неверные статистические данные.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "Хранилище записей пригласившего вас человека заполнено. Можно смотреть и делиться.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "При первом открытии превращения запрашивается доступ к микрофону. После разрешения запись начинается автоматически при следующих посещениях."
   },
   "ar": {
     "Language": "اللغة",
@@ -3038,7 +3118,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "روح صغيرة من حكايات الغابات التايلاندية، تُعرف بالقفز وتكرار ندائها.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "فارس بلا رأس من التراث الشعبي الأيرلندي، يرتبط بالموت والرحلات الليلية.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "امرأة في أسطورة مكسيكية تهرب من الأسر على متن قارب ترسمه بنفسها.",
-    "Earthling": "من سكان الأرض"
+    "Earthling": "من سكان الأرض",
+    "Start exploring": "ابدأ الاستكشاف",
+    "Watch transformation": "شاهد التحوّل",
+    "Record and replay": "سجّل وأعد التشغيل",
+    "Measure and replay": "قِس وأعد التشغيل",
+    "Recording progress": "تقدّم التسجيل",
+    "Recording… {{0}}s": "جارٍ التسجيل… {{0}} ث",
+    "Measuring… {{0}}s": "جارٍ القياس… {{0}} ث",
+    "Invalid analytics sample.": "بيانات إحصائية غير صالحة.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "مساحة تسجيلات من دعاك ممتلئة. لا يزال بإمكانك المشاهدة والمشاركة.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "يُطلب إذن الميكروفون عند فتح التحول لأول مرة. بعد السماح، يبدأ التسجيل تلقائيًا في الزيارات التالية."
   },
   "hi": {
     "Language": "भाषा",
@@ -3360,7 +3450,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "थाई जंगलों की कथाओं की छोटी आत्मा, जो उछलती है और अपनी पुकार दोहराती है।",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "आयरिश लोककथाओं का बिना सिर वाला घुड़सवार, जो मृत्यु और रात की यात्राओं से जुड़ा है।",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "मेक्सिको की किंवदंती की स्त्री, जो अपनी बनाई नाव की तस्वीर पर सवार होकर कैद से निकलती है।",
-    "Earthling": "पृथ्वीवासी"
+    "Earthling": "पृथ्वीवासी",
+    "Start exploring": "खोजना शुरू करें",
+    "Watch transformation": "रूपांतरण देखें",
+    "Record and replay": "रिकॉर्ड करके फिर चलाएँ",
+    "Measure and replay": "मापकर फिर चलाएँ",
+    "Recording progress": "रिकॉर्डिंग की प्रगति",
+    "Recording… {{0}}s": "रिकॉर्डिंग… {{0}} सेकंड",
+    "Measuring… {{0}}s": "मापन… {{0}} सेकंड",
+    "Invalid analytics sample.": "अमान्य सांख्यिकी डेटा।",
+    "Your inviter’s recording storage is full. You can still watch and share.": "आमंत्रित करने वाले का रिकॉर्डिंग स्थान भर गया है। आप फिर भी देख और साझा कर सकते हैं।",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "पहली बार रूपांतरण खोलने पर माइक्रोफ़ोन की अनुमति मांगी जाती है। अनुमति देने के बाद अगली बार रिकॉर्डिंग अपने आप शुरू होती है।"
   },
   "ja": {
     "Language": "言語",
@@ -3684,7 +3784,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "タイの森の伝承に登場する小さな精霊。跳ね歩き、同じ声を繰り返します。",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "アイルランドの民間伝承に登場する首のない騎手。死や夜の旅と結びついています。",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "メキシコの伝説に登場する女性。自分で描いた船に乗り、囚われの身から逃れます。",
-    "Earthling": "地球人"
+    "Earthling": "地球人",
+    "Start exploring": "探索を始める",
+    "Watch transformation": "変身を見る",
+    "Record and replay": "録音して再生",
+    "Measure and replay": "測定して再生",
+    "Recording progress": "録音の進行状況",
+    "Recording… {{0}}s": "録音中… {{0}}秒",
+    "Measuring… {{0}}s": "測定中… {{0}}秒",
+    "Invalid analytics sample.": "統計データが無効です。",
+    "Your inviter’s recording storage is full. You can still watch and share.": "招待者の録音保存容量がいっぱいです。視聴・共有はできます。",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "初めて変身カードを開くとマイクの許可を求めます。許可後は次回から自動で録音します。"
   },
   "ko": {
     "Language": "언어",
@@ -4007,7 +4117,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "태국 숲속 설화의 작은 정령. 뛰어다니며 같은 울음소리를 반복한다고 해요.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "아일랜드 민간 설화 속 머리 없는 기수. 죽음과 밤길 이야기에 등장해요.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "멕시코 전설 속 여성. 직접 그린 배를 타고 감금에서 벗어난다고 해요.",
-    "Earthling": "지구인"
+    "Earthling": "지구인",
+    "Start exploring": "탐험 시작",
+    "Watch transformation": "변신 보기",
+    "Record and replay": "녹음하고 다시 재생",
+    "Measure and replay": "측정하고 다시 재생",
+    "Recording progress": "녹음 진행 상황",
+    "Recording… {{0}}s": "녹음 중… {{0}}초",
+    "Measuring… {{0}}s": "측정 중… {{0}}초",
+    "Invalid analytics sample.": "잘못된 통계 데이터입니다.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "초대한 사람의 녹음 저장 공간이 가득 찼습니다. 시청과 공유는 계속할 수 있습니다.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "변신 카드를 처음 열 때 마이크 권한을 요청합니다. 허용하면 이후에는 자동으로 녹음합니다."
   },
   "id": {
     "Language": "Bahasa",
@@ -4329,7 +4449,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Roh kecil dalam kisah hutan Thailand, dikenal karena lompatan dan seruannya yang berulang.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Penunggang tanpa kepala dalam cerita rakyat Irlandia, berkaitan dengan kematian dan perjalanan malam.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Perempuan dalam legenda Meksiko yang lolos dari tahanan dengan menaiki perahu gambarannya sendiri.",
-    "Earthling": "Penduduk Bumi"
+    "Earthling": "Penduduk Bumi",
+    "Start exploring": "Mulai menjelajah",
+    "Watch transformation": "Lihat transformasi",
+    "Record and replay": "Rekam dan putar ulang",
+    "Measure and replay": "Ukur dan putar ulang",
+    "Recording progress": "Progres rekaman",
+    "Recording… {{0}}s": "Merekam… {{0}} dtk",
+    "Measuring… {{0}}s": "Mengukur… {{0}} dtk",
+    "Invalid analytics sample.": "Data statistik tidak valid.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "Penyimpanan rekaman pengundang penuh. Anda tetap dapat menonton dan berbagi.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Izin mikrofon diminta saat pertama membuka transformasi. Setelah diizinkan, perekaman dimulai otomatis pada kunjungan berikutnya."
   },
   "th": {
     "Language": "ภาษา",
@@ -4651,7 +4781,17 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "ผีป่าตัวเล็กในคติชนไทย เป็นที่รู้จักจากการกระโดดและเสียงร้องซ้ำ ๆ",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "ผู้ขี่ม้าไร้ศีรษะในคติชนไอริช เกี่ยวข้องกับความตายและการเดินทางยามค่ำคืน",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "หญิงในตำนานเม็กซิโกที่หนีจากการคุมขัง โดยขึ้นเรือที่ตนวาดขึ้นมา",
-    "Earthling": "ชาวโลก"
+    "Earthling": "ชาวโลก",
+    "Start exploring": "เริ่มสำรวจ",
+    "Watch transformation": "ดูการแปลงร่าง",
+    "Record and replay": "บันทึกและเล่นซ้ำ",
+    "Measure and replay": "วัดผลและเล่นซ้ำ",
+    "Recording progress": "ความคืบหน้าการบันทึก",
+    "Recording… {{0}}s": "กำลังบันทึก… {{0}} วินาที",
+    "Measuring… {{0}}s": "กำลังวัดผล… {{0}} วินาที",
+    "Invalid analytics sample.": "ข้อมูลสถิติไม่ถูกต้อง",
+    "Your inviter’s recording storage is full. You can still watch and share.": "พื้นที่บันทึกเสียงของผู้เชิญเต็มแล้ว คุณยังดูและแชร์ได้",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "ระบบจะขออนุญาตใช้ไมโครโฟนเมื่อเปิดการแปลงร่างครั้งแรก เมื่ออนุญาตแล้ว การบันทึกจะเริ่มอัตโนมัติในครั้งต่อไป"
   },
   "vi": {
     "Language": "Ngôn ngữ",
@@ -4973,6 +5113,16 @@
     "A small forest spirit from Thai tales, known for hopping and its repeated cry.": "Tinh linh nhỏ trong chuyện rừng Thái Lan, nổi tiếng với bước nhảy và tiếng gọi lặp lại.",
     "A headless rider from Irish folklore, associated with death and nighttime journeys.": "Kỵ sĩ không đầu trong dân gian Ireland, gắn với cái chết và những chuyến đi đêm.",
     "A woman in a Mexican legend who escapes captivity aboard a boat she draws.": "Người phụ nữ trong truyền thuyết Mexico thoát khỏi cảnh giam cầm bằng con thuyền do mình vẽ.",
-    "Earthling": "Người Trái Đất"
+    "Earthling": "Người Trái Đất",
+    "Start exploring": "Bắt đầu khám phá",
+    "Watch transformation": "Xem biến hình",
+    "Record and replay": "Ghi âm và phát lại",
+    "Measure and replay": "Đo và phát lại",
+    "Recording progress": "Tiến độ ghi âm",
+    "Recording… {{0}}s": "Đang ghi âm… {{0}} giây",
+    "Measuring… {{0}}s": "Đang đo… {{0}} giây",
+    "Invalid analytics sample.": "Dữ liệu thống kê không hợp lệ.",
+    "Your inviter’s recording storage is full. You can still watch and share.": "Bộ nhớ ghi âm của người mời đã đầy. Bạn vẫn có thể xem và chia sẻ.",
+    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Quyền micrô được yêu cầu khi bạn mở biến hình lần đầu. Sau khi cho phép, các lần tiếp theo sẽ tự động ghi âm."
   }
 }

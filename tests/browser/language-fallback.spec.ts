@@ -11,7 +11,7 @@ async function expectLanguage(page:Page,locale:string){
  const dictionary=JSON.parse(readFileSync(`src/locales/${locale}.json`,'utf8'));
  // Waiting for translated UI also proves client boot succeeded, rather than
  // merely asserting the server-rendered html lang attribute.
- await expect(page.locator('.play-unlock')).toHaveText(dictionary['Enable Mic & Play']);
+ await expect(page.locator('.play-unlock')).toHaveText(dictionary['Start exploring']);
  await expect(page.locator('html')).toHaveAttribute('lang',locale);
 }
 async function choose(page:Page,locale:string){

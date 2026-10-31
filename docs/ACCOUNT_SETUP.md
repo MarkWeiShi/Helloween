@@ -1,3 +1,11 @@
+# Current sharing behavior (source only, deployment requires approval)
+
+All public invitation channels, including LINE's dedicated editor and X Web Intents, accept guests with a default nickname and Earthling affiliation. They do not submit onboarding fields. Platform-controlled login, recipient selection and final confirmation still apply. Optional game sign-in remains available for cross-device link and recording management; private recording access still checks ownership.
+
+Watching and sharing do not require a microphone. The first transformation card requests permission; after it is granted, recording starts automatically on later visits and replays. Refusal is remembered and a retry action remains available. Numeric measurements and private invitation audio retain their separate upload paths. LINE alone currently exposes a positive SDK send callback to the game; opening other composers or copying links must not be counted as confirmed delivery.
+
+The earlier configuration and rollout notes below are retained as historical context. Requirements they describe for mandatory game login, profile setup or entry microphone access are superseded by the source behavior above.
+
 # Accounts and My ghost links
 
 Implemented locally; production identity-provider configuration and real SNS acceptance are still required. The existing Node/SQLite app remains the owner of links and recordings. The CDNSolution deployment serves the static frontend through NGINX/CDN and routes `/api/*` to the independent Node service; keep the external origin and callback path unchanged.

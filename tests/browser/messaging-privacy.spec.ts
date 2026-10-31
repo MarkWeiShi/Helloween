@@ -6,8 +6,7 @@ test.afterAll(async()=>{await app.stop();});
 test('legal pages are public and unlock links add no confirmation requirement',async({page})=>{
  await page.goto(app.origin+'/?lang=en');
  await page.locator('.play-unlock').click();
- await expect(page.locator('.unlock-policy-links a')).toHaveCount(2);
- await expect(page.locator('[data-confirm-unlock]')).toBeEnabled();
+ await expect(page.locator('.play-lock,.unlock-consent')).toHaveCount(0);
  await expect(page.locator('.unlock-consent input[type=checkbox]')).toHaveCount(0);
  for(const path of ['privacy.html','data-deletion.html']){
   const response=await page.goto(app.origin+'/'+path);expect(response?.status()).toBe(200);
@@ -28,7 +27,7 @@ test('direct WhatsApp and Messenger channels preserve ownership and native share
  const buttons=page.locator('.character-sns');
  await expect(buttons.locator('[data-channel=facebook]')).toHaveCount(1);
  await expect(buttons.locator('[data-channel=messenger] img')).toBeVisible();
- await expect(buttons.locator('[data-channel=whatsapp] img')).toBeVisible();
+ await expect(buttons.locator('[data-channel=whatsapp] .social-logo')).toBeVisible();
  await buttons.locator('[data-channel=whatsapp]').click();
  const link=page.getByRole('link',{name:'Continue to WhatsApp',exact:true});await expect(link).toBeVisible();
  const url=await page.getByLabel('Invitation link').inputValue();

@@ -1437,5 +1437,15 @@
   "Video buffer progress": "Tiến độ tải đệm video",
   "Preparing video…": "Đang chuẩn bị video…",
   "Buffering video…": "Đang tải đệm video…",
-  "Load failed · retrying…": "Tải thất bại · đang thử lại…"
+  "Load failed · retrying…": "Tải thất bại · đang thử lại…",
+  "Start exploring": "Bắt đầu khám phá",
+  "Watch transformation": "Xem biến hình",
+  "Record and replay": "Ghi âm và phát lại",
+  "Measure and replay": "Đo và phát lại",
+  "Recording progress": "Tiến độ ghi âm",
+  "Recording… {{0}}s": "Đang ghi âm… {{0}} giây",
+  "Measuring… {{0}}s": "Đang đo… {{0}} giây",
+  "Invalid analytics sample.": "Dữ liệu thống kê không hợp lệ.",
+  "Your inviter’s recording storage is full. You can still watch and share.": "Bộ nhớ ghi âm của người mời đã đầy. Bạn vẫn có thể xem và chia sẻ.",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Quyền micrô được yêu cầu khi bạn mở biến hình lần đầu. Sau khi cho phép, các lần tiếp theo sẽ tự động ghi âm."
 }

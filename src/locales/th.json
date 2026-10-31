@@ -1437,5 +1437,15 @@
   "Video buffer progress": "ความคืบหน้าการบัฟเฟอร์วิดีโอ",
   "Preparing video…": "กำลังเตรียมวิดีโอ…",
   "Buffering video…": "กำลังบัฟเฟอร์วิดีโอ…",
-  "Load failed · retrying…": "โหลดไม่สำเร็จ · กำลังลองอีกครั้ง…"
+  "Load failed · retrying…": "โหลดไม่สำเร็จ · กำลังลองอีกครั้ง…",
+  "Start exploring": "เริ่มสำรวจ",
+  "Watch transformation": "ดูการแปลงร่าง",
+  "Record and replay": "บันทึกและเล่นซ้ำ",
+  "Measure and replay": "วัดผลและเล่นซ้ำ",
+  "Recording progress": "ความคืบหน้าการบันทึก",
+  "Recording… {{0}}s": "กำลังบันทึก… {{0}} วินาที",
+  "Measuring… {{0}}s": "กำลังวัดผล… {{0}} วินาที",
+  "Invalid analytics sample.": "ข้อมูลสถิติไม่ถูกต้อง",
+  "Your inviter’s recording storage is full. You can still watch and share.": "พื้นที่บันทึกเสียงของผู้เชิญเต็มแล้ว คุณยังดูและแชร์ได้",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "ระบบจะขออนุญาตใช้ไมโครโฟนเมื่อเปิดการแปลงร่างครั้งแรก เมื่ออนุญาตแล้ว การบันทึกจะเริ่มอัตโนมัติในครั้งต่อไป"
 }

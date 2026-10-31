@@ -4,7 +4,7 @@ for(const width of [320,390])test(`character sharing and paired scores at ${widt
  const context=await browser.newContext({viewport:{width,height:844},permissions:['microphone']});
  try{
   const page=await context.newPage();const authRequests:string[]=[];page.on('request',r=>{if(r.url().includes('/api/auth/'))authRequests.push(r.url());});
-  await page.goto(base+'/?lang=en');await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();await expect(page.locator('.play-lock')).toHaveCount(0);
+  await page.goto(base+'/?lang=en');await page.locator('.play-unlock').click();await expect(page.locator('.play-lock')).toHaveCount(0);
   const me=await(await context.request.get(base+'/api/me')).json();
   await page.evaluate(({id})=>localStorage.setItem(`boo:personal-scare:v1:${id}:headless-horseman`,JSON.stringify({score:42,meanHz:400,meanRms:.1})),{id:me.player.id});
   for(const selector of ['.character-share','.scare-action']){

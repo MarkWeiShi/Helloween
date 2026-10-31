@@ -80,7 +80,7 @@ test('legacy lock restores controls after microphone consent',async({page})=>{
   };
  });
  await page.goto('/?lang=en');await page.locator('.play-unlock').click();
- await page.locator('[data-confirm-unlock]').click();
+
  await expect(page.locator('.play-lock')).toHaveCount(0);
  await expect(page.locator('.app-shell')).not.toHaveAttribute('inert');
  await expect(page.locator('.app-shell')).not.toHaveClass(/compat-inert/);

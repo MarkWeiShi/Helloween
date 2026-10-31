@@ -1437,5 +1437,15 @@
   "Video buffer progress": "Прогресс буферизации видео",
   "Preparing video…": "Подготовка видео…",
   "Buffering video…": "Буферизация видео…",
-  "Load failed · retrying…": "Ошибка загрузки · повторная попытка…"
+  "Load failed · retrying…": "Ошибка загрузки · повторная попытка…",
+  "Start exploring": "Начать исследование",
+  "Watch transformation": "Смотреть превращение",
+  "Record and replay": "Записать и повторить",
+  "Measure and replay": "Измерить и повторить",
+  "Recording progress": "Ход записи",
+  "Recording… {{0}}s": "Запись… {{0}} с",
+  "Measuring… {{0}}s": "Измерение… {{0}} с",
+  "Invalid analytics sample.": "Неверные статистические данные.",
+  "Your inviter’s recording storage is full. You can still watch and share.": "Хранилище записей пригласившего вас человека заполнено. Можно смотреть и делиться.",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "При первом открытии превращения запрашивается доступ к микрофону. После разрешения запись начинается автоматически при следующих посещениях."
 }

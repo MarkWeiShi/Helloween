@@ -1,41 +1,12 @@
-import { test, expect, chromium } from '@playwright/test';
-test('first real transformation measures locally, stays dismissible, and persists per character', async () => {
- const browser = await chromium.launch({channel:'chrome',args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});
- try {
-  const context = await browser.newContext({permissions:['microphone']});
-  const page = await context.newPage();
-  await page.goto((process.env.WD_ACCEPTANCE_ORIGIN || 'http://127.0.0.1:8787'));
-  await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
-  await expect(page.locator('.play-lock')).toHaveCount(0);
-  const pin = page.locator('.globe-pin[data-spirit]:visible').first();
-  const id = await pin.getAttribute('data-spirit');
-  await pin.click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
-  await expect(page.locator('.character-close')).toBeEnabled();
-  await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
-  await expect(page.locator('.transformation-player video[data-phase=loop]')).toHaveJSProperty('loop',true,{timeout:10000});
-  await expect(page.locator('.character-close')).toBeEnabled();
-  const result = await page.locator('[data-personal-scare]').textContent();
-  expect(result).toMatch(/You|No voice/);
-  await page.locator('.character-close').click();
-  await page.locator(`.globe-pin[data-spirit="${id}"]`).click();
-  await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
-  await expect(page.locator('.character-close')).toBeEnabled();
-  await page.locator('[data-play-transform]').click();
-  await expect(page.locator('.character-close')).toBeEnabled();
-  await expect(page.locator('.character-close')).toBeEnabled({timeout:10000});
-  await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
-  await page.locator('.character-close').click();
-  await page.locator(`.globe-pin[data-spirit]:not([data-spirit="${id}"])`).first().dispatchEvent('click');
-  await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
-  await expect(page.locator('.character-close')).toBeEnabled();
-  await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
-  await page.reload();
-  await expect(page.locator('.app-shell')).toBeVisible();
-  await expect(page.locator('.play-lock')).toHaveCount(0);
-  await expect(page.locator('.unlock-consent')).toHaveCount(0);
-  await page.locator(`.globe-pin[data-spirit="${id}"]`).click();
-  await expect(page.locator('[data-personal-scare]')).toHaveText(result!);
-  await expect(page.locator('.character-close')).toBeEnabled();
- } finally { await browser.close(); }
+import {test,expect,chromium} from '@playwright/test';
+test('first card automatically measures, stays numeric-only and reacquires granted streams without a recording action',async()=>{
+ const browser=await chromium.launch({channel:'chrome',args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});try{
+ const ctx=await browser.newContext({permissions:['microphone']});const page=await ctx.newPage();const base=process.env.WD_ACCEPTANCE_ORIGIN||'http://127.0.0.1:8787';
+ await page.addInitScript(()=>{(window as any).__mic=0;const original=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=async c=>{(window as any).__mic++;return original(c);};});
+ await page.goto(base+'/?lang=en');await page.locator('.play-unlock').click();expect(await page.evaluate(()=>(window as any).__mic)).toBe(0);
+ const sample=page.waitForRequest(r=>r.method()==='POST'&&r.url().endsWith('/spirits/jiangshi/scare'));await page.locator('[data-globe-spirit="jiangshi"]').click();const body=(await sample).postDataJSON();expect(body).not.toHaveProperty('audio');expect(body.consent).toBe(true);
+ await expect(page.locator('[data-personal-scare]')).toContainText(/You \d+\/100|My Scariness Score|No Voice Detected|No voice/,{timeout:15000});const calls=await page.evaluate(()=>(window as any).__mic);expect(calls).toBe(1);
+ await page.locator('.character-close').click();await page.locator('[data-globe-spirit="jiangshi"]').click();expect(await page.evaluate(()=>Object.keys(localStorage).some(k=>k.startsWith('boo:personal-scare:')))).toBe(true);await expect.poll(()=>page.evaluate(()=>(window as any).__mic)).toBe(calls+1);
+ await page.locator('.character-close').click();await page.locator('[data-globe-spirit="kappa"]').click();await expect.poll(()=>page.evaluate(()=>(window as any).__mic)).toBe(calls+2);await expect(page.locator('[data-record-reaction]')).toBeHidden();
+ }finally{await browser.close();}
 });

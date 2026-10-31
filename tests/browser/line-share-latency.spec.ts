@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-test.use({baseURL:process.env.SHARE_TEST_ORIGIN||'http://127.0.0.1:5187'});
+test.use({baseURL:process.env.SHARE_TEST_ORIGIN||process.env.PLAYWRIGHT_TEST_BASE_URL||'http://127.0.0.1:5187'});
 test('LINE editor is usable within four seconds while optional artwork never responds',async({page})=>{
  await page.route('**/api/social/config',r=>r.fulfill({json:{lineLiffId:'test-liff',origin:'http://127.0.0.1:5187'}}));
  await page.route('**/api/invites/test-invite',r=>r.fulfill({json:{spiritId:'jiangshi',expired:false}}));

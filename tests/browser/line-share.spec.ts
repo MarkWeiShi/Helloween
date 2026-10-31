@@ -50,7 +50,7 @@ test('missing APNG falls back to a static card without losing the invite',async(
  const hero=await page.evaluate(()=>(window as any).sent[0].contents.body.contents[1].contents[0]);
  expect(new URL(hero.url).pathname).toMatch(/\/art\/x-cards\/jiangshi\.portrait\.png$/);expect(hero.animated).toBeUndefined();expect(hero.action.uri).toBe(origin+'/i/'+fresh);
 });
-test('new profile and LINE card confirmation fit one mobile screen',async({page,context},info)=>{
+test('default guest reaches LINE friend selection without profile setup',async({page,context},info)=>{
  const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,'line-compact-'+info.project.name);
  const invite=app.store.createInvite(login.player.id,{spiritId:'kappa',channel:'line'});
  await context.addCookies([{name:'boo_session',value:login.token,url:origin}]);
@@ -58,9 +58,9 @@ test('new profile and LINE card confirmation fit one mobile screen',async({page,
  await page.goto(origin+'/line-share.html?invite='+invite.id);
  await expect(page.locator('#choose')).toBeVisible();await expect(page.locator('#share-options')).not.toHaveAttribute('open');
  await expect(page.getByRole('link',{name:'Open in LINE',exact:true})).not.toBeVisible();
- await page.locator('#profile-name').fill('LINE compact');await page.locator('#profile-country').selectOption('JP');
+ await expect(page.locator('#profile-name,#profile-country')).toHaveCount(0);
  const bounds=await page.locator('#choose').boundingBox();expect(bounds!.y+bounds!.height).toBeLessThan(page.viewportSize()!.height);
  await page.screenshot({path:`artifacts/social-share/${info.project.name}-compact-line.png`});
  expect(await page.evaluate(()=>(window as any).sent)).toBeUndefined();await page.locator('#choose').click();
- await expect(page.locator('[role=status]')).toHaveText('Card sent.');expect(app.store.state(login.player.id).country).toBe('JP');
+ await expect(page.locator('[role=status]')).toHaveText('Card sent.');expect(app.store.state(login.player.id).country).toBe('001');expect(app.store.state(login.player.id).initialized).toBe(false);
 });

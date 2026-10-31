@@ -1,4 +1,5 @@
 import whatsappLogo from './whatsapp-logo.svg?raw';
+import {startEngagement,cardViewed,trackFunnel} from './engagement';
 import {worldScareLabel,refreshGlobalScares} from './global-scare';
 import {publicAssetUrl} from './public-assets';
 import {toast} from './toast';
@@ -27,7 +28,6 @@ import { mountGlobe } from "./globe";
 import { mountCuteMotions } from "./cute-motions";
 import { regionPreviews } from "./region-previews";
 import { pitchLevel, pitchScore } from "../shared/reactions.mjs";
-import { prepareMicrophone } from "./microphone";
 import type { Catalog, Player, Spirit, Invite } from "./types";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -52,9 +52,8 @@ let boardGroup = "players";
 let boardScope = "trick",
   boardTimer: ReturnType<typeof setInterval> | undefined;
 let modalCleanup: (() => void) | undefined;
-let mic: Awaited<ReturnType<typeof prepareMicrophone>> | undefined;
 let gateBusy = false;
-let microphoneUnlocked = false;
+let playUnlocked = false;
 const unlockStorageKey = 'boo:play-unlocked:v1';
 function hasSavedUnlock() {
   try { return localStorage.getItem(unlockStorageKey) === 'true'; }
@@ -268,6 +267,7 @@ function revealCharacter(animate = true, shared?: SharedReaction, requireComplet
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasCharacter = current?.art && current.regionId === region;
   if (hasCharacter || previewId) {
+    cardViewed(hasCharacter ? current.id : previewId!);
     prepareSocialShare(hasCharacter ? current.id : previewId!);
     const previousCleanup = modalCleanup;
     const cleanup = mountPersonalScare(dialog, player.id, hasCharacter ? current.id : previewId!, hasCharacter ? asset(current.art!.scare) : "", locked => { characterLocked = locked; }, () => true, undefined, shared, requireComplete);
@@ -425,9 +425,9 @@ function openInvite(accepted = false) {
     if (invitation.expired) return;
     if (catalog.spirits.some(character=>character.id===s.id)) selected = s.id;
     region = s.regionId;
-    revealCharacter(false, {inviteId:invitation.id}, true);
+    revealCharacter(false, {inviteId:invitation.id,recordingFull:invitation.recordingFull}, false);
   };
-  // Unlock already explains and accepts invitation playback and recording.
+  // The entry gesture opens the invitation preview; recording remains optional.
   if (accepted && !invitation.expired) {
     play();
     return;
@@ -476,9 +476,9 @@ async function createShareInvitation(id:string,channel:string){
 }
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
   if(btn?.disabled)return;
+  trackFunnel('share_clicked',{channel,spiritId:id});
   if (overlay.querySelector('.character-dialog')) setShareCard(id);
   if(channel==='x') {
-    if(!player.account){sessionStorage.setItem('boo:pending-share',JSON.stringify({id,channel}));await signIn();return;}
     const finishLoading=startShareButtonLoading(btn);
     // Reserve the window within the click gesture; OAuth resumes use an explicit link.
     const destination=resumed?null:window.open('about:blank','_blank');
@@ -487,12 +487,12 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
       const data=await createShareInvitation(id,channel);
       const shareUrl=new URL(`/api/share/card/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url).href;
       const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,url:shareUrl});
-      if(destination && !destination.closed){watchShareReturn();destination.location.href=target;}
+      if(destination && !destination.closed){trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();destination.location.href=target;}
       else {
         modal(`<h2>X</h2><a class="button primary full" data-open-x href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(t('Continue to {{1}}').replace('{{1}}','X'))}</a>`);
-        overlay.querySelector<HTMLAnchorElement>('[data-open-x]')!.onclick=()=>watchShareReturn();
+        overlay.querySelector<HTMLAnchorElement>('[data-open-x]')!.onclick=()=>{trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();};
       }
-    }catch(error){destination?.close();toast((error as Error).message);}
+    }catch(error){trackFunnel('share_failed',{channel});destination?.close();toast((error as Error).message);}
     finally{finishLoading();}
     return;
   }
@@ -504,9 +504,9 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
       const data=await createShareInvitation(id,channel);
       const card=new URL(`/api/share/facebook/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url);
       const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`;
-      if(destination){watchShareReturn();destination.location.href=target;}
-      else{modal(`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);}
-    }catch(error){destination?.close();toast((error as Error).message);}
+      if(destination){trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();destination.location.href=target;}
+      else{modal(`<a class="button primary full" data-open-facebook href="${e(target)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);overlay.querySelector<HTMLAnchorElement>('[data-open-facebook]')!.onclick=()=>{trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();};}
+    }catch(error){trackFunnel('share_failed',{channel});destination?.close();toast((error as Error).message);}
     finally{finishLoading();}
     return;
   }
@@ -534,7 +534,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
       };
     }
     else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id);
-  }catch(err){node.textContent=(err as Error).message;}
+  }catch(err){trackFunnel('share_failed',{channel});node.textContent=(err as Error).message;}
 }
 async function copyLink(url: string) {
   try {
@@ -563,32 +563,24 @@ async function downloadCard(id: string) {
 }
 function openAbout() {
   modal(
-    html`<div class="modal-heading">${icon("globe")}<h2>Many cultures.<br>A little shared kindness.</h2></div><p>This parade brings together ghosts, spirits, creatures and figures from folklore and literature. They do not all represent the souls of people who have died.</p><p>Each character's cultural background has its own source links. The warm three-part endings are new Halloween stories written for this game, not claims about the original traditions.</p><p>Countries on the leaderboard are chosen by players. Folklore can belong to several communities, and a map marker never means exclusive ownership.</p><h3>Your visit</h3><p>${t("Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.")}</p><p>We store a guest identifier in this browser, your chosen nickname and country, game progress and aggregate activity counts. Signing in saves your invitation links to your account for access across devices. We do not import contact lists.</p><p>If you enable the microphone, your first character transformation samples your voice on your device for 6 seconds. Volume and pitch produce a playful personal scariness score, saved per character in this browser; ordinary exploration does not save or upload raw audio. This is a game score, not a measurement of fear. For invitations, your nickname, average and peak pitch, game level and response time are shared with the inviter. When you unlock an invitation visit, the unlock confirmation explains that watching the invited transformation records six seconds starting at video second 3 and automatically uploads the recording and local game score for the inviter alone to play. The server uses your existing nickname, the inviter’s link label, or your guest identifier; no name entry is required. These labels are not verified SNS identities. Other microphone pitch checks store numeric results only. Silence and unclear sound are marked as unmeasured. Microphone access is required to unlock play. Confirm the brief gameplay and microphone notice after tapping unlock; there is no separate invitation consent form.</p><p class="fine-print">No cash prizes or purchases. Sign in before sharing to keep access to your links after changing devices.</p>${hellotalk()}<div class="store-links"><a href="https://apps.apple.com/us/app/hellotalk-language-learning/id557130558" target="_blank" rel="noopener noreferrer" data-ht="store">App Store</a><a href="https://play.google.com/store/apps/details?id=com.hellotalk" target="_blank" rel="noopener noreferrer" data-ht="store">Google Play</a></div>`,
+    html`<div class="modal-heading">${icon("globe")}<h2>Many cultures.<br>A little shared kindness.</h2></div><p>This parade brings together ghosts, spirits, creatures and figures from folklore and literature. They do not all represent the souls of people who have died.</p><p>Each character's cultural background has its own source links. The warm three-part endings are new Halloween stories written for this game, not claims about the original traditions.</p><p>Countries on the leaderboard are chosen by players. Folklore can belong to several communities, and a map marker never means exclusive ownership.</p><h3>Your visit</h3><p>${t("Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.")}</p><p>We store a guest identifier in this browser, your chosen nickname and country, game progress and aggregate activity counts. Signing in saves your invitation links to your account for access across devices. We do not import contact lists.</p><p>${t('Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.')}</p><p class="fine-print">No cash prizes or purchases. Sign in before sharing to keep access to your links after changing devices.</p>${hellotalk()}<div class="store-links"><a href="https://apps.apple.com/us/app/hellotalk-language-learning/id557130558" target="_blank" rel="noopener noreferrer" data-ht="store">App Store</a><a href="https://play.google.com/store/apps/details?id=com.hellotalk" target="_blank" rel="noopener noreferrer" data-ht="store">Google Play</a></div>`,
   );
 }
 function showGate() {
   // Render the actual live world once, then lock its interaction with an inert shell.
   gate=false;page='map';render();gate=true;
   setInert(app.querySelector<HTMLElement>('.app-shell')!,true);
-  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>Enable Mic &amp; Play</span></button><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
+  app.insertAdjacentHTML('beforeend',html`<section class="play-lock" aria-label="Unlock the game"><div class="play-lock-content"><button class="button primary play-unlock" data-action="enter"><svg class="unlock-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="lock-shackle" d="M10 14V9a6 6 0 0 1 12 0v5"/><rect x="6" y="14" width="20" height="15" rx="4"/><path d="M16 20v3"/></svg><span>${t(invite&&!invite.expired?'Watch transformation':'Start exploring')}</span></button><p class="mic-status" role="status" aria-live="polite"></p></div></section>`);
   app.querySelector<HTMLButtonElement>('.play-unlock')!.focus({preventScroll:true});
 }
-function openUnlockConsent() {
+function startExploration() {
   if (!gate || gateBusy) return;
-  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${t("Recording starts at 3 seconds into the video and lasts 6 seconds.")}</li><li>${t("Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.")}</li><li>${invite?.recordingFull ? t("Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li>${invite && !invite.expired ? "" : html`<li>录音中可随时取消或关闭。</li>`}</ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><p class="unlock-policy-links"><a href="/privacy.html" target="_blank" rel="noopener noreferrer">${locale === "zh" ? "隐私政策" : "Privacy Policy"}</a><span aria-hidden="true"> · </span><a href="/data-deletion.html" target="_blank" rel="noopener noreferrer">${locale === "zh" ? "用户数据删除说明" : "Data Deletion"}</a></p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
-  const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
-  dialog.classList.add('unlock-consent');
-  dialog.setAttribute('aria-labelledby', 'unlock-title');
-  dialog.setAttribute('aria-describedby', 'unlock-points');
-  dialog.querySelector<HTMLButtonElement>('[data-confirm-unlock]')!.onclick = () => {
-    closeModal();
-    void enterGate();
-  };
+  void enterGate();
 }
 function finishGate() {
-  microphoneUnlocked=true;
+  playUnlocked=true;
   try { localStorage.setItem(unlockStorageKey, 'true'); } catch {}
-  mic?.stop();mic=undefined;gateBusy=false;gate=false;
+  gateBusy=false;gate=false;
   app.querySelector('.play-lock')?.remove();
   const shell=app.querySelector<HTMLElement>('.app-shell');if(shell)setInert(shell,false);
   if(invite)openInvite(true);
@@ -596,31 +588,16 @@ function finishGate() {
 }
 async function enterGate() {
   if(!gate||gateBusy)return;
-  gateBusy=true;
-  bgm.sync();
-  const btn=$<HTMLButtonElement>('.play-unlock')!,status=$('.mic-status');
-  btn.disabled=true;
-  // Start audio resumption directly in the click gesture, before the permission await.
-  try {
-    const audioReady=enablePlayback();
-    void audioReady.catch(()=>{});
-    const capture=await prepareMicrophone();mic=capture;
-    await audioReady;
-    if(!gate){capture.stop();return;}
-    // Permission is requested only from the explicit confirmation click.
-    capture.stop();mic=undefined;if (!soundPreferenceSet) sound=true;
-    document.querySelectorAll<HTMLButtonElement>('[data-action="sound"]').forEach(button=>{button.setAttribute('aria-label',sound?t("Mute sound"):t("Enable sound"));button.innerHTML=icon(sound?'sound':'mute');});
-    $('.play-lock')?.classList.add('unlocked');
-    btn.querySelector('span')!.textContent=t("Unlocked!");
-    playUnlock();
-    await new Promise<void>(resolve=>setTimeout(resolve,reduced.matches?180:700));
-    if(gate)finishGate();
-  }catch(error){
-    console.warn("Unlock unavailable:", error instanceof Error ? error.message : "audio access failed");
-    mic?.stop();mic=undefined;gateBusy=false;btn.disabled=false;
-    bgm.sync();
-    if(status)status.textContent=t("Allow microphone access in your browser, then tap to try again. The game is still locked.");
-  }
+  gateBusy=true;bgm.sync();
+  const btn=$<HTMLButtonElement>('.play-unlock')!;btn.disabled=true;
+  // Resume playback in the user gesture; lack of audio must not block exploration.
+  try { await enablePlayback().catch(()=>{}); } catch {}
+  if(!gate)return;
+  if(!soundPreferenceSet)sound=true;
+  $('.play-lock')?.classList.add('unlocked');
+  btn.querySelector('span')!.textContent=t('Unlocked!');playUnlock();
+  await new Promise<void>(resolve=>setTimeout(resolve,reduced.matches?180:700));
+  if(gate)finishGate();
 }
 document.addEventListener("click", async (ev) => {
   const target = (ev.target as HTMLElement).closest<HTMLElement>(
@@ -642,7 +619,7 @@ document.addEventListener("click", async (ev) => {
     if (target.dataset.page) {
       if(target.dataset.page==='links'){await openReactions();return;}
       history.replaceState(null,'',target.dataset.page==='boards'?'/rankings':'/');
-      if(target.dataset.page==='map' && !microphoneUnlocked){showGate();return;}
+      if(target.dataset.page==='map' && !playUnlocked){showGate();return;}
       page = target.dataset.page;
       render();
       window.scrollTo({ top: 0 });
@@ -687,7 +664,7 @@ document.addEventListener("click", async (ev) => {
         $(".globe-viewport")?.focus({ preventScroll: true });
         break;
       case "enter":
-        openUnlockConsent();
+        startExploration();
         break;
       case "sound":
         toggleTransformationSound();
@@ -761,7 +738,7 @@ document.addEventListener("click", async (ev) => {
         break;
       case "map":
         closeModal();
-        if(!microphoneUnlocked){showGate();break;}
+        if(!playUnlocked){showGate();break;}
         page = "map";
         render();
         break;
@@ -776,7 +753,7 @@ document.addEventListener("click", async (ev) => {
     toast((err as Error).message);
   }
 });
-window.addEventListener("pagehide", () => { mic?.stop(); void playbackContext?.close(); playbackContext=undefined; });
+window.addEventListener("pagehide", () => { void playbackContext?.close(); playbackContext=undefined; });
 let refreshTimer:ReturnType<typeof setTimeout>|undefined;
 let refreshing=false, refreshFailures=0, refreshAfter=0;
 function scheduleRefresh(delay=15000) {
@@ -822,6 +799,7 @@ async function boot() {
     ]);
     catalog = localizedContent(content);
     player = session.player;
+    startEngagement();
     void loadShareConfig().catch(()=>{});
     selected = player.selected || "kappa";
     region = spirit().regionId;
@@ -838,7 +816,7 @@ async function boot() {
       }
     }
     event("entered");
-    microphoneUnlocked = hasSavedUnlock();
+    playUnlocked = hasSavedUnlock();
     if(location.pathname==='/my-links') {
       page='links';render();
       const signInResult=new URL(location.href).searchParams.get('signin');
@@ -850,16 +828,15 @@ async function boot() {
       }
       history.replaceState(null,'','/my-links');
     } else if(location.pathname==='/rankings'){page='boards';render();} else {
-      if (microphoneUnlocked) {
+      if (playUnlocked) {
         render();
         // Keep invitation playback on a gesture when reopening the browser.
         if (invite) openInvite();
       } else {
         showGate();
-        if(invite && !invite.expired)openUnlockConsent();
       }
     }
-    if (shareCardId && microphoneUnlocked && !overlay.querySelector('dialog')) dismissModal();
+    if (shareCardId && playUnlocked && !overlay.querySelector('dialog')) dismissModal();
     tryBackgroundMusic();
   } catch (err) {
     app.innerHTML = html`<main class="boot"><span>${icon("moon")}</span><h1>The lanterns need a moment.</h1><p>${e((err as Error).message)}</p>${button(t("Light them again"), "retry", "primary")}</main>`;

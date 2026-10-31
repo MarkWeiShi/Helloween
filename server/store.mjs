@@ -1,3 +1,4 @@
+import {installHourlyAnalytics} from './hourly-analytics.mjs';
 import {findShareCharacter} from '../shared/preview-characters.mjs';
 import {languages} from '../shared/i18n.mjs';
 import { pitchLevel, personalScareScore } from "../shared/reactions.mjs";
@@ -55,6 +56,7 @@ export class BooStore {
       CREATE INDEX IF NOT EXISTS players_country ON players(country);
       `);
     if(this.db.prepare('PRAGMA user_version').get().user_version<2)this.retireEconomy();
+    installHourlyAnalytics(this.db);
   }
   retireEconomy() {
     this.transaction(()=>{
@@ -408,6 +410,7 @@ export class BooStore {
       const count = this.db.prepare('SELECT COUNT(*) AS n FROM reaction_audio WHERE player_id=? AND created_at>?').get(id,this.now()-86400000).n;
       if (count >= 20) fail(429, 'Daily recording limit reached.');
       this.db.prepare('INSERT INTO reaction_audio VALUES(?,?,?,?,?)').run(token,id,body.mime,audio,this.now());
+      this.event('recording_uploaded',invite.channel);
       this.db.prepare('INSERT INTO reaction_details VALUES(?,?,?,?,?)').run(token,id,name.trim(),score,body.durationMs);
       if(rankingScore !== null)this.db.prepare('INSERT INTO reaction_scores_v2 VALUES(?,?,?)').run(token,id,rankingScore);
       if(language!==null)this.db.prepare('INSERT INTO reaction_intensity VALUES(?,?,?,?)').run(token,id,language,rms);

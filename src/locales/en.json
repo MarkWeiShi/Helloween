@@ -1437,5 +1437,15 @@
   "Video buffer progress": "Video buffer progress",
   "Preparing video…": "Preparing video…",
   "Buffering video…": "Buffering video…",
-  "Load failed · retrying…": "Load failed · retrying…"
+  "Load failed · retrying…": "Load failed · retrying…",
+  "Start exploring": "Start exploring",
+  "Watch transformation": "Watch transformation",
+  "Record and replay": "Record and replay",
+  "Measure and replay": "Measure and replay",
+  "Recording progress": "Recording progress",
+  "Recording… {{0}}s": "Recording… {{0}}s",
+  "Measuring… {{0}}s": "Measuring… {{0}}s",
+  "Invalid analytics sample.": "Invalid analytics sample.",
+  "Your inviter’s recording storage is full. You can still watch and share.": "Your inviter’s recording storage is full. You can still watch and share.",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits."
 }

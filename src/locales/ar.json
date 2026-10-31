@@ -1437,5 +1437,15 @@
   "Video buffer progress": "تقدم تخزين الفيديو مؤقتًا",
   "Preparing video…": "جارٍ تحضير الفيديو…",
   "Buffering video…": "جارٍ تخزين الفيديو مؤقتًا…",
-  "Load failed · retrying…": "فشل التحميل · إعادة المحاولة…"
+  "Load failed · retrying…": "فشل التحميل · إعادة المحاولة…",
+  "Start exploring": "ابدأ الاستكشاف",
+  "Watch transformation": "شاهد التحوّل",
+  "Record and replay": "سجّل وأعد التشغيل",
+  "Measure and replay": "قِس وأعد التشغيل",
+  "Recording progress": "تقدّم التسجيل",
+  "Recording… {{0}}s": "جارٍ التسجيل… {{0}} ث",
+  "Measuring… {{0}}s": "جارٍ القياس… {{0}} ث",
+  "Invalid analytics sample.": "بيانات إحصائية غير صالحة.",
+  "Your inviter’s recording storage is full. You can still watch and share.": "مساحة تسجيلات من دعاك ممتلئة. لا يزال بإمكانك المشاهدة والمشاركة.",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "يُطلب إذن الميكروفون عند فتح التحول لأول مرة. بعد السماح، يبدأ التسجيل تلقائيًا في الزيارات التالية."
 }

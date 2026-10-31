@@ -20,22 +20,20 @@ async function setup() {
   MediaRecorder.prototype.stop=function(){evidence.stop=performance.now();return stop.call(this);};
  });
  await page.goto('/i/'+invitation.id);
- await expect(page.locator('#mic-notice')).toHaveCount(0);
- await expect(page.locator('.unlock-points')).toContainText("Only your inviter, Sender, can listen.");
- await expect(page.locator('[data-confirm-unlock]')).toBeInViewport({ratio:1});
+ await page.getByRole('button',{name:'Watch transformation',exact:true}).click();
+ await expect(page.locator('dialog.character-immersive')).toBeVisible();
  expect(await page.evaluate(()=>(window as any).__recordingEvidence.start)).toBe(0);
- await page.screenshot({path:'artifacts/reaction-unlock-dialog-mobile.png'});
  return {browser,sender,receiver,page,invitation};
 }
 async function confirmUnlock(page:any) {
- await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
+ await expect(page.locator('[data-record-reaction]')).toBeHidden();
 }
 test('six-second local scoring uploads named private audio and replay does not send twice',async()=>{
  const {browser,sender,receiver,page,invitation}=await setup();
  try {
   let uploads=0; page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await confirmUnlock(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording…");
   await expect(page.locator('[data-personal-scare]')).toBeInViewport();
   await expect(page.locator('[data-personal-scare]')).toContainText("Voice sent",{timeout:15000});
   const timing=await page.evaluate(()=>(window as any).__recordingEvidence);
@@ -69,9 +67,9 @@ test('six-second local scoring uploads named private audio and replay does not s
   await senderPage.getByLabel('小明同学 · Voice reaction').evaluate((a:HTMLAudioElement)=>a.play());
   await expect.poll(()=>senderPage.getByLabel('小明同学 · Voice reaction').evaluate((a:HTMLAudioElement)=>a.currentTime)).toBeGreaterThan(0);
   await senderPage.screenshot({path:'artifacts/reaction-inbox.png'});
-  await senderPage.goto('/');await senderPage.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await senderPage.getByRole('button',{name:'Confirm and enable microphone',exact:true}).click();
+  await senderPage.goto('/');await senderPage.locator('.play-unlock').click();
   await senderPage.locator('.globe-pin[data-spirit="jiangshi"]').click();
-  await senderPage.getByRole('button',{name:'Share this character',exact:true}).click();
+  await senderPage.locator('.character-pumpkin').click();
   const created=senderPage.waitForResponse(r=>r.request().method()==='POST' && r.url().endsWith('/api/invites'));
   await senderPage.getByRole('button',{name:'Copy link',exact:true}).click();
   const named=await(await created).json();
@@ -84,15 +82,16 @@ test('ordinary exploration stays local and leaving invitation capture never uplo
  try {
   let uploads=0;page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await page.goto('/');
-  await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
+  if(await page.locator('.play-unlock').isVisible())await page.locator('.play-unlock').click();
   await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
-  await expect(page.locator('[data-personal-scare]')).toContainText(/You|No voice/,{timeout:15000});
+  await expect(page.locator('[data-record-reaction]')).toBeHidden();
   expect(uploads).toBe(0);
   await page.goto('/i/'+invitation.id);
   await expect(page.locator('.play-lock, .unlock-consent')).toHaveCount(0);
-  await page.locator('[data-invite-play]').click();
-  await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
-  await expect(page.locator('.character-info')).toHaveAttribute('inert','');
+  if(await page.locator('[data-invite-play]').isVisible())await page.locator('[data-invite-play]').click();
+  await expect(page.locator('[data-record-reaction]')).toBeHidden();
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording…");
+  await expect(page.locator('.character-info')).not.toHaveAttribute('inert','');
   await page.goto('about:blank');
   expect(uploads).toBe(0);
   expect((await(await sender.request.get('/api/me')).json()).player.reactions.recent).toHaveLength(0);
@@ -126,8 +125,8 @@ test('pagehide during locked capture releases the microphone and never uploads',
   });
   let uploads=0;page.on('request',r=>{if(r.method()==='POST' && r.url().endsWith('/audio'))uploads++;});
   await confirmUnlock(page);
-  await expect(page.locator('[data-personal-scare]')).toContainText("● 6s");
-  await expect(page.locator('dialog.character-immersive')).toHaveAttribute('data-playback-locked','');
+  await expect(page.locator('[data-personal-scare]')).toContainText("Recording…");
+  await expect(page.locator('dialog.character-immersive')).not.toHaveAttribute('data-playback-locked','');
   await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));
   expect(await page.evaluate(()=>(window as any).__streams.every((s:MediaStream)=>s.getTracks().every(t=>t.readyState==='ended')))).toBe(true);
   // Wait past the capture deadline to detect any stale upload callback.

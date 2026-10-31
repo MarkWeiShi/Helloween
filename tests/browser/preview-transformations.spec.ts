@@ -6,7 +6,7 @@ for(const [region,id] of Object.entries(previewTransformations)){
   const context=await browser.newContext({viewport:{width:390,height:844},permissions:['microphone']});
   try{
    const page=await context.newPage();await page.goto(base+'/?lang=en');
-   await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();
+   await page.locator('.play-unlock').click();
    await expect(page.locator('.play-lock')).toHaveCount(0);
    // Exercise the globe pin's real click handler regardless of globe rotation.
    await page.locator(`[data-preview-transform="${id}"]`).dispatchEvent('click');

@@ -1,62 +1,10 @@
-import {test, expect, chromium} from '@playwright/test';
-import {startBrowserApp} from '../helpers/nginx.mjs';
-
-let app: Awaited<ReturnType<typeof startBrowserApp>>, origin: string;
-test.beforeAll(async () => {
-  app = await startBrowserApp({databasePath: ':memory:', rateLimits: false});
-  origin = app.origin;
-});
-test.afterAll(async () => {
-  await app.stop();
-});
-
-test('successful first unlock survives reload, new tabs and a restored browser session', async () => {
-  const browser = await chromium.launch({channel: 'chrome', args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream']});
-  try {
-    const context = await browser.newContext({permissions: ['microphone']});
-    const page = await context.newPage();
-    await page.goto(origin);
-    await page.locator('[data-action="enter"]').click();
-    await expect(page.locator('.unlock-consent')).toBeVisible();
-    await page.locator('[data-confirm-unlock]').click();
-    await expect(page.locator('.play-lock')).toHaveCount(0);
-    await page.reload();
-    const checkUnlocked = async (target: typeof page) => {
-      await expect(target.locator('.app-shell')).toBeVisible();
-      await expect(target.locator('.app-shell')).toHaveJSProperty('inert', false);
-      await expect(target.locator('.play-lock, .unlock-consent')).toHaveCount(0);
-    };
-    await checkUnlocked(page);
-    const newTab = await context.newPage();
-    await newTab.goto(origin);
-    await checkUnlocked(newTab);
-    const savedState = await context.storageState();
-    await context.close();
-    const restored = await browser.newContext({storageState: savedState});
-    const reopened = await restored.newPage();
-    await reopened.addInitScript(() => {
-      navigator.mediaDevices.getUserMedia = () => { throw new Error('Reopening must not request microphone access'); };
-    });
-    await reopened.goto(origin + '/my-links');
-    await reopened.locator('[data-page="map"]:visible').click();
-    await checkUnlocked(reopened);
-    await reopened.goto(origin);
-    await checkUnlocked(reopened);
-  } finally { await browser.close(); }
-});
-
-test('failed microphone authorization does not save an unlock', async () => {
-  const browser = await chromium.launch({channel: 'chrome'});
-  try {
-    const page = await browser.newPage();
-    await page.addInitScript(() => {
-      navigator.mediaDevices.getUserMedia = async () => { throw new DOMException('Denied', 'NotAllowedError'); };
-    });
-    await page.goto(origin);
-    await page.locator('[data-action="enter"]').click();
-    await page.locator('[data-confirm-unlock]').click();
-    await expect(page.locator('.mic-status')).not.toBeEmpty();
-    await page.reload();
-    await expect(page.locator('.play-lock')).toBeVisible();
-  } finally { await browser.close(); }
+import {test,expect} from '@playwright/test';
+const origin=process.env.WD_ACCEPTANCE_ORIGIN || 'http://127.0.0.1:8787';
+test('exploration choice persists across reloads and tabs without granting microphone consent',async({browser})=>{
+ const context=await browser.newContext();try{
+ const page=await context.newPage();await page.addInitScript(()=>{navigator.mediaDevices.getUserMedia=async()=>{throw Error('Exploration must not request a microphone');};});
+ await page.goto(origin+'/?lang=en');await page.locator('.play-unlock').click();await expect(page.locator('.play-lock')).toHaveCount(0);
+ await page.reload();await expect(page.locator('.app-shell')).toBeVisible();await expect(page.locator('.play-lock')).toHaveCount(0);
+ const state=await context.storageState();const restored=await browser.newContext({storageState:state});try{const p=await restored.newPage();await p.goto(origin+'/?lang=en');await expect(p.locator('.app-shell')).not.toHaveAttribute('inert','');await expect(p.locator('.play-lock,.unlock-consent')).toHaveCount(0);}finally{await restored.close();}
+ }finally{await context.close();}
 });

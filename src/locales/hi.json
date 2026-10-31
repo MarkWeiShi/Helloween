@@ -1437,5 +1437,15 @@
   "Video buffer progress": "वीडियो बफ़रिंग की प्रगति",
   "Preparing video…": "वीडियो तैयार हो रहा है…",
   "Buffering video…": "वीडियो बफ़र हो रहा है…",
-  "Load failed · retrying…": "लोड नहीं हुआ · फिर कोशिश हो रही है…"
+  "Load failed · retrying…": "लोड नहीं हुआ · फिर कोशिश हो रही है…",
+  "Start exploring": "खोजना शुरू करें",
+  "Watch transformation": "रूपांतरण देखें",
+  "Record and replay": "रिकॉर्ड करके फिर चलाएँ",
+  "Measure and replay": "मापकर फिर चलाएँ",
+  "Recording progress": "रिकॉर्डिंग की प्रगति",
+  "Recording… {{0}}s": "रिकॉर्डिंग… {{0}} सेकंड",
+  "Measuring… {{0}}s": "मापन… {{0}} सेकंड",
+  "Invalid analytics sample.": "अमान्य सांख्यिकी डेटा।",
+  "Your inviter’s recording storage is full. You can still watch and share.": "आमंत्रित करने वाले का रिकॉर्डिंग स्थान भर गया है। आप फिर भी देख और साझा कर सकते हैं।",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "पहली बार रूपांतरण खोलने पर माइक्रोफ़ोन की अनुमति मांगी जाती है। अनुमति देने के बाद अगली बार रिकॉर्डिंग अपने आप शुरू होती है।"
 }

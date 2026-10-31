@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 test.use({launchOptions:{args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']}});
 async function open(page:any){
  await page.goto('/?lang=en');
- await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();
+ await page.locator('.play-unlock').click();
  await expect(page.locator('.play-lock')).toHaveCount(0);
 }
 test('failed entrance shows centered loading and automatically recovers without revealing the poster',async({page,context})=>{

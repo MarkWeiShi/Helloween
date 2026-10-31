@@ -1,3 +1,4 @@
+import {createEngagement} from './engagement.mjs';
 import {findShareCharacter} from '../shared/preview-characters.mjs';
 import {createBranchUnlock} from "./branch-unlock.mjs";
 import {createXPublisher} from './x-publish.mjs';
@@ -35,6 +36,7 @@ export function createApp({
   const store = new BooStore(databasePath, catalog, {
     now,
   });
+  const engagement = createEngagement(store);
   const branchUnlock = createBranchUnlock(store, branchOptions);
   const auth = createAuth({db:store.db,...authOptions});
   const publishX=createXPublisher(xPublisherOptions);
@@ -303,7 +305,9 @@ export function createApp({
           return;
         }
         let result;
-        if (req.method === "GET" && url.pathname === "/api/me")
+        if (req.method === "POST" && url.pathname === "/api/engagement")
+          result = engagement(playerId,body);
+        else if (req.method === "GET" && url.pathname === "/api/me")
           result = { player: store.state(playerId) };
         else if (
           req.method === "GET" &&

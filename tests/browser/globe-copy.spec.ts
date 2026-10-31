@@ -9,7 +9,7 @@ test('all globe introductions are localized, fit narrow screens, and cards have 
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.setViewportSize({width:390,height:844});
  await page.goto((process.env.WD_ACCEPTANCE_ORIGIN||'http://127.0.0.1:8787')+'/?lang=en');
- await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();
+ await page.locator('.play-unlock').click();
  await expect(page.locator('.play-lock')).toHaveCount(0);
  const catalog=loadCatalog();
  const cases:{lang:string;pins:{id:string;name:string;description:string}[]}[]=[];

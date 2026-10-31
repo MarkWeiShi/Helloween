@@ -1,13 +1,13 @@
 import {test,expect,chromium} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 import {languages} from '../../shared/i18n.mjs';
-const keys=['No Voice Detected','My Scariness Score {{0}} / 100','My Scariness Score — / 100','Sending…','Link full · not sent','Already sent','Voice sent','Send failed · retry','Recording cancelled','Get ready…','Mic unavailable','Not sent · retry','Paused · replay','Video failed · retry','● 5s · record & send','● 5s · local only','No recording · retry','Starting mic…'];
+const keys=['Recording… {{0}}s','Measuring… {{0}}s','No Voice Detected','My Scariness Score {{0}} / 100','My Scariness Score — / 100','Sending…','Link full · not sent','Already sent','Voice sent','Send failed · retry','Recording cancelled','Get ready…','Mic unavailable','Not sent · retry','Paused · replay','Video failed · retry','● 5s · record & send','● 5s · local only','No recording · retry','Starting mic…'];
 test('all 15 languages keep every scare status on one complete line at narrow widths',async()=>{
  const browser=await chromium.launch({channel:'chrome',args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});
  try{
   const page=await browser.newPage({viewport:{width:320,height:568},permissions:['microphone']});
   await page.goto((process.env.WD_ACCEPTANCE_ORIGIN||'http://127.0.0.1:8791')+'/?lang=en');
-  await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();await expect(page.locator('.play-lock')).toHaveCount(0);
+  await page.locator('.play-unlock').click();await expect(page.locator('.play-lock')).toHaveCount(0);
   await page.locator('[data-spirit="kappa"].globe-pin').dispatchEvent('click');
   await page.waitForFunction(()=>document.querySelector<HTMLVideoElement>('video[data-phase=intro]')?.currentTime!>.1);
   await page.evaluate(()=>document.querySelectorAll('video').forEach(v=>v.pause()));

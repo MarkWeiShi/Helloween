@@ -16,7 +16,7 @@ for (const regionId of ['AFR', 'ARAB', 'WAS', 'ECA']) {
     createOscillator(){return {frequency:{value:0,setValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){},start(){},stop(){}};}
    };
   });
-  await page.goto('/');await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();await page.getByRole('button',{name:"Confirm and enable microphone",exact:true}).click();
+  await page.goto('/');await page.getByRole('button',{name:'Start exploring',exact:true}).click();
   await expect(page.locator('.play-lock')).toHaveCount(0);
   const catalog=await(await page.request.get('/api/catalog')).json();
   expect(catalog.spirits).toHaveLength(56);

@@ -1437,5 +1437,15 @@
   "Video buffer progress": "動画のバッファリング進捗",
   "Preparing video…": "動画を準備中…",
   "Buffering video…": "動画を読み込み中…",
-  "Load failed · retrying…": "読み込み失敗 · 再試行中…"
+  "Load failed · retrying…": "読み込み失敗 · 再試行中…",
+  "Start exploring": "探索を始める",
+  "Watch transformation": "変身を見る",
+  "Record and replay": "録音して再生",
+  "Measure and replay": "測定して再生",
+  "Recording progress": "録音の進行状況",
+  "Recording… {{0}}s": "録音中… {{0}}秒",
+  "Measuring… {{0}}s": "測定中… {{0}}秒",
+  "Invalid analytics sample.": "統計データが無効です。",
+  "Your inviter’s recording storage is full. You can still watch and share.": "招待者の録音保存容量がいっぱいです。視聴・共有はできます。",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "初めて変身カードを開くとマイクの許可を求めます。許可後は次回から自動で録音します。"
 }

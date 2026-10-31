@@ -1,3 +1,4 @@
+import {trackFunnel} from './engagement';
 import {publicAssetData,publicAssetUrl} from './public-assets';
 import {watchShareReturn,returnToGame} from './share-return';
 import {startShareTiming} from './share-performance';
@@ -54,12 +55,16 @@ function load(src:string){
 export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string,beforeConfirm:()=>Promise<void>|void=()=>{}){
  const panel=document.createElement('section');panel.className='social-handoff';panel.setAttribute('aria-live','polite');node.replaceChildren(panel);
  const name=names[channel];if(!name)return;
+ const inviteId=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
+ const metric=(step:string)=>trackFunnel(step,{channel,inviteId,spiritId});
+ let shown=false;
 
  const local=['localhost','127.0.0.1','[::1]'].includes(new URL(url).hostname);
  const notice=local?html`<p>This is a local preview link. Open the game on <a href="https://helloween.fly.dev" target="_blank" rel="noopener noreferrer">helloween.fly.dev</a> to create an invitation friends can open.</p>`:'';
  const link=html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(url)}"></label>`;
- const frame=(body:string,compact=false)=>{panel.innerHTML=compact?`<h3>${e(name)}</h3>${body}<p class="share-confirm-note">${e(locale==='zh'?'在平台内选择好友或发布，确认后才会分享。':'Confirm recipients or publish on the platform. Nothing is sent automatically.')}</p><details class="share-more"><summary>${e(locale==='zh'?'链接与其他选项':'Link and other options')}</summary>${notice}${link}</details>`:html`<h3>Share with ${e(name)}</h3>${notice}${body}${link}<p>You choose who receives it and confirm inside ${e(name)}. Nothing is sent automatically.</p>`;panel.insertAdjacentHTML('beforeend',`<button class="button text-button full" data-back-game>${e(locale==='zh'?'返回游戏':'Back to game')}</button>`);panel.querySelector<HTMLButtonElement>('[data-back-game]')!.onclick=returnToGame;panel.scrollIntoView({block:'nearest'});
+ const frame=(body:string,compact=false)=>{if(!shown){shown=true;metric('share_ready');}panel.innerHTML=compact?`<h3>${e(name)}</h3>${body}<p class="share-confirm-note">${e(locale==='zh'?'在平台内选择好友或发布，确认后才会分享。':'Confirm recipients or publish on the platform. Nothing is sent automatically.')}</p><details class="share-more"><summary>${e(locale==='zh'?'链接与其他选项':'Link and other options')}</summary>${notice}${link}</details>`:html`<h3>Share with ${e(name)}</h3>${notice}${body}${link}<p>You choose who receives it and confirm inside ${e(name)}. Nothing is sent automatically.</p>`;panel.insertAdjacentHTML('beforeend',`<button class="button text-button full" data-back-game>${e(locale==='zh'?'返回游戏':'Back to game')}</button>`);panel.querySelector<HTMLButtonElement>('[data-back-game]')!.onclick=returnToGame;panel.scrollIntoView({block:'nearest'});
   panel.querySelectorAll<HTMLAnchorElement>('a.button.primary').forEach(anchor=>anchor.onclick=event=>{
+   metric('share_handoff');
    // Keep LIFF navigation in the native click when no save is required (iOS).
    if(anchor.hasAttribute('data-line-app')){
     try{
@@ -81,12 +86,12 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
  const fallback=()=>{
   frame(`${poster?`<img class="share-card-preview" src="${e(poster)}" alt="${e(label('鬼卡片预览','Ghost card preview'))}" width="960" height="504">`:''}<p data-connection-status role="status">${e(label('正在连接 '+name+'…','Connecting to '+name+'…'))}</p><button class="button secondary full" data-copy-ready>${e(t('Copy link'))}</button><button class="button secondary full" data-retry hidden>${e(label('重试','Retry'))}</button>`);
   panel.querySelector<HTMLButtonElement>('[data-copy-ready]')!.onclick=async()=>{
-   try{await beforeConfirm();await navigator.clipboard.writeText(url);panel.querySelector('[data-connection-status]')!.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
+   try{await beforeConfirm();await navigator.clipboard.writeText(url);metric('share_copied');panel.querySelector('[data-connection-status]')!.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
    catch{panel.querySelector<HTMLInputElement>('input')?.select();}
   };
  };
  if(channel==='line'||channel==='wechat')fallback();
- const failed=(retry:()=>void)=>{
+ const failed=(retry:()=>void)=>{metric("share_failed");
   if(!panel.isConnected)return;
   const status=panel.querySelector('[data-connection-status]');
   if(status)status.textContent=label('连接较慢或失败，可复制链接，或重试。','Connection failed. Copy the invitation link or retry.');
@@ -101,15 +106,15 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
   frame(`<p>${e(label('选择好友或群聊，在平台内确认发送。','Choose a friend or group and confirm sending in the app.'))}</p>${target?`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(label('打开 '+name+' 分享','Continue to '+name))}</a>`:''}${channel==='messenger'&&typeof navigator.share==='function'?`<button class="button primary full" data-device-share>${e(label('在分享应用中选择 Messenger','Choose Messenger in sharing apps'))}</button>`:''}<p>${e(label('如果无法打开应用，请复制邀请链接到聊天中。','If the app cannot open, copy the invitation link into your chat.'))}</p><button class="button secondary full" data-copy-invite>${e(t('Copy link'))}</button><p role="status" data-messaging-status></p>`);
   const status=panel.querySelector<HTMLElement>('[data-messaging-status]')!;
   panel.querySelector<HTMLButtonElement>('[data-copy-invite]')!.onclick=async()=>{
-   try{await beforeConfirm();await navigator.clipboard.writeText(url);status.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
+   try{await beforeConfirm();await navigator.clipboard.writeText(url);metric('share_copied');status.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
    catch{panel.querySelector<HTMLInputElement>('input')?.select();status.textContent=t('Your invitation is ready. Select and copy the link below.');}
   };
   const share=panel.querySelector<HTMLButtonElement>('[data-device-share]');
   if(share)share.onclick=async()=>{
    try{
     const saving=beforeConfirm();if(saving){await saving;status.textContent=label('资料已保存，请再次点击分享。','Profile saved. Tap share again.');return;}
-    watchShareReturn();await navigator.share({title:t('Halloween surprise'),text,url});
-   }catch(error){if((error as Error).name!=='AbortError')status.textContent=label('无法打开分享应用，请复制链接。','Sharing apps could not open. Copy the link instead.');}
+    watchShareReturn();metric('share_handoff');await navigator.share({title:t('Halloween surprise'),text,url});
+   }catch(error){metric((error as Error).name==='AbortError'?'share_cancelled':'share_failed');if((error as Error).name!=='AbortError')status.textContent=label('无法打开分享应用，请复制链接。','Sharing apps could not open. Copy the link instead.');}
   };
   if(channel==='messenger'&&!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
    void loadShareConfig().then(config=>{
@@ -117,7 +122,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
     const anchor=document.createElement('a');anchor.className='button primary full';anchor.target='_blank';anchor.rel='noopener noreferrer';
     anchor.textContent=label('打开 Messenger 分享','Continue to Messenger');
     anchor.href=`https://www.facebook.com/dialog/send?${new URLSearchParams({app_id:config.facebookAppId,link:url,redirect_uri:new URL('/',config.origin||location.origin).href})}`;
-    anchor.onclick=event=>{event.preventDefault();const popup=window.open('about:blank','_blank');if(popup)popup.opener=null;void Promise.resolve(beforeConfirm()).then(()=>{watchShareReturn();if(popup)popup.location.href=anchor.href;else location.assign(anchor.href);}).catch(()=>{popup?.close();status.textContent=label('请重试或复制链接。','Please retry or copy the link.');});};
+    anchor.onclick=event=>{metric('share_handoff');event.preventDefault();const popup=window.open('about:blank','_blank');if(popup)popup.opener=null;void Promise.resolve(beforeConfirm()).then(()=>{watchShareReturn();if(popup)popup.location.href=anchor.href;else location.assign(anchor.href);}).catch(()=>{popup?.close();status.textContent=label('请重试或复制链接。','Please retry or copy the link.');});};
     panel.querySelector('h3')?.after(anchor);
    }).catch(()=>{});
   }
@@ -134,7 +139,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    frame(`<img class="share-card-preview" src="${e(hostedImage)}" alt="${e(label('鬼卡片预览','Ghost card preview'))}" width="960" height="504"><label>${e(label('分享文案','Your message'))}<textarea data-kakao-caption maxlength="200" style="width:100%;min-height:90px">${e(text)}</textarea></label><label class="fine-print"><input type="checkbox" data-kakao-animated disabled> ${e(label('使用动图（可能较慢）','Use animated card (may be slower)'))}</label><button type="button" class="button primary full" data-open-kakao disabled>${e(label('选择 KakaoTalk 好友','Continue to KakaoTalk'))}</button><p data-kakao-status data-connection-status role="status">${e(label('正在连接 KakaoTalk…','Connecting to KakaoTalk…'))}</p><button class="button secondary full" data-copy-ready>${e(t('Copy link'))}</button><button class="button secondary full" data-retry hidden>${e(label('重试','Retry'))}</button>`,true);
    void fetch('/art/x-cards/manifest.json').then(r=>r.json()).then(publicAssetData).then(manifest=>{const base=manifest.characters?.[spiritId||''];const entry=base?{...base,...(base.localized?.[locale]||base.localized?.en||{})}:null;if(entry&&!entry.previewOnly&&entry.bytes<=5000000){gifImage=new URL(entry.gif,location.origin).href;const option=panel.querySelector<HTMLInputElement>('[data-kakao-animated]');if(option)option.disabled=false;}}).catch(()=>{});
    panel.querySelector<HTMLButtonElement>('[data-copy-ready]')!.onclick=async()=>{
-    try{await beforeConfirm();await navigator.clipboard.writeText(url);panel.querySelector('[data-kakao-status]')!.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
+    try{await beforeConfirm();await navigator.clipboard.writeText(url);metric('share_copied');panel.querySelector('[data-kakao-status]')!.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
     catch{panel.querySelector<HTMLDetailsElement>('details')!.open=true;panel.querySelector<HTMLInputElement>('input')?.select();}
    };
    let kakao:KakaoSDK|undefined;
@@ -160,9 +165,9 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
      const saving=beforeConfirm();if(saving){await saving;status.textContent=label('资料已保存，请点选择好友继续。','Profile saved. Tap again to choose friends.');return;}
      const description=panel.querySelector<HTMLTextAreaElement>('[data-kakao-caption]')!.value.trim().slice(0,200)||text.slice(0,200);
      watchShareReturn();
-     kakao!.Share.sendDefault({objectType:'feed',content:{title:label('送你一个万圣节惊喜','A Halloween surprise for you'),description,imageUrl:panel.querySelector<HTMLInputElement>('[data-kakao-animated]')?.checked&&gifImage?gifImage:hostedImage,imageWidth:960,imageHeight:504,link:{webUrl:url,mobileWebUrl:url}},buttons:[{title:label('观看变身','Watch transformation'),link:{webUrl:url,mobileWebUrl:url}}]});
+     metric('share_handoff');kakao!.Share.sendDefault({objectType:'feed',content:{title:label('送你一个万圣节惊喜','A Halloween surprise for you'),description,imageUrl:panel.querySelector<HTMLInputElement>('[data-kakao-animated]')?.checked&&gifImage?gifImage:hostedImage,imageWidth:960,imageHeight:504,link:{webUrl:url,mobileWebUrl:url}},buttons:[{title:label('观看变身','Watch transformation'),link:{webUrl:url,mobileWebUrl:url}}]});
      status.textContent=label('请在 KakaoTalk 中确认；此页面无法确认是否已发送。','Confirm in KakaoTalk, then use the Safari return link to resume your game. This page cannot confirm delivery.');
-    }catch{status.textContent=label('无法打开 KakaoTalk，请重试或复制邀请链接。','Could not open KakaoTalk. Try again or copy the invitation link.');}
+    }catch{metric('share_failed');status.textContent=label('无法打开 KakaoTalk，请重试或复制邀请链接。','Could not open KakaoTalk. Try again or copy the invitation link.');}
    };
   return;
  }

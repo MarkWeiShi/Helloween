@@ -1437,5 +1437,15 @@
   "Video buffer progress": "视频缓冲进度",
   "Preparing video…": "正在准备视频…",
   "Buffering video…": "正在缓冲视频…",
-  "Load failed · retrying…": "加载失败 · 正在重试…"
+  "Load failed · retrying…": "加载失败 · 正在重试…",
+  "Start exploring": "开始探索",
+  "Watch transformation": "观看变身",
+  "Record and replay": "录音并重播",
+  "Measure and replay": "测量并重播",
+  "Recording progress": "录音进度",
+  "Recording… {{0}}s": "录音中… {{0}}秒",
+  "Measuring… {{0}}s": "测量中… {{0}}秒",
+  "Invalid analytics sample.": "统计数据格式无效。",
+  "Your inviter’s recording storage is full. You can still watch and share.": "邀请人的录音空间已满，你仍可观看和分享。",
+  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "首次进入变身卡片时申请麦克风权限。允许后，再次进入将自动录音。"
 }

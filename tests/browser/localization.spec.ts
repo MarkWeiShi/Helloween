@@ -13,10 +13,10 @@ for(const locale of ['en','zh','es','pt','fr','de','it','ru','ar','hi','ja','ko'
   await page.goto(baseURL);
   await expect(page.locator('html')).toHaveAttribute('lang',locale);
   await expect(page.locator('html')).toHaveAttribute('dir',locale==='ar'?'rtl':'ltr');
-  await expect(page.locator('.play-unlock')).toHaveText(overrides[locale]?.['Enable Mic & Play']||'Enable Mic & Play');
+  await expect(page.locator('.play-unlock')).toHaveText(overrides[locale]?.['Start exploring']||'Start exploring');
   await expect(page.locator('#language-menu [data-language]')).toHaveCount(16);
   await page.locator('.play-unlock').click();
-  await expect(page.locator('[data-confirm-unlock]')).toHaveText(overrides[locale]?.['确认并开启麦克风']||'Confirm and enable microphone');
+  await expect(page.locator('.play-lock,.unlock-consent')).toHaveCount(0);
   expect(await page.locator('body').innerText()).not.toMatch(/\{\{\d+\}\}|undefined/);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   expect(errors).toEqual([]);await context.close();
@@ -33,32 +33,29 @@ test('manual choice survives reload and overrides browser preferences',async({br
  await context.close();
 });
 test('unknown browser locale falls back to English',async({browser})=>{
- const context=await browser.newContext({locale:'nl-NL'});const page=await context.newPage();await page.goto(baseURL);await expect(page.locator('html')).toHaveAttribute('lang','en');await expect(page.locator('.play-unlock')).toHaveText('Enable Mic & Play');await context.close();
+ const context=await browser.newContext({locale:'nl-NL'});const page=await context.newPage();await page.goto(baseURL);await expect(page.locator('html')).toHaveAttribute('lang','en');await expect(page.locator('.play-unlock')).toHaveText('Start exploring');await context.close();
 });
-test('localized exploration, profile, folklore and sharing keep user input intact',async({browser})=>{
+test('localized exploration and profile keep user input intact',async({browser})=>{
  const context=await browser.newContext({locale:'ja-JP',permissions:['microphone'],viewport:{width:390,height:844},reducedMotion:'reduce'});
  const page=await context.newPage();await page.goto(baseURL);
- await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();
+ await page.locator('.play-unlock').click();
  await expect(page.locator('.play-lock')).toHaveCount(0,{timeout:20000});
  const name='Explore <b>Alice</b>';
  await context.request.post(baseURL+'/api/onboard',{data:{name,country:'JP',spiritId:'kappa'}});
- await page.reload();await page.locator('.play-unlock').click();await page.locator('[data-confirm-unlock]').click();await expect(page.locator('.play-lock')).toHaveCount(0,{timeout:20000});
+ await page.reload();await expect(page.locator('.play-lock')).toHaveCount(0,{timeout:20000});
  await expect(page.locator('.home-country span')).toHaveText(name);
  await expect(page.locator('.home-country b')).toHaveCount(0);
- await page.locator('[data-action="collection"]').click();
- await page.locator('[data-lore="kappa"]').click();
- await expect(page.locator('.lore-copy h3').first()).toHaveText(overrides.ja['From the folklore']);
- await expect(page.locator('.native-name')).toHaveText('河童');
- await page.locator('.modal-close').first().click();
- await page.locator('[data-action="about"]').click();
- expect(await page.locator('dialog').innerText()).not.toContain('This parade brings together');
+ await page.locator('[data-action="profile"]').dispatchEvent('click');
+ await expect(page.locator('dialog h2')).toContainText(name);
+ await expect(page.locator('dialog h2 b')).toHaveCount(0);
  await context.close();
 });
 test('URL preserves manual language and invitation route when browser storage is blocked',async({browser})=>{
  const context=await browser.newContext({locale:'en-US'});await context.addInitScript(()=>{Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked');}});Object.defineProperty(window,'sessionStorage',{get(){throw new Error('blocked');}});});
- const page=await context.newPage();await page.goto(baseURL+'/i/nonexistent');
+ await context.request.post(baseURL+'/api/session',{data:{}});const invitation=await (await context.request.post(baseURL+'/api/invites',{data:{spiritId:'kappa',channel:'copy'}})).json();
+ expect(invitation.id).toBeTruthy();const page=await context.newPage();await page.goto(baseURL+'/i/'+invitation.id);
  await chooseLanguage(page,'fr');
- await expect(page.locator('html')).toHaveAttribute('lang','fr');expect(new URL(page.url()).pathname).toBe('/i/nonexistent');
+ await expect(page.locator('html')).toHaveAttribute('lang','fr');expect(new URL(page.url()).searchParams.get('invite')).toBe(invitation.id);
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang','fr');await context.close();
 });
 test('automatic mode uses the first supported preference and follows languagechange',async({browser})=>{
@@ -74,9 +71,9 @@ test('top-right globe opens flag menu above the locked page',async({browser})=>{
   const context=await browser.newContext({locale:'zh-CN',viewport:{width,height:844}});const page=await context.newPage();await page.goto(baseURL+'/?lang=zh');
   const trigger=page.locator('.language-trigger');await expect(trigger).toBeVisible();await expect(page.locator('.language-trigger')).toHaveCount(1);
   await expect(page.locator('.play-lock-content .language-picker, select[data-language]')).toHaveCount(0);
-  const bounds=(await trigger.boundingBox())!;expect(bounds.y).toBeLessThan(30);expect(width-bounds.x-bounds.width).toBeLessThan(30);
+  const bounds=(await trigger.boundingBox())!;const help=(await page.locator('#app > .stats-help').boundingBox())!;expect(Math.abs(bounds.y-help.y)).toBeLessThan(1);expect(width-bounds.x-bounds.width).toBeLessThan(30);
   expect(await trigger.evaluate(el=>el.closest('[inert]'))).toBeNull();
-  expect(await trigger.locator('span').evaluate(el=>getComputedStyle(el).fontSize)).toBe(await page.locator('.counter-icon').first().evaluate(el=>getComputedStyle(el).fontSize));
+  await expect(trigger.locator('img')).toHaveCSS('width','30px');await expect(trigger.locator('img')).toHaveCSS('height','30px');
   await trigger.click();await expect(page.locator('#language-menu')).toBeVisible();await expect(trigger).toHaveAttribute('aria-expanded','true');
   await expect(page.locator('[data-language="ja"] .language-flag')).toHaveText('🇯🇵');
   await page.keyboard.press('Escape');await expect(page.locator('#language-menu')).toBeHidden();

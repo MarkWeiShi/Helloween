@@ -30,11 +30,11 @@ for(const selectedChannel of ['line','facebook','kakao','wechat','copy','x','sig
   const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,'direct-x-'+test.info().project.name);
   await context.clearCookies();
   await context.addCookies([{name:'boo_session',value:login.token,url:origin}]);
-  await context.route('https://x.com/**',r=>r.fulfill({body:'X composer fixture'}));
+
  }
  await page.goto(origin+'/?lang=en');
- await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
- await page.getByRole('button',{name:'Confirm and enable microphone',exact:true}).click();
+ await page.getByRole('button',{name:'Start exploring',exact:true}).click();
+
  await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
  if(['wechat','copy'].includes(channel))await page.locator('.character-pumpkin').click();
  else {
@@ -42,7 +42,8 @@ for(const selectedChannel of ['line','facebook','kakao','wechat','copy','x','sig
   const b=await page.locator(`.character-sns [data-channel=${channel}]`).boundingBox();expect(b!.x).toBeGreaterThanOrEqual(0);expect(b!.x+b!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
   if(channel==='line')await page.screenshot({path:`artifacts/social-share/${test.info().project.name}-direct-sns.png`});
  }
- const xPopup=signedX?context.waitForEvent('page'):null;
+ await context.route('https://x.com/**',r=>r.fulfill({body:'X composer fixture'}));
+ const xPopup=channel==='x'?context.waitForEvent('page'):null;
  const facebookPopup=channel==='facebook'?page.waitForEvent('popup'):null;
  await page.locator(`[data-action="send-share"][data-channel="${channel}"]`).click();
  await expect(page.locator('#share-name,#share-country,#join-form')).toHaveCount(0);
@@ -52,7 +53,6 @@ for(const selectedChannel of ['line','facebook','kakao','wechat','copy','x','sig
  if(channel==='line'){await expect(page.locator('[data-line-app]')).toHaveAttribute('href',/^https:\/\/liff.line.me\/test-liff\?invite=/);await expect(page.locator('[data-line-app]')).toHaveAttribute('target','_blank');expect(authRequests).toEqual([]);return;}
  if(facebookPopup){const target=await facebookPopup;await expect(target).toHaveURL(/^https:\/\/www.facebook.com\/sharer/);await target.close();expect(authRequests).toEqual([]);return;}
  if(xPopup){const target=await xPopup;await expect(target).toHaveURL(/^https:\/\/x.com\/intent\/post/);const url=new URL(target.url());expect(url.searchParams.get('text')).toContain('Jiangshi');expect(url.searchParams.get('url')).toContain('/api/share/card/');expect(authRequests).toEqual([]);await expect(page.locator('[data-publish-x],.account-panel')).toHaveCount(0);await target.close();return;}
- if(channel==='x'){await expect(page.locator('.account-panel')).toBeVisible();expect(authRequests).toEqual([]);expect(await page.evaluate(()=>JSON.parse(sessionStorage.getItem('boo:pending-share')!))).toEqual({id:'jiangshi',channel:'x'});return;}
  if(channel==='copy')await expect(page.locator('[data-copy-confirm]')).toBeVisible();
  else await expect(page.getByLabel('Invitation link')).toBeVisible();
  await expect(page.locator('.account-panel')).toHaveCount(0);
