@@ -3509,3 +3509,24 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
 @supports not selector(:has(*)) {
  .character-stage.compat-has-media > .hero-spirit,.invitation-stage.compat-has-media > .invitation-still{visibility:hidden}
 }
+
+/* Keep the pumpkin, greeting and direct sharing controls on one centered line. */
+.character-share-row {
+ display:flex; align-items:center; justify-content:center; flex-wrap:nowrap;
+ max-width:100%; font-size:clamp(14px,4vw,26px); line-height:1.15;
+ direction:ltr;
+}
+.character-dialog .reaction-actions .character-share-row .action-caption {
+ font-size:inherit; white-space:nowrap; margin:0;
+}
+.character-share-row .character-pumpkin {
+ flex:0 0 auto; display:grid; place-items:center; width:1em; height:1em;
+ min-width:0; padding:0; margin:0 .25em 0 0; border:0; background:transparent;
+ font-size:inherit; line-height:1; cursor:default;
+}
+.character-share-row .character-sns { gap:.25em; margin-left:.5em; }
+.character-share-row .character-sns .icon-button {
+ flex:0 0 auto; width:1em; min-width:1em; height:1em; padding:0;
+ border:0; border-radius:0; font-size:inherit;
+}
+.character-share-row .character-sns .social-logo { width:1em; height:1em; }

@@ -230,9 +230,6 @@ function render() {
   }
   bgm.sync();
 }
-function characterAction(emoji: string, label: string, action: string, style: string, accessible = label, id = selected) {
-  return html`<button class="spirit-action ${style}" data-id="${e(id)}" data-action="${action}" aria-label="${e(accessible)}"><span class="action-orb" aria-hidden="true">${emoji}</span><span class="action-caption">${e(label)}</span></button>`;
-}
 function revealCharacter(animate = true, shared?: SharedReaction, requireComplete = false) {
   characterOpen = true;
   modal(characterPanel());
@@ -283,7 +280,7 @@ function reactionMeter(id: string) {
   return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${score}" aria-label="Scariness game score"></progress><div class="scariness-row"><strong data-world-scariness>${e(msg`World Scariness ${score} / 100`)}</strong><p data-personal-scare role="status" aria-live="polite" class="personal-scare">${e(scareLabel(readScare(player.id,id)))}</p></div></div>`;
 }
 function actionPair(id:string, preview=false) {
-  return html`<div class="reaction-actions"><div>${preview ? html`<button class="spirit-action" disabled><span class="action-orb">🎃</span><span class="action-caption">Trick or Treat!</span></button>` : characterAction('🎃',t("Trick or Treat!"),'share','scare-action',t("Trick or Treat!"),id)}${reactionMeter(id)}</div></div>`;
+  return html`<div class="reaction-actions"><div><div class="character-share-row"><button type="button" class="character-pumpkin" aria-label="${e(t("Trick or Treat!"))}" ${preview ? 'disabled' : ''}>🎃</button><span class="action-caption">${e(t("Trick or Treat!"))}</span>${preview ? '' : directShareButtons(id)}</div>${reactionMeter(id)}</div></div>`;
 }
 function characterPanel() {
   const s = spirit();
@@ -291,7 +288,7 @@ function characterPanel() {
   const preview = regionPreviews[region];
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasTransformation = !!(friends.length ? s.art : previewId);
-  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions">${friends.length ? directShareButtons(s.id) : ''}${friends.length ? html`<button class="icon-button character-share" data-action="share" data-id="${e(s.id)}" aria-label="Share this character">${icon('shareCurve')}</button>` : ''}<button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
+  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions"><button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
 }
 async function openReactions() {
   player=(await api('/me')).player;
