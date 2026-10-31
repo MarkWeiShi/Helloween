@@ -4,6 +4,7 @@ import {findShareCharacter} from './share-characters';
 import {openDialog,closeDialog,regionNames,audioContext,setInert} from './browser-compat';
 import {showShareLoading,startShareButtonLoading} from './share-loading';
 import {prepareSocialShare,loadShareConfig} from './social-share';
+import {startShareTiming} from './share-performance';
 import {watchShareReturn} from './share-return';
 import {loadCatalog} from './static-content';
 import {previewTransformations} from '../shared/preview-transformations.mjs';
@@ -265,6 +266,7 @@ function revealCharacter(animate = true, shared?: SharedReaction, requireComplet
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasCharacter = current?.art && current.regionId === region;
   if (hasCharacter || previewId) {
+    prepareSocialShare(hasCharacter ? current.id : previewId!);
     const previousCleanup = modalCleanup;
     const cleanup = mountPersonalScare(dialog, player.id, hasCharacter ? current.id : previewId!, hasCharacter ? asset(current.art!.scare) : "", locked => { characterLocked = locked; }, () => true, undefined, shared, requireComplete);
     modalCleanup = () => { cleanup(); previousCleanup?.(); };
@@ -465,6 +467,10 @@ function openShare(id = selected) {
   overlay.querySelector('dialog')!.classList.add('compact-share');
 }
 let shareRequest = 0;
+async function createShareInvitation(id:string,channel:string){
+  const finish=startShareTiming('invitation');
+  try{return await api('/invites',{spiritId:id,channel});}finally{finish();}
+}
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
   if(btn?.disabled)return;
   if (overlay.querySelector('.character-dialog')) setShareCard(id);
@@ -475,7 +481,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     const destination=resumed?null:window.open('about:blank','_blank');
     if(destination)destination.opener=null;
     try {
-      const data=await api('/invites',{spiritId:id,channel});
+      const data=await createShareInvitation(id,channel);
       const shareUrl=new URL(`/api/share/card/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url).href;
       const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,url:shareUrl});
       if(destination && !destination.closed){watchShareReturn();destination.location.href=target;}
@@ -487,28 +493,19 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     finally{finishLoading();}
     return;
   }
-  if(channel==='line' || channel==='facebook') {
+  if(channel==='facebook') {
     const finishLoading=startShareButtonLoading(btn);
-    const destination=channel==='facebook'?window.open('about:blank','_blank'):null;
+    const destination=window.open('about:blank','_blank');
     if(destination)destination.opener=null;
     try {
-      if(channel==='line') {
-        const config=await loadShareConfig();
-        if(config.lineLiffId){
-          const data=await api('/invites',{spiritId:id,channel});
-          const target=`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(data.id)}&lang=${encodeURIComponent(locale)}`;
-          modal(`<h2>LINE</h2><a class="button primary full" data-line-app href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(locale==='zh'?'在 LINE 中打开':'Open in LINE')}</a><p class="fine-print">${e(locale==='zh'?'发送后，使用左上角 Safari 返回游戏。':'After sharing, use the Safari return link to resume the game.')}</p>`);
-          overlay.querySelector<HTMLAnchorElement>('[data-line-app]')!.onclick=()=>watchShareReturn();return;
-        }
-      } else {
-        const data=await api('/invites',{spiritId:id,channel});
-        const card=new URL(`/api/share/facebook/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url);
-        const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`;
-        if(destination){watchShareReturn();destination.location.href=target;}else{modal(`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);}
-        return;
-      }
-    }catch(error){destination?.close();toast((error as Error).message);return;}
+      const data=await createShareInvitation(id,channel);
+      const card=new URL(`/api/share/facebook/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url);
+      const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`;
+      if(destination){watchShareReturn();destination.location.href=target;}
+      else{modal(`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);}
+    }catch(error){destination?.close();toast((error as Error).message);}
     finally{finishLoading();}
+    return;
   }
   const request=++shareRequest;
   modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel==='messenger'?'Messenger':channel==='whatsapp'?'WhatsApp':channel.toUpperCase()}`)}</h2><div id="share-link"></div>`);
@@ -517,7 +514,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   showShareLoading(node,'invite');
   prepareSocialShare(id);
   try {
-    const data=await api('/invites',{spiritId:id,channel});
+    const data=await createShareInvitation(id,channel);
     if(!node.isConnected || request!==shareRequest)return;
     if(channel==='copy'){node.innerHTML=`<button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button>`;node.querySelector<HTMLButtonElement>('button')!.onclick=async()=>{try{await copyLink(data.url);}catch(error){toast((error as Error).message);}};}
     else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id);
@@ -814,6 +811,7 @@ async function boot() {
     ]);
     catalog = localizedContent(content);
     player = session.player;
+    void loadShareConfig().catch(()=>{});
     selected = player.selected || "kappa";
     region = spirit().regionId;
     const token = location.pathname.match(/^\/i\/([\w-]+)$/)?.[1] || new URL(location.href).searchParams.get('invite');
