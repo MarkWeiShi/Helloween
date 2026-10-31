@@ -227,7 +227,8 @@
       ],
       "reviewNotes": "The homecoming and individual personality are original. Do not equate jiangshi with all Chinese ancestors or copy cinema costumes and talismans.",
       "originCountry": "CN",
-      "atlasId": "cn"
+      "atlasId": "cn",
+      "globeDescription": "A reanimated body from Chinese folklore, known for its stiff, hopping steps."
     },
     {
       "id": "nie-xiaoqian",
@@ -266,7 +267,8 @@
       ],
       "reviewNotes": "Original alternate festival story, not a summary of the canonical ending. Avoid film likenesses and modern character relationships.",
       "originCountry": "CN",
-      "atlasId": "cn"
+      "atlasId": "cn",
+      "globeDescription": "A young ghost from Pu Songling’s Chinese classic, Strange Tales from a Chinese Studio."
     },
     {
       "id": "yingning",
@@ -305,7 +307,8 @@
       ],
       "reviewNotes": "Keep her family and literary identity distinct from a generic Japanese fox. Do not frame her original tale as uncomplicated comedy.",
       "originCountry": "CN",
-      "atlasId": "cn"
+      "atlasId": "cn",
+      "globeDescription": "A flower-loving girl of fox ancestry in Pu Songling’s Strange Tales from a Chinese Studio."
     },
     {
       "id": "painted-skin-ghost",
@@ -344,7 +347,8 @@
       ],
       "reviewNotes": "The redemption is explicitly fictional and does not erase the predatory original. No skin removal, gore or modern film character Xiaowei.",
       "originCountry": "CN",
-      "atlasId": "cn"
+      "atlasId": "cn",
+      "globeDescription": "A being disguised in painted human skin in the Chinese classic Strange Tales from a Chinese Studio."
     },
     {
       "id": "kappa",
@@ -383,7 +387,8 @@
       ],
       "reviewNotes": "Do not imply that unfamiliar rivers are safe or that every kappa story is friendly. The picnic and repair are original.",
       "originCountry": "JP",
-      "atlasId": "jp"
+      "atlasId": "jp",
+      "globeDescription": "A river yokai from Japan, with a shell and a water-filled hollow on its head."
     },
     {
       "id": "bake-danuki",
@@ -422,7 +427,8 @@
       ],
       "reviewNotes": "Avoid confusing tanuki with raccoons or foxes; use a family-friendly design independent of commercial characters.",
       "originCountry": "JP",
-      "atlasId": "jp"
+      "atlasId": "jp",
+      "globeDescription": "A shapeshifting tanuki from Japanese folklore, fond of tricks and disguises."
     },
     {
       "id": "chochin-obake",
@@ -461,7 +467,8 @@
       ],
       "reviewNotes": "Do not claim that every old lantern becomes this yokai after an exact number of years. Eye and tongue are playful, not gruesome.",
       "originCountry": "JP",
-      "atlasId": "jp"
+      "atlasId": "jp",
+      "globeDescription": "A lantern yokai from Japan, often pictured with one eye and a long tongue."
     },
     {
       "id": "kasa-obake",
@@ -500,7 +507,8 @@
       ],
       "reviewNotes": "The single leg belongs to the traditional object design; never make disability the joke. Do not invent a universal origin tale.",
       "originCountry": "JP",
-      "atlasId": "jp"
+      "atlasId": "jp",
+      "globeDescription": "An umbrella yokai from Japan, often pictured with one eye and a single leg."
     },
     {
       "id": "dokkaebi",
@@ -539,7 +547,8 @@
       ],
       "reviewNotes": "Do not equate dokkaebi with Japanese oni or dead humans. Use a distinct Korean-informed silhouette, not a television character.",
       "originCountry": "KR",
-      "atlasId": "kr"
+      "atlasId": "kr",
+      "globeDescription": "A powerful, mischievous being from Korean folklore, known for tricks and wrestling."
     },
     {
       "id": "gumiho",
@@ -578,7 +587,8 @@
       ],
       "reviewNotes": "Original gentle individual, not a claim that all traditional gumiho are benevolent. Keep Korean identity distinct from kitsune and Chinese fox figures.",
       "originCountry": "KR",
-      "atlasId": "kr"
+      "atlasId": "kr",
+      "globeDescription": "A nine-tailed fox from Korean folklore, able to take human form."
     },
     {
       "id": "bulgasari",
@@ -617,7 +627,8 @@
       ],
       "reviewNotes": "Use folklore, not the 1985 film design. The recycling personality and wooden-chime repair are original; never encourage children to eat metal.",
       "originCountry": "KR",
-      "atlasId": "kr"
+      "atlasId": "kr",
+      "globeDescription": "An iron-eating creature from Korean legends, growing stronger as it feeds."
     },
     {
       "id": "gaekgwi",
@@ -656,7 +667,8 @@
       ],
       "reviewNotes": "The spirit category is sourced; this individual and reunion are fictional. Do not present the a small gift animation as a real memorial rite.",
       "originCountry": "KR",
-      "atlasId": "kr"
+      "atlasId": "kr",
+      "globeDescription": "A ghost of someone who died far from home in Korean folk traditions."
     },
     {
       "id": "krahang",
@@ -695,7 +707,8 @@
       ],
       "reviewNotes": "Original sympathetic personality. Rice-sieve imagery is retained; no graphic possession scene or claims about real people.",
       "originCountry": "TH",
-      "atlasId": "th"
+      "atlasId": "th",
+      "globeDescription": "A flying being from Thai folklore, using rice sieves as wings."
     },
     {
       "id": "phi-kong-koi",
@@ -734,7 +747,8 @@
       ],
       "reviewNotes": "No blood-drinking imagery; single-leg movement is not a joke. Exclude historical ethnic comparisons and stigmatizing descriptions from source material.",
       "originCountry": "TH",
-      "atlasId": "th"
+      "atlasId": "th",
+      "globeDescription": "A small forest spirit from Thai tales, known for hopping and its repeated cry."
     },
     {
       "id": "nang-tani",
@@ -773,7 +787,8 @@
       ],
       "reviewNotes": "Living tree-spirit belief: never depict exorcism, eviction, disappearance or cutting the tree as success. The cleanup episode is original.",
       "originCountry": "TH",
-      "atlasId": "th"
+      "atlasId": "th",
+      "globeDescription": "A female spirit of the tani banana plant in Thai folk beliefs."
     },
     {
       "id": "krasue",
@@ -812,7 +827,8 @@
       ],
       "reviewNotes": "Artwork intentionally obscures viscera. Do not call the traditional krasue a harmless lantern spirit or connect the figure to accusations about actual people.",
       "originCountry": "TH",
-      "atlasId": "th"
+      "atlasId": "th",
+      "globeDescription": "A spirit from Thai folklore, known for its floating head and nocturnal wanderings."
     },
     {
       "id": "tikbalang",
@@ -851,7 +867,8 @@
       ],
       "reviewNotes": "Retain horse-headed form. The change of behavior is an original story, not a claim about every community's tikbalang tradition.",
       "originCountry": "PH",
-      "atlasId": "ph"
+      "atlasId": "ph",
+      "globeDescription": "A horse-headed being from Philippine folklore, said to lead travelers astray."
     },
     {
       "id": "kapre",
@@ -890,7 +907,8 @@
       ],
       "reviewNotes": "No tobacco promotion, racialized fear or imitation of modern commercial depictions. Tree gathering is original.",
       "originCountry": "PH",
-      "atlasId": "ph"
+      "atlasId": "ph",
+      "globeDescription": "A giant dwelling in large trees in Philippine folklore."
     },
     {
       "id": "duwende",
@@ -929,7 +947,8 @@
       ],
       "reviewNotes": "Field accounts represent particular informants, not all Filipinos. Avoid disease causation claims, extermination framing and mockery of living beliefs.",
       "originCountry": "PH",
-      "atlasId": "ph"
+      "atlasId": "ph",
+      "globeDescription": "A small spirit of homes and the land in Philippine folk beliefs."
     },
     {
       "id": "santelmo",
@@ -972,7 +991,8 @@
       ],
       "reviewNotes": "Keep natural phenomenon and belief distinct. Local study supports an Eastern Samar example, not a universal Philippine interpretation.",
       "originCountry": "PH",
-      "atlasId": "ph"
+      "atlasId": "ph",
+      "globeDescription": "A mysterious wandering light in Philippine folklore, with stories varying by locality."
     },
     {
       "id": "puca",
@@ -1015,7 +1035,8 @@
       ],
       "reviewNotes": "Pronunciation and specific forms vary. The chosen festival individual is original; do not treat Samhain and modern Halloween as identical events.",
       "originCountry": "IE",
-      "atlasId": "ie"
+      "atlasId": "ie",
+      "globeDescription": "A shapeshifting being from Irish folklore, sometimes appearing as a horse."
     },
     {
       "id": "banshee",
@@ -1058,7 +1079,8 @@
       ],
       "reviewNotes": "Do not turn a death messenger into a murderer, or promise grief is cured by a small gift. The listening scene is an original story.",
       "originCountry": "IE",
-      "atlasId": "ie"
+      "atlasId": "ie",
+      "globeDescription": "A female spirit from Irish tradition, whose lament is said to foretell a death."
     },
     {
       "id": "dullahan",
@@ -1097,7 +1119,8 @@
       ],
       "reviewNotes": "Keep non-graphic headless silhouette; omit violent traditional implements. Original peaceful episode does not redefine the traditional death association.",
       "originCountry": "IE",
-      "atlasId": "ie"
+      "atlasId": "ie",
+      "globeDescription": "A headless rider from Irish folklore, associated with death and nighttime journeys."
     },
     {
       "id": "merrow",
@@ -1136,7 +1159,8 @@
       ],
       "reviewNotes": "Use the cap tradition cited in the source; no forced marriage, stolen clothing romance, or assumption that sea beings are drowned humans.",
       "originCountry": "IE",
-      "atlasId": "ie"
+      "atlasId": "ie",
+      "globeDescription": "A sea being from Irish folklore, found in tales of mermaids and mermen."
     },
     {
       "id": "brownie",
@@ -1175,7 +1199,8 @@
       ],
       "reviewNotes": "Traditional gift taboos vary. The kind gesture is a game mechanic, not a culturally authoritative brownie ritual.",
       "originCountry": "GB",
-      "atlasId": "gb"
+      "atlasId": "gb",
+      "globeDescription": "A household helper from Scottish folklore, said to work while people sleep."
     },
     {
       "id": "kelpie",
@@ -1214,7 +1239,8 @@
       ],
       "reviewNotes": "Traditional warning remains explicit. Never depict entering unfamiliar water, riding the creature or ignoring water safety as a rewarded action.",
       "originCountry": "GB",
-      "atlasId": "gb"
+      "atlasId": "gb",
+      "globeDescription": "A shapeshifting water spirit from Scottish folklore, often appearing as a horse."
     },
     {
       "id": "selkie",
@@ -1253,7 +1279,8 @@
       ],
       "reviewNotes": "Do not romanticize stealing skins or forced marriage. Keep island specificity; selkies are not simply drowned human ghosts.",
       "originCountry": "GB",
-      "atlasId": "gb"
+      "atlasId": "gb",
+      "globeDescription": "A seal that takes human form in Scottish island and other North Atlantic tales."
     },
     {
       "id": "boggart",
@@ -1292,7 +1319,8 @@
       ],
       "reviewNotes": "No Harry Potter fear-transformation rule or visual references. The cupboard individual is original, not a universal boggart definition.",
       "originCountry": "GB",
-      "atlasId": "gb"
+      "atlasId": "gb",
+      "globeDescription": "A troublesome spirit of houses and wild places in northern English folklore."
     },
     {
       "id": "headless-horseman",
@@ -1331,7 +1359,8 @@
       ],
       "reviewNotes": "No gore, neck wounds or Disney likeness. Do not claim this invented resolution is Irving's ending or an established local belief.",
       "originCountry": "US",
-      "atlasId": "us"
+      "atlasId": "us",
+      "globeDescription": "A ghostly rider from Washington Irving’s The Legend of Sleepy Hollow, set in New York."
     },
     {
       "id": "jersey-devil",
@@ -1370,7 +1399,8 @@
       ],
       "reviewNotes": "Do not present legends about a real family or childbirth as fact, or use disability as a monstrous trait.",
       "originCountry": "US",
-      "atlasId": "us"
+      "atlasId": "us",
+      "globeDescription": "A legendary creature of the Pine Barrens in New Jersey, with many local versions."
     },
     {
       "id": "jackalope",
@@ -1409,7 +1439,8 @@
       ],
       "reviewNotes": "Clearly identify tall-tale animal. Do not label it an ancient Indigenous belief or a real biological species.",
       "originCountry": "US",
-      "atlasId": "us"
+      "atlasId": "us",
+      "globeDescription": "An antlered rabbit from the tall tales of the American West."
     },
     {
       "id": "hidebehind",
@@ -1448,7 +1479,8 @@
       ],
       "reviewNotes": "Use lumber-camp provenance, not generic Native American mythology. No predation imagery; social shyness is not portrayed as something requiring a cure.",
       "originCountry": "US",
-      "atlasId": "us"
+      "atlasId": "us",
+      "globeDescription": "An elusive creature said to hide behind trees in North American lumberjack tales."
     },
     {
       "id": "la-planchada",
@@ -1487,7 +1519,8 @@
       ],
       "reviewNotes": "No medical advice, miracle-cure claims or identifying a real deceased nurse as the legend. The recipient and cards are original.",
       "originCountry": "MX",
-      "atlasId": "mx"
+      "atlasId": "mx",
+      "globeDescription": "A ghostly nurse in Mexican hospital legends, known for her neatly pressed uniform."
     },
     {
       "id": "la-pascualita",
@@ -1526,7 +1559,8 @@
       ],
       "reviewNotes": "Do not assert preserved remains or copy the actual shop mannequin likeness. Legendary movement is attributed as a story, not fact.",
       "originCountry": "MX",
-      "atlasId": "mx"
+      "atlasId": "mx",
+      "globeDescription": "A lifelike bridal mannequin at the heart of a local legend in Chihuahua, Mexico."
     },
     {
       "id": "la-mulata-de-cordoba",
@@ -1566,7 +1600,8 @@
       "reviewNotes": "Historical racial label is retained only as the established character title. No exoticization or suggestion that ancestry causes supernatural evil; avoid factual biographical claims.",
       "artNote": "Our game shows this legendary woman through an enchanted drawn boat: a story-object avatar, not a traditional portrait.",
       "originCountry": "MX",
-      "atlasId": "mx"
+      "atlasId": "mx",
+      "globeDescription": "A woman in a Mexican legend who escapes captivity aboard a boat she draws."
     },
     {
       "id": "el-charro-negro",
@@ -1610,7 +1645,8 @@
       "reviewNotes": "Preserve the cautionary background. Original compassionate episode does not assert redemption of a religious entity or invite occult bargains.",
       "artNote": "Our game shows the mysterious rider through his black hat and a horseshoe: a story-object avatar, not a traditional portrait.",
       "originCountry": "MX",
-      "atlasId": "mx"
+      "atlasId": "mx",
+      "globeDescription": "A darkly dressed horseman from Mexican legends, linked to temptation and dangerous bargains."
     },
     {
       "id": "saci",
@@ -1650,7 +1686,8 @@
       "reviewNotes": "No tobacco or disability joke. Avoid flattening Brazil's diverse Indigenous, African and European influences into one fixed origin claim.",
       "artNote": "Our game shows Saci through a red cap and a little whirlwind: a story-object avatar, not a traditional portrait.",
       "originCountry": "BR",
-      "atlasId": "br"
+      "atlasId": "br",
+      "globeDescription": "A one-legged trickster with a red cap, linked to whirlwinds in Brazilian folklore."
     },
     {
       "id": "curupira",
@@ -1689,7 +1726,8 @@
       ],
       "reviewNotes": "Indigenous roots must remain visible without claiming all communities share one account. No exorcism, disappearance, sacred costume copying or foot-based ridicule.",
       "originCountry": "BR",
-      "atlasId": "br"
+      "atlasId": "br",
+      "globeDescription": "A forest guardian with backward-facing feet, rooted in Brazil’s Indigenous traditions."
     },
     {
       "id": "boitata",
@@ -1728,7 +1766,8 @@
       ],
       "reviewNotes": "The safety-oriented episode is original. No invitation to approach wildfires or claim that supernatural protection replaces fire precautions.",
       "originCountry": "BR",
-      "atlasId": "br"
+      "atlasId": "br",
+      "globeDescription": "A fiery serpent in Brazilian folklore with Indigenous roots, often a guardian of nature."
     },
     {
       "id": "cuca",
@@ -1767,7 +1806,8 @@
       ],
       "reviewNotes": "Independent design; no copied modern television alligator styling. Avoid endorsing fear-based parenting or treating the new ending as traditional folklore.",
       "originCountry": "BR",
-      "atlasId": "br"
+      "atlasId": "br",
+      "globeDescription": "A fearsome figure from Brazilian folklore, also found in lullabies that warn children."
     }
   ]
 }

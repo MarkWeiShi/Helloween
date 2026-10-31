@@ -1,6 +1,6 @@
 import {toast} from './toast';
 import {findShareCharacter,profileSpiritId} from './share-characters';
-import {openDialog,closeDialog,regionNames,audioContext,setInert,firstSentence} from './browser-compat';
+import {openDialog,closeDialog,regionNames,audioContext,setInert} from './browser-compat';
 import {showShareLoading,startShareButtonLoading} from './share-loading';
 import {prepareSocialShare,loadShareConfig} from './social-share';
 import {watchShareReturn} from './share-return';
@@ -277,12 +277,7 @@ function revealCharacter(animate = true, shared?: SharedReaction, requireComplet
 function counterNumber(current: number) {
   return html`<span class="counter-current">${current}</span>`;
 }
-function folklorePreview(s: Spirit) {
-  // Use the already localized, source-informed folklore rather than the playful tagline.
-  const sentence = firstSentence(s.folklore,locale,s.shortDescription);
-  const origin = regionNames(locale).of(s.originCountry) || s.culture;
-  return sentence.toLocaleLowerCase(locale).includes(origin.toLocaleLowerCase(locale)) ? sentence : `${origin} · ${sentence}`;
-}
+
 function mapPage() {
   return '<div class="language-space" aria-hidden="true"></div>'+html`<div class="page-title globe-title"><div><h1 class="halloween-title halloween-image-title" translate="no" lang="en"><img class="halloween-title-image" src="/art/ui/halloween-tricks-title.webp" width="2126" height="403" alt="${"Halloween Tricks by HelloTalk"}" fetchpriority="high"></h1><p class="campaign-subtitle"><img class="campaign-subtitle-image" src="/art/ui/subtitles/${e(locale)}.webp" alt="${e(t("Join HelloTalk to Hear Friends Scream"))}" fetchpriority="high"></p></div><div class="explore-counters" aria-label="Your parade stats"><button class="parade-counter reaction-inbox" data-action="reactions" aria-label="Friend visits"><span class="counter-icon" aria-hidden="true">🎃</span><span class="counter-value" id="reaction-count">${counterNumber(player.shareVisits || 0)}</span></button><button class="parade-counter" data-action="reactions" aria-label="Friends’ scream score"><span class="counter-icon" aria-hidden="true">👻</span><span class="counter-value" id="friend-scream-score">${counterNumber(player.friendScreamScore ?? 0)}</span></button></div></div>
   ${invite ? html`<button class="invite-ribbon" data-action="invite">${icon("share")} ${e(invite.name)} sent you a Halloween surprise ${icon("arrow")}</button>` : ""}
@@ -291,7 +286,7 @@ function mapPage() {
     <div class="globe-pins">${catalog.regions.map(r => {
       const friends=catalog.spirits.filter(x=>x.regionId===r.id),preview=regionPreviews[r.id];
       const previewId=previewTransformations[r.id as keyof typeof previewTransformations];
-      return friends.length ? friends.map(s=>html`<button class="globe-pin ${s.id===selected?'selected':''}" data-region="${r.id}" data-globe-spirit="${s.id}" data-preview-name="${e(s.name)}" data-preview-description="${e(folklorePreview(s))}" data-spirit="${s.id}" aria-label="Explore ${e(s.name)} from ${e(r.name)}" hidden>${thumb(s)}</button>`).join('') : previewId ? html`<button class="globe-pin" data-preview-transform="${previewId}" data-preview-name="${e(preview.name)}" data-preview-description="${e(msg`A folklore friend inspired by ${preview.culture}.`)}" data-region="${r.id}" aria-label="Explore ${e(preview.name)} from ${e(r.name)}" hidden><img data-cute-id="${previewId}" src="${e(preview.thumb)}" alt="${e(preview.name)} preview" width="144" height="144" loading="lazy" draggable="false"></button>` : '';
+      return friends.length ? friends.map(s=>html`<button class="globe-pin ${s.id===selected?'selected':''}" data-region="${r.id}" data-globe-spirit="${s.id}" data-preview-name="${e(s.name)}" data-preview-description="${e(s.globeDescription)}" data-spirit="${s.id}" aria-label="Explore ${e(s.name)} from ${e(r.name)}" hidden>${thumb(s)}</button>`).join('') : previewId ? html`<button class="globe-pin" data-preview-transform="${previewId}" data-preview-name="${e(preview.name)}" data-preview-description="${e(msg`A folklore friend inspired by ${preview.culture}.`)}" data-region="${r.id}" aria-label="Explore ${e(preview.name)} from ${e(r.name)}" hidden><img data-cute-id="${previewId}" src="${e(preview.thumb)}" alt="${e(preview.name)} preview" width="144" height="144" loading="lazy" draggable="false"></button>` : '';
     }).join('')}</div>
     </div>
     <div class="globe-zoom" role="group" aria-label="Globe zoom"><button data-zoom="in" aria-label="Zoom in">➕</button><span class="zoom-level" aria-live="polite">1 / 3</span><button data-zoom="out" aria-label="Zoom out">➖</button></div>
@@ -311,7 +306,7 @@ function characterPanel() {
   const preview = regionPreviews[region];
   const previewId = previewTransformations[region as keyof typeof previewTransformations];
   const hasTransformation = !!(friends.length ? s.art : previewId);
-  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation">${friends.length?html`<button class="icon-button" data-action="lore" aria-label="Read ${e(s.name)}'s story">${icon('book')}</button>`:html`<span></span>`}<div class="character-top-actions"><button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
+  return html`<section class="selected-character globe-character" id="character-focus" tabindex="-1" aria-label="${e(friends.length?s.name:preview.name)}"><div class="character-navigation"><span></span><div class="character-top-actions"><button class="icon-button character-close" data-action="close-character" aria-label="Close character details">${icon('close')}</button></div></div><div class="character-stage" tabindex="0" role="group" aria-label="Folklore character details"><span class="stage-orbit"></span>${friends.length ? portrait(s,p?.peaceAt?'peace':'idle','hero-spirit',false) : html`<img class="region-preview-art hero-spirit" src="${e(preview.portrait)}" alt="${e(preview.name)} visual preview">`}${hasTransformation ? html`<button class="transformation-replay" data-play-transform aria-label="Replay transformation" hidden>↻</button>`:''}</div><div class="character-info">${actionPair(friends.length?s.id:(previewId || region),!friends.length)}</div></section>`;
 }
 async function openReactions() {
   player=(await api('/me')).player;
@@ -325,7 +320,7 @@ function codexPage() {
   return html`<div class="page-title"><div><h1>Your little<br><span>world of wonders.</span></h1><p>${player.peaceCount} wishes fulfilled. Every story is worth a little kindness.</p></div>${button(msg`${icon("globe")} Explore the map`, "map", "secondary")}</div><div class="codex-grid">${catalog.spirits
     .map((s) => {
       const p = progress(s.id);
-      return html`<button class="codex-card ${p?.peaceAt ? "at-peace" : ""}" data-lore="${s.id}"><div class="codex-art">${portrait(s, p?.peaceAt ? "peace" : "idle")}</div><span class="codex-country">${flag(s.originCountry)} ${e(catalog.regions.find((r) => r.id === s.regionId)?.name)}</span><h2>${e(s.name)}</h2><span class="codex-status">${p?.peaceAt ? `${icon("heart")} ${e(s.peaceLabel)}` : e(s.culture)}</span></button>`;
+      return html`<button class="codex-card ${p?.peaceAt ? "at-peace" : ""}" data-spirit="${s.id}"><div class="codex-art">${portrait(s, p?.peaceAt ? "peace" : "idle")}</div><span class="codex-country">${flag(s.originCountry)} ${e(catalog.regions.find((r) => r.id === s.regionId)?.name)}</span><h2>${e(s.name)}</h2><span class="codex-status">${p?.peaceAt ? `${icon("heart")} ${e(s.peaceLabel)}` : e(s.culture)}</span></button>`;
     })
     .join("")}</div>`;
 }
@@ -345,13 +340,7 @@ async function loadBoard() {
     const node=$('#board-content');if(node && scope===boardScope && group===boardGroup)node.innerHTML=html`<p>${e((err as Error).message)}</p>${button(t('Try again'),'reload-board','secondary')}`;
   }
 }
-function openLore(id = selected) {
-  const s = spirit(id),
-    p = progress(id);
-  modal(
-    html`<div class="lore-top" style="--character-color:${s.color}">${portrait(s, p?.peaceAt ? "peace" : "idle")}<span>${flag(s.originCountry)} ${e(s.culture)}</span><h2>${e(s.name)}</h2><p class="native-name">${e(s.nativeName)}</p></div><div class="lore-copy"><h3>From the folklore</h3><p>${e(s.folklore)}</p>${s.artNote ? html`<p class="fine-print">${e(s.artNote)}</p>` : ""}<details><summary>Explore the sources</summary><ul>${s.sources.map((source) => html`<li><a href="${e(source.url)}" target="_blank" rel="noopener noreferrer">${e(source.title)} ${icon("arrow")}</a></li>`).join("")}</ul></details><div class="wish-excerpt">${icon("heart")}<div><h3>Our Halloween wish</h3><p>${e(s.wish)}</p><small>A new story imagined for this game.</small></div></div>${button(msg`${icon("ghost")} Join the parade as ${e(s.name)}`, "equip", "primary full", `data-id="${s.id}"`)}${p?.peaceAt ? button(msg`${icon("book")} Revisit the ending`, "story", "secondary full", `data-id="${s.id}"`) : ""}</div>`,
-  );
-}
+
 function requirePlayer(next: () => void | Promise<void>) {
   if (player.initialized) {
     void next();
@@ -669,10 +658,6 @@ document.addEventListener("click", async (ev) => {
       revealCharacter(ev.detail !== 0);
       return;
     }
-    if (target.dataset.lore) {
-      openLore(target.dataset.lore);
-      return;
-    }
     if (target.dataset.boardGroup) {
       boardGroup = target.dataset.boardGroup;
       render();
@@ -708,9 +693,6 @@ document.addEventListener("click", async (ev) => {
         break;
       case "profile":
         openProfile();
-        break;
-      case "lore":
-        openLore();
         break;
       case "about":
         openAbout();

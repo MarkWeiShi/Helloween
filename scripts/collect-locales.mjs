@@ -8,7 +8,7 @@ const root=new URL('../',import.meta.url);
 export function collectMessages(){
  const messages=new Set();
  const record=text=>{if(typeof text==='string'&&/[A-Za-z\u3400-\u9fff]/.test(text.replace(/\{\{\d+\}\}/g,'')))messages.add(text.trim());return text;};
- const fields=new Set(['name','subtitle','kind','culture','shortDescription','folklore','artNote','wish','peaceLabel','prop','title','text','storyLabel','storyDisclosure']);
+ const fields=new Set(['name','subtitle','kind','culture','shortDescription','globeDescription','folklore','artNote','wish','peaceLabel','prop','title','text','storyLabel','storyDisclosure']);
  const catalog=(value,key='')=>{if(Array.isArray(value))value.forEach(item=>catalog(item,key));else if(value&&typeof value==='object')Object.entries(value).forEach(([k,v])=>catalog(v,k));else if(fields.has(key))record(value);};catalog(loadCatalog());
  const sourceFiles=readdirSync(new URL('src/',root)).filter(f=>f.endsWith('.ts')).map(f=>'src/'+f);
  sourceFiles.push('server/index.mjs','server/store.mjs','server/social.mjs');

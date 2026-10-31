@@ -63,7 +63,7 @@ export function templateSource(parts) {return parts.reduce((out,part,index)=>out
 export function localizeCatalog(value, dictionary, key='') {
  if(Array.isArray(value))return value.map(item=>localizeCatalog(item,dictionary,key));
  if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,localizeCatalog(v,dictionary,k)]));
- return typeof value==='string' && ['name','subtitle','kind','culture','shortDescription','folklore','artNote','wish','peaceLabel','prop','title','text','storyLabel','storyDisclosure'].includes(key)?translate(value,dictionary):value;
+ return typeof value==='string' && ['name','subtitle','kind','culture','shortDescription','globeDescription','folklore','artNote','wish','peaceLabel','prop','title','text','storyLabel','storyDisclosure'].includes(key)?translate(value,dictionary):value;
 }
 
 let activeDictionary = {};

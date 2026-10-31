@@ -32,3 +32,10 @@ test('legacy public manifests keep original URLs for already-open players',()=>{
   for(const key of ['entrance','loop','poster']){assert.match(entry[key],/^\/art\/transformations\//);assert.ok(existsSync('dist'+entry[key]));assert.match(current.characters[id][key],/^\/releases\//);}
  }
 });
+
+test("public CDN catalog preserves all character globe introductions",()=>{
+ const catalog=loadCatalog();
+ const value=publicCatalog(catalog,{worldMap:"/map",spirits:{}});
+ assert.equal(value.spirits.length,56);
+ for(const spirit of value.spirits)assert.equal(spirit.globeDescription,catalog.spirits.find(s=>s.id===spirit.id).globeDescription);
+});

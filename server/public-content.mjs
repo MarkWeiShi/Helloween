@@ -2,7 +2,7 @@ import {readFileSync,existsSync} from 'node:fs';
 import {RULES} from '../shared/rules.mjs';
 import {countries} from '../shared/countries.mjs';
 // Explicit public fields: never export story bodies or editorial review notes.
-const fields = ['id','regionId','originCountry','atlasId','name','nativeName','kind','culture','shortDescription','folklore','wish','peaceLabel','prop','animation','color','atlasRow','sources','artNote'];
+const fields = ['id','regionId','originCountry','atlasId','name','nativeName','kind','culture','shortDescription','globeDescription','folklore','wish','peaceLabel','prop','animation','color','atlasRow','sources','artNote'];
 const pick = (value, keys) => Object.fromEntries(keys.filter(k => value[k] !== undefined).map(k => [k,value[k]]));
 export function publicCatalog(catalog, art) {
   return {...pick(catalog,['version','language','title','storyLabel','storyDisclosure']),

@@ -46,9 +46,9 @@ test('translated template may reorder or repeat variables without interpreting t
  assert.equal(translate(' Hello ',{Hello:'你好'}),' 你好 ');
 });
 test('catalog localizes presentation fields without changing identity, paths or native names',()=>{
- const source={name:'Kappa',nativeName:'河童',id:'kappa',art:{idle:'/Kappa.webp'},story:[{title:'Hello',text:'Hello'}]};
- const result=localizeCatalog(source,{Kappa:'カッパ',Hello:'こんにちは'});
- assert.equal(result.name,'カッパ');assert.equal(result.nativeName,'河童');assert.equal(result.id,'kappa');
+ const source={globeDescription:'A river spirit.',name:'Kappa',nativeName:'河童',id:'kappa',art:{idle:'/Kappa.webp'},story:[{title:'Hello',text:'Hello'}]};
+ const result=localizeCatalog(source,{'A river spirit.':'River introduction',Kappa:'カッパ',Hello:'こんにちは'});
+ assert.equal(result.globeDescription,'River introduction');assert.equal(result.name,'カッパ');assert.equal(result.nativeName,'河童');assert.equal(result.id,'kappa');
  assert.equal(result.art.idle,'/Kappa.webp');assert.equal(result.story[0].text,'こんにちは');assert.equal(source.name,'Kappa');
 });
 import {requestLanguage} from '../server/localization.mjs';

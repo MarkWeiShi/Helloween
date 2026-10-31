@@ -8,6 +8,7 @@ export interface Spirit {
   kind: string;
   culture: string;
   shortDescription: string;
+  globeDescription: string;
   folklore: string;
   artNote?: string;
   wish: string;
