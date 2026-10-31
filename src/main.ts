@@ -141,6 +141,34 @@ function playTone(kind = "tap") {
     setTimeout(() => gain.disconnect(), 700);
   } catch {}
 }
+// Share dialogs replace the character dialog, so keep their return destination
+// separate from modal cleanup. Session storage also survives provider login redirects.
+const shareCardKey = 'boo:share-return-card';
+let shareCardId: string | undefined;
+try { shareCardId = sessionStorage.getItem(shareCardKey) || undefined; } catch {}
+function setShareCard(id?: string) {
+  shareCardId = id;
+  try {
+    if (id) sessionStorage.setItem(shareCardKey, id);
+    else sessionStorage.removeItem(shareCardKey);
+  } catch {}
+}
+function dismissModal() {
+  if (characterLocked) return;
+  const source = shareCardId && catalog.spirits.find(s => s.id === shareCardId);
+  setShareCard();
+  if (!source) { closeModal(); return; }
+  if (overlay.querySelector('.character-dialog')) { closeModal(); return; }
+  closeModal();
+  selected = source.id;
+  region = source.regionId;
+  if (page !== 'map') {
+    page = 'map';
+    history.replaceState(null, '', '/?lang=' + encodeURIComponent(locale));
+    render();
+  }
+  revealCharacter(false);
+}
 function closeModal() {
   if (characterLocked) return;
   modalCleanup?.();
@@ -158,7 +186,7 @@ function modal(content: string, wide = false, onClose?: () => void) {
   openDialog(dialog);
   dialog.addEventListener("cancel", (ev) => {
     ev.preventDefault();
-    closeModal();
+    dismissModal();
   });
   dialog.addEventListener("click", (ev) => {
     if (ev.target === dialog) {
@@ -169,7 +197,7 @@ function modal(content: string, wide = false, onClose?: () => void) {
         (ev as MouseEvent).clientY < r.top ||
         (ev as MouseEvent).clientY > r.bottom
       )
-        closeModal();
+        dismissModal();
     }
   });
   modalCleanup = () => {
@@ -448,6 +476,7 @@ function openShare(id = selected) {
 let shareRequest = 0;
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
   if(btn?.disabled)return;
+  if (overlay.querySelector('.character-dialog')) setShareCard(id);
   if(channel==='x') {
     if(!player.account){sessionStorage.setItem('boo:pending-share',JSON.stringify({id,channel}));await signIn();return;}
     const finishLoading=startShareButtonLoading(btn);
@@ -458,7 +487,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
       const data=await api('/invites',{spiritId:id,channel});
       const shareUrl=new URL(`/api/share/card/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url).href;
       const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${spirit(id).name} has a little Halloween surprise for you.`,url:shareUrl});
-      if(destination && !destination.closed){watchShareReturn();destination.location.href=target;closeModal();}
+      if(destination && !destination.closed){watchShareReturn();destination.location.href=target;}
       else {
         modal(`<h2>X</h2><a class="button primary full" data-open-x href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(t('Continue to {{1}}').replace('{{1}}','X'))}</a>`);
         overlay.querySelector<HTMLAnchorElement>('[data-open-x]')!.onclick=()=>watchShareReturn();
@@ -655,6 +684,7 @@ document.addEventListener("click", async (ev) => {
     }
     switch (target.dataset.action) {
       case "close-character":
+        setShareCard();
         characterOpen = false;
         closeModal();
         $(".globe-viewport")?.focus({ preventScroll: true });
@@ -670,7 +700,7 @@ document.addEventListener("click", async (ev) => {
         toast(sound ? t("Sound on") : t("Sound off"));
         break;
       case "close":
-        closeModal();
+        dismissModal();
         break;
       case "join":
         openProfile();
@@ -839,6 +869,7 @@ async function boot() {
         if(invite && !invite.expired)openUnlockConsent();
       }
     }
+    if (shareCardId && microphoneUnlocked && !overlay.querySelector('dialog')) dismissModal();
     tryBackgroundMusic();
   } catch (err) {
     app.innerHTML = html`<main class="boot"><span>${icon("moon")}</span><h1>The lanterns need a moment.</h1><p>${e((err as Error).message)}</p>${button(t("Light them again"), "retry", "primary")}</main>`;
@@ -846,4 +877,8 @@ async function boot() {
 }
 void boot();
 
-document.addEventListener('boo:share-return',()=>{closeModal();});
+document.addEventListener('boo:share-return',()=>{
+  // External popups can leave the original player mounted; preserve its playback.
+  if (overlay.querySelector('.character-dialog')) { setShareCard(); return; }
+  dismissModal();
+});
