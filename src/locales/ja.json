@@ -1433,5 +1433,9 @@
   "Updating global score…": "Updating global score…",
   "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.": "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.",
   "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.": "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.",
-  "● 6s · measuring global score": "● 6s · measuring global score"
+  "● 6s · measuring global score": "● 6s · measuring global score",
+  "Video buffer progress": "動画のバッファリング進捗",
+  "Preparing video…": "動画を準備中…",
+  "Buffering video…": "動画を読み込み中…",
+  "Load failed · retrying…": "読み込み失敗 · 再試行中…"
 }

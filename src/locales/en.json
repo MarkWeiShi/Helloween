@@ -1433,5 +1433,9 @@
   "Global score not sent · replay to retry": "Global score not sent · replay to retry",
   "Invalid measurement.": "Invalid measurement.",
   "Measurement consent and scoring version required.": "Measurement consent and scoring version required.",
-  "Unknown character.": "Unknown character."
+  "Unknown character.": "Unknown character.",
+  "Video buffer progress": "Video buffer progress",
+  "Preparing video…": "Preparing video…",
+  "Buffering video…": "Buffering video…",
+  "Load failed · retrying…": "Load failed · retrying…"
 }

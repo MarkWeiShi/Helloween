@@ -1433,5 +1433,9 @@
   "Updating global score…": "Updating global score…",
   "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.": "Valid voice measurements contribute to global scores; ordinary play uploads numbers only.",
   "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.": "Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.",
-  "● 6s · measuring global score": "● 6s · measuring global score"
+  "● 6s · measuring global score": "● 6s · measuring global score",
+  "Video buffer progress": "ความคืบหน้าการบัฟเฟอร์วิดีโอ",
+  "Preparing video…": "กำลังเตรียมวิดีโอ…",
+  "Buffering video…": "กำลังบัฟเฟอร์วิดีโอ…",
+  "Load failed · retrying…": "โหลดไม่สำเร็จ · กำลังลองอีกครั้ง…"
 }

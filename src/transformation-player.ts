@@ -16,6 +16,19 @@ export async function loadTransformation(id: string) {
   if (!validTransformation(entry)) { manifest = undefined; throw Error('Transformation not ready'); }
   return publicAssetData(entry);
 }
+// Progress toward a short, contiguous playback buffer, not whole-file download.
+export function playbackBufferProgress(media: Pick<HTMLVideoElement, 'buffered'|'currentTime'|'duration'>) {
+  const start = Math.max(0, media.currentTime || 0);
+  const target = Number.isFinite(media.duration) ? Math.min(3, media.duration - start) : 3;
+  if (target <= 0 || !media.buffered) return 0;
+  for (let i = 0; i < media.buffered.length; i++) {
+    if (media.buffered.start(i) <= start && media.buffered.end(i) > start) {
+      // Only a rendered, playable frame completes the loading state.
+      return Math.min(99, Math.floor((media.buffered.end(i) - start) / target * 100));
+    }
+  }
+  return 0;
+}
 const seen = new Set<string>();
 const seenKey = (player: string, id: string) => `boo:transformation:v1:${player}:${id}`;
 export function hasPlayedTransformation(player: string, id: string) {
@@ -42,9 +55,24 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   soundButton.hidden = !options.toggleSound;
   const loading = document.createElement('div'); loading.className = 'transformation-loading';
   loading.setAttribute('role','status');
-  const spinner = document.createElement('span'); spinner.className = 'transformation-spinner'; spinner.setAttribute('aria-hidden','true');
-  const loadingLabel = document.createElement('span'); loadingLabel.textContent = 'Loading…';
-  loading.append(spinner,loadingLabel);
+  const progress = document.createElement('span'); progress.className = 'transformation-progress';
+  progress.setAttribute('role','progressbar'); progress.setAttribute('aria-label',t('Video buffer progress'));
+  progress.setAttribute('aria-valuemin','0'); progress.setAttribute('aria-valuemax','100');
+  const percentage = document.createElement('span'); percentage.className = 'transformation-percentage';
+  progress.append(percentage);
+  const loadingLabel = document.createElement('span'); loadingLabel.textContent = t('Preparing video…');
+  function setProgress(value: number) {
+    progress.setAttribute('style',`--loading-progress:${value}%`);
+    progress.setAttribute('aria-valuenow',String(value));
+    percentage.textContent = `${value}%`;
+  }
+  function updateProgress() {
+    if (dead || phase === 'idle' || loading.hidden) return;
+    setProgress(playbackBufferProgress(video));
+    loadingLabel.textContent = t('Buffering video…');
+  }
+  setProgress(0);
+  loading.append(progress,loadingLabel);
   host.append(poster, canvas, ...videos, soundButton, loading); stage.append(host);
   // Place immersive playback directly in the dialog's top layer, outside stage clipping.
   const immersive = stage.closest?.<HTMLDialogElement>('dialog.character-immersive');
@@ -102,7 +130,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   const software = !gl ? canvas.getContext('2d', {willReadFrequently:true}) : null;
   if (software) { canvas.width = 360; canvas.height = 640; ready = true; }
   function pause() { clearTimeout(stallTimer); phase = 'idle'; ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); options.onPause?.(); }
-  function fail() { pause(); phase = 'idle'; canvas.hidden = true; loading.hidden = false; poster.hidden = !entry || !revealed; setMedia(!!entry && revealed); options.onError?.(); }
+  function fail() { pause(); phase = 'idle'; canvas.hidden = true; loading.hidden = false; loadingLabel.textContent = t('Load failed · retrying…'); poster.hidden = !entry || !revealed; setMedia(!!entry && revealed); options.onError?.(); }
   const sample = document.createElement('canvas'); sample.width=96;sample.height=170;
   const sampleContext=options.fillCharacter?sample.getContext('2d',{willReadFrequently:true}):null;
   function framing() {
@@ -146,12 +174,13 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
         }
         software.putImageData(image,0,0);
       }
-      canvas.hidden = false; if(video.readyState >= 3) loading.hidden = true; setMedia(true); poster.hidden = true;
+      canvas.hidden = false; if(video.readyState >= 3 && !loading.hidden) { setProgress(100); loading.hidden = true; } setMedia(true); poster.hidden = true;
     } catch { fail(); return; }
     frame = requestAnimationFrame(draw);
   }
   const attempts = new WeakMap<HTMLVideoElement, number>();
   async function source(media: HTMLVideoElement, generation: number) {
+    video = media; updateProgress();
     attempts.set(media, generation); media.muted = !options.sound(); media.volume = .65;
     let timer: ReturnType<typeof setTimeout> | undefined;
     try { await Promise.race([media.play(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(Error('Playback timeout')), 10000); })]); }
@@ -166,7 +195,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   async function play() {
     clearTimeout(stallTimer); ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); const generation = ticket; phase = 'intro'; revealed = false; captureStarted = false;
     // Hide the previous result while a replay or retry waits for its first frame.
-    poster.hidden = true; canvas.hidden = true; loading.hidden = false; setMedia(false);
+    poster.hidden = true; canvas.hidden = true; loading.hidden = false; video = intro; setProgress(0); loadingLabel.textContent = t('Preparing video…'); setMedia(false);
     try {
       entry = await loadTransformation(id);
       if (dead || generation !== ticket || document.hidden) return false;
@@ -189,7 +218,8 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   };
   for (const media of videos) {
     media.onerror = () => { if (!dead && media === video) fail(); };
-    media.onwaiting = () => { if (media !== video) return; loading.hidden = false; clearTimeout(stallTimer); stallTimer = setTimeout(() => { if (!dead) fail(); }, 10000); };
+    media.onwaiting = () => { if (media !== video) return; loading.hidden = false; updateProgress(); clearTimeout(stallTimer); stallTimer = setTimeout(() => { if (!dead) fail(); }, 10000); };
+    media.onprogress = media.onloadedmetadata = media.oncanplay = () => { if (media === video) updateProgress(); };
     media.onplaying = () => { if (media === video) clearTimeout(stallTimer); };
   }
   const hidden = () => { if (document.hidden) pause(); };
@@ -202,7 +232,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   audio();
   document.addEventListener('visibilitychange', hidden); window.addEventListener('pagehide', pause); window.addEventListener('boo:sound', audio);
   return {play, pause, dispose() {
-    if (dead) return; dead = true; setMedia(false); pause(); for (const media of videos) { media.onended = null; media.onerror = null; media.onwaiting = null; media.onplaying = null; media.removeAttribute('src'); media.load(); }
+    if (dead) return; dead = true; setMedia(false); pause(); for (const media of videos) { media.onprogress = null; media.onloadedmetadata = null; media.oncanplay = null; media.onended = null; media.onerror = null; media.onwaiting = null; media.onplaying = null; media.removeAttribute('src'); media.load(); }
     document.removeEventListener('visibilitychange', hidden); window.removeEventListener('pagehide', pause); window.removeEventListener('boo:sound', audio);
     if (gl) { gl.deleteTexture(texture); gl.deleteBuffer(buffer); gl.deleteProgram(program); shaders.forEach(s => gl.deleteShader(s)); gl.getExtension('WEBGL_lose_context')?.loseContext(); }
     if (immersive) stage.classList.remove('has-immersive-player');

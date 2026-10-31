@@ -104,3 +104,15 @@ test('missing manifest entry can be retried after publication', async () => {
  assert.equal((await runtime.loadTransformation('newghost')).duration,6);
  assert.equal(attempts,1);
 });
+
+test('loading progress measures contiguous playback buffer and never invents completion',()=>{
+ const media=(ranges,time=0,duration=12)=>({currentTime:time,duration,buffered:{length:ranges.length,start:i=>ranges[i][0],end:i=>ranges[i][1]}});
+ assert.equal(runtime.playbackBufferProgress(media([])),0);
+ assert.equal(runtime.playbackBufferProgress(media([[0,1.5]])),50);
+ assert.equal(runtime.playbackBufferProgress(media([[0,3]])),99);
+ assert.equal(runtime.playbackBufferProgress(media([[3,6]])),0);
+ assert.equal(runtime.playbackBufferProgress(media([[0,1],[2,5]])),33);
+ assert.equal(runtime.playbackBufferProgress(media([[5,6.5]],5)),50);
+ assert.equal(runtime.playbackBufferProgress(media([[11,11.5]],11)),50);
+ assert.equal(runtime.playbackBufferProgress(media([[0,1.5]],0,NaN)),50);
+});

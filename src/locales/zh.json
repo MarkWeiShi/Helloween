@@ -1433,5 +1433,9 @@
   "Global score not sent · replay to retry": "惊吓值未上传 · 重播可重试",
   "Invalid measurement.": "无效的声音测量。",
   "Measurement consent and scoring version required.": "需要测量授权和正确的评分版本。",
-  "Unknown character.": "未知角色。"
+  "Unknown character.": "未知角色。",
+  "Video buffer progress": "视频缓冲进度",
+  "Preparing video…": "正在准备视频…",
+  "Buffering video…": "正在缓冲视频…",
+  "Load failed · retrying…": "加载失败 · 正在重试…"
 }
