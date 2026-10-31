@@ -43,3 +43,22 @@ The overview rolls up flow counts for the selected start date and IP country. Ho
 Outcome priority is: observed LINE confirmation; latest explicit cancellation; latest failure; an observed copy exit; an observed handoff; pending or inactive. Pending means the last received event is less than 30 minutes old; inactive means at least 30 minutes with no observed exit or terminal outcome. Inactivity is a suspected loss signal only: network failure, delayed reports, closed browsers and native WeChat sharing can have the same appearance. A previously reached target remains counted even if a later failure becomes the final state. Outcome counts partition the flows; goal-reaching counts are independent. Recipient visits remain a separate outcome.
 
 The dashboard includes a channel selector, overview, hourly channel-specific step progression and final-state/last-step table. Date and country filters apply to all three views. Only aggregate counts and predefined labels are returned. No new tracking endpoint, database migration, deployment or CDN change is required for this local reporting change. Legacy events without flow IDs remain unavailable for flow analysis.
+
+## Local people-based SNS funnels
+
+The primary SNS tables now answer a different question from the auxiliary flow diagnostics. For each selected channel/date/start-IP-country cohort, the denominator is distinct initiating `player_id` values with an observed `share_clicked`. Each stage counts distinct eligible initiating visitors who reached that observed stage on any attempt in the cohort. Its rate always divides by that same channel's starting-people denominator, never by preceding-stage people or number of attempts. Duplicate actions and separate attempts do not inflate people. All-date and Beijing-date cohorts are deduplicated on the database host; hourly counts must not be summed to produce period counts. People with no observed start event are not inferred into the cohort. No visitor identifiers are returned.
+
+LINE uses a handoff/selector-attempt stage separate from clipboard fallback and a final SDK-confirmed-send stage. A success callback on any eligible attempt counts that visitor once. All other SNS final-send values are `null` (unobservable), including pasting a copied link into another app; they are not 0% and are never replaced with handoff or clipboard rates. The copy-only channel exposes clipboard success separately while final external sending remains unknown. Platform-internal friend selection/editing without callbacks is not synthesized as additional observed steps. Existing event telemetry remains best effort.
+
+The dashboard prioritizes people-based period and hourly funnels, with flow-count cancellation/inactivity diagnostics folded into an auxiliary section. This reporting change is local until separately committed/deployed; collection itself is unchanged.
+
+
+## 分享延迟诊断和 Kakao 发送回执（本地待发布）
+
+分享流程补充客户端单调计时：邀请 API、公开配置、SDK 下载和初始化、LINE 登录返回、好友选择器返回；阶段完成和错误分别采集。耗时仅在本页面内测量，登录跨页使用浏览器会话中的启动时间，均限制在 24 小时以内。选择器/登录包含用户操作时间，不等于网络耗时；SDK 下载可能命中预热缓存。跳转、复制和发送确认另展示从本页分享计时起点到该出口的耗时，明确区分“单次操作”和“本页到出口”，不跨页面拼接。分组按流程启动小时，输出样本数、中位数、P90、最大值、固定错误码和 HTTP 状态，不上传原始 UA、错误文本、URL、社交账号或聊天 ID。
+
+后台的浏览器和 App 环境筛选仅作用于分享流程，国家仍按流程起始 IP 归属；全站累计、停留和访问表不受浏览器筛选影响。UA 分类是近似信息，无法可靠证明真实 App 身份。历史无埋点的数据不能补算耗时；SDK 就绪人数缺乏采集覆盖时显示未知，不能填零。分享界面已展示不代表 SDK 已就绪。Kakao 和 LINE 在连接超过 3 秒或失败时提供可复制链接的出口，不替用户发送。
+
+Kakao webhook 为 `/api/kakao/share-webhook`，支持 GET、JSON POST 和 form POST。必须配置服务端 `KAKAO_ADMIN_KEY`，在 Kakao Developers 注册正式回调 URL，然后设置 `KAKAO_SHARE_WEBHOOK_ENABLED=true`。默认关闭；只有 JavaScript Key 时不启用。鉴权依据官方 `Authorization: KakaoAK ...`，校验服务器生成的 `serverCallbackArgs` HMAC，将邀请关联原始分享流程。`X-Kakao-Resource-ID` 哈希去重，同一流程多个收件人只计一次确认发送。密钥和聊天 ID 不落入埋点；客户端不能自报 Kakao 发送成功。回调启用前或旧客户端不具备覆盖的开启人数存在时，成功率显示覆盖不完整。轮换 Admin Key 会使旧页面已签发参数失效，应评估尚在进行的分享。
+
+官方规范：[Kakao 发送回调](https://developers.kakao.com/docs/en/kakaotalk-share/callback)、[LINE shareTargetPicker](https://developers.line.biz/en/reference/liff/#share-target-picker)。本地 SDK mock 仅验证代码链路，不代表真实 SNS 投递成功；实际启用后仍需真实 Kakao 账号回执验收。没有平台回执的 SNS 只显示站内步骤、复制和跳转，不能据此判为最终放弃。

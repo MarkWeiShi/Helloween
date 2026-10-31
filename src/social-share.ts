@@ -1,4 +1,4 @@
-import {trackFunnel} from './engagement';
+import {trackFunnel,measureShare,shareError,type ShareContext} from './engagement';
 import {publicAssetData,publicAssetUrl} from './public-assets';
 import {watchShareReturn,returnToGame} from './share-return';
 import {startShareTiming} from './share-performance';
@@ -43,26 +43,29 @@ function load(src:string){
   const finish=startShareTiming(src===kakaoScript?'sdk-kakao':'sdk-wechat');
   const request=new Promise<void>((resolve,reject)=>{
    const script=document.createElement('script');script.src=src;script.crossOrigin='anonymous';
-   const timer=setTimeout(()=>{script.remove();reject(Error(t("Sharing service timed out. Please try again.")));},12000);
+   const timer=setTimeout(()=>{script.remove();reject(Object.assign(Error(t("Sharing service timed out. Please try again.")),{name:"TimeoutError"}));},12000);
    script.onload=()=>{clearTimeout(timer);resolve();};
-   script.onerror=()=>{clearTimeout(timer);script.remove();reject(Error(t("Sharing service could not load. Please try again.")));};
+   script.onerror=()=>{clearTimeout(timer);script.remove();reject(Object.assign(Error(t("Sharing service could not load. Please try again.")),{code:"NETWORK"}));};
    document.head.append(script);
   }).catch(error=>{loaders.delete(src);throw error;}).finally(finish);
   loaders.set(src,request);
  }
  return loaders.get(src)!;
 }
-export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string,beforeConfirm:()=>Promise<void>|void=()=>{},flowId?:string){
+export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string,beforeConfirm:()=>Promise<void>|void=()=>{},flowId?:string,kakaoCallback?:Record<string,string>){
  const panel=document.createElement('section');panel.className='social-handoff';panel.setAttribute('aria-live','polite');node.replaceChildren(panel);
  const name=names[channel];if(!name)return;
  const inviteId=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
- const metric=(step:string)=>trackFunnel(step,{channel,inviteId,spiritId,flowId});
+ const context={channel,inviteId,spiritId,flowId};
+ const metric=(step:string,extra:Partial<ShareContext>={})=>trackFunnel(step,{...context,...extra});
+ const measured=<T>(step:string,fn:()=>Promise<T>,failure='share_sdk_failed')=>measureShare(step,context,fn,failure);
  let shown=false;
 
  const local=['localhost','127.0.0.1','[::1]'].includes(new URL(url).hostname);
  const notice=local?html`<p>This is a local preview link. Open the game on <a href="https://helloween.fly.dev" target="_blank" rel="noopener noreferrer">helloween.fly.dev</a> to create an invitation friends can open.</p>`:'';
  const link=html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(url)}"></label>`;
  const frame=(body:string,compact=false)=>{if(!shown){shown=true;metric('share_ready');}panel.innerHTML=compact?`<h3>${e(name)}</h3>${body}<p class="share-confirm-note">${e(locale==='zh'?'在平台内选择好友或发布，确认后才会分享。':'Confirm recipients or publish on the platform. Nothing is sent automatically.')}</p><details class="share-more"><summary>${e(locale==='zh'?'链接与其他选项':'Link and other options')}</summary>${notice}${link}</details>`:html`<h3>Share with ${e(name)}</h3>${notice}${body}${link}<p>You choose who receives it and confirm inside ${e(name)}. Nothing is sent automatically.</p>`;panel.insertAdjacentHTML('beforeend',`<button class="button text-button full" data-back-game>${e(locale==='zh'?'返回游戏':'Back to game')}</button>`);panel.querySelector<HTMLButtonElement>('[data-back-game]')!.onclick=returnToGame;panel.scrollIntoView({block:'nearest'});
+  if(!panel.querySelector('[data-copy-ready],[data-copy-invite]')){const copy=document.createElement('button');copy.className='button secondary full';copy.textContent=t('Copy link');copy.setAttribute('data-copy-ready','');copy.onclick=async()=>{try{await beforeConfirm();await navigator.clipboard.writeText(url);metric('share_copied');copy.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}catch(error){metric('share_copy_failed',shareError(error));panel.querySelector<HTMLInputElement>('input')?.select();}};(panel.querySelector('.share-more')||panel.querySelector('[data-back-game]')?.parentElement||panel).append(copy);}
   panel.querySelectorAll<HTMLInputElement>('input[readonly]').forEach(input=>input.addEventListener('copy',()=>metric('share_copy_manual')));
   panel.querySelectorAll<HTMLAnchorElement>('a.button.primary').forEach(anchor=>anchor.onclick=event=>{
    metric('share_handoff');
@@ -92,7 +95,8 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
   };
  };
  if(channel==='line'||channel==='wechat')fallback();
- const failed=(retry:()=>void)=>{metric("share_failed");
+ const offerCopy=()=>{if(!panel.isConnected)return;const button=panel.querySelector<HTMLButtonElement>('[data-copy-ready],[data-copy-invite]');if(button){panel.querySelector<HTMLDetailsElement>('.share-more')?.setAttribute('open','');button.classList.remove('secondary');button.classList.add('primary');button.textContent=label('先复制链接分享','Copy link and share now');metric('share_fallback_offered');}};
+ const failed=(retry:()=>void)=>{metric("share_failed");offerCopy();
   if(!panel.isConnected)return;
   const status=panel.querySelector('[data-connection-status]');
   if(status)status.textContent=label('连接较慢或失败，可复制链接，或重试。','Connection failed. Copy the invitation link or retry.');
@@ -145,19 +149,19 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    };
    let kakao:KakaoSDK|undefined;
    const connect=async()=>{
-    const finish=startShareTiming('kakao-ready');
+    const finish=startShareTiming('kakao-ready');const fallbackTimer=setTimeout(()=>{offerCopy();const status=panel.querySelector('[data-kakao-status]');if(status)status.textContent=label('连接较慢，可先复制链接；我们会继续尝试连接。','Connection is slow. Copy your link now; connection continues in the background.');},3000);
     panel.querySelector('[data-kakao-status]')!.textContent=label('正在连接 KakaoTalk…','Connecting to KakaoTalk…');
     try{
-     const config=await loadShareConfig();
+     const config=await measured('share_config_ready',()=>loadShareConfig(),'share_config_failed');
      if(!panel.isConnected)return;
-     if(!config.kakaoKey){panel.querySelector<HTMLDetailsElement>('details')!.open=true;panel.querySelector('[data-kakao-status]')!.textContent=label('KakaoTalk 分享暂未连接，请复制邀请链接。','KakaoTalk sharing is not connected yet. Copy the invitation link.');return;}
-     await load(kakaoScript);if(!panel.isConnected)return;
-     kakao=window.Kakao;if(!kakao)throw Error('KakaoTalk unavailable');
-     if(!kakao.isInitialized())kakao.init(config.kakaoKey);
+     if(!config.kakaoKey){metric('share_sdk_failed',{errorCode:'CONFIG_MISSING'});offerCopy();panel.querySelector<HTMLDetailsElement>('details')!.open=true;panel.querySelector('[data-kakao-status]')!.textContent=label('KakaoTalk 分享暂未连接，请复制邀请链接。','KakaoTalk sharing is not connected yet. Copy the invitation link.');return;}
+     await measured('share_sdk_loaded',()=>load(kakaoScript));if(!panel.isConnected)return;
+     kakao=window.Kakao;if(!kakao){metric('share_sdk_failed',{errorCode:'UNAVAILABLE'});throw Error('KakaoTalk unavailable');}
+     await measured('share_sdk_ready',async()=>{if(!kakao!.isInitialized())kakao!.init(config.kakaoKey);});
      panel.querySelector<HTMLButtonElement>('[data-open-kakao]')!.disabled=false;
      panel.querySelector('[data-kakao-status]')!.textContent='';
     }catch(error){failed(()=>{void connect();});}
-    finally{finish();}
+    finally{clearTimeout(fallbackTimer);finish();}
    };
    void connect();
    panel.querySelector<HTMLButtonElement>('[data-open-kakao]')!.onclick=async()=>{
@@ -166,7 +170,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
      const saving=beforeConfirm();if(saving){await saving;status.textContent=label('资料已保存，请点选择好友继续。','Profile saved. Tap again to choose friends.');return;}
      const description=panel.querySelector<HTMLTextAreaElement>('[data-kakao-caption]')!.value.trim().slice(0,200)||text.slice(0,200);
      watchShareReturn();
-     metric('share_handoff');kakao!.Share.sendDefault({objectType:'feed',content:{title:label('送你一个万圣节惊喜','A Halloween surprise for you'),description,imageUrl:panel.querySelector<HTMLInputElement>('[data-kakao-animated]')?.checked&&gifImage?gifImage:hostedImage,imageWidth:960,imageHeight:504,link:{webUrl:url,mobileWebUrl:url}},buttons:[{title:label('观看变身','Watch transformation'),link:{webUrl:url,mobileWebUrl:url}}]});
+     metric('share_handoff');kakao!.Share.sendDefault({...((kakaoCallback&&flowId)?{serverCallbackArgs:kakaoCallback}:{}),objectType:'feed',content:{title:label('送你一个万圣节惊喜','A Halloween surprise for you'),description,imageUrl:panel.querySelector<HTMLInputElement>('[data-kakao-animated]')?.checked&&gifImage?gifImage:hostedImage,imageWidth:960,imageHeight:504,link:{webUrl:url,mobileWebUrl:url}},buttons:[{title:label('观看变身','Watch transformation'),link:{webUrl:url,mobileWebUrl:url}}]});
      status.textContent=label('请在 KakaoTalk 中确认；此页面无法确认是否已发送。','Confirm in KakaoTalk, then use the Safari return link to resume your game. This page cannot confirm delivery.');
     }catch{metric('share_failed');status.textContent=label('无法打开 KakaoTalk，请重试或复制邀请链接。','Could not open KakaoTalk. Try again or copy the invitation link.');}
    };
@@ -175,8 +179,8 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
  // Public link-based destinations do not need a config round trip.
  let config:Config={origin:location.origin,kakaoKey:'',wechatReady:false,facebookAppId:''};
  if(channel==='line'||(channel==='wechat'&&/MicroMessenger/i.test(navigator.userAgent))){
-  try{config=await loadShareConfig();}
-  catch(error){failed(()=>{void mountSocialHandoff(node,channel,url,text,image,spiritId,beforeConfirm,flowId);});return;}
+  try{config=await measured('share_config_ready',()=>loadShareConfig(),'share_config_failed');}
+  catch(error){failed(()=>{void mountSocialHandoff(node,channel,url,text,image,spiritId,beforeConfirm,flowId,kakaoCallback);});return;}
   if(!panel.isConnected)return;
  }
  if(channel==='line' && config.lineLiffId){
@@ -202,10 +206,10 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
   if(!/MicroMessenger/i.test(navigator.userAgent)){frame(html`<p>Copy this invitation link into WeChat and open it there. In WeChat, tap the top-right ··· menu and choose a friend or Moments. WeChat cannot open its friend picker from this browser.</p>`);return;}
   if(!config.wechatReady){frame(html`<p>Custom WeChat sharing is not connected on this website yet. Use the top-right ··· menu in WeChat to share this page, or copy the invitation link below.</p>`);return;}
   try{
-   await load(wechatScript);if(!panel.isConnected)return;
+   await measured('share_sdk_loaded',()=>load(wechatScript));if(!panel.isConnected)return;
    const signature=await api('/social/wechat-signature',{url:location.href.split('#')[0]});if(!panel.isConnected)return;
    const wx=window.wx;if(!wx)throw Error(t("WeChat sharing could not load."));
-   await new Promise<void>((resolve,reject)=>{const timer=setTimeout(()=>reject(Error(t("WeChat verification timed out."))),12000);wx.ready(()=>{clearTimeout(timer);resolve();});wx.error(()=>{clearTimeout(timer);reject(Error(t("WeChat could not verify this domain.")));});wx.config({...signature,debug:false,jsApiList:['updateAppMessageShareData','updateTimelineShareData']});});
+   await measured('share_sdk_ready',()=>new Promise<void>((resolve,reject)=>{const timer=setTimeout(()=>reject(Object.assign(Error(t("WeChat verification timed out.")),{name:'TimeoutError'})),12000);wx.ready(()=>{clearTimeout(timer);resolve();});wx.error(()=>{clearTimeout(timer);reject(Error(t("WeChat could not verify this domain.")));});wx.config({...signature,debug:false,jsApiList:['updateAppMessageShareData','updateTimelineShareData']});}));
    if(!panel.isConnected)return;
    wx.updateAppMessageShareData({title:t("A little Halloween surprise"),desc:text,link:url,imgUrl:new URL(image,location.origin).href});wx.updateTimelineShareData({title:text,link:url,imgUrl:new URL(image,location.origin).href});
    frame(html`<p>Your invitation is ready in WeChat. Tap the top-right ··· menu, then choose “Send to Chat” or “Share to Moments” and confirm in WeChat.</p>`);

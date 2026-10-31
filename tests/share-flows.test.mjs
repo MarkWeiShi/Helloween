@@ -76,3 +76,21 @@ test('SNS-specific paths separate confirmed, copy fallback, handoff, cancellatio
  assert.equal(a.endings.find(r=>r.channel==='line'&&r.status==='cancelled').lastStep,'发起平台跳转或复制成功');
  }finally{f.store.close()}
 });
+
+test('SNS people funnels deduplicate attempts and hours, use one channel denominator and keep unobservable success null',()=>{
+ const f=fixture();try{
+ const p=f.store.createGuest().player.id,q=f.store.createGuest().player.id,r=f.store.createGuest().player.id;
+ const h=Date.UTC(2026,9,31,8)/3600000;
+ function flow(player,channel,steps,hour=h){const flowId=f.next(),invite=f.store.createInvite(player,{channel,spiritId:'jiangshi'});for(const step of steps)f.record(player,{kind:'funnel',eventId:f.next(),flowId,inviteId:invite.id,channel,step});f.store.db.prepare('UPDATE share_flows SET created_at=? WHERE id=?').run(hour*3600000,flowId);}
+ flow(p,'x',['share_clicked','share_invite_created']);flow(p,'x',['share_clicked','share_handoff'],h+1);flow(q,'x',['share_clicked'],h+1);flow(r,'x',['share_handoff'],h+1);flow(p,'x',['share_clicked'],h+8);
+ flow(p,'line',['share_clicked','share_invite_created','share_ready','share_handoff','share_send_confirmed']);flow(p,'line',['share_clicked','share_send_confirmed']);flow(q,'line',['share_clicked']);
+ flow(q,'copy',['share_clicked','share_copied']);flow(q,'copy',['share_clicked','share_copied']);
+ const people=f.report().analysis.people,x=people.overall.find(c=>c.channel==='x'),line=people.overall.find(c=>c.channel==='line'),copy=people.overall.find(c=>c.channel==='copy');
+ assert.equal(x.startedPeople,2);assert.equal(x.steps.find(s=>s.key==='handoff').people,1);assert.equal(x.missingEntryFlows,1);assert.equal(x.sentPeople,null);assert.equal(x.sentRate,null);assert.equal(x.steps.at(-1).people,null);
+ assert.equal(line.startedPeople,2);assert.equal(line.sentPeople,1);assert.equal(line.sentRate,.5);assert.equal(copy.startedPeople,1);assert.equal(copy.copiedPeople,1);assert.equal(copy.sentPeople,null);
+ assert.equal(people.hours.filter(c=>c.channel==='x').reduce((n,c)=>n+c.startedPeople,0),4);
+ assert.equal(people.days.find(c=>c.channel==='x'&&c.date==='2026-10-31').startedPeople,2);assert.equal(people.days.find(c=>c.channel==='x'&&c.date==='2026-11-01').startedPeople,1);
+ assert.equal(people.overall.find(c=>c.channel==='facebook').startedPeople,0);assert.equal(people.overall.find(c=>c.channel==='facebook').sentRate,null);
+ assert.ok(!JSON.stringify(people).includes(p));
+ }finally{f.store.close()}
+});

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync,mkdtempSync,cpSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {fork} from 'node:child_process';
+import {fork,execFileSync} from 'node:child_process';
 import {startBrowserApp} from './helpers/nginx.mjs';
 const skip=!process.env.NGINX_BIN && process.env.REQUIRE_NGINX!=='1' ? 'Set NGINX_BIN to run real NGINX integration' : false;
 test('split deployment: real NGINX routing, sessions, privacy, HTML and video Range',{skip},async()=>{
@@ -50,6 +50,8 @@ test('split deployment: real NGINX routing, sessions, privacy, HTML and video Ra
 test('split deployment: packaged API boots outside the repository without frontend files',{skip},async()=>{
  const directory=mkdtempSync(join(tmpdir(),'ghost-isolated-api-'));
  cpSync('dist-api',directory,{recursive:true,filter:path=>!path.split('/').includes('node_modules')});
+ // Match the production image: the API package declares external dependencies.
+ try{execFileSync('npm',['ci','--omit=dev','--ignore-scripts','--no-audit','--no-fund'],{cwd:directory,stdio:'pipe',timeout:120000});}catch(error){rmSync(directory,{recursive:true,force:true});throw error;}
  writeFileSync(join(directory,'probe.mjs'),`import {createApp} from './server/index.mjs';
  const app=createApp({databasePath:':memory:',rateLimits:false});
  app.server.listen(0,'127.0.0.1',()=>process.send({port:app.server.address().port}));

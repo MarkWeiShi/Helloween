@@ -1,4 +1,4 @@
-import {trackFunnel} from "./engagement";
+import {trackFunnel,shareError,type ShareContext} from "./engagement";
 import {findShareCharacter} from './share-characters';
 import {publicAssetData,publicAssetUrl} from './public-assets';
 import './line-share.css';
@@ -13,34 +13,55 @@ const root=document.querySelector<HTMLElement>('#line-share')!;
 let language=resolveLanguage([new URL(location.href).searchParams.get('lang'),resolveBrowserLanguage(navigator)]);
 let cn=language==='zh';
 const label=(zh:string,en:string)=>cn?zh:en;
-async function read(path:string){const r=await fetch(path);if(!r.ok)throw Error(label('邀请加载失败，请返回游戏重试。','Could not load the invitation. Return to the game and try again.'));return publicAssetData(await r.json());}
+async function read(path:string){const r=await fetch(path);if(!r.ok)throw Object.assign(Error(label('邀请加载失败，请返回游戏重试。','Could not load the invitation. Return to the game and try again.')),{status:r.status});return publicAssetData(await r.json());}
 async function sdk(){
  if(window.liff)return window.liff;
  await new Promise<void>((resolve,reject)=>{
   const script=document.createElement('script');script.src='https://static.line-scdn.net/liff/edge/versions/2.31.1/sdk.js';
-  const timer=setTimeout(()=>{script.remove();reject(Error('LINE SDK timeout'));},12000);
-  script.onload=()=>{clearTimeout(timer);resolve();};script.onerror=()=>{clearTimeout(timer);reject(Error('LINE SDK unavailable'));};document.head.append(script);
+  const timer=setTimeout(()=>{script.remove();reject(Object.assign(Error('LINE SDK timeout'),{name:'TimeoutError'}));},12000);
+  script.onload=()=>{clearTimeout(timer);resolve();};script.onerror=()=>{clearTimeout(timer);reject(Object.assign(Error('LINE SDK unavailable'),{code:'NETWORK'}));};document.head.append(script);
  });
  if(!window.liff)throw Error('LINE SDK unavailable');return window.liff;
 }
+function initialContext(){
+ const params=new URL(location.href).searchParams;
+ const state=new URLSearchParams((params.get('liff.state')||'').replace(/^\?/,''));
+ const inviteId=params.get('invite')||state.get('invite')||'',flowId=params.get('flow')||state.get('flow')||'';
+ return {channel:'line',...(/^[\w-]{1,80}$/.test(inviteId)?{inviteId}:{}),...(/^[a-f0-9]{32}$/.test(flowId)?{flowId}:{})};
+}
+let pendingMetrics:{step:string;extra:Partial<ShareContext>}[]=[],metricReady=false,context:ShareContext=initialContext();
+const metric=(step:string,extra:Partial<ShareContext>={})=>{if(metricReady)trackFunnel(step,{...context,...extra});else pendingMetrics.push({step,extra});};
+function flush(){metricReady=true;for(const item of pendingMetrics)trackFunnel(item.step,{...context,...item.extra});pendingMetrics=[];}
+async function measured<T>(step:string,operation:()=>Promise<T>,failure='share_sdk_failed'):Promise<T>{const start=performance.now();try{const value=await operation();metric(step,{durationMs:performance.now()-start});return value;}catch(error){metric(failure,{durationMs:performance.now()-start,...shareError(error)});throw error;}}
+const sessionReady=fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).then(r=>{if(!r.ok)throw Error('Could not start your session.');return r.json();});
+// Validate the invitation before offering a fallback, without changing LIFF URLs.
+async function fallback(force=false){
+ if(!context.inviteId)return;
+ try{await sessionReady;const invite=await read('/api/invites/'+context.inviteId);if(invite.expired||(!loading&&!force))return;flush();
+ const url=new URL('/i/'+context.inviteId,location.origin).href;
+ root.innerHTML=`<h1>LINE</h1><p role="status">${label('连接较慢，可先复制链接分享。','Connection is slow. Copy your link to share now.')}</p><button id="fallback-copy">${label('复制邀请链接','Copy invitation link')}</button><input id="fallback-link" readonly value="${e(url)}"><p><a href="/">${label('返回游戏','Back to game')}</a></p>`;
+ metric('share_fallback_offered');root.querySelector<HTMLInputElement>('#fallback-link')!.addEventListener('copy',()=>metric('share_copy_manual'));
+ root.querySelector<HTMLButtonElement>('#fallback-copy')!.onclick=async()=>{try{await navigator.clipboard.writeText(url);metric('share_copied');root.querySelector('[role=status]')!.textContent=label('已复制，请粘贴分享。','Copied. Paste it to share.');}catch(error){metric('share_copy_failed',shareError(error));root.querySelector<HTMLInputElement>('#fallback-link')!.select();}};
+ }catch{/* Keep the existing error screen if the invitation cannot be validated. */}
+}
+void sessionReady.catch(()=>{});
+let loading=true;const fallbackTimer=setTimeout(()=>{if(loading)void fallback();},3000);
 async function start(){
  const editorReady=startShareTiming('line-editor-ready');
- const [config,liff]=await Promise.all([read('/api/social/config'),sdk()]);
+ const [config,liff]=await Promise.all([measured('share_config_ready',()=>read('/api/social/config'),'share_config_failed'),measured('share_sdk_loaded',sdk)]);
  if(!config.lineLiffId)throw Error(label('LINE 卡片分享尚未启用。','LINE card sharing is not enabled yet.'));
  // Initialize before reading or changing URLs: LIFF can complete an OAuth redirect here.
- await liff.init({liffId:config.lineLiffId});
+ await measured('share_sdk_ready',()=>liff.init({liffId:config.lineLiffId}));
  language=resolveLanguage([new URL(location.href).searchParams.get('lang'),resolveBrowserLanguage(navigator)]);cn=language==='zh';
  const token=new URL(location.href).searchParams.get('invite')||'';
  if(!/^[\w-]{1,80}$/.test(token))throw Error(label('请从游戏中的 LINE 分享按钮打开此页。','Open this page using the LINE share button in the game.'));
- const [invite,catalog]=await Promise.all([read('/api/invites/'+token),loadCatalog(),(async()=>{
-  const response=await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
-  if(!response.ok)throw Error('Could not start your session.');return response.json();
- })()]);
- if(invite.expired)throw Error(label('此邀请已过期，请返回游戏生成新链接。','This invitation has expired. Create a new one in the game.'));
+ const [invite,catalog]=await Promise.all([read('/api/invites/'+token),loadCatalog(),sessionReady]); if(invite.expired)throw Error(label('此邀请已过期，请返回游戏生成新链接。','This invitation has expired. Create a new one in the game.'));
  const flow=new URL(location.href).searchParams.get('flow');
  const flowId=flow&&/^[a-f0-9]{32}$/.test(flow)?flow:undefined;
  const flowQuery=flowId?'&flow='+encodeURIComponent(flowId):'';
- const metric=(step:string)=>trackFunnel(step,{channel:'line',inviteId:token,flowId});
+ context={channel:'line',inviteId:token,flowId};flush();loading=false;clearTimeout(fallbackTimer);
+ const loginKey='boo:line-login:'+token;try{const started=Number(sessionStorage.getItem(loginKey));if(started>0){sessionStorage.removeItem(loginKey);metric('share_login_returned',{durationMs:Date.now()-started});}}catch{}
+ const login=()=>{metric('share_login_started');try{sessionStorage.setItem(loginKey,String(Date.now()));}catch{}liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language+flowQuery,location.origin).href});};
  metric('share_page_opened');
  const spirit=findShareCharacter(catalog,invite.spiritId);
  if(!spirit)throw Error('Character unavailable');
@@ -50,7 +71,7 @@ async function start(){
  if(!liff.isLoggedIn()){
   root.innerHTML=`<h1>LINE</h1><a class="button" href="${e(appUrl)}" target="_blank" rel="noopener noreferrer">${label('在 LINE 中打开','Open in LINE')}</a><p>${label('已安装 LINE？请点上方按钮。Safari 若仍打开网页，可在浏览器中继续。','Already have LINE? Tap above. If Safari keeps opening this page, you can continue in the browser.')}</p><button id="web-login">${label('继续网页版','Continue in browser')}</button><p><a href="${e(gameUrl)}">${label('返回游戏','Back to game')}</a></p>`;
   root.querySelector<HTMLAnchorElement>('a.button')?.addEventListener('click',()=>metric('share_handoff'));
-  root.querySelector<HTMLButtonElement>('#web-login')!.onclick=()=>{metric('share_handoff');liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language+flowQuery,location.origin).href});};return;
+  root.querySelector<HTMLButtonElement>('#web-login')!.onclick=()=>{metric('share_handoff');login();};return;
  }
  const url=new URL('/i/'+token,config.origin||location.origin).href;
  let image=new URL(publicAssetUrl(`/art/x-cards/${encodeURIComponent(spirit.id)}.portrait.png`),config.origin||location.origin).href;
@@ -87,19 +108,19 @@ async function start(){
   if(!liff.isLoggedIn()){
    try{sessionStorage.setItem(draftKey,message.value);}catch{}
    // Use an explicit, same-origin redirect; never forward OAuth parameters or tokens.
-   metric('share_handoff');liff.login({redirectUri:new URL('/line-share.html?invite='+encodeURIComponent(token)+'&lang='+language+flowQuery,location.origin).href});return;
+   metric('share_handoff');login();return;
   }
   if(!liff.isApiAvailable('shareTargetPicker')){metric('share_failed');root.querySelector<HTMLDetailsElement>('#share-options')!.open=true;status.textContent=label('当前环境无法使用好友选择器，请使用下方普通链接分享。','The friend picker is unavailable here. Use plain-link sharing below.');return;}
   button.disabled=true;status.textContent=label('请在 LINE 窗口中选择好友。若未弹窗，请展开“链接与其他选项”并在 LINE 中打开。','Choose friends in the LINE window. If no window appears, expand Link and other options to open in LINE.');
   try{
    const caption=message.value.trim().slice(0,400)||text;
    metric('share_handoff');
-   const result=await liff.shareTargetPicker([{type:'flex',altText:caption,contents:{type:'bubble',size:'mega',body:{type:'box',layout:'vertical',backgroundColor:'#121b32',contents:[{type:'text',text:'Halloween Tricks by HelloTalk',color:'#A8DAC8',size:'sm',wrap:true},{type:'box',layout:'horizontal',margin:'md',alignItems:'center',contents:[{type:'image',url:image,size:'full',flex:4,aspectRatio:ratio,aspectMode:'fit',...(animated?{animated:true}:{}),action:{type:'uri',uri:url}},{type:'box',layout:'vertical',flex:5,spacing:'sm',contents:[{type:'text',text:nativeName,color:'#FFB66D',weight:'bold',wrap:true},{type:'text',text:englishName,color:'#F7F0DF',size:'sm',wrap:true},{type:'text',text:culture,color:'#C3CBD9',size:'xs',wrap:true,maxLines:2,align:language==='ar'?'end':'start'}]}]},{type:'text',text:caption,color:'#F7F0DF',wrap:true,margin:'md',size:'sm'}]},footer:{type:'box',layout:'vertical',contents:[{type:'button',style:'primary',color:'#067D46',action:{type:'uri',label:label('观看变身','Watch the transformation'),uri:url}}]}}}],{isMultiple:true});
+   metric('share_picker_opened');const result=await measured('share_picker_returned',()=>liff.shareTargetPicker([{type:'flex',altText:caption,contents:{type:'bubble',size:'mega',body:{type:'box',layout:'vertical',backgroundColor:'#121b32',contents:[{type:'text',text:'Halloween Tricks by HelloTalk',color:'#A8DAC8',size:'sm',wrap:true},{type:'box',layout:'horizontal',margin:'md',alignItems:'center',contents:[{type:'image',url:image,size:'full',flex:4,aspectRatio:ratio,aspectMode:'fit',...(animated?{animated:true}:{}),action:{type:'uri',uri:url}},{type:'box',layout:'vertical',flex:5,spacing:'sm',contents:[{type:'text',text:nativeName,color:'#FFB66D',weight:'bold',wrap:true},{type:'text',text:englishName,color:'#F7F0DF',size:'sm',wrap:true},{type:'text',text:culture,color:'#C3CBD9',size:'xs',wrap:true,maxLines:2,align:language==='ar'?'end':'start'}]}]},{type:'text',text:caption,color:'#F7F0DF',wrap:true,margin:'md',size:'sm'}]},footer:{type:'box',layout:'vertical',contents:[{type:'button',style:'primary',color:'#067D46',action:{type:'uri',label:label('观看变身','Watch the transformation'),uri:url}}]}}}],{isMultiple:true}),'share_failed');
    metric(result?.status==='success'?'share_send_confirmed':'share_cancelled');
    status.textContent=result?.status==='success'?label('卡片已发送。','Card sent.'):label('已取消，未发送。','Cancelled. Nothing was sent.');
-  }catch(error){metric('share_failed');status.textContent=(error as Error).message || label('LINE 未能确认发送，请重试。','LINE could not confirm sending. Try again.');}
+  }catch(error){status.textContent=(error as Error).message || label('LINE 未能确认发送，请重试。','LINE could not confirm sending. Try again.');}
   finally{button.disabled=false;}
  };
  metric('share_ready');editorReady();
 }
-void start().catch(error=>{const params=new URL(location.href).searchParams,flowId=params.get('flow'),inviteId=params.get('invite');if(flowId&&/^[a-f0-9]{32}$/.test(flowId)&&inviteId&&/^[\w-]{1,80}$/.test(inviteId))trackFunnel('share_failed',{channel:'line',flowId,inviteId});root.innerHTML=`<h1>Scary Helloween</h1><p role="status">${e(error.message)}</p><p><a href="${e('/line-share.html?invite='+encodeURIComponent(new URL(location.href).searchParams.get('invite')||'')+'&lang='+language+'&flow='+encodeURIComponent(new URL(location.href).searchParams.get('flow')||''))}">${label('重试','Try again')}</a> · <a href="/">${label('返回游戏','Back to game')}</a></p>`;});
+void start().catch(async error=>{loading=false;clearTimeout(fallbackTimer);try{await sessionReady;flush();}catch{}metric('share_failed',shareError(error));await fallback(true);if(root.querySelector('#fallback-copy'))return;root.innerHTML=`<h1>Scary Helloween</h1><p role="status">${e(error.message)}</p><p><a href="${e('/line-share.html?invite='+encodeURIComponent(new URL(location.href).searchParams.get('invite')||'')+'&lang='+language+'&flow='+encodeURIComponent(new URL(location.href).searchParams.get('flow')||''))}">${label('重试','Try again')}</a> · <a href="/">${label('返回游戏','Back to game')}</a></p>`;});

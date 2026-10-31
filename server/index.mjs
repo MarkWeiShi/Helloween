@@ -1,3 +1,4 @@
+import {createKakaoWebhook} from './kakao-webhook.mjs';
 import {installCountryAnalytics, requestCountry, withCountry} from './country-analytics.mjs';
 import {createEngagement} from './engagement.mjs';
 import {findShareCharacter} from '../shared/preview-characters.mjs';
@@ -30,6 +31,7 @@ export function createApp({
   authOptions,
   branchOptions,
   xPublisherOptions,
+  kakaoOptions,
   rateLimits = true,
   publicContent = loadPublicContent(ROOT),
   trustedProxy = process.env.TRUST_PROXY === "true",
@@ -38,6 +40,7 @@ export function createApp({
     now,
   });
   const engagement = createEngagement(store);
+  const kakaoWebhook=createKakaoWebhook(store,kakaoOptions);
   installCountryAnalytics(store.db);
   const branchUnlock = createBranchUnlock(store, branchOptions);
   const auth = createAuth({db:store.db,...authOptions});
@@ -104,6 +107,17 @@ export function createApp({
         const origin=process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
         res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});
         res.end(facebookShareDocument(invite,spirit,origin,url.searchParams.get('lang')));return;
+      }
+      if(url.pathname==='/api/kakao/share-webhook'){
+        if(!['GET','POST'].includes(req.method))throw new ApiError(405,'Use GET or POST.');
+        kakaoWebhook.authorize(req);limit('kakao-webhook',120);
+        let payload=Object.fromEntries(url.searchParams);
+        if(req.method==='POST'){
+          let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>16384)throw new ApiError(413,'Webhook too large.');}
+          try{if(req.headers['content-type']?.startsWith('application/json'))payload=JSON.parse(raw);else if(req.headers['content-type']?.startsWith('application/x-www-form-urlencoded'))payload=Object.fromEntries(new URLSearchParams(raw));else throw Error();}catch{throw new ApiError(400,'Invalid webhook body.');}
+        }
+        if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new ApiError(400,'Invalid webhook body.');
+        send(200,kakaoWebhook.receive(payload,req.headers['x-kakao-resource-id']));return;
       }
       if (url.pathname === '/api/branch/webhook') {
         if (req.method !== 'POST') throw new ApiError(405, 'Use POST.');
@@ -321,7 +335,10 @@ export function createApp({
         else if (req.method === "POST" && url.pathname === "/api/select")
           result = { player: store.select(playerId, body.spiritId) };
         else if (req.method === "POST" && url.pathname === "/api/invites") {
+          if(body.flowId!==undefined&&(typeof body.flowId!=='string'||!/^[a-f0-9]{32}$/.test(body.flowId)))throw new ApiError(400,'Invalid share flow.');
+          const priorFlow=body.flowId?store.db.prepare('SELECT player_id,channel FROM share_flows WHERE id=?').get(body.flowId):null;if(priorFlow){const owner=store.db.prepare('SELECT a.player_id FROM account_members m JOIN accounts a ON a.subject=m.subject WHERE m.player_id=?').get(priorFlow.player_id)?.player_id||priorFlow.player_id;if(owner!==playerId||priorFlow.channel!==body.channel)throw new ApiError(400,'Wrong share flow.');}
           result = store.createInvite(playerId, body);
+          if(result.channel==='kakao')result.kakaoCallback=kakaoWebhook.callbackArgs(body.flowId,result.id);
           result.url = `${process.env.PUBLIC_ORIGIN || `http://${req.headers.host}`}/i/${result.id}`;
         } else if (
           req.method === "POST" &&

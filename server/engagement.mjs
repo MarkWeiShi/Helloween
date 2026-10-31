@@ -1,3 +1,4 @@
+import {SHARE_BROWSERS,SHARE_CONTEXTS,SHARE_ERRORS} from '../shared/share-diagnostics.mjs';
 import {funnelEvents} from '../shared/funnel-events.mjs';
 import {CHANNELS} from '../shared/rules.mjs';
 import {ApiError} from './store.mjs';
@@ -16,11 +17,20 @@ export function createEngagement(store){
  CREATE INDEX IF NOT EXISTS share_flows_time ON share_flows(created_at,channel);
  CREATE INDEX IF NOT EXISTS share_flow_events_flow ON share_flow_events(flow_id);`);
  db.prepare("INSERT OR IGNORE INTO engagement_metadata VALUES('share_flows_started_at',?)").run(store.now());
+ db.exec(`CREATE TABLE IF NOT EXISTS share_diagnostics(player_id TEXT NOT NULL,event_id TEXT NOT NULL,page_id TEXT NOT NULL,client_ms INTEGER NOT NULL,duration_ms INTEGER,http_status INTEGER,error_code TEXT,browser TEXT NOT NULL,app_context TEXT NOT NULL,PRIMARY KEY(player_id,event_id),FOREIGN KEY(player_id,event_id) REFERENCES funnel_events(player_id,event_id));`);
+ db.prepare("INSERT OR IGNORE INTO engagement_metadata VALUES('share_diagnostics_started_at',?)").run(store.now());
  const spirits=new Set([...store.catalog.spirits.map(s=>s.id),...Object.values(previewTransformations)]);
  return function record(playerId,body){
   const now=store.now();
   if(body.kind==='funnel'){
    if(!validId(body.eventId)||!Object.hasOwn(funnelEvents,body.step))bad();
+   const diag=body.diagnostics;
+   if(diag!==undefined){
+    if(!diag||typeof diag!=='object'||Array.isArray(diag)||Object.keys(diag).some(k=>!['pageId','clientMs','durationMs','httpStatus','errorCode','browser','appContext'].includes(k))||!validId(diag.pageId)||!Number.isSafeInteger(diag.clientMs)||diag.clientMs<0||diag.clientMs>86400000||!SHARE_BROWSERS.includes(diag.browser)||!SHARE_CONTEXTS.includes(diag.appContext))bad();
+    if(diag.durationMs!==undefined&&(!Number.isSafeInteger(diag.durationMs)||diag.durationMs<0||diag.durationMs>86400000))bad();
+    if(diag.httpStatus!==undefined&&(!Number.isSafeInteger(diag.httpStatus)||diag.httpStatus<100||diag.httpStatus>599))bad();
+    if(diag.errorCode!==undefined&&!SHARE_ERRORS.includes(diag.errorCode))bad();
+   }
    let channel=body.channel||'exploration',invitation;
    if(body.flowId!==undefined&&(!validId(body.flowId)||!body.step.startsWith('share_')))bad();
    if(body.inviteId!==undefined){invitation=store.invite(body.inviteId);channel=invitation.channel;}
@@ -40,6 +50,7 @@ export function createEngagement(store){
     const result=db.prepare('INSERT OR IGNORE INTO funnel_events VALUES(?,?,?,?,?,?)').run(playerId,body.eventId,body.step,channel,body.inviteId||null,now);
     if(result.changes){
      store.event(body.step,channel);
+     if(diag)db.prepare('INSERT INTO share_diagnostics VALUES(?,?,?,?,?,?,?,?,?)').run(playerId,body.eventId,diag.pageId,diag.clientMs,diag.durationMs??null,diag.httpStatus??null,diag.errorCode??null,diag.browser,diag.appContext);
      if(body.flowId){
       db.prepare('INSERT OR IGNORE INTO share_flows VALUES(?,?,?,?,?)').run(body.flowId,playerId,channel,body.inviteId||null,now);
       if(body.inviteId)db.prepare('UPDATE share_flows SET invite_id=COALESCE(invite_id,?) WHERE id=?').run(body.inviteId,body.flowId);

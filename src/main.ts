@@ -1,6 +1,6 @@
 import {prepareMicrophone,saveMicrophoneChoice} from './microphone';
 import whatsappLogo from './whatsapp-logo.svg?raw';
-import {startEngagement,cardViewed,trackFunnel,newShareFlow} from './engagement';
+import {startEngagement,cardViewed,trackFunnel,newShareFlow,measureShare} from './engagement';
 import {worldScareLabel,refreshGlobalScares} from './global-scare';
 import {publicAssetUrl} from './public-assets';
 import {toast} from './toast';
@@ -471,9 +471,9 @@ function openShare(id = selected) {
   overlay.querySelector('dialog')!.classList.add('compact-share');
 }
 let shareRequest = 0;
-async function createShareInvitation(id:string,channel:string){
+async function createShareInvitation(id:string,channel:string,flowId?:string){
   const finish=startShareTiming('invitation');
-  try{return await api('/invites',{spiritId:id,channel});}finally{finish();}
+  try{return await api('/invites',{spiritId:id,channel,flowId});}finally{finish();}
 }
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
   if(btn?.disabled)return;
@@ -487,7 +487,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     const destination=resumed?null:window.open('about:blank','_blank');
     if(destination)destination.opener=null;
     try {
-      const data=await createShareInvitation(id,channel);
+      const data=await measureShare('share_invite_api_ready',{channel,spiritId:id,flowId},()=>createShareInvitation(id,channel,flowId),'share_failed');
       metric('share_invite_created',data.id);
       const shareUrl=new URL(`/api/share/card/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url).href;
       const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,url:shareUrl});
@@ -505,7 +505,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     const destination=window.open('about:blank','_blank');
     if(destination)destination.opener=null;
     try {
-      const data=await createShareInvitation(id,channel);
+      const data=await measureShare('share_invite_api_ready',{channel,spiritId:id,flowId},()=>createShareInvitation(id,channel,flowId),'share_failed');
       metric('share_invite_created',data.id);
       const card=new URL(`/api/share/facebook/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url);
       const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`;
@@ -523,7 +523,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
   showShareLoading(node,'invite');
   prepareSocialShare(id);
   try {
-    const data=await createShareInvitation(id,channel);
+    const data=await measureShare('share_invite_api_ready',{channel,spiritId:id,flowId},()=>createShareInvitation(id,channel,flowId),'share_failed');
       metric('share_invite_created',data.id);
     if(!node.isConnected || request!==shareRequest)return;
     if(channel==='copy'){
@@ -543,7 +543,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
         if(!copied){input.focus();input.select();}
       };
     }
-    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id,undefined,flowId);
+    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id,undefined,flowId,data.kakaoCallback);
   }catch(err){metric('share_failed');node.textContent=(err as Error).message;}
 }
 async function copyLink(url: string) {

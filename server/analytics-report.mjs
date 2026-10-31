@@ -7,7 +7,8 @@ export function analyticsReport(db, engagement, eventLabels={}) {
     const fetchedAt = new Date().toISOString();
     const events = db.prepare('SELECT event,SUM(count) count FROM analytics GROUP BY event ORDER BY event').all();
     const hourlyEvents = db.prepare('SELECT hour,event,count FROM analytics_hourly').all();
-    const eventSince=name=>['share_page_opened','share_invite_created','share_copy_failed','share_copy_manual'].includes(name)?engagement?.shareFlows?.startedAt:engagement?.startedAt;
+    const diagnosticEvents=['share_invite_api_ready','share_config_ready','share_config_failed','share_sdk_loaded','share_sdk_ready','share_sdk_failed','share_login_started','share_login_returned','share_picker_opened','share_picker_returned','share_fallback_offered'];
+    const eventSince=name=>diagnosticEvents.includes(name)?engagement?.shareFlows?.analysis?.diagnostics?.startedAt:['share_page_opened','share_invite_created','share_copy_failed','share_copy_manual'].includes(name)?engagement?.shareFlows?.startedAt:engagement?.startedAt;
     const columns = [
       { key:'entered', label:'页面进入次数', tracked:true },
       { key:'visitors', label:'新增浏览器访客' },
