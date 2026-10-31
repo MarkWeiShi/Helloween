@@ -1,5 +1,5 @@
 // Bounded, local-only timings. Never include invitation URLs or player identifiers.
-export function startShareTiming(stage:'config'|'sdk-kakao'|'sdk-wechat'|'image'|'invitation'|'kakao-ready'){
+export function startShareTiming(stage:'config'|'sdk-kakao'|'sdk-wechat'|'image'|'invitation'|'kakao-ready'|'line-editor-ready'){
  const start=performance.now();
  return ()=>{
   try{
