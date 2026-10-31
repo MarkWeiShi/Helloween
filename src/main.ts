@@ -1,6 +1,6 @@
 import {prepareMicrophone,saveMicrophoneChoice} from './microphone';
 import whatsappLogo from './whatsapp-logo.svg?raw';
-import {startEngagement,cardViewed,trackFunnel} from './engagement';
+import {startEngagement,cardViewed,trackFunnel,newShareFlow} from './engagement';
 import {worldScareLabel,refreshGlobalScares} from './global-scare';
 import {publicAssetUrl} from './public-assets';
 import {toast} from './toast';
@@ -477,7 +477,9 @@ async function createShareInvitation(id:string,channel:string){
 }
 async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, resumed=false) {
   if(btn?.disabled)return;
-  trackFunnel('share_clicked',{channel,spiritId:id});
+  const flowId=newShareFlow();
+  const metric=(step:string,inviteId?:string)=>trackFunnel(step,{channel,spiritId:id,flowId,inviteId});
+  metric('share_clicked');
   if (overlay.querySelector('.character-dialog')) setShareCard(id);
   if(channel==='x') {
     const finishLoading=startShareButtonLoading(btn);
@@ -486,14 +488,15 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     if(destination)destination.opener=null;
     try {
       const data=await createShareInvitation(id,channel);
+      metric('share_invite_created',data.id);
       const shareUrl=new URL(`/api/share/card/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url).href;
       const target='https://x.com/intent/post?'+new URLSearchParams({text:msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,url:shareUrl});
-      if(destination && !destination.closed){trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();destination.location.href=target;}
+      if(destination && !destination.closed){metric('share_handoff',data.id);watchShareReturn();destination.location.href=target;}
       else {
         modal(`<h2>X</h2><a class="button primary full" data-open-x href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(t('Continue to {{1}}').replace('{{1}}','X'))}</a>`);
-        overlay.querySelector<HTMLAnchorElement>('[data-open-x]')!.onclick=()=>{trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();};
+        overlay.querySelector<HTMLAnchorElement>('[data-open-x]')!.onclick=()=>{metric('share_handoff',data.id);watchShareReturn();};
       }
-    }catch(error){trackFunnel('share_failed',{channel});destination?.close();toast((error as Error).message);}
+    }catch(error){metric('share_failed');destination?.close();toast((error as Error).message);}
     finally{finishLoading();}
     return;
   }
@@ -503,30 +506,36 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     if(destination)destination.opener=null;
     try {
       const data=await createShareInvitation(id,channel);
+      metric('share_invite_created',data.id);
       const card=new URL(`/api/share/facebook/${encodeURIComponent(data.id)}?lang=${encodeURIComponent(locale)}`,data.url);
       const target=`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(card.href)}`;
-      if(destination){trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();destination.location.href=target;}
-      else{modal(`<a class="button primary full" data-open-facebook href="${e(target)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);overlay.querySelector<HTMLAnchorElement>('[data-open-facebook]')!.onclick=()=>{trackFunnel('share_handoff',{channel,inviteId:data.id});watchShareReturn();};}
-    }catch(error){trackFunnel('share_failed',{channel});destination?.close();toast((error as Error).message);}
+      if(destination){metric('share_handoff',data.id);watchShareReturn();destination.location.href=target;}
+      else{modal(`<a class="button primary full" data-open-facebook href="${e(target)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);overlay.querySelector<HTMLAnchorElement>('[data-open-facebook]')!.onclick=()=>{metric('share_handoff',data.id);watchShareReturn();};}
+    }catch(error){metric('share_failed');destination?.close();toast((error as Error).message);}
     finally{finishLoading();}
     return;
   }
   const request=++shareRequest;
   modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel==='messenger'?'Messenger':channel==='whatsapp'?'WhatsApp':channel.toUpperCase()}`)}</h2><div id="share-link"></div>`);
+  metric('share_page_opened');
   overlay.querySelector('dialog')!.classList.add('compact-share');
   const node=$('#share-link')!;
   showShareLoading(node,'invite');
   prepareSocialShare(id);
   try {
     const data=await createShareInvitation(id,channel);
+      metric('share_invite_created',data.id);
     if(!node.isConnected || request!==shareRequest)return;
     if(channel==='copy'){
       const guidance=locale==='zh'?'复制你的专属分享链接，然后前往其他社交平台，粘贴到动态或聊天中分享给朋友。':'Copy your personal invitation link, then open another social app and paste it into a post or chat to share with friends.';
       node.innerHTML=`<p>${e(guidance)}</p><label class="share-link-label">${e(t('Your invitation link'))}<input readonly aria-label="${e(t('Invitation link'))}" value="${e(data.url)}"></label><button class="button primary full" data-copy-confirm>${e(t('Copy link'))}</button><p role="status" aria-live="polite" data-copy-status></p>`;
       const input=node.querySelector<HTMLInputElement>('input')!;
+      metric('share_ready',data.id);
       input.onclick=()=>input.select();
+      input.addEventListener('copy',()=>metric('share_copy_manual',data.id));
       node.querySelector<HTMLButtonElement>('[data-copy-confirm]')!.onclick=async()=>{
         const copied=await copyLink(data.url);
+        metric(copied?'share_copied':'share_copy_failed',data.id);
         if(!node.isConnected)return;
         node.querySelector('[data-copy-status]')!.textContent=copied
           ? (locale==='zh'?'链接已复制！现在打开其他社交平台，粘贴到动态或聊天中即可分享。':'Link copied! Open another social app and paste it into a post or chat to share.')
@@ -534,8 +543,8 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
         if(!copied){input.focus();input.select();}
       };
     }
-    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id);
-  }catch(err){trackFunnel('share_failed',{channel});node.textContent=(err as Error).message;}
+    else await mountSocialHandoff(node,channel,data.url,msg`Boo! ${findShareCharacter(catalog,id)!.name} has a little Halloween surprise for you.`,asset(findShareCharacter(catalog,id)!.art?.share || '/art/world-map.webp'),id,undefined,flowId);
+  }catch(err){metric('share_failed');node.textContent=(err as Error).message;}
 }
 async function copyLink(url: string) {
   try {

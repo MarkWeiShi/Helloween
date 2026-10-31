@@ -30,7 +30,7 @@ export function installCountryAnalytics(db) {
   db.exec(`CREATE TEMP TRIGGER IF NOT EXISTS country_event_insert AFTER INSERT ON main.analytics BEGIN ${count("'event:'||NEW.event", 'NEW.count')} END;
     CREATE TEMP TRIGGER IF NOT EXISTS country_event_update AFTER UPDATE OF count ON main.analytics WHEN NEW.count>OLD.count BEGIN ${count("'event:'||NEW.event", 'NEW.count-OLD.count')} END;
     CREATE TEMP TRIGGER IF NOT EXISTS country_initialized AFTER UPDATE OF initialized ON main.players WHEN OLD.initialized=0 AND NEW.initialized=1 BEGIN ${count("'initialized'", '1')} INSERT OR REPLACE INTO analytics_country_records VALUES('initialized',json_array(NEW.id),request_country()); END;`);
-  const tables = {players:['id'],accounts:['subject'],invites:['id'],invite_visits:['invite_id','player_id'],reaction_audio:['invite_id','player_id'],page_dwell:['visit_id','hour'],card_views:['player_id','view_id'],funnel_events:['player_id','event_id']};
+  const tables = {players:['id'],accounts:['subject'],invites:['id'],invite_visits:['invite_id','player_id'],reaction_audio:['invite_id','player_id'],page_dwell:['visit_id','hour'],card_views:['player_id','view_id'],funnel_events:['player_id','event_id'],share_flows:['id']};
   for (const [table, keys] of Object.entries(tables)) {
     if (!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(table)) continue;
     const key = prefix => `json_array(${keys.map(k=>`${prefix}.${k}`).join(',')})`;

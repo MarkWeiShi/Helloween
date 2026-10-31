@@ -7,6 +7,7 @@ export function analyticsReport(db, engagement, eventLabels={}) {
     const fetchedAt = new Date().toISOString();
     const events = db.prepare('SELECT event,SUM(count) count FROM analytics GROUP BY event ORDER BY event').all();
     const hourlyEvents = db.prepare('SELECT hour,event,count FROM analytics_hourly').all();
+    const eventSince=name=>['share_page_opened','share_invite_created','share_copy_failed','share_copy_manual'].includes(name)?engagement?.shareFlows?.startedAt:engagement?.startedAt;
     const columns = [
       { key:'entered', label:'页面进入次数', tracked:true },
       { key:'visitors', label:'新增浏览器访客' },
@@ -21,7 +22,7 @@ export function analyticsReport(db, engagement, eventLabels={}) {
     const labels = {character_selected:'角色选择次数',share_started:'创建分享事件',invite_responded:'邀请响应事件',story_read:'故事读完事件',hellotalk_clicked:'HelloTalk 外链点击',hellotalk_unlocked:'HelloTalk 解锁事件',wish_completed:'愿望完成事件',battle_completed:'对战完成事件'};
     Object.assign(labels,eventLabels);
     for (const name of new Set([...Object.keys(eventLabels),...events.map(x=>x.event),...hourlyEvents.filter(x=>x.event.startsWith('event:')).map(x=>x.event.slice(6))])) {
-      if (name!=='entered') columns.push({key:'event:'+name,label:labels[name]||name,tracked:true,...(Object.hasOwn(eventLabels,name)?{since:engagement?.startedAt??Infinity}:{})});
+      if (name!=='entered') columns.push({key:'event:'+name,label:labels[name]||name,tracked:true,...(Object.hasOwn(eventLabels,name)?{since:eventSince(name)??Infinity}:{})});
     }
     const totals = {
       entered:events.find(x=>x.event==='entered')?.count||0,
@@ -31,7 +32,7 @@ export function analyticsReport(db, engagement, eventLabels={}) {
       invitations:scalar('SELECT COUNT(*) n FROM invites'),
       invitationVisits:scalar('SELECT COUNT(*) n FROM invite_visits'),
       recordings:scalar('SELECT COUNT(*) n FROM reaction_audio'),
-      ...Object.fromEntries(Object.keys(eventLabels).map(name=>['event:'+name,engagement?.startedAt==null?null:0])),
+      ...Object.fromEntries(Object.keys(eventLabels).map(name=>['event:'+name,eventSince(name)==null?null:0])),
       ...Object.fromEntries(events.filter(x=>x.event!=='entered').map(x=>['event:'+x.event,x.count])),
     };
     if(engagement)for(const [key,,field] of extra)totals[key]=engagement.startedAt===null?null:engagement.total[field];
@@ -47,8 +48,8 @@ export function analyticsReport(db, engagement, eventLabels={}) {
     const rows = [];
     for(let hour=currentHour;hour>=firstHour;hour--) {
       const data=bucket(hour), tracked=hour*3600000>=startedAt;
-      rows.push({hour,partial:hour===Math.floor(startedAt/3600000)||hour===Math.floor((engagement?.startedAt??Infinity)/3600000),values:Object.fromEntries(columns.map(c=>[c.key,c.since!==undefined?(c.since===Infinity||hour<Math.floor(c.since/3600000)?null:data[c.key]??(c.key==='dwellAverage'||c.key==='dwellMedian'?null:0)):c.tracked&&!tracked?(hour===Math.floor(startedAt/3600000)?data[c.key]||0:null):data[c.key]||0]))});
+      rows.push({hour,partial:hour===Math.floor(startedAt/3600000)||hour===Math.floor((engagement?.startedAt??Infinity)/3600000)||hour===Math.floor((engagement?.shareFlows?.startedAt??Infinity)/3600000),values:Object.fromEntries(columns.map(c=>[c.key,c.since!==undefined?(c.since===Infinity||hour<Math.floor(c.since/3600000)?null:data[c.key]??(c.key==='dwellAverage'||c.key==='dwellMedian'?null:0)):c.tracked&&!tracked?(hour===Math.floor(startedAt/3600000)?data[c.key]||0:null):data[c.key]||0]))});
     }
-    return {fetchedAt,startedAt,source:'helloween / Tokyo primary',columns,totals,rows,engagementStartedAt:engagement?.startedAt??null,cards:engagement?.cards??[],funnel:engagement?.funnel??[]};
+    return {fetchedAt,startedAt,source:'helloween / Tokyo primary',columns,totals,rows,engagementStartedAt:engagement?.startedAt??null,cards:engagement?.cards??[],funnel:engagement?.funnel??[],shareFlows:engagement?.shareFlows??{startedAt:null,rows:[],stages:[]}};
   } finally {db.exec('ROLLBACK');}
 }

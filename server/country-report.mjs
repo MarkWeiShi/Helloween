@@ -9,7 +9,7 @@ export function countryReport(db, buildReport, buildEngagement, selected = 'all'
   const startedAt = exists ? db.prepare("SELECT value FROM analytics_country_metadata WHERE key='started_at'").get()?.value ?? null : null;
   const codes = exists ? db.prepare("SELECT country FROM analytics_country_records UNION SELECT country FROM analytics_country_hourly ORDER BY country").all().map(r=>r.country) : [];
   if (!codes.includes('ZZ')) codes.push('ZZ');
-  const keys = {players:['id'],accounts:['subject'],invites:['id'],invite_visits:['invite_id','player_id'],reaction_audio:['invite_id','player_id'],page_dwell:['visit_id','hour'],card_views:['player_id','view_id'],funnel_events:['player_id','event_id']};
+  const keys = {players:['id'],accounts:['subject'],invites:['id'],invite_visits:['invite_id','player_id'],reaction_audio:['invite_id','player_id'],page_dwell:['visit_id','hour'],card_views:['player_id','view_id'],funnel_events:['player_id','event_id'],share_flows:['id']};
   function scoped(country) {
     const views = {};
     for (const [table, fields] of Object.entries(keys)) {
@@ -30,7 +30,7 @@ export function countryReport(db, buildReport, buildEngagement, selected = 'all'
       : `(SELECT * FROM main.analytics${country==='ZZ'?'':' WHERE 0'})`;
     return {
       exec: sql => db.exec(sql),
-      prepare: sql => db.prepare(sql.replace(/\b(FROM|JOIN)\s+(players|accounts|invites|invite_visits|reaction_audio|page_dwell|card_views|funnel_events|analytics_hourly|analytics)\b/gi, (_, op, table) => `${op} ${views[table.toLowerCase()]}`)),
+      prepare: sql => db.prepare(sql.replace(/\b(FROM|JOIN)\s+(players|accounts|invites|invite_visits|reaction_audio|page_dwell|card_views|funnel_events|share_flows|analytics_hourly|analytics)\b/gi, (_, op, table) => `${op} ${views[table.toLowerCase()]}`)),
     };
   }
   const reports = new Map();

@@ -19,6 +19,7 @@ export function startEngagement(){
 }
 export function cardViewed(spiritId:string){if(started)send({kind:'card',viewId:id(),spiritId});}
 
-export function trackFunnel(step:string,context:{channel?:string;inviteId?:string;spiritId?:string}={}){
+export const newShareFlow=()=>id();
+export function trackFunnel(step:string,context:{channel?:string;inviteId?:string;spiritId?:string;flowId?:string}={}){
  send({kind:'funnel',eventId:id(),step,...context},true);
 }

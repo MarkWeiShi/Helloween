@@ -11,17 +11,43 @@ export function createEngagement(store){
  CREATE INDEX IF NOT EXISTS dwell_hour ON page_dwell(hour);
  CREATE INDEX IF NOT EXISTS card_views_time ON card_views(created_at,spirit_id);`);
  db.prepare("INSERT OR IGNORE INTO engagement_metadata VALUES('started_at',?)").run(store.now());
+ db.exec(`CREATE TABLE IF NOT EXISTS share_flows(id TEXT PRIMARY KEY,player_id TEXT NOT NULL REFERENCES players(id),channel TEXT NOT NULL,invite_id TEXT,created_at INTEGER NOT NULL);
+ CREATE TABLE IF NOT EXISTS share_flow_events(flow_id TEXT NOT NULL REFERENCES share_flows(id),player_id TEXT NOT NULL,event_id TEXT NOT NULL,PRIMARY KEY(player_id,event_id),FOREIGN KEY(player_id,event_id) REFERENCES funnel_events(player_id,event_id));
+ CREATE INDEX IF NOT EXISTS share_flows_time ON share_flows(created_at,channel);
+ CREATE INDEX IF NOT EXISTS share_flow_events_flow ON share_flow_events(flow_id);`);
+ db.prepare("INSERT OR IGNORE INTO engagement_metadata VALUES('share_flows_started_at',?)").run(store.now());
  const spirits=new Set([...store.catalog.spirits.map(s=>s.id),...Object.values(previewTransformations)]);
  return function record(playerId,body){
   const now=store.now();
   if(body.kind==='funnel'){
    if(!validId(body.eventId)||!Object.hasOwn(funnelEvents,body.step))bad();
-   let channel=body.channel||'exploration';
-   if(body.inviteId!==undefined){const invitation=store.invite(body.inviteId);channel=invitation.channel;}
+   let channel=body.channel||'exploration',invitation;
+   if(body.flowId!==undefined&&(!validId(body.flowId)||!body.step.startsWith('share_')))bad();
+   if(body.inviteId!==undefined){invitation=store.invite(body.inviteId);channel=invitation.channel;}
    if(channel!=='exploration'&&!CHANNELS.includes(channel))bad();
    if(body.step==='share_send_confirmed'&&(channel!=='line'||!body.inviteId))bad();
    if(body.spiritId!==undefined&&!spirits.has(body.spiritId))bad();
-   return store.transaction(()=>{const result=db.prepare('INSERT OR IGNORE INTO funnel_events VALUES(?,?,?,?,?,?)').run(playerId,body.eventId,body.step,channel,body.inviteId||null,now);if(result.changes)store.event(body.step,channel);return {ok:true,counted:result.changes>0};});
+   return store.transaction(()=>{
+    if(body.flowId){
+     const flow=db.prepare('SELECT * FROM share_flows WHERE id=?').get(body.flowId);
+     if(flow){
+      const owner=db.prepare('SELECT a.player_id FROM account_members m JOIN accounts a ON a.subject=m.subject WHERE m.player_id=?').get(flow.player_id)?.player_id||flow.player_id;
+      if(invitation&&invitation.senderId!==owner)bad();
+      if(flow.channel!==channel || (flow.invite_id&&body.inviteId&&flow.invite_id!==body.inviteId))bad();
+      if(flow.player_id!==playerId && owner!==playerId && !(channel==='line'&&invitation&&invitation.senderId===owner&&flow.invite_id===body.inviteId))bad();
+     }else if(channel==='exploration'||(invitation&&invitation.senderId!==playerId))bad();
+    }
+    const result=db.prepare('INSERT OR IGNORE INTO funnel_events VALUES(?,?,?,?,?,?)').run(playerId,body.eventId,body.step,channel,body.inviteId||null,now);
+    if(result.changes){
+     store.event(body.step,channel);
+     if(body.flowId){
+      db.prepare('INSERT OR IGNORE INTO share_flows VALUES(?,?,?,?,?)').run(body.flowId,playerId,channel,body.inviteId||null,now);
+      if(body.inviteId)db.prepare('UPDATE share_flows SET invite_id=COALESCE(invite_id,?) WHERE id=?').run(body.inviteId,body.flowId);
+      db.prepare('INSERT INTO share_flow_events VALUES(?,?,?)').run(body.flowId,playerId,body.eventId);
+     }
+    }
+    return {ok:true,counted:result.changes>0};
+   });
   }
   if(body.kind==='card'){
    if(!validId(body.viewId)||!spirits.has(body.spiritId))bad();

@@ -52,17 +52,18 @@ function load(src:string){
  }
  return loaders.get(src)!;
 }
-export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string,beforeConfirm:()=>Promise<void>|void=()=>{}){
+export async function mountSocialHandoff(node:HTMLElement,channel:string,url:string,text:string,image:string,spiritId?:string,beforeConfirm:()=>Promise<void>|void=()=>{},flowId?:string){
  const panel=document.createElement('section');panel.className='social-handoff';panel.setAttribute('aria-live','polite');node.replaceChildren(panel);
  const name=names[channel];if(!name)return;
  const inviteId=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
- const metric=(step:string)=>trackFunnel(step,{channel,inviteId,spiritId});
+ const metric=(step:string)=>trackFunnel(step,{channel,inviteId,spiritId,flowId});
  let shown=false;
 
  const local=['localhost','127.0.0.1','[::1]'].includes(new URL(url).hostname);
  const notice=local?html`<p>This is a local preview link. Open the game on <a href="https://helloween.fly.dev" target="_blank" rel="noopener noreferrer">helloween.fly.dev</a> to create an invitation friends can open.</p>`:'';
  const link=html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(url)}"></label>`;
  const frame=(body:string,compact=false)=>{if(!shown){shown=true;metric('share_ready');}panel.innerHTML=compact?`<h3>${e(name)}</h3>${body}<p class="share-confirm-note">${e(locale==='zh'?'在平台内选择好友或发布，确认后才会分享。':'Confirm recipients or publish on the platform. Nothing is sent automatically.')}</p><details class="share-more"><summary>${e(locale==='zh'?'链接与其他选项':'Link and other options')}</summary>${notice}${link}</details>`:html`<h3>Share with ${e(name)}</h3>${notice}${body}${link}<p>You choose who receives it and confirm inside ${e(name)}. Nothing is sent automatically.</p>`;panel.insertAdjacentHTML('beforeend',`<button class="button text-button full" data-back-game>${e(locale==='zh'?'返回游戏':'Back to game')}</button>`);panel.querySelector<HTMLButtonElement>('[data-back-game]')!.onclick=returnToGame;panel.scrollIntoView({block:'nearest'});
+  panel.querySelectorAll<HTMLInputElement>('input[readonly]').forEach(input=>input.addEventListener('copy',()=>metric('share_copy_manual')));
   panel.querySelectorAll<HTMLAnchorElement>('a.button.primary').forEach(anchor=>anchor.onclick=event=>{
    metric('share_handoff');
    // Keep LIFF navigation in the native click when no save is required (iOS).
@@ -87,7 +88,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
   frame(`${poster?`<img class="share-card-preview" src="${e(poster)}" alt="${e(label('鬼卡片预览','Ghost card preview'))}" width="960" height="504">`:''}<p data-connection-status role="status">${e(label('正在连接 '+name+'…','Connecting to '+name+'…'))}</p><button class="button secondary full" data-copy-ready>${e(t('Copy link'))}</button><button class="button secondary full" data-retry hidden>${e(label('重试','Retry'))}</button>`);
   panel.querySelector<HTMLButtonElement>('[data-copy-ready]')!.onclick=async()=>{
    try{await beforeConfirm();await navigator.clipboard.writeText(url);metric('share_copied');panel.querySelector('[data-connection-status]')!.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
-   catch{panel.querySelector<HTMLInputElement>('input')?.select();}
+   catch{metric('share_copy_failed');panel.querySelector<HTMLInputElement>('input')?.select();}
   };
  };
  if(channel==='line'||channel==='wechat')fallback();
@@ -107,7 +108,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
   const status=panel.querySelector<HTMLElement>('[data-messaging-status]')!;
   panel.querySelector<HTMLButtonElement>('[data-copy-invite]')!.onclick=async()=>{
    try{await beforeConfirm();await navigator.clipboard.writeText(url);metric('share_copied');status.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
-   catch{panel.querySelector<HTMLInputElement>('input')?.select();status.textContent=t('Your invitation is ready. Select and copy the link below.');}
+   catch{metric('share_copy_failed');panel.querySelector<HTMLInputElement>('input')?.select();status.textContent=t('Your invitation is ready. Select and copy the link below.');}
   };
   const share=panel.querySelector<HTMLButtonElement>('[data-device-share]');
   if(share)share.onclick=async()=>{
@@ -140,7 +141,7 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    void fetch('/art/x-cards/manifest.json').then(r=>r.json()).then(publicAssetData).then(manifest=>{const base=manifest.characters?.[spiritId||''];const entry=base?{...base,...(base.localized?.[locale]||base.localized?.en||{})}:null;if(entry&&!entry.previewOnly&&entry.bytes<=5000000){gifImage=new URL(entry.gif,location.origin).href;const option=panel.querySelector<HTMLInputElement>('[data-kakao-animated]');if(option)option.disabled=false;}}).catch(()=>{});
    panel.querySelector<HTMLButtonElement>('[data-copy-ready]')!.onclick=async()=>{
     try{await beforeConfirm();await navigator.clipboard.writeText(url);metric('share_copied');panel.querySelector('[data-kakao-status]')!.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
-    catch{panel.querySelector<HTMLDetailsElement>('details')!.open=true;panel.querySelector<HTMLInputElement>('input')?.select();}
+    catch{metric('share_copy_failed');panel.querySelector<HTMLDetailsElement>('details')!.open=true;panel.querySelector<HTMLInputElement>('input')?.select();}
    };
    let kakao:KakaoSDK|undefined;
    const connect=async()=>{
@@ -175,13 +176,13 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
  let config:Config={origin:location.origin,kakaoKey:'',wechatReady:false,facebookAppId:''};
  if(channel==='line'||(channel==='wechat'&&/MicroMessenger/i.test(navigator.userAgent))){
   try{config=await loadShareConfig();}
-  catch(error){failed(()=>{void mountSocialHandoff(node,channel,url,text,image,spiritId,beforeConfirm);});return;}
+  catch(error){failed(()=>{void mountSocialHandoff(node,channel,url,text,image,spiritId,beforeConfirm,flowId);});return;}
   if(!panel.isConnected)return;
  }
  if(channel==='line' && config.lineLiffId){
   const token=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
   if(token){
-   const target=`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(token)}&lang=${encodeURIComponent(locale)}`;
+   const target=`https://liff.line.me/${encodeURIComponent(config.lineLiffId)}?invite=${encodeURIComponent(token)}&lang=${encodeURIComponent(locale)}${flowId?`&flow=${encodeURIComponent(flowId)}`:''}`;
    frame(html`<img src="${e(image)}" alt="" width="320" style="max-width:100%;height:auto;border-radius:16px"><p>${e(locale==='zh'?'预览鬼卡片，登录 LINE 后选择好友并确认发送。':'Preview your ghost card, sign in to LINE, then choose friends and confirm.')}</p><a class="button primary full" data-line-app href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(locale==='zh'?'在 LINE 中打开':'Open in LINE')}</a><p class="fine-print">${e(locale==='zh'?'发送后，使用左上角 Safari 返回游戏。':'After sharing, use the Safari return link to resume the game.')}</p>`);return;
   }
  }
