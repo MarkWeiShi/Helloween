@@ -6,15 +6,11 @@ import {locale} from './i18n';
 import { api } from './api';
 import { recordReaction } from './reaction-capture';
 import { mountTransformation, markTransformationPlayed } from './transformation-player';
-import { prepareMicrophone } from './microphone';
+import { prepareMicrophone, microphoneChoice, saveMicrophoneChoice } from './microphone';
 import { personalScareScore } from '../shared/reactions.mjs';
 export type SharedReaction = {inviteId: string;recordingFull?:boolean};
 type Result = { score: number | null; meanHz: number | null; meanRms: number | null; globalSubmitted?: boolean };
 const memory = new Map<string, Result>();
-let microphoneChoiceMemory='';
-function microphoneChoice(){try{return localStorage.getItem('boo:microphone-choice:v1')||microphoneChoiceMemory;}catch{return microphoneChoiceMemory;}}
-function saveMicrophoneChoice(value:string){microphoneChoiceMemory=value;try{localStorage.setItem('boo:microphone-choice:v1',value);}catch{}}
-
 const key = (player: string, spirit: string) => `boo:personal-scare:v1:${player}:${spirit}`;
 export function readScare(player: string, spirit: string): Result | undefined {
   const id = key(player, spirit);
@@ -41,7 +37,7 @@ export function mountPersonalScare(root: HTMLElement, player: string, spirit: st
   const globalStatus=document.createElement('small');
   globalStatus.textContent='';
   const micNotice=document.createElement('p');micNotice.className='fine-print';
-  micNotice.textContent=t('Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.');
+  micNotice.textContent=t('Unlock once on the homepage to enable automatic voice capture.');
   micNotice.append(' ',t(shared?'普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。':'Your valid voice measurements contribute to global character scores. Ordinary play uploads numbers only, never audio.'));
   if(shared?.recordingFull)micNotice.textContent=t('Your inviter’s recording storage is full. You can still watch and share.');
   const micButton=document.createElement('button');micButton.className='button secondary';micButton.dataset.recordReaction='';micButton.textContent=t(shared?'Record and replay':'Measure and replay');

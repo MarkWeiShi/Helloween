@@ -1,5 +1,6 @@
 import {test,expect,type Page} from '@playwright/test';
 import {readFileSync} from 'node:fs';
+test.use({launchOptions:{args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']}});
 const baseURL=process.env.LOCALIZATION_BASE_URL || 'http://127.0.0.1:8787';
 const overrides=JSON.parse(readFileSync('content/localization/overrides.json','utf8'));
 async function chooseLanguage(page:Page,code:string){
@@ -13,7 +14,7 @@ for(const locale of ['en','zh','es','pt','fr','de','it','ru','ar','hi','ja','ko'
   await page.goto(baseURL);
   await expect(page.locator('html')).toHaveAttribute('lang',locale);
   await expect(page.locator('html')).toHaveAttribute('dir',locale==='ar'?'rtl':'ltr');
-  await expect(page.locator('.play-unlock')).toHaveText(overrides[locale]?.['Start exploring']||'Start exploring');
+  await expect(page.locator('.play-unlock')).toHaveAccessibleName(overrides[locale]?.['Agree and unlock']||'Agree and unlock');
   await expect(page.locator('#language-menu [data-language]')).toHaveCount(16);
   await page.locator('.play-unlock').click();
   await expect(page.locator('.play-lock,.unlock-consent')).toHaveCount(0);
@@ -33,7 +34,7 @@ test('manual choice survives reload and overrides browser preferences',async({br
  await context.close();
 });
 test('unknown browser locale falls back to English',async({browser})=>{
- const context=await browser.newContext({locale:'nl-NL'});const page=await context.newPage();await page.goto(baseURL);await expect(page.locator('html')).toHaveAttribute('lang','en');await expect(page.locator('.play-unlock')).toHaveText('Start exploring');await context.close();
+ const context=await browser.newContext({locale:'nl-NL'});const page=await context.newPage();await page.goto(baseURL);await expect(page.locator('html')).toHaveAttribute('lang','en');await expect(page.locator('.play-unlock')).toHaveAccessibleName('Agree and unlock');await context.close();
 });
 test('localized exploration and profile keep user input intact',async({browser})=>{
  const context=await browser.newContext({locale:'ja-JP',permissions:['microphone'],viewport:{width:390,height:844},reducedMotion:'reduce'});

@@ -1447,5 +1447,8 @@
   "Measuring… {{0}}s": "測定中… {{0}}秒",
   "Invalid analytics sample.": "統計データが無効です。",
   "Your inviter’s recording storage is full. You can still watch and share.": "招待者の録音保存容量がいっぱいです。視聴・共有はできます。",
-  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "初めて変身カードを開くとマイクの許可を求めます。許可後は次回から自動で録音します。"
+  "Agree and unlock": "同意して解除",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "マイクを許可すると変身中に音声を自動測定します。通常の探索ではスコアのみ送信します。",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "友達の招待では6秒の録音を招待者だけに送信します。送信前にキャンセルできます。",
+  "Unlock once on the homepage to enable automatic voice capture.": "ホームで一度許可すると、以後は自動で音声を取得します。"
 }

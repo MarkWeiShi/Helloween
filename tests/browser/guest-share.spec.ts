@@ -33,7 +33,7 @@ for(const selectedChannel of ['line','facebook','kakao','wechat','copy','x','sig
 
  }
  await page.goto(origin+'/?lang=en');
- await page.getByRole('button',{name:'Start exploring',exact:true}).click();
+ await page.getByRole('button',{name:'Agree and unlock',exact:true}).click();
 
  await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
  if(['wechat','copy'].includes(channel))await page.locator('.character-pumpkin').click();

@@ -15,7 +15,7 @@ for (const spiritId of ['jiangshi','ifrit','zhalmauyz-kempir']) test(`${spiritId
  });
  await page.request.post('/api/session',{data:{}});
  await page.request.post('/api/onboard',{data:{name:'Jiangshi pilot',country:'CN',spiritId}});
- await page.goto('/');await page.getByRole('button',{name:'Start exploring',exact:true}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Agree and unlock',exact:true}).click();
  await expect(page.locator('.play-lock')).toHaveCount(0);
  await page.locator(`.globe-pin[data-spirit="${spiritId}"]`).click();
  await expect.poll(()=>page.locator('video[data-phase="intro"]').evaluate((v:HTMLVideoElement)=>v.currentTime),{timeout:15000}).toBeGreaterThan(6.2);

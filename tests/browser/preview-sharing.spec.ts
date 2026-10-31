@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {previewTransformations} from '../../shared/preview-transformations.mjs';
 test.use({launchOptions:{args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']}});
 test('seven previews share with current controls and return to their own card',async({page})=>{
- await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v1','true'));
+ await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v2','true'));
  await page.route('**/api/social/config',route=>route.fulfill({json:{origin:'http://localhost',lineLiffId:'test-liff',kakaoKey:''}}));
  await page.goto('/?lang=en');
  for(const id of Object.values(previewTransformations)){

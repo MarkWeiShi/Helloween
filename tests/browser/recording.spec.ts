@@ -20,7 +20,7 @@ async function setup() {
   MediaRecorder.prototype.stop=function(){evidence.stop=performance.now();return stop.call(this);};
  });
  await page.goto('/i/'+invitation.id);
- await page.getByRole('button',{name:'Watch transformation',exact:true}).click();
+ await page.getByRole('button',{name:'Agree and unlock',exact:true}).click();
  await expect(page.locator('dialog.character-immersive')).toBeVisible();
  expect(await page.evaluate(()=>(window as any).__recordingEvidence.start)).toBe(0);
  return {browser,sender,receiver,page,invitation};

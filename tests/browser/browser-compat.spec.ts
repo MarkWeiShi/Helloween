@@ -4,7 +4,7 @@ for(const legacy of [false,true]){
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
   const requests:string[]=[];page.on('request',request=>{if(new URL(request.url()).pathname==='/api/session')requests.push(request.method());});
   await page.addInitScript(({legacy})=>{
-   localStorage.setItem('boo:play-unlocked:v1','true');
+   localStorage.setItem('boo:play-unlocked:v2','true');
    if(legacy){
     for(const key of ['any','timeout'])Object.defineProperty(AbortSignal,key,{configurable:true,value:undefined});
     Object.defineProperty(Intl,'DisplayNames',{configurable:true,value:undefined});

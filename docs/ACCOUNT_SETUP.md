@@ -2,7 +2,7 @@
 
 All public invitation channels, including LINE's dedicated editor and X Web Intents, accept guests with a default nickname and Earthling affiliation. They do not submit onboarding fields. Platform-controlled login, recipient selection and final confirmation still apply. Optional game sign-in remains available for cross-device link and recording management; private recording access still checks ownership.
 
-Watching and sharing do not require a microphone. The first transformation card requests permission; after it is granted, recording starts automatically on later visits and replays. Refusal is remembered and a retry action remains available. Numeric measurements and private invitation audio retain their separate upload paths. LINE alone currently exposes a positive SDK send callback to the game; opening other composers or copying links must not be counted as confirmed delivery.
+The homepage combines essential voice terms and microphone unlock in one confirmation button. Permission refusal keeps the entrance locked and allows retry. After permission is granted, transformations record automatically without another confirmation page. Numeric measurements and private invitation audio retain their separate upload paths. LINE alone currently exposes a positive SDK send callback to the game; opening other composers or copying links must not be counted as confirmed delivery.
 
 The earlier configuration and rollout notes below are retained as historical context. Requirements they describe for mandatory game login, profile setup or entry microphone access are superseded by the source behavior above.
 

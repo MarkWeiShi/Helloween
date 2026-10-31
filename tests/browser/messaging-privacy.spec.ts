@@ -15,7 +15,7 @@ test('legal pages are public and unlock links add no confirmation requirement',a
 });
 test('direct WhatsApp and Messenger channels preserve ownership and native share passes invitation',async({page},info)=>{
  await page.addInitScript(()=>{
-  localStorage.setItem('boo:play-unlocked:v1','true');
+  localStorage.setItem('boo:play-unlocked:v2','true');
   Object.defineProperty(navigator,'share',{configurable:true,value:async(data:ShareData)=>{document.body.dataset.sharedUrl=data.url;}});
  });
  await page.route('**/api/social/config',r=>r.fulfill({json:{origin:app.origin,facebookAppId:'1125720033691224'}}));

@@ -39,3 +39,7 @@ export async function prepareMicrophone(signal?: AbortSignal) {
     }),
   };
 }
+
+let microphoneChoiceMemory='';
+export function microphoneChoice(){try{return localStorage.getItem('boo:microphone-choice:v1')||microphoneChoiceMemory;}catch{return microphoneChoiceMemory;}}
+export function saveMicrophoneChoice(value:string){microphoneChoiceMemory=value;try{localStorage.setItem('boo:microphone-choice:v1',value);}catch{}}

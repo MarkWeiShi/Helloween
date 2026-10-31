@@ -1447,5 +1447,8 @@
   "Measuring… {{0}}s": "Đang đo… {{0}} giây",
   "Invalid analytics sample.": "Dữ liệu thống kê không hợp lệ.",
   "Your inviter’s recording storage is full. You can still watch and share.": "Bộ nhớ ghi âm của người mời đã đầy. Bạn vẫn có thể xem và chia sẻ.",
-  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Quyền micrô được yêu cầu khi bạn mở biến hình lần đầu. Sau khi cho phép, các lần tiếp theo sẽ tự động ghi âm."
+  "Agree and unlock": "Đồng ý và mở khóa",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Cho phép micrô. Biến hình tự động đo giọng nói; chơi thông thường chỉ gửi điểm số.",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Lời mời gửi sáu giây ghi âm chỉ cho người mời. Bạn có thể hủy trước khi gửi.",
+  "Unlock once on the homepage to enable automatic voice capture.": "Cho phép một lần ở trang chủ để tự động thu giọng nói."
 }

@@ -1447,5 +1447,8 @@
   "Measuring… {{0}}s": "กำลังวัดผล… {{0}} วินาที",
   "Invalid analytics sample.": "ข้อมูลสถิติไม่ถูกต้อง",
   "Your inviter’s recording storage is full. You can still watch and share.": "พื้นที่บันทึกเสียงของผู้เชิญเต็มแล้ว คุณยังดูและแชร์ได้",
-  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "ระบบจะขออนุญาตใช้ไมโครโฟนเมื่อเปิดการแปลงร่างครั้งแรก เมื่ออนุญาตแล้ว การบันทึกจะเริ่มอัตโนมัติในครั้งต่อไป"
+  "Agree and unlock": "ยอมรับและปลดล็อก",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "อนุญาตไมโครโฟน การแปลงร่างจะวัดเสียงอัตโนมัติ การเล่นทั่วไปส่งเฉพาะคะแนน",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "คำเชิญจะส่งเสียงบันทึก 6 วินาทีให้ผู้เชิญเท่านั้น ยกเลิกได้ก่อนส่ง",
+  "Unlock once on the homepage to enable automatic voice capture.": "อนุญาตครั้งเดียวที่หน้าแรกเพื่อเก็บเสียงอัตโนมัติ"
 }

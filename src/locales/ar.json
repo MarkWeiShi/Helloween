@@ -1447,5 +1447,8 @@
   "Measuring… {{0}}s": "جارٍ القياس… {{0}} ث",
   "Invalid analytics sample.": "بيانات إحصائية غير صالحة.",
   "Your inviter’s recording storage is full. You can still watch and share.": "مساحة تسجيلات من دعاك ممتلئة. لا يزال بإمكانك المشاهدة والمشاركة.",
-  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "يُطلب إذن الميكروفون عند فتح التحول لأول مرة. بعد السماح، يبدأ التسجيل تلقائيًا في الزيارات التالية."
+  "Agree and unlock": "الموافقة وفتح اللعبة",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "اسمح بالميكروفون. تقيس التحولات صوتك تلقائيًا؛ اللعب العادي يرسل الدرجات فقط.",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "ترسل الدعوات تسجيلًا مدته ست ثوانٍ إلى صاحب الدعوة فقط. يمكنك الإلغاء قبل الإرسال.",
+  "Unlock once on the homepage to enable automatic voice capture.": "اسمح مرة واحدة من الصفحة الرئيسية لالتقاط الصوت تلقائيًا."
 }

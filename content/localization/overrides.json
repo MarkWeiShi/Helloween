@@ -306,7 +306,10 @@
     "Measuring… {{0}}s": "Measuring… {{0}}s",
     "Invalid analytics sample.": "Invalid analytics sample.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Your inviter’s recording storage is full. You can still watch and share.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits."
+    "Agree and unlock": "Agree and unlock",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Unlock once on the homepage to enable automatic voice capture."
   },
   "zh": {
     "Language": "语言",
@@ -804,7 +807,10 @@
     "Measuring… {{0}}s": "测量中… {{0}}秒",
     "Invalid analytics sample.": "统计数据格式无效。",
     "Your inviter’s recording storage is full. You can still watch and share.": "邀请人的录音空间已满，你仍可观看和分享。",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "首次进入变身卡片时申请麦克风权限。允许后，再次进入将自动录音。"
+    "Agree and unlock": "同意并解锁",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "开启麦克风，变身时自动测量声音；普通探索仅上传分数。",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "好友邀请会上传 6 秒录音，仅邀请人可听，发送前可取消。",
+    "Unlock once on the homepage to enable automatic voice capture.": "在主页解锁授权一次，之后自动采集声音。"
   },
   "es": {
     "Language": "Idioma",
@@ -1136,7 +1142,10 @@
     "Measuring… {{0}}s": "Midiendo… {{0}} s",
     "Invalid analytics sample.": "Muestra estadística no válida.",
     "Your inviter’s recording storage is full. You can still watch and share.": "El almacenamiento de grabaciones de quien te invitó está lleno. Puedes seguir mirando y compartiendo.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Al abrir una transformación por primera vez se solicita permiso para el micrófono. Una vez permitido, la grabación comienza automáticamente en las siguientes visitas."
+    "Agree and unlock": "Aceptar y desbloquear",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Permite el micrófono. Las transformaciones miden tu voz automáticamente; el juego normal solo envía puntuaciones.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Las invitaciones envían una grabación de seis segundos solo a quien te invitó. Puedes cancelar antes del envío.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Autoriza una vez en el inicio para capturar la voz automáticamente."
   },
   "pt": {
     "Language": "Idioma",
@@ -1468,7 +1477,10 @@
     "Measuring… {{0}}s": "Medindo… {{0}} s",
     "Invalid analytics sample.": "Amostra estatística inválida.",
     "Your inviter’s recording storage is full. You can still watch and share.": "O armazenamento de gravações de quem convidou você está cheio. Você ainda pode assistir e compartilhar.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Ao abrir uma transformação pela primeira vez, pedimos acesso ao microfone. Após permitir, a gravação começa automaticamente nas próximas visitas."
+    "Agree and unlock": "Concordar e desbloquear",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Permita o microfone. As transformações medem sua voz automaticamente; o jogo normal envia apenas pontuações.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Convites enviam uma gravação de seis segundos apenas a quem convidou. Você pode cancelar antes do envio.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Autorize uma vez na página inicial para captar a voz automaticamente."
   },
   "fr": {
     "Language": "Langue",
@@ -1800,7 +1812,10 @@
     "Measuring… {{0}}s": "Mesure… {{0}} s",
     "Invalid analytics sample.": "Échantillon statistique invalide.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Le stockage des enregistrements de la personne qui vous a invité est plein. Vous pouvez toujours regarder et partager.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Le micro est demandé à la première ouverture d’une transformation. Une fois autorisé, l’enregistrement démarre automatiquement lors des visites suivantes."
+    "Agree and unlock": "Accepter et déverrouiller",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Autorisez le micro. Les transformations mesurent votre voix automatiquement ; le jeu ordinaire envoie uniquement des scores.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Les invitations envoient six secondes d’enregistrement uniquement à la personne qui vous invite. Annulez avant l’envoi si besoin.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Autorisez une fois depuis l’accueil pour activer la capture vocale automatique."
   },
   "de": {
     "Language": "Sprache",
@@ -2132,7 +2147,10 @@
     "Measuring… {{0}}s": "Messung… {{0}} s",
     "Invalid analytics sample.": "Ungültige Statistikdaten.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Der Aufnahmespeicher der einladenden Person ist voll. Du kannst weiterhin ansehen und teilen.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Beim ersten Öffnen einer Verwandlung wird der Mikrofonzugriff angefragt. Nach der Erlaubnis startet die Aufnahme bei späteren Besuchen automatisch."
+    "Agree and unlock": "Zustimmen und entsperren",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Erlaube das Mikrofon. Verwandlungen messen deine Stimme automatisch; im normalen Spiel werden nur Werte übertragen.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Bei Einladungen gehen sechs Sekunden Aufnahme nur an die einladende Person. Vor dem Senden kannst du abbrechen.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Erlaube den Zugriff einmal auf der Startseite für automatische Sprachaufnahme."
   },
   "it": {
     "Language": "Lingua",
@@ -2464,7 +2482,10 @@
     "Measuring… {{0}}s": "Misurazione… {{0}} s",
     "Invalid analytics sample.": "Campione statistico non valido.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Lo spazio delle registrazioni di chi ti ha invitato è pieno. Puoi comunque guardare e condividere.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Alla prima apertura di una trasformazione viene richiesto l’accesso al microfono. Dopo il consenso, la registrazione parte automaticamente nelle visite successive."
+    "Agree and unlock": "Accetta e sblocca",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Consenti il microfono. Le trasformazioni misurano la voce automaticamente; il gioco normale invia solo punteggi.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Gli inviti inviano sei secondi di registrazione solo a chi ti ha invitato. Puoi annullare prima dell’invio.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Autorizza una volta nella home per attivare la rilevazione vocale automatica."
   },
   "ru": {
     "Language": "Язык",
@@ -2796,7 +2817,10 @@
     "Measuring… {{0}}s": "Измерение… {{0}} с",
     "Invalid analytics sample.": "Неверные статистические данные.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Хранилище записей пригласившего вас человека заполнено. Можно смотреть и делиться.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "При первом открытии превращения запрашивается доступ к микрофону. После разрешения запись начинается автоматически при следующих посещениях."
+    "Agree and unlock": "Согласиться и открыть",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Разрешите микрофон. Превращения автоматически измеряют голос; в обычной игре отправляются только баллы.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "По приглашению шесть секунд записи отправляются только пригласившему. До отправки можно отменить.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Один раз разрешите доступ на главной странице для автоматической записи голоса."
   },
   "ar": {
     "Language": "اللغة",
@@ -3128,7 +3152,10 @@
     "Measuring… {{0}}s": "جارٍ القياس… {{0}} ث",
     "Invalid analytics sample.": "بيانات إحصائية غير صالحة.",
     "Your inviter’s recording storage is full. You can still watch and share.": "مساحة تسجيلات من دعاك ممتلئة. لا يزال بإمكانك المشاهدة والمشاركة.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "يُطلب إذن الميكروفون عند فتح التحول لأول مرة. بعد السماح، يبدأ التسجيل تلقائيًا في الزيارات التالية."
+    "Agree and unlock": "الموافقة وفتح اللعبة",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "اسمح بالميكروفون. تقيس التحولات صوتك تلقائيًا؛ اللعب العادي يرسل الدرجات فقط.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "ترسل الدعوات تسجيلًا مدته ست ثوانٍ إلى صاحب الدعوة فقط. يمكنك الإلغاء قبل الإرسال.",
+    "Unlock once on the homepage to enable automatic voice capture.": "اسمح مرة واحدة من الصفحة الرئيسية لالتقاط الصوت تلقائيًا."
   },
   "hi": {
     "Language": "भाषा",
@@ -3460,7 +3487,10 @@
     "Measuring… {{0}}s": "मापन… {{0}} सेकंड",
     "Invalid analytics sample.": "अमान्य सांख्यिकी डेटा।",
     "Your inviter’s recording storage is full. You can still watch and share.": "आमंत्रित करने वाले का रिकॉर्डिंग स्थान भर गया है। आप फिर भी देख और साझा कर सकते हैं।",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "पहली बार रूपांतरण खोलने पर माइक्रोफ़ोन की अनुमति मांगी जाती है। अनुमति देने के बाद अगली बार रिकॉर्डिंग अपने आप शुरू होती है।"
+    "Agree and unlock": "सहमत होकर अनलॉक करें",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "माइक्रोफ़ोन की अनुमति दें। रूपांतरण में आवाज़ अपने आप मापी जाती है; सामान्य खेल में केवल स्कोर भेजे जाते हैं।",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "दोस्त के निमंत्रण में छह सेकंड की रिकॉर्डिंग केवल आमंत्रित करने वाले को भेजी जाती है। भेजने से पहले रद्द कर सकते हैं।",
+    "Unlock once on the homepage to enable automatic voice capture.": "होम पेज पर एक बार अनुमति दें, फिर आवाज़ अपने आप रिकॉर्ड होगी।"
   },
   "ja": {
     "Language": "言語",
@@ -3794,7 +3824,10 @@
     "Measuring… {{0}}s": "測定中… {{0}}秒",
     "Invalid analytics sample.": "統計データが無効です。",
     "Your inviter’s recording storage is full. You can still watch and share.": "招待者の録音保存容量がいっぱいです。視聴・共有はできます。",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "初めて変身カードを開くとマイクの許可を求めます。許可後は次回から自動で録音します。"
+    "Agree and unlock": "同意して解除",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "マイクを許可すると変身中に音声を自動測定します。通常の探索ではスコアのみ送信します。",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "友達の招待では6秒の録音を招待者だけに送信します。送信前にキャンセルできます。",
+    "Unlock once on the homepage to enable automatic voice capture.": "ホームで一度許可すると、以後は自動で音声を取得します。"
   },
   "ko": {
     "Language": "언어",
@@ -4127,7 +4160,10 @@
     "Measuring… {{0}}s": "측정 중… {{0}}초",
     "Invalid analytics sample.": "잘못된 통계 데이터입니다.",
     "Your inviter’s recording storage is full. You can still watch and share.": "초대한 사람의 녹음 저장 공간이 가득 찼습니다. 시청과 공유는 계속할 수 있습니다.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "변신 카드를 처음 열 때 마이크 권한을 요청합니다. 허용하면 이후에는 자동으로 녹음합니다."
+    "Agree and unlock": "동의하고 잠금 해제",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "마이크를 허용하면 변신 중 음성을 자동 측정합니다. 일반 탐색은 점수만 전송합니다.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "친구 초대에서는 6초 녹음을 초대한 사람에게만 보냅니다. 전송 전에 취소할 수 있습니다.",
+    "Unlock once on the homepage to enable automatic voice capture.": "홈에서 한 번 허용하면 이후 음성을 자동 수집합니다."
   },
   "id": {
     "Language": "Bahasa",
@@ -4459,7 +4495,10 @@
     "Measuring… {{0}}s": "Mengukur… {{0}} dtk",
     "Invalid analytics sample.": "Data statistik tidak valid.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Penyimpanan rekaman pengundang penuh. Anda tetap dapat menonton dan berbagi.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Izin mikrofon diminta saat pertama membuka transformasi. Setelah diizinkan, perekaman dimulai otomatis pada kunjungan berikutnya."
+    "Agree and unlock": "Setuju dan buka",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Izinkan mikrofon. Transformasi mengukur suara otomatis; permainan biasa hanya mengirim skor.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Undangan mengirim rekaman enam detik hanya kepada pengundang. Anda dapat membatalkan sebelum dikirim.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Izinkan sekali di beranda untuk pengambilan suara otomatis."
   },
   "th": {
     "Language": "ภาษา",
@@ -4791,7 +4830,10 @@
     "Measuring… {{0}}s": "กำลังวัดผล… {{0}} วินาที",
     "Invalid analytics sample.": "ข้อมูลสถิติไม่ถูกต้อง",
     "Your inviter’s recording storage is full. You can still watch and share.": "พื้นที่บันทึกเสียงของผู้เชิญเต็มแล้ว คุณยังดูและแชร์ได้",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "ระบบจะขออนุญาตใช้ไมโครโฟนเมื่อเปิดการแปลงร่างครั้งแรก เมื่ออนุญาตแล้ว การบันทึกจะเริ่มอัตโนมัติในครั้งต่อไป"
+    "Agree and unlock": "ยอมรับและปลดล็อก",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "อนุญาตไมโครโฟน การแปลงร่างจะวัดเสียงอัตโนมัติ การเล่นทั่วไปส่งเฉพาะคะแนน",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "คำเชิญจะส่งเสียงบันทึก 6 วินาทีให้ผู้เชิญเท่านั้น ยกเลิกได้ก่อนส่ง",
+    "Unlock once on the homepage to enable automatic voice capture.": "อนุญาตครั้งเดียวที่หน้าแรกเพื่อเก็บเสียงอัตโนมัติ"
   },
   "vi": {
     "Language": "Ngôn ngữ",
@@ -5123,6 +5165,9 @@
     "Measuring… {{0}}s": "Đang đo… {{0}} giây",
     "Invalid analytics sample.": "Dữ liệu thống kê không hợp lệ.",
     "Your inviter’s recording storage is full. You can still watch and share.": "Bộ nhớ ghi âm của người mời đã đầy. Bạn vẫn có thể xem và chia sẻ.",
-    "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Quyền micrô được yêu cầu khi bạn mở biến hình lần đầu. Sau khi cho phép, các lần tiếp theo sẽ tự động ghi âm."
+    "Agree and unlock": "Đồng ý và mở khóa",
+    "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Cho phép micrô. Biến hình tự động đo giọng nói; chơi thông thường chỉ gửi điểm số.",
+    "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Lời mời gửi sáu giây ghi âm chỉ cho người mời. Bạn có thể hủy trước khi gửi.",
+    "Unlock once on the homepage to enable automatic voice capture.": "Cho phép một lần ở trang chủ để tự động thu giọng nói."
   }
 }

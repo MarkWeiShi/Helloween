@@ -1447,5 +1447,8 @@
   "Measuring… {{0}}s": "Mesure… {{0}} s",
   "Invalid analytics sample.": "Échantillon statistique invalide.",
   "Your inviter’s recording storage is full. You can still watch and share.": "Le stockage des enregistrements de la personne qui vous a invité est plein. Vous pouvez toujours regarder et partager.",
-  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Le micro est demandé à la première ouverture d’une transformation. Une fois autorisé, l’enregistrement démarre automatiquement lors des visites suivantes."
+  "Agree and unlock": "Accepter et déverrouiller",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Autorisez le micro. Les transformations mesurent votre voix automatiquement ; le jeu ordinaire envoie uniquement des scores.",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Les invitations envoient six secondes d’enregistrement uniquement à la personne qui vous invite. Annulez avant l’envoi si besoin.",
+  "Unlock once on the homepage to enable automatic voice capture.": "Autorisez une fois depuis l’accueil pour activer la capture vocale automatique."
 }

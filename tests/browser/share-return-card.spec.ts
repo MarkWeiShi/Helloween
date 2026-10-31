@@ -4,7 +4,7 @@ let app:Awaited<ReturnType<typeof startBrowserApp>>;
 test.beforeAll(async()=>{app=await startBrowserApp();});
 test.afterAll(async()=>{await app.stop();});
 for(const exit of ['close','escape','return'])test(`LINE ${exit} returns to the originating video card`,async({page})=>{
- await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v1','true'));
+ await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v2','true'));
  await page.route('**/api/social/config',r=>r.fulfill({json:{origin:app.origin,lineLiffId:'test-liff'}}));
  await page.goto(app.origin+'/?lang=en');
  await page.locator('.globe-pin[data-spirit="jiangshi"]').dispatchEvent('click');
@@ -19,7 +19,7 @@ for(const exit of ['close','escape','return'])test(`LINE ${exit} returns to the 
  await expect(page.locator('.character-dialog')).toHaveCount(0);
 });
 for(const channel of ['x','kakao','facebook'])test(`${channel} cancel restores the selected card`,async({page})=>{
- await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v1','true'));
+ await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v2','true'));
  await page.route('**/api/social/config',r=>r.fulfill({json:{origin:app.origin,kakaoKey:'',facebookAppId:''}}));
  await page.goto(app.origin+'/?lang=en');
  await page.locator('.globe-pin[data-spirit="jiangshi"]').dispatchEvent('click');
@@ -31,7 +31,7 @@ for(const channel of ['x','kakao','facebook'])test(`${channel} cancel restores t
  await expect(page.locator('.character-sns [data-channel="line"]')).toHaveAttribute('data-id','jiangshi');
 });
 test('reloading after a share handoff restores and consumes the source card',async({page})=>{
- await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v1','true'));
+ await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v2','true'));
  await page.route('**/api/social/config',r=>r.fulfill({json:{origin:app.origin,lineLiffId:'test-liff'}}));
  await page.goto(app.origin+'/?lang=en');
  await page.locator('.globe-pin[data-spirit="jiangshi"]').dispatchEvent('click');
@@ -47,7 +47,7 @@ for(const channel of ['x','facebook'])test(`${channel} external popup keeps the 
  const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,`${channel}-return-${info.project.name}`);
  app.store.onboard(login.player.id,{name:'Tester',country:'CN',spiritId:'jiangshi'});
  await context.addCookies([{name:'boo_session',value:login.token,url:app.origin}]);
- await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v1','true'));
+ await page.addInitScript(()=>localStorage.setItem('boo:play-unlocked:v2','true'));
  await context.route(channel==='x'?'https://x.com/**':'https://www.facebook.com/**',r=>r.fulfill({body:'Provider fixture'}));
  await page.goto(app.origin+'/?lang=en');
  await page.locator('.globe-pin[data-spirit="jiangshi"]').dispatchEvent('click');
@@ -72,7 +72,7 @@ test('login redirect resumes sharing and cancel returns to its source card',asyn
  const guest=app.store.createGuest(),login=app.store.accountLogin(guest.player.id,'return-login-'+info.project.name);
  await context.addCookies([{name:'boo_session',value:login.token,url:app.origin}]);
  await page.addInitScript(()=>{
-  localStorage.setItem('boo:play-unlocked:v1','true');
+  localStorage.setItem('boo:play-unlocked:v2','true');
   sessionStorage.setItem('boo:share-return-card','jiangshi');
   sessionStorage.setItem('boo:pending-share',JSON.stringify({id:'jiangshi',channel:'x'}));
  });

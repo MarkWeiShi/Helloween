@@ -1,8 +1,9 @@
-# First-card microphone permission
+# One-step homepage unlock
 
-Current source changes are not deployed. The initial Start exploring button opens the live world without requesting microphone access. A valid invitation uses Watch transformation and opens its character directly. Existing saved exploration choices still skip this entry screen; they never imply recording consent.
+Current source changes are not deployed. The homepage shows one rounded button containing Agree and unlock plus concise microphone, numeric-score and private invitation-audio terms. Public privacy/deletion links are adjacent. One application click confirms the notice and requests native microphone permission directly; there is no second application confirmation page. Browser-owned permission UI remains necessary when the browser has not granted access.
 
-The first transformation card requests native microphone permission. After permission is granted, later card visits and replays acquire a fresh stream and capture automatically without an extra recording action; the browser controls whether its permission persists. Denial or timeout is remembered to avoid repeated requests, while watching and sharing remain available. A per-card retry action is shown only after an unavailable/denied microphone. Entry-page permission is never requested. Known-full invitation storage skips recording without blocking viewing. The adjacent notice explains automatic capture and private invitation upload, with a privacy link.
+The gate stays locked on refusal, unavailable audio or a 15-second timeout and offers retry in place. A successful permission probe stops immediately without recording or upload. The persisted v2 unlock marks this combined consent flow; the earlier v1 exploration-only choice does not bypass it. Later transformations acquire a fresh stream automatically with the browser's existing permission. Known-full invitation storage skips recording without blocking an already-unlocked visit.
+
 
 Capture starts at video second 3 and lasts six seconds. A countdown and progress bar show capture, followed by an indeterminate upload indicator. Cancellation, page hiding or closing discards unfinished capture and releases the microphone. Failed uploads retain the same recording for retry; completed uploads do not repeat on ordinary replay. Ordinary measurement uploads numbers only. The private audio playback ownership checks are unchanged.
 

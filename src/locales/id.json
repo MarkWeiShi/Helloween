@@ -1447,5 +1447,8 @@
   "Measuring… {{0}}s": "Mengukur… {{0}} dtk",
   "Invalid analytics sample.": "Data statistik tidak valid.",
   "Your inviter’s recording storage is full. You can still watch and share.": "Penyimpanan rekaman pengundang penuh. Anda tetap dapat menonton dan berbagi.",
-  "Microphone permission is requested when you first open a transformation. Once allowed, recording starts automatically on later visits.": "Izin mikrofon diminta saat pertama membuka transformasi. Setelah diizinkan, perekaman dimulai otomatis pada kunjungan berikutnya."
+  "Agree and unlock": "Setuju dan buka",
+  "Allow the microphone. Transformations automatically measure your voice; ordinary play uploads scores only.": "Izinkan mikrofon. Transformasi mengukur suara otomatis; permainan biasa hanya mengirim skor.",
+  "Friend invitations send a six-second recording privately to the inviter. You can cancel before sending.": "Undangan mengirim rekaman enam detik hanya kepada pengundang. Anda dapat membatalkan sebelum dikirim.",
+  "Unlock once on the homepage to enable automatic voice capture.": "Izinkan sekali di beranda untuk pengambilan suara otomatis."
 }
