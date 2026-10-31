@@ -299,7 +299,7 @@ function reactionMeter(id: string) {
   return html`<div class="mini-meter reaction-meter" data-reaction-spirit="${e(id)}"><progress max="100" value="${score}" aria-label="Scariness game score"></progress><div class="scariness-row"><strong data-world-scariness>${e(msg`World Scariness ${score} / 100`)}</strong><p data-personal-scare role="status" aria-live="polite" class="personal-scare">${e(scareLabel(readScare(player.id,id)))}</p></div></div>`;
 }
 function actionPair(id:string, preview=false) {
-  return html`<div class="reaction-actions"><div><div class="character-share-row"><button type="button" class="character-pumpkin" aria-label="${e("Trick or Treat Friends！")}" ${preview ? 'disabled' : ''}>🎃</button><span class="action-caption">${e("Trick or Treat Friends！")}</span>${directShareButtons(id)}</div>${reactionMeter(id)}</div></div>`;
+  return html`<div class="reaction-actions"><div><div class="character-share-row"><button type="button" class="character-pumpkin" data-action="share" data-id="${e(id)}" aria-label="${e("Trick or Treat Friends！")}" ${preview ? 'disabled' : ''}>🎃</button><span class="action-caption">${e("Trick or Treat Friends！")}</span>${directShareButtons(id)}</div>${reactionMeter(id)}</div></div>`;
 }
 function characterPanel() {
   const s = spirit();

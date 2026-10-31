@@ -36,7 +36,7 @@ for(const selectedChannel of ['line','facebook','kakao','wechat','copy','x','sig
  await page.getByRole('button',{name:'Enable Mic & Play',exact:true}).click();
  await page.getByRole('button',{name:'Confirm and enable microphone',exact:true}).click();
  await page.locator('.globe-pin[data-spirit="jiangshi"]').click();
- if(['wechat','copy'].includes(channel))await page.getByRole('button',{name:'Share this character',exact:true}).click();
+ if(['wechat','copy'].includes(channel))await page.locator('.character-pumpkin').click();
  else {
   await expect(page.locator('.character-sns [data-action=send-share]')).toHaveCount(6);
   const b=await page.locator(`.character-sns [data-channel=${channel}]`).boundingBox();expect(b!.x).toBeGreaterThanOrEqual(0);expect(b!.x+b!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
