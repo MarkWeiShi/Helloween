@@ -3513,7 +3513,7 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
 /* Keep the pumpkin, greeting and direct sharing controls on one centered line. */
 .character-share-row {
  display:flex; align-items:center; justify-content:center; flex-wrap:nowrap;
- max-width:100%; font-size:clamp(14px,4vw,26px); line-height:1.15;
+ max-width:100%; font-size:clamp(12px,3.4vw,22px); line-height:1.15;
  direction:ltr;
 }
 .character-dialog .reaction-actions .character-share-row .action-caption {
@@ -3522,9 +3522,36 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
 .character-share-row .character-pumpkin {
  flex:0 0 auto; display:grid; place-items:center; width:1em; height:1em;
  min-width:0; padding:0; margin:0 .25em 0 0; border:0; background:transparent;
- font-size:inherit; line-height:1; cursor:default;
+ font-size:1.3em; line-height:1; cursor:default;
 }
-.character-share-row .character-sns { gap:.25em; margin-left:.5em; }
+.character-share-row .character-sns {
+ position:relative; isolation:isolate; flex:0 0 auto; gap:.35em; margin-left:.5em;
+ padding:.35em .45em; border:1px solid #ffffffaa; border-radius:.55em;
+ background:#302052;
+ --sns-spectrum:linear-gradient(110deg,#d52d80,#793be0,#2379df,#079e8f,#bf8a13,#e54a59,#d52d80);
+}
+/* A flowing spectrum fills the frame and its matching blurred outer halo. */
+.character-share-row .character-sns::before,
+.character-share-row .character-sns::after {
+ content:""; position:absolute; z-index:-1; border-radius:inherit;
+ background-image:var(--sns-spectrum); background-size:300% 300%;
+ pointer-events:none; animation:sns-share-spectrum 7s ease-in-out infinite;
+}
+.character-share-row .character-sns::before {
+ inset:-4px; filter:blur(9px); opacity:.85;
+}
+.character-share-row .character-sns::after {
+ inset:0; box-shadow:inset 0 0 7px #ffffff44;
+}
+@keyframes sns-share-spectrum {
+  0%,100% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+}
+.character-share-row .character-sns:is(:hover,:focus-within)::before { opacity:1; }
+@media (prefers-reduced-motion:reduce) {
+ .character-share-row .character-sns::before,
+ .character-share-row .character-sns::after { animation:none; background-position:50% 50%; }
+}
 .character-share-row .character-sns .icon-button {
  flex:0 0 auto; width:1em; min-width:1em; height:1em; padding:0;
  border:0; border-radius:0; font-size:inherit;
