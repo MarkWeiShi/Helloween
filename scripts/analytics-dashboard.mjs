@@ -1,3 +1,4 @@
+import {funnelEvents} from '../shared/funnel-events.mjs';
 import { createServer } from 'node:http';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
