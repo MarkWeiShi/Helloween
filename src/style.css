@@ -3517,12 +3517,12 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
  direction:ltr;
 }
 .character-dialog .reaction-actions .character-share-row .action-caption {
- font-size:inherit; white-space:nowrap; margin:0;
+ font-size:1.2em; white-space:nowrap; margin:0;
 }
 .character-share-row .character-pumpkin {
  flex:0 0 auto; display:grid; place-items:center; width:1em; height:1em;
  min-width:0; padding:0; margin:0 .25em 0 0; border:0; background:transparent;
- font-size:1.3em; line-height:1; cursor:default;
+ font-size:1.584em; line-height:1; cursor:default;
 }
 .character-share-row .character-sns {
  position:relative; isolation:isolate; flex:0 0 auto; gap:.35em; margin-left:.5em;
@@ -3553,10 +3553,10 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
  .character-share-row .character-sns::after { animation:none; background-position:50% 50%; }
 }
 .character-share-row .character-sns .icon-button {
- flex:0 0 auto; width:1em; min-width:1em; height:1em; padding:0;
+ flex:0 0 auto; width:1.32em; min-width:1.32em; height:1.32em; padding:0;
  border:0; border-radius:0; font-size:inherit;
 }
-.character-share-row .character-sns .social-logo { width:1em; height:1em; }
+.character-share-row .character-sns .social-logo { width:1.32em; height:1.32em; }
 
 .unlock-policy-links{font-size:12px;line-height:1.6;margin:8px 0 16px;text-align:center}
 .unlock-policy-links a{color:inherit;text-decoration:underline;text-underline-offset:3px}
