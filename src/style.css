@@ -2769,7 +2769,7 @@ select {
 /* Character viewer: close at the corner, paging beside the portrait, three tactile actions. */
 .globe-character[hidden], .globe-empty[hidden] { display: none; }
 .globe-layout.detail-closed { grid-template-columns: minmax(0, 820px); justify-content: center; }
-.character-navigation .character-close { border: 1px solid #ffffff22; background: #111b2c55; width: 38px; height: 38px; min-width: 38px; }
+.character-navigation .character-close { border: 0; background: transparent; box-shadow: none; width: 44px; height: 44px; min-width: 44px; }
 .character-close .icon { width: 18px; height: 18px; }
 .globe-empty { position: relative; }
 .globe-empty > .character-close { position: absolute; right: 14px; top: 14px; }

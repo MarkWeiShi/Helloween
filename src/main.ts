@@ -1,3 +1,4 @@
+import whatsappLogo from './whatsapp-logo.svg?raw';
 import {worldScareLabel,refreshGlobalScares} from './global-scare';
 import {publicAssetUrl} from './public-assets';
 import {toast} from './toast';
@@ -456,6 +457,7 @@ async function respondInvite() {
   });
 }
 function shareChannelIcon(channel: string) {
+  if(channel === 'whatsapp')return whatsappLogo.replace('<svg ', '<svg class="social-logo" aria-hidden="true" width="24" height="24" ');
   const logos: Record<string,string> = {x:'x',line:'line',facebook:'facebook',whatsapp:'whatsapp',messenger:'messenger',kakao:'kakaotalk',wechat:'wechat'};
   return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="${e(publicAssetUrl(`/icons/social/${logos[channel]}.svg`))}" alt="" aria-hidden="true" width="24" height="24">`;
 }

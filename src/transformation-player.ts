@@ -106,6 +106,27 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   let program: WebGLProgram | null = null, buffer: WebGLBuffer | null = null, texture: WebGLTexture | null = null;
   const shaders: WebGLShader[] = [];
   let stallTimer: ReturnType<typeof setTimeout> | undefined;
+  let presentedFrame = false, frameStartTime = 0, frameWait = 0;
+  let frameRequest: {media:HTMLVideoElement; id:number} | undefined;
+  function cancelFrameWait() {
+    frameWait++;
+    if(frameRequest)frameRequest.media.cancelVideoFrameCallback(frameRequest.id);
+    frameRequest=undefined;
+  }
+  function waitForPresentedFrame(media:HTMLVideoElement, generation:number) {
+    cancelFrameWait(); presentedFrame=false; frameStartTime=media.currentTime;
+    const wait = frameWait;
+    if(typeof media.requestVideoFrameCallback === 'function') {
+      frameRequest={media,id:media.requestVideoFrameCallback(()=>{
+        if(dead || generation!==ticket || media!==video || wait!==frameWait)return;
+        frameRequest=undefined; presentedFrame=true;
+      })};
+    }
+  }
+  function hasPresentedFrame() {
+    return typeof video.requestVideoFrameCallback === 'function'
+      ? presentedFrame : video.currentTime > frameStartTime;
+  }
   let ready = false;
   if (gl) try {
     program = gl.createProgram();
@@ -129,7 +150,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   // Keep the same video/audio flow and composite the green background in 2D.
   const software = !gl ? canvas.getContext('2d', {willReadFrequently:true}) : null;
   if (software) { canvas.width = 360; canvas.height = 640; ready = true; }
-  function pause() { clearTimeout(stallTimer); phase = 'idle'; ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); options.onPause?.(); }
+  function pause() { cancelFrameWait(); clearTimeout(stallTimer); phase = 'idle'; ticket++; videos.forEach(media => media.pause()); cancelAnimationFrame(frame); options.onPause?.(); }
   function fail() { pause(); phase = 'idle'; canvas.hidden = true; loading.hidden = false; loadingLabel.textContent = t('Load failed · retrying…'); poster.hidden = !entry || !revealed; setMedia(!!entry && revealed); options.onError?.(); }
   const sample = document.createElement('canvas'); sample.width=96;sample.height=170;
   const sampleContext=options.fillCharacter?sample.getContext('2d',{willReadFrequently:true}):null;
@@ -174,13 +195,13 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
         }
         software.putImageData(image,0,0);
       }
-      canvas.hidden = false; if(video.readyState >= 3 && !loading.hidden) { setProgress(100); loading.hidden = true; } setMedia(true); poster.hidden = true;
+      canvas.hidden = false; if(video.readyState >= 2 && hasPresentedFrame() && !loading.hidden) { setProgress(100); loading.hidden = true; } setMedia(true); poster.hidden = true;
     } catch { fail(); return; }
     frame = requestAnimationFrame(draw);
   }
   const attempts = new WeakMap<HTMLVideoElement, number>();
   async function source(media: HTMLVideoElement, generation: number) {
-    video = media; updateProgress();
+    video = media; waitForPresentedFrame(media,generation); updateProgress();
     attempts.set(media, generation); media.muted = !options.sound(); media.volume = .65;
     let timer: ReturnType<typeof setTimeout> | undefined;
     try { await Promise.race([media.play(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(Error('Playback timeout')), 10000); })]); }
@@ -218,7 +239,7 @@ export function mountTransformation(stage: HTMLElement, id: string, options: {
   };
   for (const media of videos) {
     media.onerror = () => { if (!dead && media === video) fail(); };
-    media.onwaiting = () => { if (media !== video) return; loading.hidden = false; updateProgress(); clearTimeout(stallTimer); stallTimer = setTimeout(() => { if (!dead) fail(); }, 10000); };
+    media.onwaiting = () => { if (media !== video) return; loading.hidden = false; waitForPresentedFrame(media,ticket); updateProgress(); clearTimeout(stallTimer); stallTimer = setTimeout(() => { if (!dead) fail(); }, 10000); };
     media.onprogress = media.onloadedmetadata = media.oncanplay = () => { if (media === video) updateProgress(); };
     media.onplaying = () => { if (media === video) clearTimeout(stallTimer); };
   }

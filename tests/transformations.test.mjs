@@ -40,6 +40,8 @@ for (const renderer of ['webgl','2d']) test(`${renderer}: video changes from ent
   classList={add(){},toggle(){}};
   append(...nodes){this.children.push(...nodes);}
   getContext(kind){return renderer==='webgl'?gl:kind==='2d'?software:null;}
+  requestVideoFrameCallback=renderer==='webgl'?cb=>{this.pendingFrame=cb;return 1;}:undefined;
+  cancelVideoFrameCallback(){this.pendingFrame=undefined;}
   play(){this.paused=false;return Promise.resolve();}
   pause(){this.paused=true;}
   setAttribute(key,value){this.attributes[key]=value;}
@@ -54,6 +56,15 @@ for (const renderer of ['webgl','2d']) test(`${renderer}: video changes from ent
  const host=stage.children[0], video=host.children[2], loop=host.children[3];
  assert.equal(host.children[5].hidden,false);
  assert.equal(await motion.play(),true);
+ // play() / readyState alone do not prove that a frame has reached the client.
+ assert.equal(host.children[5].hidden,false);
+ assert.notEqual(host.children[5].children[0].getAttribute('aria-valuenow'),'100');
+ const advance=()=>{const [key,cb]=[...callbacks.entries()].at(-1);callbacks.delete(key);cb();};
+ video.currentTime=.04; advance();
+ if(renderer==='webgl'){
+   assert.equal(host.children[5].hidden,false,'readyState and advancing time cannot bypass the frame callback');
+   video.pendingFrame(); advance();
+ }
  assert.equal(host.children[5].hidden,true);
  if(renderer==='2d') { assert.equal(composited[3],0); assert.equal(composited[7],255); }
  assert.equal(video.src,entry.entrance); assert.equal(video.muted,true); assert.equal(video.loop,false);
