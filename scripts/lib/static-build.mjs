@@ -49,6 +49,8 @@ export function staticContentPlugin() {
         if(file.endsWith('.json'))copyFileSync(join(data.source,file),legacy);
         else symlinkSync(relative(dirname(legacy),join(target,file)),legacy);
       }
+      // Stable, unauthenticated URLs required by Meta and the unlock notice.
+      for(const file of ['privacy.html','data-deletion.html','legal-policy.css','legal-entry.js'])copyFileSync(join(data.source,file),join(outDir,file));
       writeFileSync(join(outDir,'release.json'),JSON.stringify({release:data.release,contentVersion:data.snapshot.contentVersion}));
     },
   };

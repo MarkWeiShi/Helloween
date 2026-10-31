@@ -4,7 +4,7 @@ export const RULES = Object.freeze({
   matchMs: 15000,
   inviteLifetimeMs: 7 * 86400000,
 });
-export const CHANNELS = ["x", "line", "facebook", "kakao", "wechat", "copy", "system"];
+export const CHANNELS = ["x", "line", "facebook", "whatsapp", "messenger", "kakao", "wechat", "copy", "system"];
 export function makeChallenge(seed) {
   let state = seed >>> 0;
   const next = () => {

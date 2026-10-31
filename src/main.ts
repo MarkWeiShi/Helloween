@@ -440,15 +440,15 @@ async function respondInvite() {
   });
 }
 function shareChannelIcon(channel: string) {
-  const logos: Record<string,string> = {x:'x',line:'line',facebook:'facebook',kakao:'kakaotalk',wechat:'wechat'};
+  const logos: Record<string,string> = {x:'x',line:'line',facebook:'facebook',whatsapp:'whatsapp',messenger:'messenger',kakao:'kakaotalk',wechat:'wechat'};
   return channel === 'copy' ? icon('copy') : `<img class="social-logo" src="/icons/social/${logos[channel]}.svg" alt="" aria-hidden="true" width="24" height="24">`;
 }
 function directShareButtons(id:string) {
-  return `<div class="character-sns" role="group" aria-label="${e(t('Choose a sharing app'))}">${[['x','X'],['line','LINE'],['facebook','Facebook'],['kakao','KakaoTalk']].map(([channel,name])=>`<button class="icon-button" data-action="send-share" data-channel="${channel}" data-id="${e(id)}" aria-label="${e(name)}" title="${e(name)}">${shareChannelIcon(channel)}</button>`).join('')}</div>`;
+  return `<div class="character-sns" role="group" aria-label="${e(t('Choose a sharing app'))}">${[['x','X'],['line','LINE'],['facebook','Facebook'],['whatsapp','WhatsApp'],['messenger','FB Messenger'],['kakao','KakaoTalk']].map(([channel,name])=>`<button class="icon-button" data-action="send-share" data-channel="${channel}" data-id="${e(id)}" aria-label="${e(name)}" title="${e(name)}">${shareChannelIcon(channel)}</button>`).join('')}</div>`;
 }
 function openShare(id = selected) {
   prepareSocialShare(id);
-  modal(`<h2>${e(t('Choose a sharing app'))}</h2><div class="share-options">${[['x','X'],['line','LINE'],['facebook','Facebook'],['kakao','KakaoTalk'],['wechat','WeChat'],['copy',t('Copy link')]].map(([channel,label])=>button(`${shareChannelIcon(channel)}<span>${e(label)}</span>`,'send-share','secondary',`data-channel="${channel}" data-id="${id}"`)).join('')}</div>`);
+  modal(`<h2>${e(t('Choose a sharing app'))}</h2><div class="share-options">${[['x','X'],['line','LINE'],['facebook','Facebook'],['whatsapp','WhatsApp'],['messenger','FB Messenger'],['kakao','KakaoTalk'],['wechat','WeChat'],['copy',t('Copy link')]].map(([channel,label])=>button(`${shareChannelIcon(channel)}<span>${e(label)}</span>`,'send-share','secondary',`data-channel="${channel}" data-id="${id}"`)).join('')}</div>`);
   overlay.querySelector('dialog')!.classList.add('compact-share');
 }
 let shareRequest = 0;
@@ -497,7 +497,7 @@ async function sendShare(id: string, channel: string, btn?: HTMLButtonElement, r
     finally{finishLoading();}
   }
   const request=++shareRequest;
-  modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel.toUpperCase()}`)}</h2>${!player.initialized?`<div class="share-profile"><label>${e(t('Your parade name'))}<input id="share-name" maxlength="24" value="${e(player.name)}"></label><label>${e(t('Your country or region'))}<select id="share-country"><option value="">${e(t('Choose your home'))}</option>${catalog.countries.map(c=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<div id="share-link"></div>`);
+  modal(`<h2>${e(channel==='copy'?t('Copy link'):`Share with ${channel==='x'?'X':channel==='kakao'?'KakaoTalk':channel==='facebook'?'Facebook':channel==='messenger'?'Messenger':channel==='whatsapp'?'WhatsApp':channel.toUpperCase()}`)}</h2>${!player.initialized?`<div class="share-profile"><label>${e(t('Your parade name'))}<input id="share-name" maxlength="24" value="${e(player.name)}"></label><label>${e(t('Your country or region'))}<select id="share-country"><option value="">${e(t('Choose your home'))}</option>${catalog.countries.map(c=>`<option value="${c.code}">${e(c.name)}</option>`).join('')}</select></label></div>`:''}<div id="share-link"></div>`);
   overlay.querySelector('dialog')!.classList.add('compact-share');
   const node=$('#share-link')!;
   showShareLoading(node,'invite');
@@ -551,7 +551,7 @@ function showGate() {
 }
 function openUnlockConsent() {
   if (!gate || gateBusy) return;
-  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${t("Recording starts at 3 seconds into the video and lasts 6 seconds.")}</li><li>${invite?.recordingFull ? t("Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li>${invite && !invite.expired ? "" : html`<li>录音中可随时取消或关闭。</li>`}</ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
+  modal(html`<div class="modal-heading"><h2 id="unlock-title">开始前，了解一下</h2></div><ul class="unlock-points" id="unlock-points"><li>探索地球，观看小鬼变身。</li><li>${t("Recording starts at 3 seconds into the video and lasts 6 seconds.")}</li><li>${invite?.recordingFull ? t("Your friend’s storage is full (50 voices). Recording is shared only with the inviter. Keep this page open and retry sending after they delete a voice.") : invite && !invite.expired ? msg`此次邀请的录音与评分会自动上传，仅邀请人 ${e(invite.name)} 可播放。` : t("普通探索不上传声音；朋友邀请中的录音与评分会自动上传，仅邀请人可播放。")}</li>${invite && !invite.expired ? "" : html`<li>录音中可随时取消或关闭。</li>`}</ul><p class="unlock-acceptance">点击确认，即表示接受以上玩法与授权。</p><p class="unlock-policy-links"><a href="/privacy.html" target="_blank" rel="noopener noreferrer">${locale === "zh" ? "隐私政策" : "Privacy Policy"}</a><span aria-hidden="true"> · </span><a href="/data-deletion.html" target="_blank" rel="noopener noreferrer">${locale === "zh" ? "用户数据删除说明" : "Data Deletion"}</a></p><button class="button primary full" data-confirm-unlock>确认并开启麦克风</button>`);
   const dialog = overlay.querySelector<HTMLDialogElement>('dialog')!;
   dialog.classList.add('unlock-consent');
   dialog.setAttribute('aria-labelledby', 'unlock-title');

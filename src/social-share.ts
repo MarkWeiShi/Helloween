@@ -21,7 +21,7 @@ export function prepareSocialShare(spiritId:string){
 type KakaoSDK={isInitialized():boolean;init(key:string):void;Share:{sendDefault(data:unknown):void;scrapImage(data:{imageUrl:string}):Promise<{infos:{original:{url:string}}}>}};
 type WechatSDK={config(data:unknown):void;ready(cb:()=>void):void;error(cb:()=>void):void;updateAppMessageShareData(data:unknown):void;updateTimelineShareData(data:unknown):void};
 declare global {interface Window {Kakao?:KakaoSDK;wx?:WechatSDK}}
-const names:Record<string,string>={x:'X',line:'LINE',facebook:'Facebook',kakao:'KakaoTalk',wechat:'WeChat'};
+const names:Record<string,string>={x:'X',line:'LINE',facebook:'Facebook',whatsapp:'WhatsApp',messenger:'Messenger',kakao:'KakaoTalk',wechat:'WeChat'};
 const loaders=new Map<string,Promise<void>>();
 function load(src:string){
  if(!loaders.has(src))loaders.set(src,new Promise<void>((resolve,reject)=>{const script=document.createElement('script');script.src=src;script.crossOrigin='anonymous';const timer=setTimeout(()=>{script.remove();reject(Error(t("Sharing service timed out. Please try again.")));},12000);script.onload=()=>{clearTimeout(timer);resolve();};script.onerror=()=>{clearTimeout(timer);script.remove();reject(Error(t("Sharing service could not load. Please try again.")));};document.head.append(script);}).catch(error=>{loaders.delete(src);throw error;}));
@@ -31,7 +31,6 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
  const panel=document.createElement('section');panel.className='social-handoff';panel.setAttribute('aria-live','polite');node.replaceChildren(panel);
  const name=names[channel];if(!name)return;
  showShareLoading(panel);
- const config=await loadShareConfig();if(!panel.isConnected)return;
  const local=['localhost','127.0.0.1','[::1]'].includes(new URL(url).hostname);
  const notice=local?html`<p>This is a local preview link. Open the game on <a href="https://helloween.fly.dev" target="_blank" rel="noopener noreferrer">helloween.fly.dev</a> to create an invitation friends can open.</p>`:'';
  const link=html`<label class="share-link-label">Your invitation link<input readonly aria-label="Invitation link" value="${e(url)}"></label>`;
@@ -42,6 +41,31 @@ export async function mountSocialHandoff(node:HTMLElement,channel:string,url:str
    void Promise.resolve(beforeConfirm()).then(()=>{if(popup)popup.location.href=anchor.href;else location.assign(anchor.href);}).catch(error=>{popup?.close();const note=document.createElement('p');note.setAttribute('role','alert');note.textContent=error.message;panel.append(note);});
   });
  };
+ if(channel==='whatsapp'||channel==='messenger'){
+  const label=(zh:string,en:string)=>locale==='zh'?zh:en;
+  let target='';
+  if(channel==='whatsapp')target=`https://wa.me/?text=${encodeURIComponent(text+' '+url)}`;
+  else {
+   // Native sharing and copying remain usable if the public app config is unavailable.
+   const config=await loadShareConfig().catch(()=>null);if(!panel.isConnected)return;
+   if(config?.facebookAppId&&!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent))target=`https://www.facebook.com/dialog/send?${new URLSearchParams({app_id:config.facebookAppId,link:url,redirect_uri:new URL('/',config.origin||location.origin).href})}`;
+  }
+  frame(`<p>${e(label('选择好友或群聊，在平台内确认发送。','Choose a friend or group and confirm sending in the app.'))}</p>${target?`<a class="button primary full" href="${e(target)}" target="_blank" rel="noopener noreferrer">${e(label('打开 '+name+' 分享','Continue to '+name))}</a>`:''}${channel==='messenger'&&typeof navigator.share==='function'?`<button class="button primary full" data-device-share>${e(label('在分享应用中选择 Messenger','Choose Messenger in sharing apps'))}</button>`:''}<p>${e(label('如果无法打开应用，请复制邀请链接到聊天中。','If the app cannot open, copy the invitation link into your chat.'))}</p><button class="button secondary full" data-copy-invite>${e(t('Copy link'))}</button><p role="status" data-messaging-status></p>`);
+  const status=panel.querySelector<HTMLElement>('[data-messaging-status]')!;
+  panel.querySelector<HTMLButtonElement>('[data-copy-invite]')!.onclick=async()=>{
+   try{await beforeConfirm();await navigator.clipboard.writeText(url);status.textContent=t('Invitation link copied. Send it to someone who needs a smile.');}
+   catch{panel.querySelector<HTMLInputElement>('input')?.select();status.textContent=t('Your invitation is ready. Select and copy the link below.');}
+  };
+  const share=panel.querySelector<HTMLButtonElement>('[data-device-share]');
+  if(share)share.onclick=async()=>{
+   try{
+    const saving=beforeConfirm();if(saving){await saving;status.textContent=label('资料已保存，请再次点击分享。','Profile saved. Tap share again.');return;}
+    watchShareReturn();await navigator.share({title:t('Halloween surprise'),text,url});
+   }catch(error){if((error as Error).name!=='AbortError')status.textContent=label('无法打开分享应用，请复制链接。','Sharing apps could not open. Copy the link instead.');}
+  };
+  return;
+ }
+ const config=await loadShareConfig();if(!panel.isConnected)return;
  if(channel==='line' && config.lineLiffId){
   const token=new URL(url).pathname.match(/^\/i\/([\w-]+)$/)?.[1];
   if(token){

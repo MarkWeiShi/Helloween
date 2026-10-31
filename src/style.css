@@ -3557,3 +3557,7 @@ button .share-loading-track { margin-top: 4px; min-width: 28px; }
  border:0; border-radius:0; font-size:inherit;
 }
 .character-share-row .character-sns .social-logo { width:1em; height:1em; }
+
+.unlock-policy-links{font-size:12px;line-height:1.6;margin:8px 0 16px;text-align:center}
+.unlock-policy-links a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.unlock-policy-links a:focus-visible{outline:2px solid currentColor;outline-offset:4px}

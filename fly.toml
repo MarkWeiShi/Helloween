@@ -7,6 +7,7 @@ kill_timeout = '30s'
   dockerfile = 'Dockerfile.fly'
 
 [env]
+  FACEBOOK_APP_ID = "1125720033691224"
   BRANCH_UNLOCK_ENABLED = 'true'
   NODE_ENV = 'production'
   HOST = '0.0.0.0'
