@@ -31,7 +31,8 @@
     "predev": "node scripts/prepare-content.mjs"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1158.0"
+    "@aws-sdk/client-s3": "^3.1158.0",
+    "geoip-country": "5.0.202610310241"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

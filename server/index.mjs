@@ -1,3 +1,4 @@
+import {installCountryAnalytics, requestCountry, withCountry} from './country-analytics.mjs';
 import {createEngagement} from './engagement.mjs';
 import {findShareCharacter} from '../shared/preview-characters.mjs';
 import {createBranchUnlock} from "./branch-unlock.mjs";
@@ -37,6 +38,7 @@ export function createApp({
     now,
   });
   const engagement = createEngagement(store);
+  installCountryAnalytics(store.db);
   const branchUnlock = createBranchUnlock(store, branchOptions);
   const auth = createAuth({db:store.db,...authOptions});
   const publishX=createXPublisher(xPublisherOptions);
@@ -66,7 +68,7 @@ export function createApp({
   const metricsInterval=Number(process.env.METRICS_INTERVAL_MS || 0);
   const metricsTimer=metricsInterval>=1000?setInterval(()=>console.log(JSON.stringify(telemetry.snapshot())),metricsInterval):null;
   metricsTimer?.unref();
-  const server = createServer(async (req, res) => {
+  const server = createServer((req, res) => withCountry(requestCountry(req), async () => {
     telemetry.track(req,res);
     const url = new URL(req.url, "http://localhost");
     res.setHeader("X-Content-Type-Options", "nosniff");
@@ -382,7 +384,7 @@ export function createApp({
         send(500, { error: "The lanterns flickered. Please try again." });
       }
     }
-  });
+  }));
   return {
     server,
     store,
